@@ -66,6 +66,10 @@ cp $src/texk/web2c/libmd5/*.h libmd5/
 mkdir -p kpathsea
 cp $src/texk/kpathsea/*.c kpathsea/
 cp $src/texk/kpathsea/*.h kpathsea/
+cp $build/texk/kpathsea/paths.h kpathsea/
+for f in knj.c knj.h win32lib.c ; do
+    rm kpathsea/$f
+done
 
 # TECkit
 

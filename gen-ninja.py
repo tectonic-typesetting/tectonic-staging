@@ -30,6 +30,10 @@ def inner (top, w):
             command='gcc -c -o $out $cflags $in',
             description='CC $out')
 
+    w.rule ('staticlib',
+            command='ar cru $out $in',
+            description='AR $out')
+
     # build dir
 
     builddir = top / 'BUILD'
@@ -37,7 +41,9 @@ def inner (top, w):
 
     # kpathsea
 
+    libkp = builddir / 'libkpathsea.a'
     cflags = '-DMAKE_KPSE_DLL -Ikpathsea -I. -g -O2'
+    objs = []
 
     for src in (top / 'kpathsea').glob ('*.c'):
         obj = builddir / ('kpathsea_' + src.name.replace ('.c', '.o'))
@@ -47,6 +53,9 @@ def inner (top, w):
             implicit = [str(builddir)],
             variables = {'cflags': cflags},
         )
+        objs.append (str (obj))
+
+    w.build (str(libkp), 'staticlib', inputs = objs)
 
 
 def outer (args):

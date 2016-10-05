@@ -30,6 +30,10 @@ def inner (top, w):
             command='gcc -c -o $out $cflags $in',
             description='CC $out')
 
+    w.rule ('cxx',
+            command='g++ -c -o $out $cflags $in',
+            description='CC $out')
+
     w.rule ('staticlib',
             command='ar cru $out $in',
             description='AR $out')
@@ -50,12 +54,30 @@ def inner (top, w):
         w.build (
             str(obj), 'cc',
             inputs = [str(src)],
-            implicit = [str(builddir)],
+            order_only = [str(builddir)],
             variables = {'cflags': cflags},
         )
         objs.append (str (obj))
 
     w.build (str(libkp), 'staticlib', inputs = objs)
+
+    # teckit
+
+    libtk = builddir / 'libteckit.a'
+    cflags = '-Iteckit -DNDEBUG -g -O2'
+    objs = []
+
+    for src in (top / 'teckit').glob ('*.cpp'):
+        obj = builddir / ('teckit_' + src.name.replace ('.cpp', '.o'))
+        w.build (
+            str(obj), 'cxx',
+            inputs = [str(src)],
+            order_only = [str(builddir)],
+            variables = {'cflags': cflags},
+        )
+        objs.append (str (obj))
+
+    w.build (str(libtk), 'staticlib', inputs = objs)
 
 
 def outer (args):

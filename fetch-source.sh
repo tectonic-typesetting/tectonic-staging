@@ -75,4 +75,6 @@ done
 
 mkdir -p teckit
 cp $src/libs/teckit/TECkit-src/source/Engine.cpp teckit/
+cp $src/libs/teckit/TECkit-src/source/*.h teckit/
+cp $src/libs/teckit/TECkit-src/source/NormalizationData.c teckit/
 cp $src/libs/teckit/TECkit-src/source/Public-headers/*.h teckit/

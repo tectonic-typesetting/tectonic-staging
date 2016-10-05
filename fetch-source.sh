@@ -60,6 +60,7 @@ cp $src/texk/web2c/lib/*.h baselib/
 mkdir -p libmd5
 cp $src/texk/web2c/libmd5/*.c libmd5/
 cp $src/texk/web2c/libmd5/*.h libmd5/
+rm libmd5/md5main.c
 
 # kpathsea
 

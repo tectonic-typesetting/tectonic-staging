@@ -79,6 +79,24 @@ def inner (top, w):
 
     w.build (str(libtk), 'staticlib', inputs = objs)
 
+    # libmd5
+
+    libmd5 = builddir / 'libmd5.a'
+    cflags = '-Ilibmd5 -g -O2'
+    objs = []
+
+    for src in (top / 'libmd5').glob ('*.c'):
+        obj = builddir / ('libmd5_' + src.name.replace ('.c', '.o'))
+        w.build (
+            str(obj), 'cc',
+            inputs = [str(src)],
+            order_only = [str(builddir)],
+            variables = {'cflags': cflags},
+        )
+        objs.append (str (obj))
+
+    w.build (str(libmd5), 'staticlib', inputs = objs)
+
 
 def outer (args):
     top = io.Path ('')

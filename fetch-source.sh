@@ -75,7 +75,6 @@ mkdir -p kpathsea
 cp $src/texk/kpathsea/*.c kpathsea/
 cp $src/texk/kpathsea/*.h kpathsea/
 cp $build/texk/kpathsea/kpathsea.h kpathsea/
-cp $build/texk/kpathsea/paths.h kpathsea/
 for f in getopt.c getopt1.c kpsestat.c kpsewhich.c knj.c knj.h putenv.c readlink.c win32lib.c ; do
     rm kpathsea/$f
 done

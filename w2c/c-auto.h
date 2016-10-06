@@ -1,4 +1,5 @@
-# define _DARWIN_USE_64_BIT_INODE 1
+#define _DARWIN_USE_64_BIT_INODE 1
+#define EDITOR "vi +%d '%s'"
 #define HAVE_ACCESS 1
 #define HAVE_ASSERT_H 1
 #define HAVE_ATOI 1
@@ -51,6 +52,7 @@
 #define HAVE_TIME_H 1
 #define HAVE_UINTPTR_T 1
 #define HAVE_UNISTD_H 1
+#define RETSIGTYPE void
 #define SIZEOF_INT 4
 #define SIZEOF_LONG 8
 #define SIZEOF_OFF_T 8

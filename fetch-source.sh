@@ -26,21 +26,22 @@ cd $(dirname $0)
 # - libz
 # - libfontconfig
 
+# Raw sources
 
-mkdir -p src
+mkdir -p xetexdir/image
 
-# Raw sources.
+cp $src/texk/web2c/xetexdir/*.cpp xetexdir/
+cp $src/texk/web2c/xetexdir/*.c xetexdir/
+cp $src/texk/web2c/xetexdir/*.h xetexdir/
+cp $src/texk/web2c/xetexdir/image/*.c xetexdir/image/
+cp $src/texk/web2c/xetexdir/image/*.h xetexdir/image/
+cp $src/texk/web2c/*.h xetexdir/
+rm xetexdir/XeTeX_mac.c xetexdir/XeTeXFontInst_Mac.cpp
 
-cp $src/texk/web2c/xetexdir/*.cpp src/
-cp $src/texk/web2c/xetexdir/*.c src/
-cp $src/texk/web2c/xetexdir/*.h src/
-cp $src/texk/web2c/xetexdir/image/*.c src/
-cp $src/texk/web2c/xetexdir/image/*.h src/
+# web2c'd sources
 
-# web2c'd sources.
-
-cp $build/texk/web2c/xetex*.c src/
-cp $build/texk/web2c/xetex*.h src/
+cp $build/texk/web2c/xetex*.c xetexdir/
+cp $build/texk/web2c/xetex*.h xetexdir/
 
 # web2c support
 
@@ -56,10 +57,10 @@ done
 
 # base lib
 
-mkdir -p baselib
-cp $src/texk/web2c/lib/*.c baselib/
-cp $src/texk/web2c/lib/*.h baselib/
-rm baselib/alloca.c baselib/mfmpw32.c baselib/texmfmp.c
+mkdir -p lib
+cp $src/texk/web2c/lib/*.c lib/
+cp $src/texk/web2c/lib/*.h lib/
+rm lib/alloca.c lib/mfmpw32.c
 
 # libmd5
 

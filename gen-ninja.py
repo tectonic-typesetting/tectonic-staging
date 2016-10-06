@@ -9,6 +9,12 @@ import os, sys
 from pwkit import io, ninja_syntax
 
 
+config = {
+    # pkg-config --cflags fontconfig harfbuzz freetype2 graphite2
+    'pkgconfig_cflags': '-I/a/include -I/a/include/freetype2 -I/a/include/libxml2 -I/a/include/harfbuzz -I/a/include/glib-2.0 -I/a/lib/glib-2.0/include -I/a/include/freetype2 -I/usr/include/poppler',
+}
+
+
 def inner (top, w):
     # build.ninja gen rule.
 
@@ -46,7 +52,7 @@ def inner (top, w):
     # kpathsea
 
     libkp = builddir / 'libkpathsea.a'
-    cflags = '-DMAKE_KPSE_DLL -Ikpathsea -I. -g -O2'
+    cflags = '-DHAVE_CONFIG_H -DMAKE_KPSE_DLL -Ikpathsea -I. -g -O2'
     objs = []
 
     for src in (top / 'kpathsea').glob ('*.c'):
@@ -64,7 +70,7 @@ def inner (top, w):
     # teckit
 
     libtk = builddir / 'libteckit.a'
-    cflags = '-Iteckit -DNDEBUG -g -O2'
+    cflags = '-DHAVE_CONFIG_H -Iteckit -DNDEBUG -g -O2'
     objs = []
 
     for src in (top / 'teckit').glob ('*.cpp'):
@@ -82,7 +88,7 @@ def inner (top, w):
     # libmd5
 
     libmd5 = builddir / 'libmd5.a'
-    cflags = '-Ilibmd5 -g -O2'
+    cflags = '-DHAVE_CONFIG_H -Ilibmd5 -g -O2'
     objs = []
 
     for src in (top / 'libmd5').glob ('*.c'):
@@ -97,13 +103,16 @@ def inner (top, w):
 
     w.build (str(libmd5), 'staticlib', inputs = objs)
 
-    # baselib / libbase
+    # lib / libbase
 
     libbase = builddir / 'libbase.a'
-    cflags = '-Ibaselib -I. -g -O2'
+    cflags = '-DHAVE_CONFIG_H -Ilib -I. -g -O2'
     objs = []
 
-    for src in (top / 'baselib').glob ('*.c'):
+    for src in (top / 'lib').glob ('*.c'):
+        if src.name == 'texmfmp.c':
+            continue # #included in xetexdir/xetexextra.c
+
         obj = builddir / ('baselib_' + src.name.replace ('.c', '.o'))
         w.build (
             str(obj), 'cc',
@@ -114,6 +123,30 @@ def inner (top, w):
         objs.append (str (obj))
 
     w.build (str(libbase), 'staticlib', inputs = objs)
+
+    # libxetex
+
+    libxetex = builddir / 'libxetex.a'
+    cflags = '-DHAVE_CONFIG_H -Ixetexdir -I. -Ilibmd5 -g -O2 %(pkgconfig_cflags)s' % config
+    objs = []
+
+    def xetex_c_sources ():
+        for src in (top / 'xetexdir').glob ('*.c'):
+            yield src
+        for src in (top / 'xetexdir' / 'image').glob ('*.c'):
+            yield src
+            
+    for src in xetex_c_sources ():
+        obj = builddir / ('xetex_' + src.name.replace ('.c', '.o'))
+        w.build (
+            str(obj), 'cc',
+            inputs = [str(src)],
+            order_only = [str(builddir)],
+            variables = {'cflags': cflags},
+        )
+        objs.append (str (obj))
+
+    w.build (str(libxetex), 'staticlib', inputs = objs)
 
 
 def outer (args):

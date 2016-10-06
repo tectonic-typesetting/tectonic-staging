@@ -21,6 +21,11 @@
 #define HAVE_UNISTD_H 1
 
 #define KPSEVERSION "kpathsea version 6.2.3/dev"
+#define MAKE_TEX_FMT_BY_DEFAULT 1
+#define MAKE_TEX_MF_BY_DEFAULT 1
+#define MAKE_TEX_PK_BY_DEFAULT 1
+#define MAKE_TEX_TEX_BY_DEFAULT 0
+#define MAKE_TEX_TFM_BY_DEFAULT 1
 #define SIZEOF_LONG 8
 #define STDC_HEADERS 1
 #define _DARWIN_USE_64_BIT_INODE 1

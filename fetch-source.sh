@@ -42,6 +42,11 @@ cp $src/texk/web2c/xetexdir/image/*.h src/
 cp $build/texk/web2c/xetex*.c src/
 cp $build/texk/web2c/xetex*.h src/
 
+# web2c support
+
+mkdir -p w2c
+cp $src/texk/web2c/w2c/*.h w2c/
+
 # synctex
 
 mkdir -p synctex
@@ -54,6 +59,7 @@ done
 mkdir -p baselib
 cp $src/texk/web2c/lib/*.c baselib/
 cp $src/texk/web2c/lib/*.h baselib/
+rm baselib/alloca.c baselib/mfmpw32.c baselib/texmfmp.c
 
 # libmd5
 

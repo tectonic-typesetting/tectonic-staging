@@ -97,6 +97,24 @@ def inner (top, w):
 
     w.build (str(libmd5), 'staticlib', inputs = objs)
 
+    # baselib / libbase
+
+    libbase = builddir / 'libbase.a'
+    cflags = '-Ibaselib -I. -g -O2'
+    objs = []
+
+    for src in (top / 'baselib').glob ('*.c'):
+        obj = builddir / ('baselib_' + src.name.replace ('.c', '.o'))
+        w.build (
+            str(obj), 'cc',
+            inputs = [str(src)],
+            order_only = [str(builddir)],
+            variables = {'cflags': cflags},
+        )
+        objs.append (str (obj))
+
+    w.build (str(libbase), 'staticlib', inputs = objs)
+
 
 def outer (args):
     top = io.Path ('')

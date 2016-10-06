@@ -149,7 +149,7 @@ def inner (top, w):
 
     # xetex
 
-    cflags = '-DHAVE_CONFIG_H -Ixetexdir -I. -Ilibmd5 -g -O2 %(pkgconfig_cflags)s' % config
+    cflags = '-DHAVE_CONFIG_H -D__SyncTeX__ -Ixetexdir -I. -Ilibmd5 -g -O2 %(pkgconfig_cflags)s' % config
     objs = []
 
     def xetex_c_sources ():

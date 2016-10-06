@@ -10,6 +10,7 @@ from pwkit import io, ninja_syntax
 
 
 config = {
+    'base_cflags': '-g -O2',
     # pkg-config --cflags fontconfig harfbuzz harfbuzz-icu freetype2 graphite2 libpng zlib icu-uc poppler
     'pkgconfig_cflags': '-I/usr/include/freetype2 -I/usr/include/libpng16 -I/usr/include/harfbuzz -I/usr/include/glib-2.0 -I/usr/lib64/glib-2.0/include -I/usr/include/freetype2 -I/usr/include/libpng16 -I/usr/include/poppler',
     'pkgconfig_libs': '-lfontconfig -lharfbuzz-icu -lharfbuzz -lfreetype -lgraphite2 -lpng16 -lz -licuuc -licudata -lpoppler',
@@ -59,7 +60,7 @@ def inner (top, w):
     # kpathsea
 
     libkp = builddir / 'libkpathsea.a'
-    cflags = '-DHAVE_CONFIG_H -DMAKE_KPSE_DLL -Ikpathsea -I. -g -O2'
+    cflags = '-DHAVE_CONFIG_H -DMAKE_KPSE_DLL -Ikpathsea -I. %(base_cflags)s' % config
     objs = []
 
     for src in (top / 'kpathsea').glob ('*.c'):
@@ -77,7 +78,7 @@ def inner (top, w):
     # teckit
 
     libtk = builddir / 'libteckit.a'
-    cflags = '-DHAVE_CONFIG_H -Iteckit -DNDEBUG -g -O2'
+    cflags = '-DHAVE_CONFIG_H -Iteckit -DNDEBUG %(base_cflags)s' % config
     objs = []
 
     for src in (top / 'teckit').glob ('*.cpp'):
@@ -95,7 +96,7 @@ def inner (top, w):
     # libmd5
 
     libmd5 = builddir / 'libmd5.a'
-    cflags = '-DHAVE_CONFIG_H -Ilibmd5 -g -O2'
+    cflags = '-DHAVE_CONFIG_H -Ilibmd5 %(base_cflags)s' % config
     objs = []
 
     for src in (top / 'libmd5').glob ('*.c'):
@@ -113,7 +114,7 @@ def inner (top, w):
     # lib / libbase
 
     libbase = builddir / 'libbase.a'
-    cflags = '-DHAVE_CONFIG_H -Ilib -I. -g -O2'
+    cflags = '-DHAVE_CONFIG_H -Ilib -I. %(base_cflags)s' % config
     objs = []
 
     for src in (top / 'lib').glob ('*.c'):
@@ -134,7 +135,7 @@ def inner (top, w):
     # synctex
 
     libsynctex = builddir / 'libsynctex.a'
-    cflags = '-DHAVE_CONFIG_H -Ixetexdir -I. -DU_STATIC_IMPLEMENTATION -D__SyncTeX__ -DSYNCTEX_ENGINE_H=\\"synctexdir/synctex-xetex.h\\" %(pkgconfig_cflags)s' % config
+    cflags = '-DHAVE_CONFIG_H -Ixetexdir -I. -DU_STATIC_IMPLEMENTATION -D__SyncTeX__ -DSYNCTEX_ENGINE_H=\\"synctexdir/synctex-xetex.h\\" %(pkgconfig_cflags)s %(base_cflags)s' % config
     objs = []
 
     for src in (top / 'synctexdir').glob ('*.c'):
@@ -151,7 +152,7 @@ def inner (top, w):
 
     # xetex
 
-    cflags = '-DHAVE_CONFIG_H -D__SyncTeX__ -Ixetexdir -I. -Ilibmd5 -g -O2 %(pkgconfig_cflags)s' % config
+    cflags = '-DHAVE_CONFIG_H -D__SyncTeX__ -Ixetexdir -I. -Ilibmd5 %(pkgconfig_cflags)s %(base_cflags)s' % config
     objs = []
 
     def xetex_c_sources ():

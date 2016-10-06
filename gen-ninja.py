@@ -10,8 +10,9 @@ from pwkit import io, ninja_syntax
 
 
 config = {
-    # pkg-config --cflags fontconfig harfbuzz freetype2 graphite2
-    'pkgconfig_cflags': '-I/a/include -I/a/include/freetype2 -I/a/include/libxml2 -I/usr/include/harfbuzz -I/a/include/glib-2.0 -I/a/lib/glib-2.0/include -I/a/include/freetype2 -I/usr/include/poppler',
+    # pkg-config --cflags fontconfig harfbuzz freetype2 graphite2 libpng zlib icu-uc poppler
+    'pkgconfig_cflags': '-I/usr/include/freetype2 -I/usr/include/libpng16 -I/usr/include/harfbuzz -I/usr/include/glib-2.0 -I/usr/lib64/glib-2.0/include -I/usr/include/freetype2 -I/usr/include/libpng16 -I/usr/include/poppler',
+    'pkgconfig_libs': '-lfontconfig -lharfbuzz -lfreetype -lgraphite2 -lpng16 -lz -licuuc -licudata -lpoppler',
 }
 
 
@@ -43,6 +44,10 @@ def inner (top, w):
     w.rule ('staticlib',
             command='ar cru $out $in',
             description='AR $out')
+
+    w.rule ('executable',
+            command='g++ -o $out $in $libs',
+            description='LINK $out')
 
     # build dir
 
@@ -142,9 +147,8 @@ def inner (top, w):
 
     w.build (str(libsynctex), 'staticlib', inputs = objs)
 
-    # libxetex
+    # xetex
 
-    libxetex = builddir / 'libxetex.a'
     cflags = '-DHAVE_CONFIG_H -Ixetexdir -I. -Ilibmd5 -g -O2 %(pkgconfig_cflags)s' % config
     objs = []
 
@@ -153,7 +157,7 @@ def inner (top, w):
             yield src
         for src in (top / 'xetexdir' / 'image').glob ('*.c'):
             yield src
-            
+
     for src in xetex_c_sources ():
         obj = builddir / ('xetex_' + src.name.replace ('.c', '.o'))
         w.build (
@@ -174,7 +178,13 @@ def inner (top, w):
         )
         objs.append (str (obj))
 
-    w.build (str(libxetex), 'staticlib', inputs = objs)
+    objs += map (str, [libsynctex, libbase, libmd5, libtk, libkp])
+    libs = '%(pkgconfig_libs)s -lz' % config
+
+    w.build ('xetex', 'executable',
+             inputs = objs,
+             variables = {'libs': libs},
+    )
 
 
 def outer (args):

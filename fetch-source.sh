@@ -60,7 +60,7 @@ done
 mkdir -p lib
 cp $src/texk/web2c/lib/*.c lib/
 cp $src/texk/web2c/lib/*.h lib/
-rm lib/alloca.c lib/mfmpw32.c
+rm lib/alloca.c lib/main.c lib/mfmpw32.c
 
 # libmd5
 
@@ -74,8 +74,9 @@ rm libmd5/md5main.c
 mkdir -p kpathsea
 cp $src/texk/kpathsea/*.c kpathsea/
 cp $src/texk/kpathsea/*.h kpathsea/
+cp $build/texk/kpathsea/kpathsea.h kpathsea/
 cp $build/texk/kpathsea/paths.h kpathsea/
-for f in knj.c knj.h win32lib.c ; do
+for f in getopt.c getopt1.c kpsestat.c kpsewhich.c knj.c knj.h readlink.c win32lib.c ; do
     rm kpathsea/$f
 done
 

@@ -180,68 +180,7 @@ do_line (kpathsea kpse, string line)
 static void
 read_all_cnf (kpathsea kpse)
 {
-  string *cnf_files;
-  string *cnf;
-  const_string cnf_path = kpathsea_init_format (kpse, kpse_cnf_format);
-
   kpse->cnf_hash = hash_create (CNF_HASH_SIZE);
-
-  cnf_files = kpathsea_all_path_search (kpse, cnf_path, CNF_NAME);
-  if (cnf_files && *cnf_files) {
-    for (cnf = cnf_files; *cnf; cnf++) {
-      string line;
-      string msg;
-      unsigned lineno = 0;
-      FILE *cnf_file = xfopen (*cnf, FOPEN_R_MODE);
-      if (kpse->record_input)
-        kpse->record_input (*cnf);
-
-      while ((line = read_line (cnf_file)) != NULL) {
-        unsigned len;
-        lineno++;
-        len = strlen (line);
-        /* Strip trailing spaces. */
-        while (len > 0 && ISSPACE(line[len-1])) {
-          line[len - 1] = 0;
-          --len;
-        }
-        /* Concatenate consecutive lines that end with \.  */
-        while (len > 0 && line[len - 1] == '\\') {
-          string next_line = read_line (cnf_file);
-          lineno++;
-          line[len - 1] = 0;
-          if (!next_line) {
-            WARNING2 ("%s:%d: (kpathsea) Last line of file ends with \\",
-                       *cnf, lineno);
-          } else {
-            string new_line;
-            new_line = concat (line, next_line);
-            free (line);
-            line = new_line;
-            len = strlen (line);
-          }
-        }
-
-        msg = do_line (kpse, line);
-        if (msg) {
-          WARNING4 ("%s:%d: (kpathsea) %s on line: %s",
-                    *cnf, lineno, msg, line);
-        }
-        free (line);
-      }
-
-      xfclose (cnf_file, *cnf);
-      free (*cnf);
-    }
-    free (cnf_files);
-  } else {
-    string warn = getenv ("KPATHSEA_WARNING");
-    if (!(warn && STREQ (warn, "0"))) {
-      WARNING1
-  ("kpathsea: configuration file texmf.cnf not found in these directories: %s",
-        cnf_path);
-    }
-  }
 }
 
 /* Read the cnf files on the first call.  Return the first value in the

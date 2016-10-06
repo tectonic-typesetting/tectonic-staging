@@ -34,11 +34,13 @@ def inner (top, w):
             description='MKDIR $out')
 
     w.rule ('cc',
-            command='gcc -c -o $out $cflags $in',
+            command='gcc -c -o $out -MT $out -MD -MP -MF $out.d $cflags $in',
+            deps='gcc',
+            depfile='$out.d',
             description='CC $out')
 
     w.rule ('cxx',
-            command='g++ -c -o $out $cflags $in',
+            command='g++ -c -o $out -MT $out -MD -MP -MF $out.d $cflags $in',
             description='CC $out')
 
     w.rule ('staticlib',

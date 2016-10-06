@@ -11,7 +11,7 @@ from pwkit import io, ninja_syntax
 
 config = {
     # pkg-config --cflags fontconfig harfbuzz freetype2 graphite2
-    'pkgconfig_cflags': '-I/a/include -I/a/include/freetype2 -I/a/include/libxml2 -I/a/include/harfbuzz -I/a/include/glib-2.0 -I/a/lib/glib-2.0/include -I/a/include/freetype2 -I/usr/include/poppler',
+    'pkgconfig_cflags': '-I/a/include -I/a/include/freetype2 -I/a/include/libxml2 -I/usr/include/harfbuzz -I/a/include/glib-2.0 -I/a/lib/glib-2.0/include -I/a/include/freetype2 -I/usr/include/poppler',
 }
 
 
@@ -124,6 +124,24 @@ def inner (top, w):
 
     w.build (str(libbase), 'staticlib', inputs = objs)
 
+    # synctex
+
+    libsynctex = builddir / 'libsynctex.a'
+    cflags = '-DHAVE_CONFIG_H -Ixetexdir -I. -DU_STATIC_IMPLEMENTATION -D__SyncTeX__ -DSYNCTEX_ENGINE_H=\\"synctexdir/synctex-xetex.h\\" %(pkgconfig_cflags)s' % config
+    objs = []
+
+    for src in (top / 'synctexdir').glob ('*.c'):
+        obj = builddir / ('synctex_' + src.name.replace ('.c', '.o'))
+        w.build (
+            str(obj), 'cc',
+            inputs = [str(src)],
+            order_only = [str(builddir)],
+            variables = {'cflags': cflags},
+        )
+        objs.append (str (obj))
+
+    w.build (str(libsynctex), 'staticlib', inputs = objs)
+
     # libxetex
 
     libxetex = builddir / 'libxetex.a'
@@ -140,6 +158,16 @@ def inner (top, w):
         obj = builddir / ('xetex_' + src.name.replace ('.c', '.o'))
         w.build (
             str(obj), 'cc',
+            inputs = [str(src)],
+            order_only = [str(builddir)],
+            variables = {'cflags': cflags},
+        )
+        objs.append (str (obj))
+
+    for src in (top / 'xetexdir').glob ('*.cpp'):
+        obj = builddir / ('xetex_' + src.name.replace ('.cpp', '.o'))
+        w.build (
+            str(obj), 'cxx',
             inputs = [str(src)],
             order_only = [str(builddir)],
             variables = {'cflags': cflags},

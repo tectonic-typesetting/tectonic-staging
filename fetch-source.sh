@@ -50,9 +50,9 @@ cp $src/texk/web2c/w2c/*.h w2c/
 
 # synctex
 
-mkdir -p synctex
-for f in synctex.c synctex-xetex.h ; do
-    cp $src/texk/web2c/synctexdir/$f synctex/
+mkdir -p synctexdir
+for f in synctex.c synctex.h synctex-common.h synctex-xetex.h ; do
+    cp $src/texk/web2c/synctexdir/$f synctexdir/
 done
 
 # base lib

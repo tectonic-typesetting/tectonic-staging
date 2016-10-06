@@ -41,7 +41,7 @@ def inner (top, w):
 
     w.rule ('cxx',
             command='g++ -c -o $out -MT $out -MD -MP -MF $out.d $cflags $in',
-            description='CC $out')
+            description='CXX $out')
 
     w.rule ('staticlib',
             command='ar cru $out $in',

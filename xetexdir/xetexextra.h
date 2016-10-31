@@ -65,6 +65,5 @@ Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.  */
 #define DUMP_LENGTH_VAR formatdefaultlength
 #define DUMP_OPTION "fmt"
 #define DUMP_EXT ".fmt"
-#define INPUT_FORMAT kpse_tex_format
 #define INI_PROGRAM "xeinitex"
 #define VIR_PROGRAM "xevirtex"

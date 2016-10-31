@@ -82,7 +82,6 @@
 #define DUMP_LENGTH_VAR formatdefaultlength
 #define DUMP_OPTION "fmt"
 #define DUMP_EXT ".fmt"
-#define INPUT_FORMAT kpse_tex_format
 #define INI_PROGRAM "initex"
 #define VIR_PROGRAM "virtex"
 #endif
@@ -107,7 +106,6 @@
 #else
 #define DUMP_EXT ".base"
 #endif
-#define INPUT_FORMAT kpse_mf_format
 #define INI_PROGRAM "inimf"
 #define VIR_PROGRAM "virmf"
 #endif
@@ -806,7 +804,7 @@ maininit (int ac, string *av)
       }
 #ifdef XeTeX
       name = normalize_quotes(argv[argc-1], "argument");
-      main_input_file = kpse_find_file(argv[argc-1], INPUT_FORMAT, false);
+      main_input_file = kpse_find_file(argv[argc-1], kpse_tex_format, false);
       if (!srcspecialsp) {
         change_to_long_name (&main_input_file);
         if (main_input_file)
@@ -821,7 +819,7 @@ maininit (int ac, string *av)
         name[strlen(name)-1] = '\0';
         name++;
       }
-      main_input_file = kpse_find_file(name, INPUT_FORMAT, false);
+      main_input_file = kpse_find_file(name, kpse_tex_format, false);
       if (!srcspecialsp)
         change_to_long_name (&main_input_file);
       if (quoted) {
@@ -1570,7 +1568,7 @@ get_input_file_name (void)
 
     name = normalize_quotes(argv[optind], "argument");
 #ifdef XeTeX
-    input_file_name = kpse_find_file(argv[optind], INPUT_FORMAT, false);
+    input_file_name = kpse_find_file(argv[optind], kpse_tex_format, false);
 #ifdef WIN32
     if (!srcspecialsp)
       change_to_long_name (&input_file_name);
@@ -1582,7 +1580,7 @@ get_input_file_name (void)
         name[strlen(name)-1] = '\0';
         name++;
     }
-    input_file_name = kpse_find_file(name, INPUT_FORMAT, false);
+    input_file_name = kpse_find_file(name, kpse_tex_format, false);
 #ifdef WIN32
     if (!srcspecialsp)
       change_to_long_name (&input_file_name);

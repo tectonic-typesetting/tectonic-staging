@@ -244,44 +244,7 @@ typedef const unsigned char *const_w2custring;
 #define getoptlongonly	getopt_long_only
 #define hasarg		has_arg
 #define ISDIRSEP	IS_DIR_SEP
-#define kpsebibformat	kpse_bib_format
-#define kpsebstformat	kpse_bst_format
-#define kpsefindfile	kpse_find_file
-#define kpsefindmf	kpse_find_mf
-#define kpsefindmft	kpse_find_mft
-#define kpsefindofm	kpse_find_ofm
-#define kpsefindovf	kpse_find_ovf
-#define kpsefindtex	kpse_find_tex
-#define kpsefindtfm	kpse_find_tfm
-#define kpsefindvf	kpse_find_vf
-#define kpseinnameok	kpse_in_name_ok
-#define kpseinitprog	kpse_init_prog
-#define kpsesetprogramname kpse_set_program_name
-#define kpseresetprogramname kpse_reset_program_name
-#define kpsegfformat	kpse_gf_format
-#define kpselastformat	kpse_last_format
-#define kpsemaketexdiscarderrors kpse_make_tex_discard_errors
-#define kpsemfformat	kpse_mf_format
-#define kpsemftformat	kpse_mft_format
-#define kpsempformat	kpse_mp_format
-#define kpseocpformat	kpse_ocp_format
-#define kpseofmformat	kpse_ofm_format
-#define kpseoplformat	kpse_opl_format
-#define kpseotpformat	kpse_otp_format
-#define kpseoutnameok	kpse_out_name_ok
-#define kpseovpformat	kpse_ovp_format
-#define kpseovfformat	kpse_ovf_format
-#define kpseopenfile	kpse_open_file
-#define kpsepkformat	kpse_pk_format
-#define kpsetfmformat	kpse_tfm_format
-#define kpsevfformat	kpse_vf_format
-#define kpsewebformat	kpse_web_format
-#define kpsevarvalue	kpse_var_value
-#define kpsesetprogramenabled	kpse_set_program_enabled
-#define kpsesrccmdline	kpse_src_cmdline
-#define kpsesrccompile	kpse_src_compile
 #define recorderchangefilename	recorder_change_filename
-#define recorderenabled	recorder_enabled
 
 /* We need a new type for the argument parsing, too.  */
 typedef struct option getoptstruct;

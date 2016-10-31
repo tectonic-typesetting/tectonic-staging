@@ -13669,7 +13669,7 @@ startinput ( void )
       
     beginfilereading () ;
     texinputtype = 1 ;
-    if ( kpseinnameok ( stringcast ( nameoffile + 1 ) ) && uopenin ( inputfile 
+    if ( kpse_in_name_ok ( stringcast ( nameoffile + 1 ) ) && uopenin ( inputfile 
     [curinput .indexfield ], kpse_tex_format , eqtb [8938817L ].cint , eqtb 
     [8938818L ].cint ) ) 
     {
@@ -15750,7 +15750,7 @@ zoutwhat ( halfword p )
 	  if ( curext == 65622L ) 
 	  curext = 66146L ;
 	  packfilename ( curname , curarea , curext ) ;
-	  while ( ! kpseoutnameok ( stringcast ( nameoffile + 1 ) ) || ! 
+	  while ( ! kpse_out_name_ok ( stringcast ( nameoffile + 1 ) ) || ! 
 	  aopenout ( writefile [j ]) ) promptfilename ( 66754L , 66146L ) ;
 	  writeopen [j ]= true ;
 	  if ( logopened ) 
@@ -28805,8 +28805,8 @@ newinteraction ( void )
   println () ;
   interaction = curchr ;
   if ( interaction == 0 ) 
-  kpsemaketexdiscarderrors = 1 ;
-  else kpsemaketexdiscarderrors = 0 ;
+  kpse_make_tex_discard_errors = 1 ;
+  else kpse_make_tex_discard_errors = 0 ;
   if ( interaction == 0 ) 
   selector = 16 ;
   else selector = 17 ;
@@ -28850,7 +28850,7 @@ openorclosein ( void )
     scanfilename () ;
     packfilename ( curname , curarea , curext ) ;
     texinputtype = 0 ;
-    if ( kpseinnameok ( stringcast ( nameoffile + 1 ) ) && uopenin ( readfile 
+    if ( kpse_in_name_ok ( stringcast ( nameoffile + 1 ) ) && uopenin ( readfile 
     [n ], kpse_tex_format , eqtb [8938817L ].cint , eqtb [8938818L ].cint 
     ) ) 
     {

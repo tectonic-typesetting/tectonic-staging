@@ -184,7 +184,7 @@ def inner (top, w):
     objs += map (str, [libsynctex, libbase, libmd5, libtk, libkp])
     libs = '%(pkgconfig_libs)s -lz' % config
 
-    w.build ('xetex', 'executable',
+    w.build (str(builddir / 'xetex'), 'executable',
              inputs = objs,
              variables = {'libs': libs},
     )

@@ -82,29 +82,11 @@ typedef void* voidpointer;
 #define TEXMFENGINENAME "tex"
 #endif
 #define DUMP_FILE fmtfile
-#define DUMP_FORMAT kpse_fmt_format
 #define writedvi WRITE_OUT
 #define flushdvi flush_out
 #define OUT_FILE dvifile
 #define OUT_BUF dvibuf
 #endif /* TeX */
-#ifdef MF
-#if defined(MFLua)
-#define TEXMFPOOLNAME "mflua.pool"
-#define TEXMFENGINENAME "mflua"
-#elif defined(MFLuaJIT)
-#define TEXMFPOOLNAME "mfluajit.pool"
-#define TEXMFENGINENAME "mfluajit"
-#else
-#define TEXMFPOOLNAME "mf.pool"
-#define TEXMFENGINENAME "metafont"
-#endif
-#define DUMP_FILE basefile
-#define DUMP_FORMAT kpse_base_format
-#define writegf WRITE_OUT
-#define OUT_FILE gffile
-#define OUT_BUF gfbuf
-#endif /* MF */
 
 /* Restore underscores.  */
 #define dumpname dump_name
@@ -252,14 +234,14 @@ extern void topenin (void);
 #ifdef XeTeX
 /* f is declared as gzFile, but we temporarily use it for a FILE *
    so that we can use the standard open calls */
-#define wopenin(f)	(open_input ((FILE**)&(f), DUMP_FORMAT, FOPEN_RBIN_MODE) \
+#define wopenin(f)	(open_input ((FILE**)&(f), kpse_fmt_format, FOPEN_RBIN_MODE) \
 						&& (f = gzdopen(fileno((FILE*)f), FOPEN_RBIN_MODE)))
 #define wopenout(f)	(open_output ((FILE**)&(f), FOPEN_WBIN_MODE) \
 						&& (f = gzdopen(fileno((FILE*)f), FOPEN_WBIN_MODE)) \
 						&& (gzsetparams(f, 1, Z_DEFAULT_STRATEGY) == Z_OK))
 #define wclose(f)	gzclose(f)
 #else
-#define wopenin(f)	open_input (&(f), DUMP_FORMAT, FOPEN_RBIN_MODE)
+#define wopenin(f)	open_input (&(f), kpse_fmt_format, FOPEN_RBIN_MODE)
 #define wopenout	bopenout
 #define wclose		aclose
 #endif

@@ -1962,7 +1962,7 @@ parse_first_line (const_string filename)
           /* format already determined, do nothing. */
         } else {
           string f_name = concat (part[0], DUMP_EXT);
-          string d_name = kpse_find_file (f_name, DUMP_FORMAT, false);
+          string d_name = kpse_find_file (f_name, kpse_fmt_format, false);
           if (d_name && kpse_readable_file (d_name)) {
             dump_name = xstrdup (part[0]);
             kpse_reset_program_name (dump_name);

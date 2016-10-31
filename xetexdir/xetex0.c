@@ -13670,7 +13670,7 @@ startinput ( void )
     beginfilereading () ;
     texinputtype = 1 ;
     if ( kpseinnameok ( stringcast ( nameoffile + 1 ) ) && uopenin ( inputfile 
-    [curinput .indexfield ], kpsetexformat , eqtb [8938817L ].cint , eqtb 
+    [curinput .indexfield ], kpse_tex_format , eqtb [8938817L ].cint , eqtb 
     [8938818L ].cint ) ) 
     {
       makeutf16name () ;
@@ -28851,7 +28851,7 @@ openorclosein ( void )
     packfilename ( curname , curarea , curext ) ;
     texinputtype = 0 ;
     if ( kpseinnameok ( stringcast ( nameoffile + 1 ) ) && uopenin ( readfile 
-    [n ], kpsetexformat , eqtb [8938817L ].cint , eqtb [8938818L ].cint 
+    [n ], kpse_tex_format , eqtb [8938817L ].cint , eqtb [8938818L ].cint 
     ) ) 
     {
       makeutf16name () ;

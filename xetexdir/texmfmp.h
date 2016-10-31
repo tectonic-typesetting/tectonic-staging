@@ -108,13 +108,6 @@ typedef void* voidpointer;
 
 /* Restore underscores.  */
 #define dumpname dump_name
-#define kpsedvipsconfigformat kpse_dvips_config_format
-#define kpsefontmapformat kpse_fontmap_format
-#define kpsemfpoolformat kpse_mfpool_format
-#define kpsempformat kpse_mp_format
-#define kpsemppoolformat kpse_mppool_format
-#define kpsetexpoolformat kpse_texpool_format
-#define kpsetexformat kpse_tex_format
 
 /* Hacks for TeX that are better not to #ifdef, see lib/openclose.c.  */
 extern int tfmtemp, texinputtype;

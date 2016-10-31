@@ -12,7 +12,7 @@ Current status
 Can compile a `xetex` that only uses some system libraries. To run:
 
 ```
-trie_size=1000000 hyph_size=8191 TEXFORMATS=/a/share/texlive/texmf-var// ./xetex
+TEXFORMATS=/a/share/texlive/texmf-var// ./BUILD/xetex
 ```
 
 

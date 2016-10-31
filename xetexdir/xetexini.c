@@ -4388,7 +4388,7 @@ mainbody ( void )
   bounddefault = 0 ;
   boundname = "mem_bot" ;
   setupboundvariable ( addressof ( membot ) , boundname , bounddefault ) ;
-  bounddefault = 250000L ;
+  bounddefault = 5000000L ;
   boundname = "main_memory" ;
   setupboundvariable ( addressof ( mainmemory ) , boundname , bounddefault ) ;
   bounddefault = 0 ;
@@ -4399,17 +4399,17 @@ mainbody ( void )
   boundname = "extra_mem_bot" ;
   setupboundvariable ( addressof ( extramembot ) , boundname , bounddefault ) 
   ;
-  bounddefault = 200000L ;
+  bounddefault = 6250000L ;
   boundname = "pool_size" ;
   setupboundvariable ( addressof ( poolsize ) , boundname , bounddefault ) ;
-  bounddefault = 75000L ;
+  bounddefault = 90000L ;
   boundname = "string_vacancies" ;
   setupboundvariable ( addressof ( stringvacancies ) , boundname , 
   bounddefault ) ;
-  bounddefault = 5000 ;
+  bounddefault = 47500 ;
   boundname = "pool_free" ;
   setupboundvariable ( addressof ( poolfree ) , boundname , bounddefault ) ;
-  bounddefault = 15000 ;
+  bounddefault = 500000 ;
   boundname = "max_strings" ;
   setupboundvariable ( addressof ( maxstrings ) , boundname , bounddefault ) ;
   maxstrings = maxstrings + 65536L ;
@@ -4417,35 +4417,35 @@ mainbody ( void )
   boundname = "strings_free" ;
   setupboundvariable ( addressof ( stringsfree ) , boundname , bounddefault ) 
   ;
-  bounddefault = 100000L ;
+  bounddefault = 8000000L ;
   boundname = "font_mem_size" ;
   setupboundvariable ( addressof ( fontmemsize ) , boundname , bounddefault ) 
   ;
-  bounddefault = 500 ;
+  bounddefault = 9000 ;
   boundname = "font_max" ;
   setupboundvariable ( addressof ( fontmax ) , boundname , bounddefault ) ;
-  bounddefault = 20000 ;
+  bounddefault = 1000000 ;
   boundname = "trie_size" ;
   setupboundvariable ( addressof ( triesize ) , boundname , bounddefault ) ;
-  bounddefault = 659 ;
+  bounddefault = 8191 ;
   boundname = "hyph_size" ;
   setupboundvariable ( addressof ( hyphsize ) , boundname , bounddefault ) ;
-  bounddefault = 3000 ;
+  bounddefault = 200000 ;
   boundname = "buf_size" ;
   setupboundvariable ( addressof ( bufsize ) , boundname , bounddefault ) ;
-  bounddefault = 50 ;
+  bounddefault = 500 ;
   boundname = "nest_size" ;
   setupboundvariable ( addressof ( nestsize ) , boundname , bounddefault ) ;
   bounddefault = 15 ;
   boundname = "max_in_open" ;
   setupboundvariable ( addressof ( maxinopen ) , boundname , bounddefault ) ;
-  bounddefault = 60 ;
+  bounddefault = 10000 ;
   boundname = "param_size" ;
   setupboundvariable ( addressof ( paramsize ) , boundname , bounddefault ) ;
-  bounddefault = 4000 ;
+  bounddefault = 100000 ;
   boundname = "save_size" ;
   setupboundvariable ( addressof ( savesize ) , boundname , bounddefault ) ;
-  bounddefault = 300 ;
+  bounddefault = 5000 ;
   boundname = "stack_size" ;
   setupboundvariable ( addressof ( stacksize ) , boundname , bounddefault ) ;
   bounddefault = 16384 ;
@@ -4462,7 +4462,7 @@ mainbody ( void )
   boundname = "max_print_line" ;
   setupboundvariable ( addressof ( maxprintline ) , boundname , bounddefault ) 
   ;
-  bounddefault = 0 ;
+  bounddefault = 600000 ;
   boundname = "hash_extra" ;
   setupboundvariable ( addressof ( hashextra ) , boundname , bounddefault ) ;
   bounddefault = 10000 ;

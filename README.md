@@ -15,6 +15,16 @@ Can compile a `xetex` that only uses some system libraries. To run:
 TEXFORMATS=/a/share/texlive/texmf-var// ./BUILD/xetex
 ```
 
+To compile the minimal sample LaTeX document in `tests/latex-minimal`:
+
+```
+cd tests/latex-minimal
+export TEXINPUTS=.:/a/share/texlive/texmf-dist//
+export TEXFORMATS=/a/share/texlive/texmf-var//
+../../BUILD/xetex -fmt=xelatex -no-pdf main
+xdvipdfmx main
+```
+
 
 Origin of source code
 ---------------------
@@ -28,4 +38,3 @@ Fetch source into the `vendor` branch. Ideally that branch will be a
 buildable, totally stock version of xetex with some bad settings ... but we'll
 see how long that lasts. The `master` branch hacks things to move towards the
 standalone paradigm.
-

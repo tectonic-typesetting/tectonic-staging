@@ -16,14 +16,14 @@
    You should have received a copy of the GNU Lesser General Public License
    along with this library; if not, see <http://www.gnu.org/licenses/>.  */
 
-#include <kpathsea/config.h>
-#include <kpathsea/c-namemx.h>
-#include <kpathsea/c-pathch.h>
-#include <kpathsea/c-pathmx.h>
-#include <kpathsea/c-stat.h>
-#include <kpathsea/pathsearch.h>
-#include <kpathsea/readable.h>
-#include <kpathsea/tex-hush.h>
+#include <tidy_kpathsea/config.h>
+#include <tidy_kpathsea/c-namemx.h>
+#include <tidy_kpathsea/c-pathch.h>
+#include <tidy_kpathsea/c-pathmx.h>
+#include <tidy_kpathsea/c-stat.h>
+#include <tidy_kpathsea/pathsearch.h>
+#include <tidy_kpathsea/readable.h>
+#include <tidy_kpathsea/tex-hush.h>
 
 
 /* If access can read FN, run stat (assigning to stat buffer ST) and

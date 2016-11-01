@@ -20,10 +20,10 @@
 #ifndef KPATHSEA_PATHSEARCH_H
 #define KPATHSEA_PATHSEARCH_H
 
-#include <kpathsea/c-proto.h>
+#include <tidy_kpathsea/c-proto.h>
 
-#include <kpathsea/str-llist.h>
-#include <kpathsea/types.h>
+#include <tidy_kpathsea/str-llist.h>
+#include <tidy_kpathsea/types.h>
 
 #ifdef __cplusplus
 extern "C" {

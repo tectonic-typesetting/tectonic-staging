@@ -19,7 +19,7 @@
 #ifndef KPATHSEA_TEX_GLYPH_H
 #define KPATHSEA_TEX_GLYPH_H
 
-#include <kpathsea/tex-file.h>
+#include <tidy_kpathsea/tex-file.h>
 
 
 #ifdef __cplusplus

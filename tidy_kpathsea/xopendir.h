@@ -18,9 +18,9 @@
 #if !defined (KPATHSEA_XOPENDIR_H) && (!defined (WIN32) || defined(__MINGW32__))
 #define KPATHSEA_XOPENDIR_H
 
-#include <kpathsea/c-dir.h>
-#include <kpathsea/c-proto.h>
-#include <kpathsea/types.h>
+#include <tidy_kpathsea/c-dir.h>
+#include <tidy_kpathsea/c-proto.h>
+#include <tidy_kpathsea/types.h>
 
 #ifdef MAKE_KPSE_DLL /* libkpathsea internal only */
 

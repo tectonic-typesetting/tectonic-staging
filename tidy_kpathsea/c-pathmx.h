@@ -23,7 +23,7 @@
 #ifndef KPATHSEA_C_PATH_MX_H
 #define KPATHSEA_C_PATH_MX_H
 
-#include <kpathsea/c-limits.h>
+#include <tidy_kpathsea/c-limits.h>
 
 /* Cheat and define this as a manifest constant no matter what, instead
    of using pathconf.  Maybe it is too big otherwise on Hurd?  */

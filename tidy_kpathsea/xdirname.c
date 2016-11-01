@@ -22,8 +22,8 @@
    For example, `xdirname ("/foo//bar.baz")' returns "/foo".  Always
    return a new string.  */
 
-#include <kpathsea/config.h>
-#include <kpathsea/c-pathch.h>
+#include <tidy_kpathsea/config.h>
+#include <tidy_kpathsea/c-pathch.h>
 
 string
 xdirname (const_string name)

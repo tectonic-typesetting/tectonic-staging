@@ -16,11 +16,11 @@
    You should have received a copy of the GNU Lesser General Public License
    along with this library; if not, see <http://www.gnu.org/licenses/>.  */
 
-#include <kpathsea/config.h>
-#include <kpathsea/c-ctype.h>
+#include <tidy_kpathsea/config.h>
+#include <tidy_kpathsea/c-ctype.h>
 
-#include <kpathsea/hash.h>
-#include <kpathsea/str-list.h>
+#include <tidy_kpathsea/hash.h>
+#include <tidy_kpathsea/str-list.h>
 
 
 /* The hash function.  We go for simplicity here.  */

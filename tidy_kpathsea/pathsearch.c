@@ -16,17 +16,17 @@
    You should have received a copy of the GNU Lesser General Public License
    along with this library; if not, see <http://www.gnu.org/licenses/>.  */
 
-#include <kpathsea/config.h>
-#include <kpathsea/c-pathch.h>
-#include <kpathsea/c-fopen.h>
-#include <kpathsea/absolute.h>
-#include <kpathsea/expand.h>
-#include <kpathsea/db.h>
-#include <kpathsea/pathsearch.h>
-#include <kpathsea/readable.h>
-#include <kpathsea/str-list.h>
-#include <kpathsea/str-llist.h>
-#include <kpathsea/variable.h>
+#include <tidy_kpathsea/config.h>
+#include <tidy_kpathsea/c-pathch.h>
+#include <tidy_kpathsea/c-fopen.h>
+#include <tidy_kpathsea/pkgw_collected.h>
+#include <tidy_kpathsea/expand.h>
+#include <tidy_kpathsea/db.h>
+#include <tidy_kpathsea/pathsearch.h>
+#include <tidy_kpathsea/readable.h>
+#include <tidy_kpathsea/str-list.h>
+#include <tidy_kpathsea/str-llist.h>
+#include <tidy_kpathsea/variable.h>
 
 #include <time.h> /* for `time' */
 

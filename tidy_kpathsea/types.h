@@ -19,7 +19,7 @@
 #define KPATHSEA_TYPES_H
 
 /* Our string, boolean, etc.  */
-#include <kpathsea/simpletypes.h>
+#include <tidy_kpathsea/simpletypes.h>
 
 /* Required until all programs use the new API, if ever.  */
 #define KPSE_COMPAT_API 1
@@ -60,7 +60,7 @@ typedef void (*p_record_output) (const_string);
 #endif
 
 /* the cache structure from elt-dirs.c */
-#include <kpathsea/str-llist.h>
+#include <tidy_kpathsea/str-llist.h>
 
 #ifdef __cplusplus
 extern "C" {
@@ -83,8 +83,8 @@ typedef struct {
 #endif
 
 
-#include <kpathsea/hash.h>
-#include <kpathsea/str-list.h>
+#include <tidy_kpathsea/hash.h>
+#include <tidy_kpathsea/str-list.h>
 
 #ifdef __cplusplus
 extern "C" {

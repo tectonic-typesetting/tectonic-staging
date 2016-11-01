@@ -21,9 +21,9 @@
 
 #ifdef MAKE_KPSE_DLL /* libkpathsea internal only */
 
-#include <kpathsea/c-proto.h>
-#include <kpathsea/types.h>
-#include <kpathsea/str-list.h>
+#include <tidy_kpathsea/c-proto.h>
+#include <tidy_kpathsea/types.h>
+#include <tidy_kpathsea/str-list.h>
 
 /* Initialize the database.  Until this is called, no ls-R matches will
    be found.  */

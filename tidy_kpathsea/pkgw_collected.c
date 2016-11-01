@@ -16,9 +16,9 @@
    You should have received a copy of the GNU Lesser General Public License
    along with this library; if not, see <http://www.gnu.org/licenses/>.  */
 
-#include <kpathsea/config.h>
-#include <kpathsea/absolute.h>
-#include <kpathsea/c-pathch.h>
+#include <tidy_kpathsea/config.h>
+#include <tidy_kpathsea/pkgw_collected.h>
+#include <tidy_kpathsea/c-pathch.h>
 
 /* Sorry this is such a system-dependent mess, but I can't see any way
    to usefully generalize.  */

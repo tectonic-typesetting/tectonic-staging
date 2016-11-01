@@ -20,8 +20,8 @@
 
 #ifdef MAKE_KPSE_DLL /* libkpathsea internal only */
 
-#include <kpathsea/types.h>
-#include <kpathsea/c-proto.h>
+#include <tidy_kpathsea/types.h>
+#include <tidy_kpathsea/c-proto.h>
 
 
 /* Replace a leading or trailing or doubled : in PATH with DFLT.  If

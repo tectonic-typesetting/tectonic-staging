@@ -16,19 +16,19 @@
    You should have received a copy of the GNU Lesser General Public License
    along with this library; if not, see <http://www.gnu.org/licenses/>.  */
 
-#include <kpathsea/config.h>
-#include <kpathsea/absolute.h>
-#include <kpathsea/c-stat.h>
-#include <kpathsea/c-fopen.h>
-#include <kpathsea/c-pathch.h>
-#include <kpathsea/db.h>
-#include <kpathsea/hash.h>
-#include <kpathsea/line.h>
-#include <kpathsea/pathsearch.h>
-#include <kpathsea/readable.h>
-#include <kpathsea/str-list.h>
-#include <kpathsea/tex-file.h>
-#include <kpathsea/variable.h>
+#include <tidy_kpathsea/config.h>
+#include <tidy_kpathsea/pkgw_collected.h>
+#include <tidy_kpathsea/c-stat.h>
+#include <tidy_kpathsea/c-fopen.h>
+#include <tidy_kpathsea/c-pathch.h>
+#include <tidy_kpathsea/db.h>
+#include <tidy_kpathsea/hash.h>
+#include <tidy_kpathsea/line.h>
+#include <tidy_kpathsea/pathsearch.h>
+#include <tidy_kpathsea/readable.h>
+#include <tidy_kpathsea/str-list.h>
+#include <tidy_kpathsea/tex-file.h>
+#include <tidy_kpathsea/variable.h>
 
 #ifndef DB_HASH_SIZE
 /* Based on the size of 2014 texmf-dist/ls-R, about 130,000 entries.  */

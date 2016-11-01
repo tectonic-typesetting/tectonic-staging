@@ -22,7 +22,7 @@
  * by KPATHSEA_CAN_FREE.
  */
 
-#include <kpathsea/config.h>
+#include <tidy_kpathsea/config.h>
 
 kpathsea
 kpathsea_new (void)

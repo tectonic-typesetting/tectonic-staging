@@ -20,7 +20,7 @@
 #ifndef KPATHSEA_C_MINMAX_H
 #define KPATHSEA_C_MINMAX_H
 
-#include <kpathsea/c-limits.h>
+#include <tidy_kpathsea/c-limits.h>
 
 /* Declared in <limits.h> on ANSI C systems.  If the system doesn't
    define it, we use the minimum ANSI values -- except for `int'; we

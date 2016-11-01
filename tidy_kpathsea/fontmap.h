@@ -20,9 +20,9 @@
 
 #ifdef MAKE_KPSE_DLL /* libkpathsea internal only */
 
-#include <kpathsea/c-proto.h>
-#include <kpathsea/hash.h>
-#include <kpathsea/types.h>
+#include <tidy_kpathsea/c-proto.h>
+#include <tidy_kpathsea/hash.h>
+#include <tidy_kpathsea/types.h>
 
 /* Look up KEY in all texfonts.map's in the glyph_format path, and
    return a null-terminated list of all matching entries, or NULL.  */

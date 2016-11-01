@@ -25,14 +25,14 @@
 
 #ifdef __MINGW32__
 
-#include <kpathsea/config.h>
-#include <kpathsea/c-pathch.h>
-#include <kpathsea/c-proto.h>
-#include <kpathsea/mingw32.h>
-#include <kpathsea/lib.h>
-#include <kpathsea/concatn.h>
-#include <kpathsea/variable.h>
-#include <kpathsea/c-stat.h>
+#include <tidy_kpathsea/config.h>
+#include <tidy_kpathsea/c-pathch.h>
+#include <tidy_kpathsea/c-proto.h>
+#include <tidy_kpathsea/mingw32.h>
+#include <tidy_kpathsea/lib.h>
+#include <tidy_kpathsea/concatn.h>
+#include <tidy_kpathsea/variable.h>
+#include <tidy_kpathsea/c-stat.h>
 #include <shlobj.h>
 #include <errno.h>
 

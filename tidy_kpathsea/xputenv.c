@@ -17,8 +17,8 @@
    along with this library; if not, see <http://www.gnu.org/licenses/>.  */
 
 
-#include <kpathsea/config.h>
-#include <kpathsea/types.h>
+#include <tidy_kpathsea/config.h>
+#include <tidy_kpathsea/types.h>
 
 #ifdef WIN32
 #include <stdlib.h>

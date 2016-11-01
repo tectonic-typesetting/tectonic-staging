@@ -16,12 +16,12 @@
    You should have received a copy of the GNU Lesser General Public License
    along with this library; if not, see <http://www.gnu.org/licenses/>.  */
 
-#include <kpathsea/config.h>
+#include <tidy_kpathsea/config.h>
 
-#include <kpathsea/c-dir.h>
-#include <kpathsea/c-stat.h>
-#include <kpathsea/hash.h>
-#include <kpathsea/pathsearch.h>
+#include <tidy_kpathsea/c-dir.h>
+#include <tidy_kpathsea/c-stat.h>
+#include <tidy_kpathsea/hash.h>
+#include <tidy_kpathsea/pathsearch.h>
 
 /* Return true if FN is a directory or a symlink to a directory,
    false if not. */

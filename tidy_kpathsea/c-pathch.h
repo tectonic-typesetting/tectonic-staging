@@ -20,7 +20,7 @@
 #ifndef C_PATHCH_H
 #define C_PATHCH_H
 
-#include <kpathsea/c-ctype.h>
+#include <tidy_kpathsea/c-ctype.h>
 
 /* What separates filename components?  */
 #ifndef DIR_SEP

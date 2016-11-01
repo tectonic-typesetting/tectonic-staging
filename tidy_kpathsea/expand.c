@@ -17,16 +17,16 @@
    You should have received a copy of the GNU Lesser General Public License
    along with this library; if not, see <http://www.gnu.org/licenses/>.  */
 
-#include <kpathsea/config.h>
+#include <tidy_kpathsea/config.h>
 
-#include <kpathsea/c-pathch.h>
-#include <kpathsea/expand.h>
-#include <kpathsea/pathsearch.h>
-#include <kpathsea/tilde.h>
-#include <kpathsea/variable.h>
-#include <kpathsea/concatn.h>
-#include <kpathsea/absolute.h>
-#include <kpathsea/str-list.h>
+#include <tidy_kpathsea/c-pathch.h>
+#include <tidy_kpathsea/expand.h>
+#include <tidy_kpathsea/pathsearch.h>
+#include <tidy_kpathsea/tilde.h>
+#include <tidy_kpathsea/variable.h>
+#include <tidy_kpathsea/concatn.h>
+#include <tidy_kpathsea/pkgw_collected.h>
+#include <tidy_kpathsea/str-list.h>
 
 /* Do variable expansion first so ~${USER} works.  (Besides, it's what the
    shells do.)  */

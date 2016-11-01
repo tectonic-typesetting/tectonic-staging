@@ -19,7 +19,7 @@
 #ifndef KPATHSEA_STAT_H
 #define KPATHSEA_STAT_H
 
-#include <kpathsea/systypes.h>
+#include <tidy_kpathsea/systypes.h>
 #include <sys/stat.h>
 
 /* POSIX predicates for testing file attributes.  */

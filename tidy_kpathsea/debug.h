@@ -22,9 +22,9 @@
 /* If NO_DEBUG is defined (not recommended), skip all this.  */
 #ifndef NO_DEBUG
 
-#include <kpathsea/c-proto.h>
-#include <kpathsea/c-std.h>
-#include <kpathsea/types.h>
+#include <tidy_kpathsea/c-proto.h>
+#include <tidy_kpathsea/c-std.h>
+#include <tidy_kpathsea/types.h>
 
 #if defined(WIN32)
 #if defined(_DEBUG)

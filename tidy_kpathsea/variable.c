@@ -16,13 +16,13 @@
     You should have received a copy of the GNU Lesser General Public License
     along with this library; if not, see <http://www.gnu.org/licenses/>.  */
 
-#include <kpathsea/config.h>
+#include <tidy_kpathsea/config.h>
 
-#include <kpathsea/c-ctype.h>
-#include <kpathsea/cnf.h>
-#include <kpathsea/fn.h>
-#include <kpathsea/expand.h>
-#include <kpathsea/variable.h>
+#include <tidy_kpathsea/c-ctype.h>
+#include <tidy_kpathsea/cnf.h>
+#include <tidy_kpathsea/fn.h>
+#include <tidy_kpathsea/expand.h>
+#include <tidy_kpathsea/variable.h>
 
 
 /* Here's the simple one, when a program just wants a value.  */

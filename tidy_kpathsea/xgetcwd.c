@@ -16,14 +16,14 @@
    You should have received a copy of the GNU Lesser General Public License
    along with this library; if not, see <http://www.gnu.org/licenses/>.  */
 
-#include <kpathsea/config.h>
+#include <tidy_kpathsea/config.h>
 
 #if (defined (HAVE_GETCWD) && !defined (GETCWD_FORKS)) || defined (HAVE_GETWD)
-#include <kpathsea/c-pathmx.h>
+#include <tidy_kpathsea/c-pathmx.h>
 #else /* (not HAVE_GETCWD || GETCWD_FORKS) && not HAVE_GETWD */
-#include <kpathsea/c-dir.h>
-#include <kpathsea/xopendir.h>
-#include <kpathsea/xstat.h>
+#include <tidy_kpathsea/c-dir.h>
+#include <tidy_kpathsea/xopendir.h>
+#include <tidy_kpathsea/xstat.h>
 
 
 static void

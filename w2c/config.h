@@ -20,12 +20,12 @@ along with this program; if not, see <http://www.gnu.org/licenses/.  */
 #define WEB2C_CONFIG_H
 
 /* The stuff from the path searching library.  */
-#include <kpathsea/config.h>
+#include <tidy_kpathsea/config.h>
 #include <w2c/c-auto.h>
 #include <stdarg.h>
 
 /* How to open a binary file.  */
-#include <kpathsea/c-fopen.h>
+#include <tidy_kpathsea/c-fopen.h>
 
 #ifdef __cplusplus
 extern "C" {

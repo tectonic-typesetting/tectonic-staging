@@ -21,17 +21,17 @@
 #define KPATHSEA_C_UNISTD_H
 
 /* <unistd.h> is allowed to depend on <sys/types.h>.  */
-#include <kpathsea/systypes.h>
+#include <tidy_kpathsea/systypes.h>
 
 #if HAVE_UNISTD_H
 #if defined (WIN32) || defined (__CYGWIN__)
 # define __need_getopt
-#include <kpathsea/getopt.h>
+#include <tidy_kpathsea/getopt.h>
 #endif
 #include <unistd.h>
 #endif
 
-#include <kpathsea/c-std.h>
+#include <tidy_kpathsea/c-std.h>
 
 /* For fseek.  */
 #ifndef SEEK_SET

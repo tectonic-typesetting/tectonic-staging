@@ -16,14 +16,14 @@
 #include <w2c/config.h>
 
 /* We only use getopt in the applications, not in web2c itself.  */
-#include <kpathsea/getopt.h>
+#include <tidy_kpathsea/getopt.h>
 
 /* Almost everybody needs path searching.  May as well always include
    them and simplify the change files.  */
-#include <kpathsea/progname.h>
-#include <kpathsea/proginit.h>
-#include <kpathsea/tex-file.h>
-#include <kpathsea/variable.h>
+#include <tidy_kpathsea/progname.h>
+#include <tidy_kpathsea/proginit.h>
+#include <tidy_kpathsea/tex-file.h>
+#include <tidy_kpathsea/variable.h>
 
 /* Help messages.  */
 #include "help.h"

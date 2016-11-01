@@ -18,8 +18,8 @@
 #ifndef KPATHSEA_VARIABLE_H
 #define KPATHSEA_VARIABLE_H
 
-#include <kpathsea/c-proto.h>
-#include <kpathsea/types.h>
+#include <tidy_kpathsea/c-proto.h>
+#include <tidy_kpathsea/types.h>
 
 
 #ifdef __cplusplus

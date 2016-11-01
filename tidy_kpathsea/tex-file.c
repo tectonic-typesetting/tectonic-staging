@@ -17,23 +17,23 @@
    You should have received a copy of the GNU Lesser General Public License
    along with this library; if not, see <http://www.gnu.org/licenses/>.  */
 
-#include <kpathsea/config.h>
+#include <tidy_kpathsea/config.h>
 
-#include <kpathsea/c-fopen.h>
-#include <kpathsea/c-pathch.h>
+#include <tidy_kpathsea/c-fopen.h>
+#include <tidy_kpathsea/c-pathch.h>
 #include <stdarg.h>
-#include <kpathsea/cnf.h>
-#include <kpathsea/absolute.h>
-#include <kpathsea/concatn.h>
-#include <kpathsea/default.h>
-#include <kpathsea/expand.h>
-#include <kpathsea/fontmap.h>
-#include <kpathsea/paths.h>
-#include <kpathsea/pathsearch.h>
-#include <kpathsea/tex-file.h>
-#include <kpathsea/tex-make.h>
-#include <kpathsea/variable.h>
-#include <kpathsea/c-ctype.h>
+#include <tidy_kpathsea/cnf.h>
+#include <tidy_kpathsea/pkgw_collected.h>
+#include <tidy_kpathsea/concatn.h>
+#include <tidy_kpathsea/default.h>
+#include <tidy_kpathsea/expand.h>
+#include <tidy_kpathsea/fontmap.h>
+#include <tidy_kpathsea/paths.h>
+#include <tidy_kpathsea/pathsearch.h>
+#include <tidy_kpathsea/tex-file.h>
+#include <tidy_kpathsea/tex-make.h>
+#include <tidy_kpathsea/variable.h>
+#include <tidy_kpathsea/c-ctype.h>
 
 /* These are not in the structure
    because it's annoying to initialize lists in C.  */

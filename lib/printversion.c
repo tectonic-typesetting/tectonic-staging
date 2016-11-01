@@ -4,7 +4,7 @@
 
 #include <w2c/config.h>
 #include "lib.h"
-#include <kpathsea/version.h>
+#include <tidy_kpathsea/version.h>
 #ifdef PTEX
 #include <ptexenc/ptexenc.h>
 #endif

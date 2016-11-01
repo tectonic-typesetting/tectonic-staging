@@ -20,8 +20,8 @@
 
 #ifdef MAKE_KPSE_DLL /* libkpathsea internal only */
 
-#include <kpathsea/c-proto.h>
-#include <kpathsea/types.h>
+#include <tidy_kpathsea/c-proto.h>
+#include <tidy_kpathsea/types.h>
 
 /* Replace a leading ~ or ~NAME in FILENAME with getenv ("HOME"), or
    getenv ("USERPROFILE") on Windows, or with NAME's home directory,

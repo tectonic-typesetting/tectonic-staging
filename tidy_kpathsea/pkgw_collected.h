@@ -19,8 +19,8 @@
 #ifndef TIDY_KPATHSEA_COLLECTED_H
 #define TIDY_KPATHSEA_COLLECTED_H
 
-#include <kpathsea/types.h>
-#include <kpathsea/c-proto.h>
+#include <tidy_kpathsea/types.h>
+#include <tidy_kpathsea/c-proto.h>
 
 #ifdef __cplusplus
 extern "C" {

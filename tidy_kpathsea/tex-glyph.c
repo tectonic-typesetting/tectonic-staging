@@ -16,15 +16,15 @@
    You should have received a copy of the GNU Lesser General Public License
    along with this library; if not, see <http://www.gnu.org/licenses/>.  */
 
-#include <kpathsea/config.h>
+#include <tidy_kpathsea/config.h>
 
-#include <kpathsea/absolute.h>
-#include <kpathsea/expand.h>
-#include <kpathsea/fontmap.h>
-#include <kpathsea/pathsearch.h>
-#include <kpathsea/tex-glyph.h>
-#include <kpathsea/tex-make.h>
-#include <kpathsea/variable.h>
+#include <tidy_kpathsea/pkgw_collected.h>
+#include <tidy_kpathsea/expand.h>
+#include <tidy_kpathsea/fontmap.h>
+#include <tidy_kpathsea/pathsearch.h>
+#include <tidy_kpathsea/tex-glyph.h>
+#include <tidy_kpathsea/tex-make.h>
+#include <tidy_kpathsea/variable.h>
 
 /* Routines are in bottom-up order.  */
 

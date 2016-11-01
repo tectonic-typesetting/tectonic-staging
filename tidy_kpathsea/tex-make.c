@@ -16,16 +16,16 @@
    You should have received a copy of the GNU Lesser General Public License
    along with this library; if not, see <http://www.gnu.org/licenses/>.  */
 
-#include <kpathsea/config.h>
+#include <tidy_kpathsea/config.h>
 
-#include <kpathsea/c-fopen.h>
-#include <kpathsea/c-pathch.h>
-#include <kpathsea/db.h>
-#include <kpathsea/fn.h>
-#include <kpathsea/magstep.h>
-#include <kpathsea/readable.h>
-#include <kpathsea/tex-make.h>
-#include <kpathsea/variable.h>
+#include <tidy_kpathsea/c-fopen.h>
+#include <tidy_kpathsea/c-pathch.h>
+#include <tidy_kpathsea/db.h>
+#include <tidy_kpathsea/fn.h>
+#include <tidy_kpathsea/magstep.h>
+#include <tidy_kpathsea/readable.h>
+#include <tidy_kpathsea/tex-make.h>
+#include <tidy_kpathsea/variable.h>
 
 #if !defined (AMIGA) && !(defined (MSDOS) && !defined(__DJGPP__)) && !defined (WIN32)
 #include <sys/wait.h>

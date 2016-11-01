@@ -19,8 +19,8 @@
 #ifndef HASH_H
 #define HASH_H
 
-#include <kpathsea/c-proto.h>
-#include <kpathsea/types.h>
+#include <tidy_kpathsea/c-proto.h>
+#include <tidy_kpathsea/types.h>
 
 /*
  * The code freeing strings and hash tables is enabled/disabled

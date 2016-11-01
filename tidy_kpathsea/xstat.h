@@ -20,9 +20,9 @@
 
 #ifdef MAKE_KPSE_DLL /* libkpathsea internal only */
 
-#include <kpathsea/c-proto.h>
-#include <kpathsea/c-stat.h>
-#include <kpathsea/types.h>
+#include <tidy_kpathsea/c-proto.h>
+#include <tidy_kpathsea/c-stat.h>
+#include <tidy_kpathsea/types.h>
 
 /* Two files are indistinguishable if they are on the same device
    and have the same inode.  This checks two stat buffers for that.  Cf.

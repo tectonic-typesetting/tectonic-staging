@@ -59,12 +59,14 @@
 #define KPATHSEA 34
 #endif
 
-#include <kpathsea/c-proto.h>  /* KPSEDLL.  */
+#include <tidy_kpathsea/c-proto.h>  /* KPSEDLL.  */
 
-#include <kpathsea/debug.h>    /* Runtime tracing.  */
-#include <kpathsea/lib.h>      /* STREQ, etc. */
-#include <kpathsea/types.h>    /* <sys/types.h>, boolean, string, etc. */
-#include <kpathsea/progname.h> /* for kpse_invocation_*name */
+#define TRANSFORM(x) (x)
+
+#include <tidy_kpathsea/debug.h>    /* Runtime tracing.  */
+#include <tidy_kpathsea/lib.h>      /* STREQ, etc. */
+#include <tidy_kpathsea/types.h>    /* <sys/types.h>, boolean, string, etc. */
+#include <tidy_kpathsea/progname.h> /* for kpse_invocation_*name */
 
 #define ST_NLINK_TRICK
 

@@ -16,9 +16,9 @@
    You should have received a copy of the GNU Lesser General Public License
    along with this library; if not, see <http://www.gnu.org/licenses/>.  */
 
-#include <kpathsea/config.h>
+#include <tidy_kpathsea/config.h>
 
-#include <kpathsea/version.h>
+#include <tidy_kpathsea/version.h>
 
 const char *kpathsea_version_string = KPSEVERSION;
 

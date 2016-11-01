@@ -12,14 +12,14 @@
    #defines TeX or MF, which avoids the need for a special
    Makefile rule.  */
 
-#include <kpathsea/config.h>
-#include <kpathsea/c-ctype.h>
-#include <kpathsea/line.h>
-#include <kpathsea/readable.h>
-#include <kpathsea/variable.h>
-#include <kpathsea/absolute.h>
+#include <tidy_kpathsea/config.h>
+#include <tidy_kpathsea/c-ctype.h>
+#include <tidy_kpathsea/line.h>
+#include <tidy_kpathsea/readable.h>
+#include <tidy_kpathsea/variable.h>
+#include <tidy_kpathsea/pkgw_collected.h>
 #ifdef WIN32
-#include <kpathsea/concatn.h>
+#include <tidy_kpathsea/concatn.h>
 #endif
 
 #if defined (HAVE_SYS_TIME_H)
@@ -2930,7 +2930,7 @@ makesrcspecial (strnumber srcfilename, int lineno)
 /* pdfTeX routines also used for e-pTeX, e-upTeX, and XeTeX */
 #if defined (pdfTeX) || defined (epTeX) || defined (eupTeX) || defined(XeTeX)
 
-#include <kpathsea/c-stat.h>
+#include <tidy_kpathsea/c-stat.h>
 #include "md5.h"
 
 #define check_nprintf(size_get, size_want) \

@@ -41,11 +41,11 @@ XeTeX_pic.c
 
 #include "XeTeX_ext.h"
 
-#include <kpathsea/c-ctype.h>
-#include <kpathsea/line.h>
-#include <kpathsea/readable.h>
-#include <kpathsea/variable.h>
-#include <kpathsea/absolute.h>
+#include <tidy_kpathsea/c-ctype.h>
+#include <tidy_kpathsea/line.h>
+#include <tidy_kpathsea/readable.h>
+#include <tidy_kpathsea/variable.h>
+#include <tidy_kpathsea/pkgw_collected.h>
 
 #include "pdfimage.h"
 #include "image/pngimage.h"

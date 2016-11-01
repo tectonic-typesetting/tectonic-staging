@@ -19,10 +19,10 @@
    You should have received a copy of the GNU Lesser General Public License
    along with this library; if not, see <http://www.gnu.org/licenses/>.  */
 
-#include <kpathsea/config.h>
+#include <tidy_kpathsea/config.h>
 
-#include <kpathsea/c-pathch.h>
-#include <kpathsea/default.h>
+#include <tidy_kpathsea/c-pathch.h>
+#include <tidy_kpathsea/default.h>
 
 
 /* Check for leading colon first, then trailing, then doubled, since

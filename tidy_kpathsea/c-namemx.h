@@ -21,7 +21,7 @@
 #ifndef KPATHSEA_C_NAME_MX_H
 #define KPATHSEA_C_NAME_MX_H
 
-#include <kpathsea/c-limits.h>
+#include <tidy_kpathsea/c-limits.h>
 
 /* Most likely the system will truncate filenames if it is not POSIX,
    and so we can use the BSD value here.  */

@@ -20,7 +20,7 @@
 #define LINE_H
 
 #include <stdio.h>
-#include <kpathsea/types.h>
+#include <tidy_kpathsea/types.h>
 
 
 #ifdef __cplusplus

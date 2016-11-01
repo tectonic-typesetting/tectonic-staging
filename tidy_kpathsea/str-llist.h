@@ -22,8 +22,8 @@
 #ifndef STR_LLIST_H
 #define STR_LLIST_H
 
-#include <kpathsea/c-proto.h>
-#include <kpathsea/simpletypes.h>
+#include <tidy_kpathsea/c-proto.h>
+#include <tidy_kpathsea/simpletypes.h>
 
 #ifdef __cplusplus
 extern "C" {

@@ -479,9 +479,9 @@ static const char *synctex_suffix_gz = ".gz";
 static const char *synctex_suffix_busy = "(busy)";
 
 /*  for DIR_SEP_STRING */
-#   include <kpathsea/c-pathch.h>
+#   include <tidy_kpathsea/c-pathch.h>
 /*  for kpse_absolute_p */
-#   include <kpathsea/absolute.h>
+#   include <tidy_kpathsea/pkgw_collected.h>
 
 #ifdef W32UPTEXSYNCTEX
 static char *chgto_oem(char *src)

@@ -16,10 +16,10 @@
    You should have received a copy of the GNU Lesser General Public License
    along with this library; if not, see <http://www.gnu.org/licenses/>.  */
 
-#include <kpathsea/config.h>
-#include <kpathsea/c-pathch.h>
-#include <kpathsea/proginit.h>
-#include <kpathsea/tex-file.h>
+#include <tidy_kpathsea/config.h>
+#include <tidy_kpathsea/c-pathch.h>
+#include <tidy_kpathsea/proginit.h>
+#include <tidy_kpathsea/tex-file.h>
 
 
 /* These initializations were common to all the drivers modified for

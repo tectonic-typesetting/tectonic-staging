@@ -4,10 +4,10 @@
 
 #include <w2c/config.h>
 #include "lib.h"
-#include <kpathsea/c-pathch.h>
-#include <kpathsea/tex-file.h>
-#include <kpathsea/variable.h>
-#include <kpathsea/absolute.h>
+#include <tidy_kpathsea/c-pathch.h>
+#include <tidy_kpathsea/tex-file.h>
+#include <tidy_kpathsea/variable.h>
+#include <tidy_kpathsea/pkgw_collected.h>
 #ifdef PTEX
 #include <ptexenc/ptexenc.h>
 #endif

@@ -35,7 +35,7 @@
 #include <stdarg.h>
 
 /* Be sure we have constants from <unistd.h>.  */
-#include <kpathsea/c-unistd.h>
+#include <tidy_kpathsea/c-unistd.h>
 
 #ifdef HAVE_STDLIB_H
 #include <stdlib.h>
@@ -73,13 +73,13 @@ extern ALLOC_RETURN_TYPE *calloc (), *malloc (), *realloc ();
 #endif /* not EXIT_SUCCESS */
 
 /* strchr vs. index, memcpy vs. bcopy, etc.  */
-#include <kpathsea/c-memstr.h>
+#include <tidy_kpathsea/c-memstr.h>
 
 /* Error numbers and errno declaration.  */
-#include <kpathsea/c-errno.h>
+#include <tidy_kpathsea/c-errno.h>
 
 /* Numeric minima and maxima.  */
-#include <kpathsea/c-minmax.h>
+#include <tidy_kpathsea/c-minmax.h>
 
 /* Assertions are too useful to not make generally available.  */
 #ifdef HAVE_ASSERT_H

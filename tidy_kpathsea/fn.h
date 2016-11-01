@@ -21,8 +21,8 @@
 
 #ifdef MAKE_KPSE_DLL /* libkpathsea internal only */
 
-#include <kpathsea/c-proto.h>
-#include <kpathsea/types.h>
+#include <tidy_kpathsea/c-proto.h>
+#include <tidy_kpathsea/types.h>
 
 /* Arbitrarily long filenames; it's inconvenient to use obstacks here,
    because we want to maintain a null terminator.  Also used for

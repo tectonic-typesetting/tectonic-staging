@@ -16,18 +16,18 @@
    You should have received a copy of the GNU Lesser General Public License
    along with this library; if not, see <http://www.gnu.org/licenses/>.  */
 
-#include <kpathsea/config.h>
-#include <kpathsea/c-fopen.h>
-#include <kpathsea/c-ctype.h>
-#include <kpathsea/c-pathch.h>
-#include <kpathsea/cnf.h>
-#include <kpathsea/db.h>
-#include <kpathsea/hash.h>
-#include <kpathsea/line.h>
-#include <kpathsea/paths.h>
-#include <kpathsea/pathsearch.h>
-#include <kpathsea/tex-file.h>
-#include <kpathsea/variable.h>
+#include <tidy_kpathsea/config.h>
+#include <tidy_kpathsea/c-fopen.h>
+#include <tidy_kpathsea/c-ctype.h>
+#include <tidy_kpathsea/c-pathch.h>
+#include <tidy_kpathsea/cnf.h>
+#include <tidy_kpathsea/db.h>
+#include <tidy_kpathsea/hash.h>
+#include <tidy_kpathsea/line.h>
+#include <tidy_kpathsea/paths.h>
+#include <tidy_kpathsea/pathsearch.h>
+#include <tidy_kpathsea/tex-file.h>
+#include <tidy_kpathsea/variable.h>
 
 /* By using our own hash table, instead of the environment, we
    complicate variable expansion (because we have to look in two

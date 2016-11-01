@@ -57,14 +57,14 @@ def inner (top, w):
     builddir = top / 'BUILD'
     w.build (str(builddir), 'ensuredir')
 
-    # kpathsea
+    # (tidied) kpathsea
 
-    libkp = builddir / 'libkpathsea.a'
-    cflags = '-DHAVE_CONFIG_H -DMAKE_KPSE_DLL -Ikpathsea -I. %(base_cflags)s' % config
+    libkp = builddir / 'libtidykpathsea.a'
+    cflags = '-DHAVE_CONFIG_H -DMAKE_KPSE_DLL -Itidy_kpathsea -I. %(base_cflags)s' % config
     objs = []
 
-    for src in (top / 'kpathsea').glob ('*.c'):
-        obj = builddir / ('kpathsea_' + src.name.replace ('.c', '.o'))
+    for src in (top / 'tidy_kpathsea').glob ('*.c'):
+        obj = builddir / ('tidy_kpathsea_' + src.name.replace ('.c', '.o'))
         w.build (
             str(obj), 'cc',
             inputs = [str(src)],

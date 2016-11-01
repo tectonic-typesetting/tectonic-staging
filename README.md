@@ -25,6 +25,18 @@ export TEXFORMATS=/a/share/texlive/texmf-var//
 xdvipdfmx main
 ```
 
+The more full “xenia” test:
+
+```
+cd tests/latex-minimal
+export TEXINPUTS=.:/a/share/texlive/texmf-dist//
+export TEXFORMATS=/a/share/texlive/texmf-var//
+export TFMFONTS=/a/share/texlive/texmf-dist//
+../../BUILD/xetex -fmt=xelatex -no-pdf paper
+../../BUILD/xetex -fmt=xelatex -no-pdf paper # rerun for crossrefs
+xdvipdfmx paper
+```
+
 
 Origin of source code
 ---------------------

@@ -46,3 +46,13 @@ kpse_absolute_p (const_string filename, boolean relative_ok)
 {
     return kpathsea_absolute_p (kpse_def, filename, relative_ok);
 }
+
+unsigned
+atou (const_string s)
+{
+  int i = atoi (s);
+
+  if (i < 0)
+    FATAL1 ("I expected a positive number, not %d", i);
+  return i;
+}

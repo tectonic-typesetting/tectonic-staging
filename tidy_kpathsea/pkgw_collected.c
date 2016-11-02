@@ -18,7 +18,6 @@
 
 #include <tidy_kpathsea/config.h>
 #include <tidy_kpathsea/pkgw_collected.h>
-#include <tidy_kpathsea/debug.h>
 #include <tidy_kpathsea/expand.h>
 #include <tidy_kpathsea/fn.h>
 #include <tidy_kpathsea/fontmap.h>

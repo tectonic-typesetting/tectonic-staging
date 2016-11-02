@@ -20,6 +20,7 @@
 #define TIDY_KPATHSEA_COLLECTED_H
 
 #include <ctype.h>
+#include <errno.h>
 
 #include <tidy_kpathsea/types.h>
 #include <tidy_kpathsea/c-proto.h>

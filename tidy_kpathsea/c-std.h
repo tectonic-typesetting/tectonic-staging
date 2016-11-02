@@ -75,9 +75,6 @@ extern ALLOC_RETURN_TYPE *calloc (), *malloc (), *realloc ();
 /* strchr vs. index, memcpy vs. bcopy, etc.  */
 #include <tidy_kpathsea/c-memstr.h>
 
-/* Error numbers and errno declaration.  */
-#include <tidy_kpathsea/c-errno.h>
-
 /* Numeric minima and maxima.  */
 #include <tidy_kpathsea/c-minmax.h>
 

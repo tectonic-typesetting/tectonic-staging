@@ -1768,3 +1768,19 @@ kpathsea_tilde_expand (kpathsea kpse, string name)
      be returning a malloc-ed string.  Callers beware.  Sorry.  */
   return expansion;
 }
+
+/* uppercasify.c */
+
+string
+uppercasify (const_string s)
+{
+  string target;
+  string ret = xstrdup (s);
+
+  for (target = ret; *target; target++)
+    {
+      *target = TOUPPER (*target);
+    }
+
+  return ret;
+}

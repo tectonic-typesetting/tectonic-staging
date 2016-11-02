@@ -35,6 +35,7 @@
 #include <tidy_kpathsea/proginit.h>
 #include <tidy_kpathsea/readable.h>
 #include <tidy_kpathsea/str-list.h>
+#include <tidy_kpathsea/str-llist.h>
 #include <tidy_kpathsea/tex-file.h>
 #include <tidy_kpathsea/tex-hush.h>
 #include <tidy_kpathsea/variable.h>
@@ -1552,6 +1553,80 @@ str_list_uniqify (str_list_type *l)
 
   /* Replace the passed list with what we constructed.  */
   *l = ret;
+}
+
+/* str-llist.c */
+
+/* Add the new string STR to the end of the list L.  */
+
+void
+str_llist_add (str_llist_type *l,  string str)
+{
+  str_llist_elt_type *e;
+  str_llist_elt_type *new_elt = XTALLOC1 (str_llist_elt_type);
+
+  /* The new element will be at the end of the list.  */
+  STR_LLIST (*new_elt) = str;
+  STR_LLIST_MOVED (*new_elt) = false;
+  STR_LLIST_NEXT (*new_elt) = NULL;
+
+  /* Find the current end of the list.  */
+  for (e = *l; e && STR_LLIST_NEXT (*e); e = STR_LLIST_NEXT (*e))
+    ;
+
+  if (!e)
+    *l = new_elt;
+  else
+    STR_LLIST_NEXT (*e) = new_elt;
+}
+
+/* Move an element towards the top. The idea is that when a file is
+   found in a given directory, later files will likely be in that same
+   directory, and looking for the file in all the directories in between
+   is thus a waste.  */
+
+void
+str_llist_float (str_llist_type *l,  str_llist_elt_type *mover)
+{
+  str_llist_elt_type *last_moved, *unmoved;
+
+  /* If we've already moved this element, never mind.  */
+  if (STR_LLIST_MOVED (*mover))
+    return;
+
+  /* Find the first unmoved element (to insert before).  We're
+     guaranteed this will terminate, since MOVER itself is currently
+     unmoved, and it must be in L (by hypothesis).  */
+  for (last_moved = NULL, unmoved = *l; STR_LLIST_MOVED (*unmoved);
+       last_moved = unmoved, unmoved = STR_LLIST_NEXT (*unmoved))
+    ;
+
+  /* If we are the first unmoved element, nothing to relink.  */
+  if (unmoved != mover)
+    { /* Remember `mover's current successor, so we can relink `mover's
+         predecessor to it.  */
+      str_llist_elt_type *before_mover;
+      str_llist_elt_type *after_mover = STR_LLIST_NEXT (*mover);
+
+      /* Find `mover's predecessor.  */
+      for (before_mover = unmoved; STR_LLIST_NEXT (*before_mover) != mover;
+           before_mover = STR_LLIST_NEXT (*before_mover))
+        ;
+
+      /* `before_mover' now links to `after_mover'.  */
+      STR_LLIST_NEXT (*before_mover) = after_mover;
+
+      /* Insert `mover' before `unmoved' and after `last_moved' (or at
+         the head of the list).  */
+      STR_LLIST_NEXT (*mover) = unmoved;
+      if (!last_moved)
+        *l = mover;
+      else
+        STR_LLIST_NEXT (*last_moved) = mover;
+    }
+
+  /* We've moved it.  */
+  STR_LLIST_MOVED (*mover) = true;
 }
 
 /* tex-make.c, edited to never do anything */

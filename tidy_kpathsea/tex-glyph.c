@@ -33,9 +33,6 @@
    support \'s.)  */
 #define UNIX_BITMAP_SPEC "$KPATHSEA_NAME.$KPATHSEA_DPI$KPATHSEA_FORMAT"
 #define DPI_BITMAP_SPEC  "dpi$KPATHSEA_DPI/$KPATHSEA_NAME.$KPATHSEA_FORMAT"
-#ifdef WIN32
-#define DOS_BITMAP_SPEC  "$KPATHSEA_DPI/$KPATHSEA_NAME.$KPATHSEA_FORMAT"
-#endif
 
 /* Look up font $KPATHSEA_NAME at resolution $KPATHSEA_DPI in PATH,
    with filename suffix EXTENSION.  Return file found or NULL.  */
@@ -45,9 +42,6 @@ try_format (kpathsea kpse, kpse_file_format_type format)
 {
   static const_string bitmap_specs[]
     = { UNIX_BITMAP_SPEC, DPI_BITMAP_SPEC,
-#ifdef WIN32
-        DOS_BITMAP_SPEC,
-#endif
         NULL };
   const_string *spec;
   boolean must_exist;
@@ -359,59 +353,3 @@ kpse_bitmap_tolerance (double dpi1,  double dpi2)
     return kpathsea_bitmap_tolerance (kpse_def, dpi1, dpi2);
 }
 #endif
-
-
-#ifdef TEST
-
-void
-test_find_glyph (kpathsea kpse, const_string fontname, unsigned dpi)
-{
-  string answer;
-  kpse_glyph_file_type ret;
-
-  printf ("\nSearch for %s@%u:\n\t", fontname, dpi);
-
-  answer = kpathsea_find_glyph (kpse, fontname, dpi,
-                                kpse_any_glyph_format, &ret);
-  if (answer)
-    {
-      string format = ret.format == kpse_pk_format ? "pk" : "gf";
-      if (!ret.name)
-        ret.name = "(nil)";
-      printf ("%s\n\t(%s@%u, %s)\n", answer, ret.name, ret.dpi, format);
-    }
-  else
-    puts ("(nil)");
-}
-
-
-int
-main (int argc, char **argv)
-{
-  kpathsea kpse = xcalloc(1,sizeof(kpathsea_instance));
-  kpathsea_set_program_name(kpse, argv[0], NULL);
-  test_find_glyph (kpse, "/usr/local/lib/tex/fonts/cm/cmr10", 300); /* abs. */
-  test_find_glyph (kpse, "cmr10", 300);     /* normal */
-  test_find_glyph (kpse, "logo10", 300);    /* find gf */
-  test_find_glyph (kpse, "cmr10", 299);     /* find 300 */
-  test_find_glyph (kpse, "circle10", 300);  /* in fontmap */
-  test_find_glyph (kpse, "none", 300);      /* do not find */
-  kpse->kpse_fallback_font = "cmr10";
-  test_find_glyph (kpse, "fallback", 300);  /* find fallback font cmr10 */
-  kpathsea_init_fallback_resolutions (kpse, "KPATHSEA_TEST_SIZES");
-  test_find_glyph (kpse, "fallbackdpi", 759); /* find fallback cmr10@300 */
-
-  kpathsea_xputenv (kpse,"GFFONTS", ".");
-  test_find_glyph (kpse, "cmr10", 300);     /* different GFFONTS/TEXFONTS */
-
-  return 0;
-}
-
-#endif /* TEST */
-
-
-/*
-Local variables:
-standalone-compile-command: "gcc -g -I. -I.. -DTEST tex-glyph.c kpathsea.a"
-End:
-*/

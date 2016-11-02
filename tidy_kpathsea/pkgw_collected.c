@@ -19,9 +19,11 @@
 #include <tidy_kpathsea/config.h>
 #include <tidy_kpathsea/pkgw_collected.h>
 #include <tidy_kpathsea/c-pathch.h>
+#include <tidy_kpathsea/c-stat.h>
 #include <tidy_kpathsea/cnf.h>
 #include <tidy_kpathsea/concatn.h>
 #include <tidy_kpathsea/db.h>
+#include <tidy_kpathsea/debug.h>
 #include <tidy_kpathsea/hash.h>
 #include <tidy_kpathsea/line.h>
 #include <tidy_kpathsea/paths.h>
@@ -344,3 +346,125 @@ concatn (const_string str1, ...)
 
   return ret;
 }
+
+/* debug.c */
+
+#ifdef KPSE_DEBUG /* whole file */
+
+/* If the real definitions of fopen or fclose are macros, we lose -- the
+   #undef won't restore them. */
+
+FILE *
+fopen (const char *filename,  const char *mode)
+{
+#undef fopen
+  FILE *ret = fopen (filename, mode);
+#if defined (KPSE_COMPAT_API)
+  kpathsea kpse = kpse_def;
+  if (KPATHSEA_DEBUG_P (KPSE_DEBUG_FOPEN))
+    DEBUGF3 ("fopen(%s, %s) => 0x%lx\n", filename, mode, (unsigned long) ret);
+#endif
+  return ret;
+}
+
+int
+fclose (FILE * f)
+{
+#undef fclose
+  int ret = fclose (f);
+#if defined (KPSE_COMPAT_API)
+  kpathsea kpse = kpse_def;
+  if (KPATHSEA_DEBUG_P (KPSE_DEBUG_FOPEN))
+    DEBUGF2 ("fclose(0x%lx) => %d\n", (unsigned long) f, ret);
+#endif
+  return ret;
+}
+
+#endif /* KPSE DEBUG */
+
+/* dir.c */
+
+/* Return true if FN is a directory or a symlink to a directory,
+   false if not. */
+
+boolean
+kpathsea_dir_p (kpathsea kpse, string fn)
+{
+  /* FIXME : using the stat() replacement in gnuw32,
+         we could avoid this win32 specific code. However,
+         I wonder if it would be as fast as this one is ?
+  */
+  struct stat stats;
+  return stat (fn, &stats) == 0 && S_ISDIR (stats.st_mode);
+}
+
+#if defined(KPSE_COMPAT_API)
+boolean
+dir_p (string fn)
+{
+    return kpathsea_dir_p (kpse_def, fn);
+}
+#endif
+
+
+/*
+  Return -1 if FN isn't a directory, else its number of links.
+  Duplicate the call to stat; no need to incur overhead of a function
+  call for that little bit of cleanliness.
+
+  The process is a bit different under Win32 : the first call
+  memoizes the nlinks value, the following ones retrieve it.
+*/
+int
+kpathsea_dir_links (kpathsea kpse, const_string fn, long nlinks)
+{
+  const_string *hash_ret;
+
+  if (kpse->link_table.size == 0)
+    kpse->link_table = hash_create (457);
+
+#ifdef KPSE_DEBUG
+  /* This is annoying, but since we're storing integers as pointers, we
+     can't print them as strings.  */
+  if (KPATHSEA_DEBUG_P (KPSE_DEBUG_HASH))
+    kpse->debug_hash_lookup_int = true;
+#endif
+
+  hash_ret = hash_lookup (kpse->link_table, fn);
+
+#ifdef KPSE_DEBUG
+  if (KPATHSEA_DEBUG_P (KPSE_DEBUG_HASH))
+    kpse->debug_hash_lookup_int = false;
+#endif
+
+  /* Have to cast the int we need to/from the const_string that the hash
+     table stores for values. Let's hope an int fits in a pointer.  */
+  if (hash_ret) {
+      nlinks = (long) *hash_ret;
+  } else {
+      struct stat stats;
+      if (stat (fn, &stats) == 0 && S_ISDIR (stats.st_mode))
+        nlinks = stats.st_nlink;
+      else
+        nlinks = -1;
+      /* It's up to us to copy the value.  */
+      hash_insert(&(kpse->link_table), xstrdup(fn), (const_string)nlinks);
+
+#ifdef KPSE_DEBUG
+      if (KPATHSEA_DEBUG_P (KPSE_DEBUG_STAT))
+        DEBUGF2 ("dir_links(%s) => %ld\n", fn, nlinks);
+#endif
+  }
+
+  /* In any case, return nlinks
+     (either 0, the value inserted or the value retrieved. */
+  return nlinks;
+}
+
+#if defined (KPSE_COMPAT_API)
+int
+dir_links (const_string fn, long nlinks)
+{
+    return kpathsea_dir_links (kpse_def, fn, nlinks);
+}
+#endif

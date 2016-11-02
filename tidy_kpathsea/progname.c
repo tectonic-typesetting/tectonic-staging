@@ -18,7 +18,6 @@
 
 #include <tidy_kpathsea/config.h>
 #include <tidy_kpathsea/pkgw_collected.h>
-#include <tidy_kpathsea/c-pathmx.h>
 #include <tidy_kpathsea/c-stat.h>
 #include <tidy_kpathsea/pathsearch.h>
 /* For kpse_reset_progname */

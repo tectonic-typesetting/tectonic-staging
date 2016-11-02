@@ -57,28 +57,11 @@ kpathsea_expand_kpse_dot (kpathsea kpse, string path)
 {
   string ret, elt;
   string kpse_dot = getenv("KPSE_DOT");
-#ifdef MSDOS
-  boolean malloced_kpse_dot = false;
-#endif
 
   if (kpse_dot == NULL)
     return path;
   ret = (string)xmalloc(1);
   *ret = 0;
-
-#ifdef MSDOS
-  /* Some setups of ported Bash force $KPSE_DOT to have the //d/foo/bar
-     form (when `pwd' is used), which is not understood by libc and the OS.
-     Convert them back to the usual d:/foo/bar form.  */
-  if (kpse_dot[0] == '/' && kpse_dot[1] == '/'
-      && kpse_dot[2] >= 'A' && kpse_dot[2] <= 'z' && kpse_dot[3] == '/') {
-    kpse_dot++;
-    kpse_dot = xstrdup (kpse_dot);
-    kpse_dot[0] = kpse_dot[1];  /* drive letter */
-    kpse_dot[1] = ':';
-    malloced_kpse_dot = true;
-  }
-#endif
 
   for (elt = kpathsea_path_element (kpse, path); elt;
        elt = kpathsea_path_element (kpse, NULL)) {
@@ -91,12 +74,10 @@ kpathsea_expand_kpse_dot (kpathsea kpse, string path)
       ret = concat3(ret, elt, ENV_SEP_STRING);
     } else if (elt[0] == '.' && elt[1] == 0) {
       ret = concat3 (ret, kpse_dot, ENV_SEP_STRING);
-#ifndef VMS
     } else if (elt[0] == '.' && IS_DIR_SEP(elt[1])) {
       ret = concatn (ret, kpse_dot, elt + 1, ENV_SEP_STRING, NULL);
     } else if (*elt) {
       ret = concatn (ret, kpse_dot, DIR_SEP_STRING, elt, ENV_SEP_STRING, NULL);
-#endif
     } else {
       /* omit empty path elements from TEXMFCNF.
          See http://bugs.debian.org/358330.  */
@@ -105,10 +86,6 @@ kpathsea_expand_kpse_dot (kpathsea kpse, string path)
     if (ret_copied)
       free (save_ret);
   }
-
-#ifdef MSDOS
-  if (malloced_kpse_dot) free (kpse_dot);
-#endif
 
   ret[strlen (ret) - 1] = 0;
   return ret;
@@ -211,35 +188,16 @@ kpathsea_path_expand (kpathsea kpse, const_string path)
   string elt;
   unsigned len;
   const_string ypath;
-#if defined(WIN32)
-  string zpath, p;
-#endif
 
   /* Initialise ret to the empty string. */
   ret = (string)xmalloc (1);
   *ret = 0;
   len = 0;
 
-#if defined(WIN32)
-  zpath = xstrdup (path);
-
-  for (p = zpath; *p; p++)
-    if (*p == '\\')
-      *p = '/';
-    else if (kpathsea_IS_KANJI(kpse, p))
-      p++;
-
-  ypath = zpath;
-#else
   ypath = path;
-#endif
 
   /* Expand variables and braces first.  */
   xpath = kpathsea_brace_expand (kpse, ypath);
-
-#if defined(WIN32)
-  free (zpath);
-#endif
 
   /* Now expand each of the path elements, printing the results */
   for (elt = kpathsea_path_element (kpse, xpath); elt;
@@ -342,10 +300,6 @@ brace_expand (kpathsea kpse, const_string *text)
             if (*(p+1) == '{')
                 for (p+=2; *p!='}';++p);
         }
-#if defined(WIN32)
-        else if (kpathsea_IS_KANJI(kpse, p))
-            p++;
-#endif
     }
     expand_append(&partial, *text, p);
     str_list_concat(&result, partial);
@@ -353,57 +307,3 @@ brace_expand (kpathsea kpse, const_string *text)
     *text = p;
     return result;
 }
-
-
-
-#if defined (TEST)
-#include <stdio.h>
-
-fatal_error (format, arg1, arg2)
-     char *format, *arg1, *arg2;
-{
-  report_error (format, arg1, arg2);
-  exit (1);
-}
-
-report_error (format, arg1, arg2)
-     char *format, *arg1, *arg2;
-{
-  fprintf (stderr, format, arg1, arg2);
-  fprintf (stderr, "\n");
-}
-
-main (int argc, char **argv)
-{
-  char example[256];
-  kpse_set_program_name(argv[0], NULL);
-
-  for (;;)
-    {
-      char *result;
-      int i;
-
-      fprintf (stderr, "brace_expand> ");
-
-      if ((!fgets (example, 256, stdin)) ||
-          (strncmp (example, "quit", 4) == 0))
-        break;
-
-      if (strlen (example))
-        example[strlen (example) - 1] = 0;
-
-      result = kpse_brace_expand (example);
-
-        printf ("%s\n", result);
-
-    }
-}
-
-
-#endif /* TEST */
-
-/*
-Local variables:
-standalone-compile-command: "gcc -g -I. -I.. -DTEST expand.c kpathsea.a"
-end:
-*/

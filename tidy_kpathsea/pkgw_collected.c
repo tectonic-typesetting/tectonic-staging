@@ -1201,6 +1201,71 @@ make_suffix (const_string s,  const_string suffix)
   return new_s;
 }
 
+/* path-elt.c */
+
+static string
+element (kpathsea kpse, const_string passed_path,  boolean env_p)
+{
+  const_string p;
+  string ret;
+  int brace_level;
+  unsigned len;
+
+  if (passed_path)
+    kpse->path = passed_path;
+  /* Check if called with NULL, and no previous path (perhaps we reached
+     the end).  */
+  else if (!kpse->path)
+    return NULL;
+
+  /* OK, we have a non-null `path' if we get here.  */
+  assert (kpse->path);
+  p = kpse->path;
+
+  /* Find the next colon not enclosed by braces (or the end of the path).  */
+  brace_level = 0;
+  while (*p != 0  && !(brace_level == 0
+                       && (env_p ? IS_ENV_SEP (*p) : IS_DIR_SEP (*p)))) {
+    if (*p == '{') ++brace_level;
+    else if (*p == '}') --brace_level;
+    p++;
+  }
+
+  /* Return the substring starting at `path'.  */
+  len = p - kpse->path;
+
+  /* Make sure we have enough space (including the null byte).  */
+  if (len + 1 > kpse->elt_alloc)
+    {
+      kpse->elt_alloc = len + 1;
+      kpse->elt = (string)xrealloc (kpse->elt, kpse->elt_alloc);
+    }
+
+  strncpy (kpse->elt, kpse->path, len);
+  kpse->elt[len] = 0;
+  ret = kpse->elt;
+
+  /* If we are at the end, return NULL next time.  */
+  if (kpse->path[len] == 0)
+    kpse->path = NULL;
+  else
+    kpse->path += len + 1;
+
+  return ret;
+}
+
+string
+kpathsea_path_element (kpathsea kpse, const_string p)
+{
+    return element (kpse, p, true);
+}
+
+string
+kpathsea_filename_component (kpathsea kpse, const_string p)
+{
+    return element (kpse, p, false);
+}
+
 /* tex-make.c, edited to never do anything */
 
 string

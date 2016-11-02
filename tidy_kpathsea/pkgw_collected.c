@@ -1169,3 +1169,20 @@ read_line (FILE *f)
 
   return line;
 }
+
+/* tex-make.c, edited to never do anything */
+
+string
+kpathsea_make_tex (kpathsea kpse, kpse_file_format_type format,
+                   const_string base)
+{
+  return NULL;
+}
+
+#if defined (KPSE_COMPAT_API)
+string
+kpse_make_tex (kpse_file_format_type format,  const_string base)
+{
+  return kpathsea_make_tex (kpse_def, format, base);
+}
+#endif

@@ -1086,3 +1086,34 @@ kpathsea_expand_default (kpathsea kpse, const_string path,
 
   return expansion;
 }
+
+/* kpathsea.c */
+
+kpathsea
+kpathsea_new (void)
+{
+    kpathsea ret;
+    ret = xcalloc(1, sizeof(kpathsea_instance));
+    return ret;
+}
+
+/* Sadly, quite a lot of the freeing is not safe:
+   it seems there are literals used all over. */
+void
+kpathsea_finish (kpathsea kpse)
+{
+    if (kpse==NULL)
+        return;
+#if defined (KPSE_COMPAT_API)
+    if (kpse == kpse_def)
+        return;
+#endif
+    free (kpse);
+}
+
+#if defined (KPSE_COMPAT_API)
+
+kpathsea_instance kpse_def_inst;
+kpathsea kpse_def = &kpse_def_inst;
+
+#endif /* KPSE_COMPAT_API */

@@ -21,12 +21,22 @@
 
 #include <ctype.h>
 #include <errno.h>
+#include <fcntl.h>
+#include <limits.h>
 
 #include <tidy_kpathsea/types.h>
 #include <tidy_kpathsea/c-proto.h>
 
+/* c-dir.h */
+
 #include <dirent.h>
 #define NAMLEN(dirent) strlen ((dirent)->d_name)
+
+/* c-limits.h */
+
+#if defined (HAVE_FLOAT_H) && !defined (FLT_MAX)
+#include <float.h>
+#endif
 
 #ifdef __cplusplus
 extern "C" {
@@ -64,6 +74,37 @@ extern "C" {
 
 #define ISBLANK(c) (isascii (c) && isblank ((unsigned char)c))
 
+/* c-fopen.h */
+
+#ifndef FOPEN_A_MODE
+#define FOPEN_A_MODE "ab"
+#endif
+
+#ifndef FOPEN_R_MODE
+#define FOPEN_R_MODE "r"
+#endif
+
+#ifndef FOPEN_W_MODE
+#define FOPEN_W_MODE "wb"
+#endif
+
+#ifndef FOPEN_RBIN_MODE
+#define FOPEN_RBIN_MODE "rb"
+#endif
+
+#ifndef FOPEN_WBIN_MODE
+#define FOPEN_WBIN_MODE "wb"
+#endif
+
+#ifndef FOPEN_ABIN_MODE
+#define FOPEN_ABIN_MODE "ab"
+#endif
+
+#ifndef O_BINARY
+#define O_BINARY 0
+#endif
+#define SET_BINARY(f) (void)0
+    
 /* absolute.h */
 
 extern KPSEDLL boolean kpathsea_absolute_p (kpathsea kpse, const_string filename, boolean relative_ok);

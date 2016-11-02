@@ -18,7 +18,6 @@
 
 #include <tidy_kpathsea/config.h>
 
-#include <tidy_kpathsea/c-fopen.h>
 #include <tidy_kpathsea/c-pathch.h>
 #include <tidy_kpathsea/db.h>
 #include <tidy_kpathsea/fn.h>
@@ -532,10 +531,3 @@ main (int argc, char **argv)
 }
 
 #endif /* TEST */
-
-
-/*
-Local variables:
-standalone-compile-command: "gcc -g -I. -I.. -DTEST tex-make.c kpathsea.a"
-End:
-*/

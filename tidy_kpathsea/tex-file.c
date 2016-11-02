@@ -19,7 +19,6 @@
 
 #include <tidy_kpathsea/config.h>
 
-#include <tidy_kpathsea/c-fopen.h>
 #include <tidy_kpathsea/c-pathch.h>
 #include <stdarg.h>
 #include <tidy_kpathsea/cnf.h>

@@ -18,7 +18,6 @@
 
 #include <tidy_kpathsea/config.h>
 #include <tidy_kpathsea/c-pathch.h>
-#include <tidy_kpathsea/c-fopen.h>
 #include <tidy_kpathsea/pkgw_collected.h>
 #include <tidy_kpathsea/expand.h>
 #include <tidy_kpathsea/db.h>
@@ -662,10 +661,3 @@ main (int argc, char **argv)
 }
 
 #endif /* TEST */
-
-
-/*
-Local variables:
-standalone-compile-command: "gcc -posix -g -I. -I.. -DTEST pathsearch.c kpathsea.a"
-End:
-*/

@@ -19,7 +19,6 @@
 #include <tidy_kpathsea/config.h>
 
 #include <tidy_kpathsea/pkgw_collected.h>
-#include <tidy_kpathsea/c-fopen.h>
 #include <tidy_kpathsea/fontmap.h>
 #include <tidy_kpathsea/hash.h>
 #include <tidy_kpathsea/line.h>

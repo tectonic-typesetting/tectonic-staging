@@ -25,7 +25,7 @@ along with this program; if not, see <http://www.gnu.org/licenses/.  */
 #include <stdarg.h>
 
 /* How to open a binary file.  */
-#include <tidy_kpathsea/c-fopen.h>
+#include <tidy_kpathsea/pkgw_collected.h>
 
 #ifdef __cplusplus
 extern "C" {

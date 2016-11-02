@@ -499,3 +499,22 @@ same_file_p (const_string filename1,  const_string filename2)
 
     return r1 == 0 && r2 == 0 ? SAME_FILE_P (sb1, sb2) : false;
 }
+
+/* find-suffix.c */
+
+const_string
+find_suffix (const_string name)
+{
+  const_string dot_pos = strrchr (name, '.');
+  const_string p;
+
+  if (dot_pos == NULL)
+    return NULL;
+
+  for (p = dot_pos + 1; *p; p++) {
+    if (IS_DIR_SEP (*p))
+      return NULL;
+  }
+
+  return dot_pos + 1;
+}

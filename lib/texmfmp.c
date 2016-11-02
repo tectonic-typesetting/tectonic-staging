@@ -2926,7 +2926,7 @@ makesrcspecial (strnumber srcfilename, int lineno)
 /* pdfTeX routines also used for e-pTeX, e-upTeX, and XeTeX */
 #if defined (pdfTeX) || defined (epTeX) || defined (eupTeX) || defined(XeTeX)
 
-#include <tidy_kpathsea/c-stat.h>
+#include <sys/stat.h>
 #include "md5.h"
 
 #define check_nprintf(size_get, size_want) \

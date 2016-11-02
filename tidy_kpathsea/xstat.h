@@ -21,7 +21,7 @@
 #ifdef MAKE_KPSE_DLL /* libkpathsea internal only */
 
 #include <tidy_kpathsea/c-proto.h>
-#include <tidy_kpathsea/c-stat.h>
+#include <tidy_kpathsea/pkgw_collected.h>
 #include <tidy_kpathsea/types.h>
 
 /* Two files are indistinguishable if they are on the same device

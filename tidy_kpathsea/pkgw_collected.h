@@ -23,6 +23,7 @@
 #include <errno.h>
 #include <fcntl.h>
 #include <limits.h>
+#include <sys/stat.h>
 
 #include <tidy_kpathsea/types.h>
 #include <tidy_kpathsea/c-proto.h>

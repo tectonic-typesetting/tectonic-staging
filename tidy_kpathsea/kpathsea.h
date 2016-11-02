@@ -3,7 +3,6 @@
 #include <tidy_kpathsea/config.h>
 #include <tidy_kpathsea/paths.h>
 #include <tidy_kpathsea/pkgw_collected.h>
-#include <tidy_kpathsea/c-stat.h>
 #include <tidy_kpathsea/expand.h>
 #include <tidy_kpathsea/getopt.h>
 #include <tidy_kpathsea/line.h>

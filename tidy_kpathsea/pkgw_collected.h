@@ -165,6 +165,15 @@ extern void kpathsea_db_insert (kpathsea kpse, const_string fname);
 
 extern string kpathsea_expand_default (kpathsea kpse, const_string path, const_string dflt);
 
+/* expand.h */
+
+extern string kpathsea_expand (kpathsea kpse, const_string s);
+
+extern KPSEDLL string kpathsea_brace_expand (kpathsea kpse, const_string path);
+extern KPSEDLL string kpathsea_path_expand (kpathsea kpse, const_string path);
+extern KPSEDLL string kpse_brace_expand (const_string path);
+extern KPSEDLL string kpse_path_expand (const_string path);
+
 #ifdef __cplusplus
 }
 #endif

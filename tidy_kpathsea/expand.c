@@ -19,7 +19,6 @@
 
 #include <tidy_kpathsea/config.h>
 
-#include <tidy_kpathsea/expand.h>
 #include <tidy_kpathsea/pathsearch.h>
 #include <tidy_kpathsea/tilde.h>
 #include <tidy_kpathsea/variable.h>

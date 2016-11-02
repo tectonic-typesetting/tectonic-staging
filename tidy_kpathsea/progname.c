@@ -51,14 +51,8 @@
    WIN32 doesn't define them either, and doesn't have them.
    From: Gregor Hoffleit <flight@mathi.uni-heidelberg.de>.  */
 #ifndef S_IXUSR
-#ifdef WIN32
-#define S_IXUSR 0
-#define S_IXGRP 0
-#define S_IXOTH 0
-#else /* not WIN32 */
 #define S_IXUSR 0100
-#endif /* not WIN32 */
-#endif /* not S_IXUSR */
+#endif
 #ifndef S_IXGRP
 #define S_IXGRP 0010
 #endif
@@ -67,7 +61,7 @@
 #endif
 
 
-#ifndef WIN32
+
 /* From a standalone program `ll' to expand symlinks written by Kimbo Mundy.
    Don't bother to compile if we don't have symlinks; thus we can assume
    / as the separator.  Also don't try to use basename, etc., or
@@ -414,70 +408,11 @@ kpse_selfdir (const_string argv0)
 }
 #endif
 
-#endif /* not WIN32 */
-
-#if defined(WIN32) || defined(__CYGWIN__)
-
-/* Create a list of executable suffixes of files not to be written.  */
-#define EXE_SUFFIXES ".com;.exe;.bat;.cmd;.vbs;.vbe;.js;.jse;.wsf;.wsh;.ws;.tcl;.py;.pyw"
-
-static void
-mk_suffixlist (kpathsea kpse)
-{
-    char **p;
-    char *q, *r, *v;
-    int  n;
-
-#if defined(__CYGWIN__)
-    v = xstrdup (EXE_SUFFIXES);
-#else
-    v = getenv ("PATHEXT");
-    if (v) /* strlwr() exists also in MingW */
-      v = strlwr (xstrdup (v));
-    else
-      v = xstrdup (EXE_SUFFIXES);
-#endif
-
-    q = v;
-    n = 0;
-
-    while ((r = strchr (q, ';')) != NULL) {
-      n++;
-      r++;
-      q = r;
-    }
-    if (*q)
-      n++;
-    kpse->suffixlist = (char **) xmalloc ((n + 2) * sizeof (char *));
-    p = kpse->suffixlist;
-    *p = xstrdup (".dll");
-    p++;
-    q = v;
-    while ((r = strchr (q, ';')) != NULL) {
-      *r = '\0';
-      *p = xstrdup (q);
-      p++;
-      r++;
-      q = r;
-    }
-    if (*q) {
-      *p = xstrdup (q);
-      p++;
-    }
-    *p = NULL;
-    free (v);
-}
-#endif /* WIN32 || __CYGWIN__ */
-
 /* On win32 SELFAUTO{LOC,DIR,PARENT} must not be just `/', otherwise,
    e.g., $SELFAUTODIR/texmf/tex would be mistaken as UNC name.  */
 static inline string
 fix_selfdir (string dir)
 {
-#if defined(WIN32)
-  if (IS_DIR_SEP_CH (*dir) && dir[1] == 0)
-    dir++;
-#endif
   return dir;
 }
 
@@ -488,11 +423,6 @@ kpathsea_set_program_name (kpathsea kpse,  const_string argv0,
   const_string ext;
   string sdir, sdir_parent, sdir_grandparent, sdir_greatgrandparent;
   string s = getenv ("KPATHSEA_DEBUG");
-#ifdef WIN32
-  string debug_output = getenv("KPATHSEA_DEBUG_OUTPUT");
-  string append_debug_output = getenv("KPATHSEA_DEBUG_APPEND");
-  int err, olderr, cp;
-#endif
 
   /* Set debugging stuff first, in case we end up doing debuggable stuff
      during this initialization.  */
@@ -500,171 +430,13 @@ kpathsea_set_program_name (kpathsea kpse,  const_string argv0,
     kpse->debug |= atoi (s);
   }
 
-#if defined(WIN32)
-  if (!kpse->File_system_codepage)
-    kpse->File_system_codepage = AreFileApisANSI() ? GetACP() : GetOEMCP();
-  cp = kpse->File_system_codepage;
-  if (cp == 932 || cp == 936 || cp == 950) {
-    kpse->Is_cp932_system = cp;
-  }
-  else
-    kpse->Is_cp932_system = 0;
-
-#if defined(__MINGW32__)
-  /* Set various info about user. Among many things,
-     ensure that HOME is set.  */
-  init_user_info();
-#else /* !__MINGW32__ */
-  kpse->the_passwd.pw_name = kpse->the_passwd_name;
-  kpse->the_passwd.pw_passwd = kpse->the_passwd_passwd;
-  kpse->the_passwd.pw_uid = 0;
-  kpse->the_passwd.pw_gid = 0;
-  kpse->the_passwd.pw_quota = 0;
-  kpse->the_passwd.pw_gecos = kpse->the_passwd_gecos;
-  kpse->the_passwd.pw_dir = kpse->the_passwd_dir;
-  kpse->the_passwd.pw_shell = kpse->the_passwd_shell;
-  kpse->__system_allow_multiple_cmds = 0;
-
-  /* Set various info about user. Among many things,
-     ensure that HOME is set.  */
-  kpathsea_init_user_info(kpse);
-#endif /* !__MINGW32__ */
-
-  /* redirect stderr to debug_output. Easier to send logfiles. */
-  if (debug_output) {
-    int flags =  _O_CREAT | _O_TRUNC | _O_RDWR;
-    err = -1;
-    if (_stricmp(debug_output, "con") == 0
-       || _stricmp(debug_output, "con:") == 0) {
-      err = _fileno(stdout);
-    } else {
-      if (append_debug_output) {
-        flags =  _O_CREAT | _O_APPEND | _O_WRONLY;
-      } else {
-        flags =  _O_CREAT | _O_TRUNC | _O_WRONLY;
-        kpathsea_xputenv(kpse, "KPATHSEA_DEBUG_APPEND", "yes");
-      }
-    }
-
-    if ((err < 0)
-        && (err = _open(debug_output, flags, _S_IREAD | _S_IWRITE)) == -1)
-    {
-      WARNING1 ("kpathsea: Can't open %s for stderr redirection!\n",
-                debug_output);
-      perror (debug_output);
-    } else if ((olderr = _dup(fileno(stderr))) == -1) {
-      WARNING ("kpathsea: Can't dup() stderr!\n");
-      close (err);
-    } else if (_dup2(err, fileno(stderr)) == -1) {
-      WARNING1 ("kpathsea: Can't redirect stderr to %s!\n", debug_output);
-      close (olderr);
-      close (err);
-    } else {
-      close (err);
-    }
-  }
-
-  /* Win95 always gives the short filename for argv0, not the long one.
-     There is only this way to catch it. It makes all the kpse_selfdir
-     stuff useless for win32. */
-  {
-    char short_path[PATH_MAX], path[PATH_MAX], *fp;
-#if !defined(__MINGW32__)
-    HANDLE hnd;
-    WIN32_FIND_DATA ffd;
-#endif
-
-    /* SearchPath() always gives back an absolute directory */
-    if (SearchPath(NULL, argv0, ".exe", PATH_MAX, short_path, &fp) == 0)
-        LIB_FATAL1("Can't determine where the executable %s is.\n", argv0);
-#if defined(__MINGW32__)
-    if (!win32_get_long_filename(short_path, path, sizeof(path))) {
-        LIB_FATAL1("This path points to an invalid file : %s\n", short_path);
-    }
-    /* slashify the dirname */
-    for (fp = path; fp && *fp; fp++)
-        if (IS_DIR_SEP(*fp)) *fp = DIR_SEP;
-#else /* !__MINGW32__ */
-    if (kpathsea_getlongpath(kpse, path, short_path, PATH_MAX) == 0)
-        FATAL1("Can't get long name for %s.\n", short_path);
-    if ((hnd = FindFirstFile(short_path, &ffd)) == INVALID_HANDLE_VALUE)
-        FATAL1("The following path points to an invalid file : %s\n", path);
-    FindClose(hnd);
-    /* dirname aleady slashified in WIN32 */
-#endif /* !__MINGW32__ */
-    /* sdir will be the directory of the executable, ie: c:/TeX/bin */
-    sdir = xdirname(path);
-    kpse->invocation_name = xstrdup(xbasename(path));
-  }
-
-#elif defined(__DJGPP__)
-
-  /* DJGPP programs support long filenames on Windows 95, but ARGV0 there
-     is always made with the short 8+3 aliases of all the pathname elements.
-     If long names are supported, we need to convert that to a long name.
-
-     All we really need is to call `_truename', but most of the code
-     below is required to deal with the special case of networked drives.  */
-  if (pathconf (argv0, _PC_NAME_MAX) > 12) {
-    char long_progname[PATH_MAX];
-
-    if (_truename (argv0, long_progname)) {
-      char *fp;
-
-      if (long_progname[1] != ':') {
-        /* A complication: `_truename' returns network-specific string at
-           the beginning of `long_progname' when the program resides on a
-           networked drive, and DOS calls cannot grok such pathnames.  We
-           need to convert the filesystem name back to a drive letter.  */
-        char rootname[PATH_MAX], rootdir[4];
-
-        if (argv0[0] && argv0[1] == ':')
-          rootdir[0] = argv0[0]; /* explicit drive in `argv0' */
-        else
-          rootdir[0] = getdisk () + 'A';
-        rootdir[1] = ':';
-        rootdir[2] = '\\';
-        rootdir[3] = '\0';
-        if (_truename (rootdir, rootname)) {
-          /* Find out where `rootname' ends in `long_progname' and replace
-             it with the drive letter.  */
-          int root_len = strlen (rootname);
-
-          if (IS_DIR_SEP (rootname[root_len - 1]))
-            root_len--; /* keep the trailing slash */
-          long_progname[0] = rootdir[0];
-          long_progname[1] = ':';
-          memmove (long_progname + 2, long_progname + root_len,
-                   strlen (long_progname + root_len) + 1);
-        }
-      }
-
-      /* Convert everything to canonical form.  */
-      if (long_progname[0] >= 'A' && long_progname[0] <= 'Z')
-        long_progname[0] += 'a' - 'A'; /* make drive lower case, for beauty */
-      for (fp = long_progname; *fp; fp++)
-        if (IS_DIR_SEP (*fp))
-          *fp = DIR_SEP;
-
-      kpse->invocation_name = xstrdup (long_progname);
-    }
-    else
-      /* If `_truename' failed, God help them, because we won't...  */
-      kpse->invocation_name = xstrdup (argv0);
-  }
-  else
-    kpse->invocation_name = xstrdup (argv0);
-
-#else /* !WIN32 && !__DJGPP__ */
   kpse->invocation_name = xstrdup (argv0);
-#endif
 
   /* We need to find SELFAUTOLOC *before* removing the ".exe" suffix from
      the program_name, otherwise the PATH search inside kpse_selfdir will fail,
      since `prog' doesn't exists as a file, there's `prog.exe' instead.  */
-#ifndef WIN32
   sdir = kpathsea_selfdir (kpse, kpse->invocation_name);
-#endif
+
   /* SELFAUTODIR is actually the parent of the invocation directory,
      and SELFAUTOPARENT the grandparent.  This is how teTeX did it.  */
   kpathsea_xputenv (kpse, "SELFAUTOLOC", fix_selfdir (sdir));
@@ -674,10 +446,6 @@ kpathsea_set_program_name (kpathsea kpse,  const_string argv0,
   kpathsea_xputenv (kpse, "SELFAUTOPARENT", fix_selfdir (sdir_grandparent));
   sdir_greatgrandparent = xdirname (sdir_grandparent);
   kpathsea_xputenv (kpse, "SELFAUTOGRANDPARENT", fix_selfdir (sdir_greatgrandparent));
-
-#if defined(WIN32) || defined(__CYGWIN__)
-  mk_suffixlist(kpse);
-#endif /* WIN32 || __CYGWIN__ */
 
   free (sdir);
   free (sdir_parent);
@@ -750,50 +518,3 @@ kpse_program_basename (const_string argv0)
 #endif
   return base;
 }
-
-
-#ifdef TEST
-static const char *tab[] = {
-/* 'normal' names */
-    "/w/kpathsea",
-    "/w//kpathsea",
-    "/w/./kpathsea",
-    ".",
-    "./",
-    "./.",
-    "../kpathsea",
-    "/kpathsea/../foo",
-    "/../w/kpathsea",
-    "/../w/kpathsea/.",
-    "/te/share/texmf/../../../../bin/gnu",
-    NULL
-};
-
-int
-main (int argc, char **argv)
-{
-    const char **p;
-    kpathsea kpse = xcalloc(1, sizeof(kpathsea_instance));
-
-    kpathsea_set_program_name(kpse, argv[0], NULL);
-
-#if defined(WIN32)
-    printf("\n%s: Nothing to do for WIN32\n",
-           kpse->invocation_short_name);
-#else
-    printf("\n%s: name -> remove_dots(name)\n\n",
-           kpse->invocation_short_name);
-
-    for (p = tab; *p; p++) {
-        char *q = xstrdup(*p);
-        char *s = remove_dots(kpse, q);
-
-        printf("%s -> %s\n", q, s);
-        free (q);
-        free (s);
-    }
-#endif
-
-    return 0;
-}
-#endif /* TEST */

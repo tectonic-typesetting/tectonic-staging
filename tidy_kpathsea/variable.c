@@ -18,7 +18,7 @@
 
 #include <tidy_kpathsea/config.h>
 
-#include <tidy_kpathsea/c-ctype.h>
+#include <tidy_kpathsea/pkgw_collected.h>
 #include <tidy_kpathsea/cnf.h>
 #include <tidy_kpathsea/fn.h>
 #include <tidy_kpathsea/expand.h>
@@ -301,10 +301,3 @@ main (int argc, char **argv)
 }
 
 #endif /* TEST */
-
-
-/*
-Local variables:
-standalone-compile-command: "gcc -g -I. -I.. -DTEST variable.c kpathsea.a"
-End:
-*/

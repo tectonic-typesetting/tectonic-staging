@@ -17,7 +17,7 @@
 
 #include <tidy_kpathsea/config.h>
 
-#include <tidy_kpathsea/c-ctype.h>
+#include <tidy_kpathsea/pkgw_collected.h>
 
 
 string

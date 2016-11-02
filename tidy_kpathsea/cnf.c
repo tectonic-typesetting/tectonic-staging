@@ -18,7 +18,7 @@
 
 #include <tidy_kpathsea/config.h>
 #include <tidy_kpathsea/c-fopen.h>
-#include <tidy_kpathsea/c-ctype.h>
+#include <tidy_kpathsea/pkgw_collected.h>
 #include <tidy_kpathsea/c-pathch.h>
 #include <tidy_kpathsea/cnf.h>
 #include <tidy_kpathsea/db.h>

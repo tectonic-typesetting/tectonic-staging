@@ -17,7 +17,7 @@
    along with this library; if not, see <http://www.gnu.org/licenses/>.  */
 
 #include <tidy_kpathsea/config.h>
-#include <tidy_kpathsea/c-ctype.h>
+#include <tidy_kpathsea/pkgw_collected.h>
 
 #include <tidy_kpathsea/hash.h>
 #include <tidy_kpathsea/str-list.h>

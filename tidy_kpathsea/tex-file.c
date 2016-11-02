@@ -33,7 +33,6 @@
 #include <tidy_kpathsea/tex-file.h>
 #include <tidy_kpathsea/tex-make.h>
 #include <tidy_kpathsea/variable.h>
-#include <tidy_kpathsea/c-ctype.h>
 
 /* These are not in the structure
    because it's annoying to initialize lists in C.  */

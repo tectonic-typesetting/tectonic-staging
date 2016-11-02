@@ -38,6 +38,7 @@
 #include <tidy_kpathsea/str-llist.h>
 #include <tidy_kpathsea/tex-file.h>
 #include <tidy_kpathsea/tex-hush.h>
+#include <tidy_kpathsea/tilde.h>
 #include <tidy_kpathsea/variable.h>
 #include <tidy_kpathsea/xstat.h>
 
@@ -1676,3 +1677,94 @@ kpse_make_tex (kpse_file_format_type format,  const_string base)
   return kpathsea_make_tex (kpse_def, format, base);
 }
 #endif
+
+/* tilde.c */
+
+#undef USE_GETPWNAM
+#include <pwd.h>
+#define USE_GETPWNAM 1
+#define HOMEVAR "HOME"
+
+/* If NAME has a leading ~ or ~user, Unix-style, expand it to the user's
+   home directory, and return a new malloced string.  If no ~, or no
+   <pwd.h>, just return NAME.  */
+
+string
+kpathsea_tilde_expand (kpathsea kpse, string name)
+{
+  string expansion;
+  const_string home;
+  const_string prefix;
+
+  (void)kpse; /* currenty not used */
+  assert (name);
+
+  /* If there is a leading "!!", set prefix to "!!", otherwise use
+     the empty string.  After this, we can test whether a prefix was
+     found by checking *prefix, and it is safe to unconditionally
+     prepend it. */
+  if (name[0] == '!' && name[1] == '!') {
+    name += 2;
+    prefix = "!!";
+  } else {
+    prefix = "";
+  }
+
+  /* If no leading tilde, do nothing, and return the original string.  */
+  if (*name != '~'
+     ) {
+    if (*prefix)
+      name -= 2;
+    expansion = name;
+
+  } else {
+    /* If a bare tilde, return the home directory or `.'; if just `~user',
+       return that user's home directory or `.'.  Very unlikely that the
+       directory name will do anyone any good, but ...  */
+    unsigned c;
+
+    /* If `~user' or `~user/', look up user in the passwd database.  */
+    if (name[1] && !IS_DIR_SEP (name[1])) {
+      struct passwd *p;
+      string user;
+      c = 2;
+      while (!IS_DIR_SEP (name[c]) && name[c] != 0) {  /* find user name */
+        c++;
+      }
+
+      user = (string) xmalloc (c);
+      strncpy (user, name + 1, c - 1);
+      user[c - 1] = 0;
+
+      /* We only need the cast here for (deficient) systems
+         which do not declare `getpwnam' in <pwd.h>.  */
+      p = (struct passwd *) getpwnam (user);
+      free (user);
+
+      /* If no such user, just use `.'.  */
+      home = p ? p->pw_dir : ".";
+    } else
+    {
+      c = 1;
+      home = getenv (HOMEVAR);
+      if (!home)
+        home = ".";
+    }
+
+    /* handle leading // */
+    if (IS_DIR_SEP (*home) && IS_DIR_SEP (home[1]))
+      home++;
+
+    /* If HOME ends in /, omit the / in ~/ or ~user/.  */
+    if (name[c]) {
+      if (IS_DIR_SEP (home[strlen (home) - 1]))
+        c++;
+    }
+
+    expansion = concat3 (prefix, home, name + c);
+  }
+
+  /* We may return the same thing as the original, and then we might not
+     be returning a malloc-ed string.  Callers beware.  Sorry.  */
+  return expansion;
+}

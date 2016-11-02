@@ -41,6 +41,7 @@
 #include <tidy_kpathsea/tex-hush.h>
 #include <tidy_kpathsea/tilde.h>
 #include <tidy_kpathsea/variable.h>
+#include <tidy_kpathsea/version.h>
 #include <tidy_kpathsea/xstat.h>
 
 /* absolute.c  */
@@ -2018,3 +2019,14 @@ kpse_var_expand (const_string src)
     return kpathsea_var_expand (kpse_def,src);
 }
 #endif
+
+/* version.c */
+
+const char *kpathsea_version_string = KPSEVERSION;
+
+/* If you are redistributing a modified version of the original
+   distribution, please change this address here, among many other
+   places.  Thanks.  */
+
+const char *kpathsea_bug_address =
+  "Email bug reports to tex-k@tug.org.\n";

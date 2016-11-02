@@ -21,7 +21,6 @@
 
 #include <tidy_kpathsea/c-pathch.h>
 #include <stdarg.h>
-#include <tidy_kpathsea/cnf.h>
 #include <tidy_kpathsea/pkgw_collected.h>
 #include <tidy_kpathsea/concatn.h>
 #include <tidy_kpathsea/default.h>

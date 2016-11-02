@@ -21,7 +21,6 @@
 #include <tidy_kpathsea/c-pathch.h>
 #include <tidy_kpathsea/c-pathmx.h>
 #include <tidy_kpathsea/c-stat.h>
-#include <tidy_kpathsea/cnf.h>
 #include <tidy_kpathsea/concatn.h>
 #include <tidy_kpathsea/db.h>
 #include <tidy_kpathsea/debug.h>

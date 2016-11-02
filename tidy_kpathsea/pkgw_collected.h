@@ -110,6 +110,11 @@ extern "C" {
 extern KPSEDLL boolean kpathsea_absolute_p (kpathsea kpse, const_string filename, boolean relative_ok);
 extern KPSEDLL boolean kpse_absolute_p (const_string filename, boolean relative_ok);
 
+/* cnf.h */
+
+extern KPSEDLL const_string kpathsea_cnf_get (kpathsea kpse, const_string name);
+extern KPSEDLL const_string kpse_cnf_get (const_string var);
+
 #ifdef __cplusplus
 }
 #endif

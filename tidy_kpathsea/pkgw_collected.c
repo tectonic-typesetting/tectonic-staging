@@ -1170,6 +1170,37 @@ read_line (FILE *f)
   return line;
 }
 
+/* make-suffix.c */
+
+string
+make_suffix (const_string s,  const_string suffix)
+{
+  string new_s;
+  const_string dot_pos = strrchr (s, '.');
+  const_string p;
+
+  if (dot_pos)
+    for (p = dot_pos + 1; *p; p++) {
+      if (IS_DIR_SEP (*p)) {
+        dot_pos = NULL;
+        break;
+      }
+    }
+
+  if (dot_pos == NULL)
+    new_s = concat3 (s, ".", suffix);
+  else
+    {
+      unsigned past_dot_index = dot_pos + 1 - s;
+
+      new_s = (string)xmalloc (past_dot_index + strlen (suffix) + 1);
+      strncpy (new_s, s, past_dot_index);
+      strcpy (new_s + past_dot_index, suffix);
+    }
+
+  return new_s;
+}
+
 /* tex-make.c, edited to never do anything */
 
 string

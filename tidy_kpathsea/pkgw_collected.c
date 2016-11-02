@@ -20,6 +20,7 @@
 #include <tidy_kpathsea/pkgw_collected.h>
 #include <tidy_kpathsea/c-pathch.h>
 #include <tidy_kpathsea/cnf.h>
+#include <tidy_kpathsea/concatn.h>
 #include <tidy_kpathsea/db.h>
 #include <tidy_kpathsea/hash.h>
 #include <tidy_kpathsea/line.h>
@@ -296,4 +297,50 @@ concat3 (const_string s1,  const_string s2,  const_string s3)
   if (s3) strcat (answer, s3);
 
   return answer;
+}
+
+/* concat.c */
+
+/* Return the concatenation of S1 and S2.  See `concatn.c' for a
+   `concatn', which takes a variable number of arguments.  */
+
+string
+concat (const_string s1,  const_string s2)
+{
+  unsigned s1len = strlen(s1);
+  unsigned s2len = strlen(s2);
+  string answer = (string) xmalloc (s1len + s2len + 1);
+  strcpy (answer, s1);
+  strcat (answer + s1len, s2);
+
+  return answer;
+}
+
+/* concatn.c */
+
+/* OK, it would be epsilon more efficient to compute the total length
+   and then do the copying ourselves, but I doubt it matters in reality.  */
+
+string
+concatn (const_string str1, ...)
+{
+  string arg;
+  string ret;
+  va_list ap;
+
+  if (!str1)
+    return NULL;
+
+  ret = xstrdup (str1);
+
+  va_start (ap, str1);
+  while ((arg = va_arg (ap, string)) != NULL)
+    {
+      string temp = concat (ret, arg);
+      free (ret);
+      ret = temp;
+    }
+  va_end (ap);
+
+  return ret;
 }

@@ -29,17 +29,6 @@
 
 #include <time.h> /* for `time' */
 
-#ifdef __DJGPP__
-#include <sys/stat.h>   /* for stat bits */
-#endif
-
-#ifdef WIN32
-#undef fputs
-#undef puts
-#define fputs win32_fputs
-#define puts  win32_puts
-#endif
-
 /* The very first search is for texmf.cnf, called when someone tries to
    initialize the TFM path or whatever.  init_path calls kpse_cnf_get
    which calls kpse_all_path_search to find all the texmf.cnf's.  We
@@ -335,29 +324,6 @@ search (kpathsea kpse, const_string path,  const_string original_name,
   string name;
   boolean absolute_p;
 
-#ifdef __DJGPP__
-  /* We will use `stat' heavily, so let's request for
-     the fastest possible version of `stat', by telling
-     it what members of struct stat do we really need.
-
-     We need to set this on each call because this is a
-     library function; the caller might need other options
-     from `stat'.  Thus save the flags and restore them
-     before exit.
-
-     This call tells `stat' that we do NOT need to recognize
-     executable files (neither by an extension nor by a magic
-     signature); that we do NOT need time stamp of root directories;
-     and that we do NOT need the write access bit in st_mode.
-
-     Note that `kpse_set_program_name' needs the EXEC bits,
-     but it was already called by the time we get here.  */
-  unsigned short save_djgpp_flags  = _djstat_flags;
-
-  _djstat_flags = _STAT_EXEC_MAGIC | _STAT_EXEC_EXT
-                  | _STAT_ROOT_TIME | _STAT_WRITEBIT;
-#endif
-
   /* Make a leading ~ count as an absolute filename, and expand $FOO's.  */
   name = kpathsea_expand (kpse, original_name);
 
@@ -399,11 +365,6 @@ search (kpathsea kpse, const_string path,  const_string original_name,
 #endif /* KPSE_DEBUG */
   }
 
-#ifdef __DJGPP__
-  /* Undo any side effects.  */
-  _djstat_flags = save_djgpp_flags;
-#endif
-
   return STR_LIST (ret_list);
 }
 
@@ -423,29 +384,6 @@ kpathsea_path_search_list_generic (kpathsea kpse,
   string elt;
   boolean done = false;
   boolean all_absolute = true;
-
-#ifdef __DJGPP__
-  /* We will use `stat' heavily, so let's request for
-     the fastest possible version of `stat', by telling
-     it what members of struct stat do we really need.
-
-     We need to set this on each call because this is a
-     library function; the caller might need other options
-     from `stat'.  Thus save the flags and restore them
-     before exit.
-
-     This call tells `stat' that we do NOT need to recognize
-     executable files (neither by an extension nor by a magic
-     signature); that we do NOT need time stamp of root directories;
-     and that we do NOT need the write access bit in st_mode.
-
-     Note that `kpse_set_program_name' needs the EXEC bits,
-     but it was already called by the time we get here.  */
-  unsigned short save_djgpp_flags  = _djstat_flags;
-
-  _djstat_flags = _STAT_EXEC_MAGIC | _STAT_EXEC_EXT
-                  | _STAT_ROOT_TIME | _STAT_WRITEBIT;
-#endif
 
   ret_list = str_list_init();
 
@@ -559,11 +497,6 @@ kpathsea_path_search_list_generic (kpathsea kpse,
 #endif /* KPSE_DEBUG */
   }
 
-#ifdef __DJGPP__
-  /* Undo any side effects.  */
-  _djstat_flags = save_djgpp_flags;
-#endif
-
   return STR_LIST (ret_list);
 }
 
@@ -603,61 +536,3 @@ kpse_all_path_search (const_string path,  const_string name)
     return kpathsea_all_path_search (kpse_def,  path, name);
 }
 #endif
-
-
-#ifdef TEST
-
-void
-test_path_search (const_string path, const_string file)
-{
-  string answer;
-  string *answer_list;
-
-  printf ("\nSearch %s for %s:\t", path, file);
-  answer = kpse_path_search (path, file, 0);
-  puts (answer ? answer : "(nil)");
-
-  printf ("Search %s for all %s:\t", path, file);
-  answer_list = kpse_all_path_search (path, file);
-  putchar ('\n');
-  while (*answer_list)
-    {
-      putchar ('\t');
-      puts (*answer_list);
-      answer_list++;
-    }
-}
-
-#define TEXFONTS "/usr/local/lib/tex/fonts"
-
-int
-main (int argc, char **argv)
-{
-  kpse_set_program_name(argv[0], NULL);
-  /* All lists end with NULL.  */
-  test_path_search (".", "nonexistent");
-  test_path_search (".", "/nonexistent");
-  test_path_search ("/k" ENV_SEP_STRING ".", "kpathsea.texi");
-  test_path_search ("/k" ENV_SEP_STRING ".", "/etc/fstab");
-  test_path_search ("." ENV_SEP_STRING TEXFONTS "//", "cmr10.tfm");
-  test_path_search ("." ENV_SEP_STRING TEXFONTS "//", "logo10.tfm");
-  test_path_search (TEXFONTS "//times" ENV_SEP_STRING "."
-                    ENV_SEP_STRING ENV_SEP_STRING, "ptmr.vf");
-  test_path_search (TEXFONTS "/adobe//" ENV_SEP_STRING
-                    "/usr/local/src/TeX+MF/typefaces//", "plcr.pfa");
-
-  test_path_search ("~karl", ".bashrc");
-  test_path_search ("/k", "~karl/.bashrc");
-
-  xputenv ("NONEXIST", "nonexistent");
-  test_path_search (".", "$NONEXISTENT");
-  xputenv ("KPATHSEA", "kpathsea");
-  test_path_search ("/k" ENV_SEP_STRING ".", "$KPATHSEA.texi");
-  test_path_search ("/k" ENV_SEP_STRING ".", "${KPATHSEA}.texi");
-  test_path_search ("$KPATHSEA" ENV_SEP_STRING ".", "README");
-  test_path_search ("." ENV_SEP_STRING "$KPATHSEA", "README");
-
-  return 0;
-}
-
-#endif /* TEST */

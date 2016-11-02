@@ -1024,3 +1024,65 @@ hash_print (hash_table_type table,  boolean summary_only)
           total_buckets ? total_elements / (double) total_buckets : 0.0);
 }
 #endif
+
+/* kdefault.c */
+
+/* Check for leading colon first, then trailing, then doubled, since
+   that is fastest.  Usually it will be leading or trailing.  */
+
+string
+kpathsea_expand_default (kpathsea kpse, const_string path,
+                         const_string fallback)
+{
+  unsigned path_length;
+  string expansion;
+  (void)kpse; /* currenty not used */
+
+  /* The default path better not be null.  */
+  assert (fallback);
+
+  if (path == NULL)
+    expansion = xstrdup (fallback);
+
+  /* Solitary or leading :?  */
+  else if (IS_ENV_SEP (*path))
+    {
+      expansion = path[1] == 0 ? xstrdup (fallback) : concat (fallback, path);
+    }
+
+  /* Sorry about the assignment in the middle of the expression, but
+     conventions were made to be flouted and all that.  I don't see the
+     point of calling strlen twice or complicating the logic just to
+     avoid the assignment (especially now that I've pointed it out at
+     such great length).  */
+  else if (path[(path_length = strlen (path)) - 1] == ENV_SEP)
+    expansion = concat (path, fallback);
+
+  /* OK, not leading or trailing.  Check for doubled.  */
+  else
+    {
+      const_string loc;
+
+      for (loc = path; *loc; loc++)
+        if (IS_ENV_SEP (loc[0]) && IS_ENV_SEP (loc[1]))
+          break;
+      if (*loc)
+        { /* We have a doubled colon.  */
+          expansion = (string)xmalloc (path_length + strlen(fallback) + 1);
+
+          /* Copy stuff up to and including the first colon.  */
+          strncpy (expansion, path, loc - path + 1);
+          expansion[loc - path + 1] = 0;
+
+          /* Copy in FALLBACK, and then the rest of PATH.  */
+          strcat (expansion, fallback);
+          strcat (expansion, loc + 1);
+        }
+      else
+        { /* No doubled colon. */
+          expansion = xstrdup(path);
+        }
+    }
+
+  return expansion;
+}

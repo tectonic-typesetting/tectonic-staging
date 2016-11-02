@@ -161,6 +161,10 @@ extern str_list_type *kpathsea_db_search (kpathsea kpse, const_string name, cons
 extern str_list_type *kpathsea_db_search_list (kpathsea kpse, string* names, const_string  path_elt, boolean all);
 extern void kpathsea_db_insert (kpathsea kpse, const_string fname);
 
+/* default.h */
+
+extern string kpathsea_expand_default (kpathsea kpse, const_string path, const_string dflt);
+
 #ifdef __cplusplus
 }
 #endif

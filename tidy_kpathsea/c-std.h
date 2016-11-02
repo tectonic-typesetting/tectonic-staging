@@ -76,8 +76,9 @@ extern ALLOC_RETURN_TYPE *calloc (), *malloc (), *realloc ();
 
 #include <string.h>
 
-/* Numeric minima and maxima.  */
-#include <tidy_kpathsea/c-minmax.h>
+/* c-minmax.h */
+
+#include <limits.h>
 
 /* Assertions are too useful to not make generally available.  */
 #ifdef HAVE_ASSERT_H

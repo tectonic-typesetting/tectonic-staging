@@ -154,6 +154,13 @@ extern KPSEDLL const_string kpse_cnf_get (const_string var);
 
 extern KPSEDLL string concatn(const_string str1, ...);
 
+/* db.h */
+
+extern void kpathsea_init_db (kpathsea kpse);
+extern str_list_type *kpathsea_db_search (kpathsea kpse, const_string name, const_string path_elt, boolean all);
+extern str_list_type *kpathsea_db_search_list (kpathsea kpse, string* names, const_string  path_elt, boolean all);
+extern void kpathsea_db_insert (kpathsea kpse, const_string fname);
+
 #ifdef __cplusplus
 }
 #endif

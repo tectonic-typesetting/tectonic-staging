@@ -18,7 +18,6 @@
 
 #include <tidy_kpathsea/config.h>
 
-#include <tidy_kpathsea/c-pathch.h>
 #include <tidy_kpathsea/expand.h>
 #include <tidy_kpathsea/fn.h>
 #include <tidy_kpathsea/pathsearch.h>

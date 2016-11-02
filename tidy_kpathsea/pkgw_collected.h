@@ -104,7 +104,41 @@ extern "C" {
 #define O_BINARY 0
 #endif
 #define SET_BINARY(f) (void)0
-    
+
+/* c-pathch.h */
+
+/* What separates filename components?  */
+#ifndef DIR_SEP
+# define DIR_SEP '/'
+# define DIR_SEP_STRING "/"
+#endif
+
+#ifndef IS_DIR_SEP
+#define IS_DIR_SEP(ch) ((ch) == DIR_SEP)
+#endif
+#ifndef IS_DIR_SEP_CH
+#define IS_DIR_SEP_CH(ch) IS_DIR_SEP(ch)
+#endif
+#ifndef IS_DEVICE_SEP /* No `devices' on, e.g., Unix.  */
+#define IS_DEVICE_SEP(ch) 0
+#endif
+#ifndef NAME_BEGINS_WITH_DEVICE
+#define NAME_BEGINS_WITH_DEVICE(name) 0
+#endif
+#ifndef IS_UNC_NAME /* Unc names are in practice found on Win32 only. */
+#define IS_UNC_NAME(name) 0
+#endif
+
+/* What separates elements in environment variable path lists?  */
+#ifndef ENV_SEP
+# define ENV_SEP ':'
+# define ENV_SEP_STRING ":"
+#endif /* not ENV_SEP */
+
+#ifndef IS_ENV_SEP
+#define IS_ENV_SEP(ch) ((ch) == ENV_SEP)
+#endif
+
 /* absolute.h */
 
 extern KPSEDLL boolean kpathsea_absolute_p (kpathsea kpse, const_string filename, boolean relative_ok);

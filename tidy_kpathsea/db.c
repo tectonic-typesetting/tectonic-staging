@@ -19,7 +19,6 @@
 #include <tidy_kpathsea/config.h>
 #include <tidy_kpathsea/pkgw_collected.h>
 #include <tidy_kpathsea/c-stat.h>
-#include <tidy_kpathsea/c-pathch.h>
 #include <tidy_kpathsea/db.h>
 #include <tidy_kpathsea/hash.h>
 #include <tidy_kpathsea/line.h>

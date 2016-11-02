@@ -3,7 +3,7 @@
    output by web2c.  */
 
 #include "cpascal.h"
-#include <tidy_kpathsea/c-pathch.h> /* for IS_DIR_SEP, used in the change files */
+#include <tidy_kpathsea/pkgw_collected.h>
 #include <tidy_kpathsea/tex-make.h> /* for kpse_make_tex_discard_errors */
 
 #ifdef XeTeX

@@ -24,6 +24,8 @@
 #include <tidy_kpathsea/types.h>
 #include <tidy_kpathsea/c-proto.h>
 
+#include <dirent.h>
+#define NAMLEN(dirent) strlen ((dirent)->d_name)
 
 #ifdef __cplusplus
 extern "C" {

@@ -3,7 +3,6 @@
 #include <tidy_kpathsea/config.h>
 #include <tidy_kpathsea/paths.h>
 #include <tidy_kpathsea/pkgw_collected.h>
-#include <tidy_kpathsea/c-dir.h>
 #include <tidy_kpathsea/c-fopen.h>
 #include <tidy_kpathsea/c-namemx.h>
 #include <tidy_kpathsea/c-pathch.h>

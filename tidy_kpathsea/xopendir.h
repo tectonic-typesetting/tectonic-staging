@@ -18,7 +18,7 @@
 #if !defined (KPATHSEA_XOPENDIR_H) && (!defined (WIN32) || defined(__MINGW32__))
 #define KPATHSEA_XOPENDIR_H
 
-#include <tidy_kpathsea/c-dir.h>
+#include <tidy_kpathsea/pkgw_collected.h>
 #include <tidy_kpathsea/c-proto.h>
 #include <tidy_kpathsea/types.h>
 

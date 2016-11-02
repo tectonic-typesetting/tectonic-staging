@@ -18,7 +18,7 @@
 
 #include <tidy_kpathsea/config.h>
 
-#include <tidy_kpathsea/c-dir.h>
+#include <tidy_kpathsea/pkgw_collected.h>
 #include <tidy_kpathsea/c-stat.h>
 #include <tidy_kpathsea/hash.h>
 #include <tidy_kpathsea/pathsearch.h>

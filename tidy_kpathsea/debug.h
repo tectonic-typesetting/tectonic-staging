@@ -26,7 +26,15 @@
 #include <math.h>
 #include <stdio.h>
 #include <stdarg.h>
-#include <tidy_kpathsea/c-unistd.h>
+#include <tidy_kpathsea/systypes.h>
+#include <unistd.h>
+#include <math.h>
+#include <stdio.h>
+#include <stdarg.h>
+#include <stdlib.h>
+#include <string.h>
+#include <limits.h>
+#include <assert.h>
 #include <stdlib.h>
 #include <string.h>
 #include <limits.h>

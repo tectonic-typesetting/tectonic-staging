@@ -30,6 +30,7 @@
 #include <tidy_kpathsea/pathsearch.h>
 #include <tidy_kpathsea/tex-file.h>
 #include <tidy_kpathsea/variable.h>
+#include <tidy_kpathsea/xstat.h>
 
 /* absolute.c  */
 
@@ -480,4 +481,21 @@ extend_filename (const_string name, const_string default_suffix)
   new_s = suffix == NULL ? concat3 (name, ".", default_suffix)
                          : name;
   return new_s;
+}
+
+/* file-p.c */
+
+/* Test whether FILENAME1 and FILENAME2 are actually the same file.  If
+   stat fails on either of the names, we return false, without error.  */
+
+boolean
+same_file_p (const_string filename1,  const_string filename2)
+{
+    struct stat sb1, sb2;
+    /* These are put in variables only so the results can be inspected
+       under gdb.  */
+    int r1 = stat (filename1, &sb1);
+    int r2 = stat (filename2, &sb2);
+
+    return r1 == 0 && r2 == 0 ? SAME_FILE_P (sb1, sb2) : false;
 }

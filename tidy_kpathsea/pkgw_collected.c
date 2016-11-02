@@ -1405,6 +1405,27 @@ kpse_readable_file (string name)
 }
 #endif
 
+/* rm-suffix.c */
+
+string
+remove_suffix (const_string s)
+{
+  string ret;
+  const_string suffix = find_suffix (s);
+
+  if (suffix)
+    {
+      /* Back up to before the dot.  */
+      suffix--;
+      ret = (string) xmalloc (suffix - s + 1);
+      strncpy (ret, s, suffix - s);
+      ret[suffix - s] = 0;
+    }
+  else
+    ret = xstrdup (s);
+
+  return ret;
+}
 
 /* tex-make.c, edited to never do anything */
 

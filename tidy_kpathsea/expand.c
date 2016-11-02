@@ -24,7 +24,6 @@
 #include <tidy_kpathsea/pathsearch.h>
 #include <tidy_kpathsea/tilde.h>
 #include <tidy_kpathsea/variable.h>
-#include <tidy_kpathsea/concatn.h>
 #include <tidy_kpathsea/pkgw_collected.h>
 #include <tidy_kpathsea/str-list.h>
 

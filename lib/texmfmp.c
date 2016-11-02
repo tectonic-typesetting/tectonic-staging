@@ -17,9 +17,6 @@
 #include <tidy_kpathsea/readable.h>
 #include <tidy_kpathsea/variable.h>
 #include <tidy_kpathsea/pkgw_collected.h>
-#ifdef WIN32
-#include <tidy_kpathsea/concatn.h>
-#endif
 
 #if defined (HAVE_SYS_TIME_H)
 #include <sys/time.h>

@@ -65,9 +65,6 @@ authorization from the copyright holders.
 #include <tidy_kpathsea/readable.h>
 #include <tidy_kpathsea/variable.h>
 #include <tidy_kpathsea/pkgw_collected.h>
-#if defined(WIN32)
-#include <tidy_kpathsea/concatn.h>
-#endif
 
 #include <math.h> /* for fabs() */
 

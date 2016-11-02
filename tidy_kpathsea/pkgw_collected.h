@@ -115,6 +115,10 @@ extern KPSEDLL boolean kpse_absolute_p (const_string filename, boolean relative_
 extern KPSEDLL const_string kpathsea_cnf_get (kpathsea kpse, const_string name);
 extern KPSEDLL const_string kpse_cnf_get (const_string var);
 
+/* concatn.h */
+
+extern KPSEDLL string concatn(const_string str1, ...);
+
 #ifdef __cplusplus
 }
 #endif

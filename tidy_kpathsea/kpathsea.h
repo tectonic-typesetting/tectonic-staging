@@ -12,7 +12,6 @@
 #include <tidy_kpathsea/expand.h>
 #include <tidy_kpathsea/getopt.h>
 #include <tidy_kpathsea/line.h>
-#include <tidy_kpathsea/magstep.h>
 #include <tidy_kpathsea/pathsearch.h>
 #include <tidy_kpathsea/proginit.h>
 #include <tidy_kpathsea/readable.h>

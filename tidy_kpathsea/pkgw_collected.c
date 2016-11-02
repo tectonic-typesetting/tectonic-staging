@@ -42,6 +42,7 @@
 #include <tidy_kpathsea/tilde.h>
 #include <tidy_kpathsea/variable.h>
 #include <tidy_kpathsea/version.h>
+#include <tidy_kpathsea/xopendir.h>
 #include <tidy_kpathsea/xstat.h>
 
 /* absolute.c  */
@@ -2030,3 +2031,383 @@ const char *kpathsea_version_string = KPSEVERSION;
 
 const char *kpathsea_bug_address =
   "Email bug reports to tex-k@tug.org.\n";
+
+/* x*.c */
+
+/* Return NAME with any leading path stripped off.  This returns a
+   pointer into NAME.  For example, `basename ("/foo/bar.baz")'
+   returns "bar.baz".  */
+
+const_string
+xbasename (const_string name)
+{
+    const_string base = name;
+    const_string p;
+
+    if (NAME_BEGINS_WITH_DEVICE(name))
+        base += 2;
+
+    else if (IS_UNC_NAME(name)) {
+        unsigned limit;
+
+        for (limit = 2; name[limit] && !IS_DIR_SEP (name[limit]); limit++)
+            ;
+        if (name[limit++] && name[limit] && !IS_DIR_SEP (name[limit])) {
+            for (; name[limit] && !IS_DIR_SEP (name[limit]); limit++)
+                ;
+        } else
+            /* malformed UNC name, backup */
+            limit = 0;
+        base += limit;
+    }
+
+    for (p = base; *p; p++) {
+        if (IS_DIR_SEP(*p))
+            base = p + 1;
+    }
+
+    return base;
+}
+
+void *
+xcalloc (size_t nelem,  size_t elsize)
+{
+    void *new_mem = (void*)calloc(nelem ? nelem : 1, elsize ? elsize : 1);
+
+    if (new_mem == NULL) {
+        fprintf(stderr,
+                "xcalloc: request for %lu elements of size %lu failed.\n",
+                (unsigned long)nelem, (unsigned long)elsize);
+        exit(EXIT_FAILURE);
+    }
+
+    return new_mem;
+}
+
+string
+xdirname (const_string name)
+{
+    string ret;
+    unsigned limit = 0, loc;
+
+    /* Ignore a NULL name. */
+    if (!name)
+        return NULL;
+
+    if (NAME_BEGINS_WITH_DEVICE(name)) {
+        limit = 2;
+    } else if (IS_UNC_NAME(name)) {
+        for (limit = 2; name[limit] && !IS_DIR_SEP (name[limit]); limit++)
+            ;
+        if (name[limit++] && name[limit] && !IS_DIR_SEP (name[limit])) {
+            for (; name[limit] && !IS_DIR_SEP (name[limit]); limit++)
+                ;
+            limit--;
+        } else
+            /* malformed UNC name, backup */
+            limit = 0;
+    }
+
+    if (loc == limit) {
+        if (limit == 0)
+            ret = xstrdup (".");
+        else if (limit == 2) {
+            ret = (string)xmalloc(4);
+            ret[0] = name[0];
+            ret[1] = name[1];
+            ret[2] = '.';
+            ret[3] = '\0';
+        } else {
+            /* UNC name is "//server/share".  */
+            ret = xstrdup (name);
+        }
+    } else {
+        /* If have ///a, must return /, so don't strip off everything.  */
+        while (loc > limit+1 && IS_DIR_SEP (name[loc-1])) {
+            loc--;
+        }
+        ret = (string)xmalloc(loc+1);
+        strncpy(ret, name, loc);
+        ret[loc] = '\0';
+    }
+
+    return ret;
+}
+
+FILE *
+xfopen (const_string filename,  const_string mode)
+{
+    FILE *f;
+
+    assert(filename && mode);
+
+    f = fopen(filename, mode);
+    if (f == NULL)
+        FATAL_PERROR(filename);
+
+    return f;
+}
+
+
+void
+xfclose (FILE *f,  const_string filename)
+{
+    assert(f);
+
+    if (fclose(f) == EOF)
+        FATAL_PERROR(filename);
+
+}
+
+void
+xfseek (FILE *f,  long offset,  int wherefrom,  const_string filename)
+{
+  if (fseek (f, offset, wherefrom) < 0) {
+        FATAL_PERROR(filename);
+  }
+}
+
+void
+xfseeko (FILE *f,  off_t offset,  int wherefrom,  const_string filename)
+{
+  if (fseeko (f, offset, wherefrom) < 0) {
+        FATAL_PERROR(filename);
+  }
+}
+
+long
+xftell (FILE *f,  const_string filename)
+{
+    long where = ftell (f);
+
+    if (where < 0)
+        FATAL_PERROR(filename);
+
+    return where;
+}
+
+off_t
+xftello (FILE *f,  const_string filename)
+{
+    off_t where = ftello (f);
+
+    if (where < 0)
+        FATAL_PERROR(filename);
+
+    return where;
+}
+
+static void
+xchdir (string dirname)
+{
+    if (chdir(dirname) != 0)
+        FATAL_PERROR(dirname);
+}
+
+
+/* Return the pathname of the current directory, or give a fatal error.  */
+
+string
+xgetcwd (void)
+{
+    /* If the system provides getcwd, use it.  If not, use getwd if
+       available.  But provide a way not to use getcwd: on some systems
+       getcwd forks, which is expensive and may in fact be impossible for
+       large programs like tex.  If your system needs this define and it
+       is not detected by configure, let me know.
+                                       -- Olaf Weber <infovore@xs4all.nl */
+    char path[PATH_MAX + 1];
+
+    if (getcwd (path, PATH_MAX + 1) == NULL) {
+        FATAL_PERROR ("getcwd");
+    }
+
+    return xstrdup (path);
+}
+
+void *
+xmalloc (size_t size)
+{
+    void *new_mem = (void *)malloc(size ? size : 1);
+
+    if (new_mem == NULL) {
+        fprintf(stderr, "fatal: memory exhausted (xmalloc of %lu bytes).\n",
+                (unsigned long)size);
+        exit(EXIT_FAILURE);
+    }
+
+    return new_mem;
+}
+
+DIR *
+xopendir (const_string dirname)
+{
+    DIR *d = opendir(dirname);
+
+    if (d == NULL)
+        FATAL_PERROR(dirname);
+
+    return d;
+}
+
+void
+xclosedir (DIR *d)
+{
+    int ret = closedir(d);
+
+    if (ret != 0)
+        FATAL("closedir failed");
+}
+
+/*
+ * We have different arguments from the "standard" function.  A separate
+ * var and value tends to be much more practical.
+ *
+ * The standards for putenv are clear: put the passed string into the
+ * environment, and if you alter that string, the environment changes.
+ * Of course various implementations are broken in a number of ways,
+ * which include making copies of the passed string, and more.
+ */
+void
+kpathsea_xputenv(kpathsea kpse, const char *var, const char *value)
+{
+    char  *cur_item;
+    char  *old_item;
+    char  *new_item;
+    size_t var_lim;
+    int    cur_loc;
+
+    /* kpse_debug2(KPSE_DEBUG_VARS, "kpse_putenv($%s,%s)", var, value); */
+
+    old_item = NULL;
+    cur_item = concat3(var, "=", value);
+    /* Include '=' in length. */
+    var_lim = strlen(var) + 1;
+
+    /* Have we stored something for this value already?  */
+    for (cur_loc = 0; cur_loc != kpse->saved_count; ++cur_loc) {
+        if (strncmp(kpse->saved_env[cur_loc], cur_item, var_lim) == 0) {
+            /* Get the old value.  We need this is case another part
+             * of the program didn't use us to change the environment.
+             */
+            old_item = getenv(var);
+            break;
+        }
+    }
+
+    if (old_item && strcmp(old_item, cur_item+var_lim) == 0) {
+        /* Set same value as is in environment, don't bother to set. */
+        free(cur_item);
+        return;
+    } else {
+        /* We set a different value. */
+        if (putenv(cur_item) < 0)
+            LIB_FATAL1("putenv(%s)", cur_item);
+        /* Get the new string. */
+        new_item = getenv(var);
+        if (new_item != cur_item+var_lim) {
+            /* Our new string isn't used, don't keep it around. */
+            free(cur_item);
+            return;
+        }
+    }
+
+    /* If we get here, it means getenv() returned a reference to cur_item.
+       So we save cur_item, and free the old string we also owned.  */
+    if (cur_loc == kpse->saved_count) {
+      /* No old string. */
+      kpse->saved_count++;
+      XRETALLOC(kpse->saved_env, kpse->saved_count, char *);
+    } else {
+      /* We owned the old string. */
+      free(kpse->saved_env[cur_loc]);
+    }
+    kpse->saved_env[cur_loc] = cur_item;
+
+    return;
+}
+
+/* A special case for setting a variable to a numeric value
+   (specifically, KPATHSEA_DPI).  We don't need to dynamically allocate
+   and free the string for the number, since it's saved as part of the
+   environment value.  */
+
+void
+kpathsea_xputenv_int (kpathsea kpse, const_string var_name,  int num)
+{
+  char str[MAX_INT_LENGTH];
+  sprintf (str, "%d", num);
+
+  kpathsea_xputenv (kpse, var_name, str);
+}
+
+#if defined (KPSE_COMPAT_API)
+void
+xputenv (const char *var, const char *value)
+{
+  kpathsea_xputenv (kpse_def, var, value);
+}
+
+void
+xputenv_int (const_string var_name,  int num)
+{
+  kpathsea_xputenv_int(kpse_def, var_name, num);
+}
+#endif
+
+void *
+xrealloc (void *old_ptr, size_t size)
+{
+    void *new_mem;
+
+    if (old_ptr == NULL) {
+        new_mem = xmalloc(size);
+    } else {
+        new_mem = (void *)realloc(old_ptr, size ? size : 1);
+        if (new_mem == NULL) {
+            /* We used to print OLD_PTR here using %x, and casting its
+               value to unsigned, but that lost on the Alpha, where
+               pointers and unsigned had different sizes.  Since the info
+               is of little or no value anyway, just don't print it.  */
+            fprintf(stderr,
+                    "fatal: memory exhausted (realloc of %lu bytes).\n",
+                    (unsigned long)size);
+            exit(EXIT_FAILURE);
+        }
+    }
+
+    return new_mem;
+}
+
+struct stat
+xstat (const_string path)
+{
+    struct stat s;
+
+    if (stat(path, &s) != 0)
+        FATAL_PERROR(path);
+
+    return s;
+}
+
+/*
+// We declared lstat to prevent a warning during development.  This
+// turns out to be more trouble than it is worth.
+// extern int lstat ();
+*/
+struct stat
+xlstat (const_string path)
+{
+    struct stat s;
+
+    if (lstat(path, &s) != 0)
+        FATAL_PERROR(path);
+    return s;
+}
+
+string
+xstrdup (const_string s)
+{
+  string new_string = (string)xmalloc(strlen (s) + 1);
+  return strcpy(new_string, s);
+}

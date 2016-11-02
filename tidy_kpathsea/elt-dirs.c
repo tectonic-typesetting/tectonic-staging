@@ -102,26 +102,12 @@ static void expand_elt (kpathsea, str_llist_type *, string, unsigned);
    subdirectories of ELT (up to ELT_LENGTH, which must be a /) to
    STR_LIST_PTR.  */
 
-#ifdef WIN32
-/* Shared across recursive calls, it acts like a stack. */
-static char dirname[MAX_PATH*2];
-static wchar_t dirnamew[MAX_PATH];
-static char *potname;
-#endif
-
 static void
 do_subdir (kpathsea kpse, str_llist_type *str_list_ptr, string elt,
               unsigned elt_length, string post)
 {
-#ifdef WIN32
-  WIN32_FIND_DATAW find_file_data;
-  HANDLE hnd;
-  int proceed;
-  int nlinks = 2;
-#else
   DIR *dir;
   struct dirent *e;
-#endif /* not WIN32 */
   fn_type name;
 
   /* Some old compilers don't allow aggregate initialization.  */
@@ -129,87 +115,6 @@ do_subdir (kpathsea kpse, str_llist_type *str_list_ptr, string elt,
 
   assert (IS_DIR_SEP_CH (elt[elt_length - 1])
           || IS_DEVICE_SEP (elt[elt_length - 1]));
-
-#if defined (WIN32)
-  strcpy(dirname, FN_STRING(name));
-  strcat(dirname, "/*.*");         /* "*.*" or "*" -- seems equivalent. */
-  get_wstring_from_mbstring(kpse->File_system_codepage, dirname, dirnamew);
-  hnd = FindFirstFileW(dirnamew, &find_file_data);
-
-  if (hnd == INVALID_HANDLE_VALUE) {
-    fn_free(&name);
-    return;
-  }
-
-  /* Include top level before subdirectories, if nothing to match.  */
-  if (*post == 0)
-    dir_list_add (str_list_ptr, FN_STRING (name));
-  else {
-    /* If we do have something to match, see if it exists.  For
-       example, POST might be `pk/ljfour', and they might have a
-       directory `$TEXMF/fonts/pk/ljfour' that we should find.  */
-    fn_str_grow (&name, post);
-    expand_elt (kpse, str_list_ptr, FN_STRING (name), elt_length);
-    fn_shrink_to (&name, elt_length);
-  }
-  proceed = 1;
-  while (proceed) {
-    if (find_file_data.cFileName[0] != L'.') {
-      int links;
-
-      /* Construct the potential subdirectory name.  */
-      potname = get_mbstring_from_wstring(kpse->File_system_codepage, find_file_data.cFileName, potname=NULL);
-      fn_str_grow (&name, potname);
-      free(potname);
-
-      /* Maybe we have cached the leafness of this directory.
-                 The function will return 0 if unknown,
-                 else the actual (Unix-like) value. */
-      links = kpathsea_dir_links (kpse, FN_STRING (name), 0);
-
-      if (find_file_data.dwFileAttributes & FILE_ATTRIBUTE_DIRECTORY) {
-        unsigned potential_len = FN_LENGTH (name);
-        /* in any case, compute the leafness */
-        nlinks++;
-
-        /* It's a directory, so append the separator.  */
-        fn_str_grow (&name, DIR_SEP_STRING);
-        if (*post != 0) {
-          fn_str_grow (&name, post);
-          /* Unfortunately we can't check if the new element is
-             a leaf directory, because we don't have a directory
-             name here, we just have a path spec. This means we
-             may descend into a leaf directory cm/pk, if the
-             spec is ...fonts//pk//.  */
-          expand_elt (kpse, str_list_ptr, FN_STRING (name), potential_len);
-          fn_shrink_to (&name, potential_len);
-        }
-        /* Should we recurse?  To see if the subdirectory is a
-           leaf, check if it has two links (one for . and one for
-           ..).  This means that symbolic links to directories do
-           not affect the leaf-ness.  This is arguably wrong, but
-           the only alternative I know of is to stat every entry
-           in the directory, and that is unacceptably slow. */
-
-        if (links == 0 || links > 2)
-          /* All criteria are met; find subdirectories.  */
-        do_subdir (kpse, str_list_ptr, FN_STRING (name),
-                     potential_len, post);
-        else if (*post == 0)
-          /* Nothing to match, no recursive subdirectories to
-             look for: we're done with this branch.  Add it.  */
-          dir_list_add (str_list_ptr, FN_STRING (name));
-      }
-      fn_shrink_to (&name, elt_length);
-    }
-    proceed = FindNextFileW (hnd, &find_file_data);
-  }
-  /* Update the leafness of name. */
-  kpathsea_dir_links(kpse, FN_STRING(name), nlinks);
-  fn_free (&name);
-  FindClose(hnd);
-
-#else /* not WIN32 */
 
   /* If we can't open it, quit.  */
   dir = opendir (FN_STRING (name));
@@ -301,7 +206,6 @@ do_subdir (kpathsea kpse, str_llist_type *str_list_ptr, string elt,
 
   fn_free (&name);
   xclosedir (dir);
-#endif /* not WIN32 */
 }
 
 
@@ -363,15 +267,6 @@ kpathsea_normalize_path (kpathsea kpse, string elt)
 {
   unsigned ret;
   unsigned i;
-
-#if defined(WIN32)
-  for (i = 0; elt[i]; i++) {
-    if (elt[i] == '\\')
-      elt[i] = '/';
-    else if (kpathsea_IS_KANJI(kpse, elt + i))
-      i++;
-  }
-#endif
 
   if (NAME_BEGINS_WITH_DEVICE(elt)) {
     if (*elt >= 'A' && *elt <= 'Z')
@@ -447,67 +342,3 @@ kpathsea_element_dirs (kpathsea kpse, string elt)
 
   return ret;
 }
-
-#ifdef TEST
-
-void
-print_element_dirs (const_string elt)
-{
-  str_llist_type *dirs;
-
-  printf ("Directories of %s:\t", elt ? elt : "(nil)");
-  fflush (stdout);
-
-  dirs = kpathsea_element_dirs (kpse_def, elt);
-
-  if (!dirs)
-    printf ("(nil)");
-  else
-    {
-      str_llist_elt_type *dir;
-      for (dir = *dirs; dir; dir = STR_LLIST_NEXT (*dir))
-        {
-          string d = STR_LLIST (*dir);
-          printf ("%s ", *d ? d : "`'");
-        }
-    }
-
-  putchar ('\n');
-}
-
-int
-main ()
-{
-  /* DEBUG_SET (DEBUG_STAT); */
-  /* All lists end with NULL.  */
-  print_element_dirs (NULL);    /* */
-  print_element_dirs ("");      /* ./ */
-  print_element_dirs ("/k");    /* */
-  print_element_dirs (".//");   /* ./ ./archive/ */
-  print_element_dirs (".//archive");    /* ./ ./archive/ */
-#ifdef AMIGA
-  print_element_dirs ("TeXMF:AmiWeb2c/texmf/fonts//"); /* lots */
-  print_element_dirs ("TeXMF:AmiWeb2c/share/texmf/fonts//bakoma"); /*just one*/
-  print_element_dirs ("TeXMF:AmiWeb2c/texmf/fonts//"); /* lots again [cache] */
-  print_element_dirs ("TeXMF:");        /* TeXMF: */
-  print_element_dirs ("TeXMF:/");       /* TeXMF: and all subdirs */
-#else /* not AMIGA */
-  print_element_dirs ("/tmp/fonts//");  /* no need to stat anything */
-  print_element_dirs ("/usr/local/lib/tex/fonts//");      /* lots */
-  print_element_dirs ("/usr/local/lib/tex/fonts//times"); /* just one */
-  print_element_dirs ("/usr/local/lib/tex/fonts//"); /* lots again [cache] */
-  print_element_dirs ("~karl");         /* tilde expansion */
-  print_element_dirs ("$karl");         /* variable expansion */
-  print_element_dirs ("~${LOGNAME}");   /* both */
-#endif /* not AMIGA */
-  return 0;
-}
-
-#endif /* TEST */
-
-
-/*
-Local variables:
-standalone-compile-command: "gcc -g -I. -I.. -DTEST elt-dirs.c kpathsea.a"
-End:
-*/

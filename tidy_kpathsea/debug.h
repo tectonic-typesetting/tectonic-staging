@@ -23,7 +23,14 @@
 #ifndef NO_DEBUG
 
 #include <tidy_kpathsea/c-proto.h>
-#include <tidy_kpathsea/c-std.h>
+#include <math.h>
+#include <stdio.h>
+#include <stdarg.h>
+#include <tidy_kpathsea/c-unistd.h>
+#include <stdlib.h>
+#include <string.h>
+#include <limits.h>
+#include <assert.h>
 #include <tidy_kpathsea/types.h>
 
 #if defined(WIN32)

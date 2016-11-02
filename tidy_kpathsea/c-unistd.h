@@ -31,7 +31,15 @@
 #include <unistd.h>
 #endif
 
-#include <tidy_kpathsea/c-std.h>
+/* c-std.h */
+
+#include <math.h>
+#include <stdio.h>
+#include <stdarg.h>
+#include <stdlib.h>
+#include <string.h>
+#include <limits.h>
+#include <assert.h>
 
 /* For fseek.  */
 #ifndef SEEK_SET

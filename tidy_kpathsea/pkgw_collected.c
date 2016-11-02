@@ -468,3 +468,16 @@ dir_links (const_string fn, long nlinks)
     return kpathsea_dir_links (kpse_def, fn, nlinks);
 }
 #endif
+
+/* extend-fname.c */
+
+const_string
+extend_filename (const_string name, const_string default_suffix)
+{
+  const_string new_s;
+  const_string suffix = find_suffix (name);
+
+  new_s = suffix == NULL ? concat3 (name, ".", default_suffix)
+                         : name;
+  return new_s;
+}

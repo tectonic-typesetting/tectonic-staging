@@ -83,7 +83,36 @@ typedef struct {
 #endif
 
 
-#include <tidy_kpathsea/hash.h>
+/* hash.h */
+
+typedef struct hash_element_struct
+{
+  const_string key;
+  const_string value;
+  struct hash_element_struct *next;
+} hash_element_type;
+
+typedef struct
+{
+  hash_element_type **buckets;
+  unsigned size;
+} hash_table_type;
+
+#ifdef __cplusplus
+extern "C" {
+#endif
+
+extern KPSEDLL hash_table_type hash_create (unsigned size);
+extern KPSEDLL void hash_insert (hash_table_type *table, const_string key, const_string value);
+extern void hash_insert_normalized (hash_table_type *table, const_string key, const_string value);
+extern KPSEDLL void hash_remove (hash_table_type *table,  const_string key, const_string value);
+extern KPSEDLL const_string *hash_lookup (hash_table_type table, const_string key);
+extern void hash_print (hash_table_type table, boolean summary_only);
+
+#ifdef __cplusplus
+}
+#endif
+
 #include <tidy_kpathsea/str-list.h>
 
 #ifdef __cplusplus

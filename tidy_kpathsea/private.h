@@ -505,6 +505,45 @@ extern KPSEDLL string kpse_find_glyph (const_string font_name, unsigned dpi,
 
 extern KPSEDLL boolean kpse_bitmap_tolerance (double dpi1, double dpi2);
 
+/* tex-hush.h */
+
+extern KPSEDLL boolean kpathsea_tex_hush (kpathsea kpse, const_string what);
+extern KPSEDLL boolean kpse_tex_hush (const_string what);
+
+/* tex-make.h */
+
+extern KPSEDLL string kpathsea_make_tex (kpathsea kpse,
+                                 kpse_file_format_type format,
+                                 const_string base_file);
+extern KPSEDLL string kpse_make_tex (kpse_file_format_type format,
+                             const_string base_file);
+
+/* tilde.h */
+
+extern string kpathsea_tilde_expand (kpathsea kpse, string filename);
+
+/* variable.h */
+
+extern KPSEDLL string kpathsea_var_value (kpathsea kpse, const_string var);
+extern KPSEDLL string kpathsea_var_expand (kpathsea kpse, const_string src);
+extern KPSEDLL string kpse_var_expand (const_string src);
+
+/* version.h */
+
+extern KPSEDLL const char *kpathsea_bug_address;
+
+/* xopendir.h */
+
+extern DIR *xopendir (const_string dirname);
+extern void xclosedir (DIR *);
+
+/* xstat.h */
+
+#define SAME_FILE_P(s1, s2) ((s1).st_ino == (s2).st_ino && (s1).st_dev == (s2).st_dev)
+
+extern struct stat xstat (const_string path);
+extern struct stat xlstat (const_string path);
+
 /* internal utilities */
 
 extern KPSEDLL string uppercasify (const_string s);

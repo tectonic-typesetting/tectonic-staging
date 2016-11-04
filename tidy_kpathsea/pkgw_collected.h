@@ -414,6 +414,11 @@ extern KPSEDLL string kpathsea_var_expand (kpathsea kpse, const_string src);
 extern KPSEDLL string kpse_var_value (const_string var);
 extern KPSEDLL string kpse_var_expand (const_string src);
 
+/* version.h */
+
+extern KPSEDLL const char *kpathsea_version_string;
+extern KPSEDLL const char *kpathsea_bug_address;
+
 #ifdef __cplusplus
 }
 #endif

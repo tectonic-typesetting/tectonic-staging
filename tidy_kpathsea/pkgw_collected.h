@@ -390,6 +390,11 @@ extern KPSEDLL string kpse_find_glyph (const_string font_name, unsigned dpi,
 
 extern KPSEDLL boolean kpse_bitmap_tolerance (double dpi1, double dpi2);
 
+/* tex-hush.h */
+
+extern KPSEDLL boolean kpathsea_tex_hush (kpathsea kpse, const_string what);
+extern KPSEDLL boolean kpse_tex_hush (const_string what);
+
 #ifdef __cplusplus
 }
 #endif

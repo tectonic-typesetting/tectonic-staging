@@ -419,6 +419,11 @@ extern KPSEDLL string kpse_var_expand (const_string src);
 extern KPSEDLL const char *kpathsea_version_string;
 extern KPSEDLL const char *kpathsea_bug_address;
 
+/* xopendir.h */
+
+extern DIR *xopendir (const_string dirname);
+extern void xclosedir (DIR *);
+
 #ifdef __cplusplus
 }
 #endif

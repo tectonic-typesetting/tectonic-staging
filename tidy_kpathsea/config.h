@@ -228,7 +228,6 @@ extern KPSEDLL address xcalloc (size_t nelem, size_t elsize);
 #endif
 
 #include <tidy_kpathsea/types.h>    /* <sys/types.h>, boolean, string, etc. */
-#include <tidy_kpathsea/progname.h> /* for kpse_invocation_*name */
 
 #define ST_NLINK_TRICK
 

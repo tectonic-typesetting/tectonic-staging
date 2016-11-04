@@ -283,6 +283,14 @@ extern KPSEDLL void kpathsea_init_prog (kpathsea kpse, const_string prefix, unsi
 extern KPSEDLL void kpse_init_prog (const_string prefix,  unsigned dpi,  const_string mode,
 				    const_string fallback);
 
+/* progname.h */
+
+extern KPSEDLL string kpathsea_selfdir (kpathsea kpse, const_string argv0);
+extern KPSEDLL void kpathsea_set_program_name (kpathsea kpse, const_string argv0, const_string progname);
+extern KPSEDLL string kpse_selfdir (const_string argv0);
+extern KPSEDLL void kpse_set_program_name (const_string argv0, const_string progname);
+extern KPSEDLL string kpse_program_basename (const_string argv0);
+
 #ifdef __cplusplus
 }
 #endif

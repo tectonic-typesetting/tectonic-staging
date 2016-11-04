@@ -104,62 +104,8 @@ typedef void *address;
 extern "C" {
 #endif
 
-/* str-llist.h */
-
-struct str_llist_elt
-{
-  string str;
-  boolean moved;
-  struct str_llist_elt *next;
-};
-
-typedef struct str_llist_elt str_llist_elt_type;
-typedef struct str_llist_elt *str_llist_type;
-
-#define STR_LLIST(sl) ((sl).str)
-#define STR_LLIST_MOVED(sl) ((sl).moved)
-#define STR_LLIST_NEXT(sl) ((sl).next)
-
-extern void str_llist_add (str_llist_type *l, string e);
-extern void str_llist_float (str_llist_type *l, str_llist_elt_type *e);
-
-/* end str-llist.h */
-
 typedef void (*p_record_input) (const_string);
 typedef void (*p_record_output) (const_string);
-
-typedef struct
-{
-  const_string key;
-  str_llist_type *value;
-} cache_entry;
-
-typedef struct {
-  const_string var;
-  boolean expanding;
-} expansion_type;
-
-/* hash.h */
-
-typedef struct hash_element_struct
-{
-  const_string key;
-  const_string value;
-  struct hash_element_struct *next;
-} hash_element_type;
-
-typedef struct
-{
-  hash_element_type **buckets;
-  unsigned size;
-} hash_table_type;
-
-extern KPSEDLL hash_table_type hash_create (unsigned size);
-extern KPSEDLL void hash_insert (hash_table_type *table, const_string key, const_string value);
-extern void hash_insert_normalized (hash_table_type *table, const_string key, const_string value);
-extern KPSEDLL void hash_remove (hash_table_type *table,  const_string key, const_string value);
-extern KPSEDLL const_string *hash_lookup (hash_table_type table, const_string key);
-extern void hash_print (hash_table_type table, boolean summary_only);
 
 /* from old tex-file.h */
 
@@ -586,13 +532,8 @@ extern KPSEDLL string read_line (FILE *f);
 
 /* pathsearch.h */
 
-extern string kpathsea_path_element (kpathsea kpse, const_string path);
-extern string kpathsea_filename_component (kpathsea kpse, const_string path);
-extern unsigned kpathsea_normalize_path (kpathsea kpse, string elt);
-extern str_llist_type *kpathsea_element_dirs (kpathsea kpse, string elt);
 extern KPSEDLL string kpathsea_path_search (kpathsea kpse, const_string path, const_string name, boolean must_exist);
 extern KPSEDLL string *kpathsea_all_path_search (kpathsea kpse, const_string path, const_string name);
-extern string *kpathsea_path_search_list_generic (kpathsea kpse, const_string path, string* names, boolean must_exist, boolean all);
 extern KPSEDLL string kpse_path_search (const_string path, const_string name, boolean must_exist);
 extern KPSEDLL string *kpse_all_path_search (const_string path, const_string name);
 

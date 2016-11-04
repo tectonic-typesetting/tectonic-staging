@@ -19,29 +19,35 @@
 #ifndef TIDY_KPATHSEA_COLLECTED_H
 #define TIDY_KPATHSEA_COLLECTED_H
 
+#include <assert.h>
 #include <ctype.h>
+#include <dirent.h>
 #include <errno.h>
 #include <fcntl.h>
+#include <float.h>
 #include <getopt.h>
+#include <inttypes.h>
 #include <limits.h>
+#include <math.h>
+#include <stdarg.h>
+#include <stdint.h>
+#include <stdio.h>
+#include <stdlib.h>
+#include <string.h>
 #include <sys/stat.h>
+#include <sys/types.h>
+#include <unistd.h>
 
-#ifndef KPSEDLL
 #define KPSEDLL
-#endif
 
-/* simpletypes.h */
-
-#ifndef HAVE_BOOLEAN
-#define HAVE_BOOLEAN
 typedef int boolean;
+
 #ifndef __cplusplus
 #ifndef true
 #define true 1
 #define false 0
 #endif /* not true */
 #endif /* not __cplusplus */
-#endif /* not HAVE_BOOLEAN */
 
 #ifndef FALSE
 #define FALSE false
@@ -52,94 +58,11 @@ typedef char *string;
 typedef const char *const_string;
 typedef void *address;
 
-/* Required until all programs use the new API, if ever.  */
 #define KPSE_COMPAT_API 1
-
-#include <stdio.h> /* for FILE* */
-
-/* Declare int64_t and uint64_t, and define PRId64 etc.  */
-#ifdef HAVE_INTTYPES_H
-# include <inttypes.h>
-#endif
-#ifdef HAVE_STDINT_H
-# include <stdint.h>
-#endif
-#if (!defined __cplusplus || defined __STDC_FORMAT_MACROS) && !defined PRId64
-# if SIZEOF_LONG == 8
-#  define __PRI64_PREFIX	"l"
-# else
-#  define __PRI64_PREFIX	"ll"
-# endif
-# define PRId64		__PRI64_PREFIX "d"
-# define PRIi64		__PRI64_PREFIX "i"
-# define PRIo64		__PRI64_PREFIX "o"
-# define PRIu64		__PRI64_PREFIX "u"
-# define PRIx64		__PRI64_PREFIX "x"
-# define PRIX64		__PRI64_PREFIX "X"
-#endif
 
 #ifdef __cplusplus
 extern "C" {
 #endif
-
-/* str-llist.h */
-
-struct str_llist_elt
-{
-  string str;
-  boolean moved;
-  struct str_llist_elt *next;
-};
-
-typedef struct str_llist_elt str_llist_elt_type;
-typedef struct str_llist_elt *str_llist_type;
-
-#define STR_LLIST(sl) ((sl).str)
-#define STR_LLIST_MOVED(sl) ((sl).moved)
-#define STR_LLIST_NEXT(sl) ((sl).next)
-
-extern void str_llist_add (str_llist_type *l, string e);
-extern void str_llist_float (str_llist_type *l, str_llist_elt_type *e);
-
-/* function pointer prototype definitions for recorder */
-typedef void (*p_record_input) (const_string);
-typedef void (*p_record_output) (const_string);
-
-/* the cache structure from elt-dirs.c */
-
-typedef struct
-{
-  const_string key;
-  str_llist_type *value;
-} cache_entry;
-
-/* from variable.c  */
-typedef struct {
-  const_string var;
-  boolean expanding;
-} expansion_type;
-
-/* hash.h */
-
-typedef struct hash_element_struct
-{
-  const_string key;
-  const_string value;
-  struct hash_element_struct *next;
-} hash_element_type;
-
-typedef struct
-{
-  hash_element_type **buckets;
-  unsigned size;
-} hash_table_type;
-
-extern KPSEDLL hash_table_type hash_create (unsigned size);
-extern KPSEDLL void hash_insert (hash_table_type *table, const_string key, const_string value);
-extern void hash_insert_normalized (hash_table_type *table, const_string key, const_string value);
-extern KPSEDLL void hash_remove (hash_table_type *table,  const_string key, const_string value);
-extern KPSEDLL const_string *hash_lookup (hash_table_type table, const_string key);
-extern void hash_print (hash_table_type table, boolean summary_only);
 
 /* str-list.h */
 
@@ -182,7 +105,6 @@ cstr_list_init (void)
   return ret;
 }
 
-
 extern KPSEDLL void str_list_add (str_list_type *l, string s);
 extern KPSEDLL void cstr_list_add (cstr_list_type *l, const_string s);
 
@@ -191,16 +113,70 @@ extern void str_list_free (str_list_type *l);
 extern void str_list_concat_elements (str_list_type *target, str_list_type more);
 extern void str_list_uniqify (str_list_type *l);
 
+/* str-llist.h */
+
+struct str_llist_elt
+{
+  string str;
+  boolean moved;
+  struct str_llist_elt *next;
+};
+
+typedef struct str_llist_elt str_llist_elt_type;
+typedef struct str_llist_elt *str_llist_type;
+
+#define STR_LLIST(sl) ((sl).str)
+#define STR_LLIST_MOVED(sl) ((sl).moved)
+#define STR_LLIST_NEXT(sl) ((sl).next)
+
+extern void str_llist_add (str_llist_type *l, string e);
+extern void str_llist_float (str_llist_type *l, str_llist_elt_type *e);
+
+/* end str-llist.h */
+
+typedef void (*p_record_input) (const_string);
+typedef void (*p_record_output) (const_string);
+
+typedef struct
+{
+  const_string key;
+  str_llist_type *value;
+} cache_entry;
+
+typedef struct {
+  const_string var;
+  boolean expanding;
+} expansion_type;
+
+/* hash.h */
+
+typedef struct hash_element_struct
+{
+  const_string key;
+  const_string value;
+  struct hash_element_struct *next;
+} hash_element_type;
+
+typedef struct
+{
+  hash_element_type **buckets;
+  unsigned size;
+} hash_table_type;
+
+extern KPSEDLL hash_table_type hash_create (unsigned size);
+extern KPSEDLL void hash_insert (hash_table_type *table, const_string key, const_string value);
+extern void hash_insert_normalized (hash_table_type *table, const_string key, const_string value);
+extern KPSEDLL void hash_remove (hash_table_type *table,  const_string key, const_string value);
+extern KPSEDLL const_string *hash_lookup (hash_table_type table, const_string key);
+extern void hash_print (hash_table_type table, boolean summary_only);
+
 /* from old tex-file.h */
 
-/* We put the glyphs first so we don't waste space in an array in
-   tex-glyph.c.  Accompany a new format here with appropriate changes in
-   tex-file.c and kpsewhich.c (the suffix variable).  */
 typedef enum
 {
   kpse_gf_format,
   kpse_pk_format,
-  kpse_any_glyph_format,        /* ``any'' meaning gf or pk */
+  kpse_any_glyph_format,
   kpse_tfm_format,
   kpse_afm_format,
   kpse_base_format,
@@ -260,9 +236,6 @@ typedef enum
   kpse_last_format /* one past last index */
 } kpse_file_format_type;
 
-
-/* Perhaps we could use this for path values themselves; for now, we use
-   it only for the program_enabled_p value.  */
 typedef enum
 {
   kpse_src_implicit,   /* C initialization to zero */
@@ -273,14 +246,6 @@ typedef enum
   kpse_src_x,          /* X Window System resource */
   kpse_src_cmdline     /* command-line option */
 } kpse_src_type;
-
-
-/* For each file format, we record the following information.  The main
-   thing that is not part of this structure is the environment variable
-   lists. They are used directly in tex-file.c. We could incorporate
-   them here, but it would complicate the code a bit. We could also do
-   it via variable expansion, but not now, maybe not ever:
-   ${PKFONTS-${TEXFONTS-/usr/local/lib/texmf/fonts//}}.  */
 
 typedef struct
 {
@@ -302,19 +267,6 @@ typedef struct
   kpse_src_type program_enable_level; /* Who said to invoke `program'.  */
   boolean binmode;              /* Open files in binary mode?  */
 } kpse_format_info_type;
-
-#if defined(WIN32) && !defined(__MINGW32__)
-struct passwd {
-  char *pw_name;
-  char *pw_passwd;
-  int   pw_uid;
-  int   pw_gid;
-  int   pw_quota;
-  char *pw_gecos;
-  char *pw_dir;
-  char *pw_shell;
-};
-#endif /* WIN32 && !__MINGW32 */
 
 typedef struct kpathsea_instance *kpathsea;
 
@@ -380,36 +332,11 @@ typedef struct kpathsea_instance {
        allows us to reclaim memory we allocated.  */
     char **saved_env;           /* keep track of changed items */
     int saved_count;
-#if defined(WIN32) || defined(__CYGWIN__)
-    char **suffixlist;
-#endif /* WIN32 || __CYGWIN__ */
-
-#if defined(WIN32) && !defined(__MINGW32__)
-    char the_passwd_name[256];
-    char the_passwd_passwd[256];
-    char the_passwd_gecos[256];
-    char the_passwd_dir[256];
-    char the_passwd_shell[256];
-    struct passwd the_passwd;
-    int __system_allow_multiple_cmds;
-#endif /* WIN32 && !__MINGW32__ */
-#if defined(WIN32)
-    int Is_cp932_system;
-    int File_system_codepage;
-    int getc_len;
-    int getc_buff[4];
-    wchar_t wcbuf;
-    int st_len;
-    char st_buff[5];
-    char *st_str;
-#endif
 } kpathsea_instance;
 
 /* these come from kpathsea.c */
 extern KPSEDLL kpathsea kpathsea_new (void) ;
 extern KPSEDLL void kpathsea_finish (kpathsea kpse) ;
-
-#if defined (KPSE_COMPAT_API)
 
 #define kpse_bug_address kpathsea_bug_address
 
@@ -431,12 +358,6 @@ extern KPSEDLL kpathsea kpse_def;
 #define kpse_invocation_name         kpse_def_inst.invocation_name
 #undef kpse_invocation_short_name
 #define kpse_invocation_short_name   kpse_def_inst.invocation_short_name
-
-#endif /* KPSE_COMPAT_API */
-
-#ifdef __cplusplus
-}
-#endif
 
 /* config.h */
 
@@ -478,28 +399,13 @@ extern KPSEDLL kpathsea kpse_def;
 #define KPATHSEA 34
 #endif
 
-#ifndef KPSEDLL
-#define KPSEDLL
-#endif
-
 #define TRANSFORM(x) (x)
 
 /* systypes.h */
 
-#include <sys/types.h>
 #define __TYPES__
 
 /* debug.h */
-
-#include <math.h>
-#include <stdio.h>
-#include <stdarg.h>
-#include <unistd.h>
-#include <stdlib.h>
-#include <string.h>
-#include <limits.h>
-#include <assert.h>
-#include <assert.h>
 
 #define KPSE_DEBUG
 
@@ -539,10 +445,6 @@ extern KPSEDLL kpathsea kpse_def;
   DEBUGF_START (); fprintf (stderr, str, e1, e2, e3); DEBUGF_END ()
 #define DEBUGF4(str, e1, e2, e3, e4)                                    \
   DEBUGF_START (); fprintf (stderr, str, e1, e2, e3, e4); DEBUGF_END ()
-
-#ifdef __cplusplus
-extern "C" {
-#endif
 
 #undef fopen
 #define fopen kpse_fopen_trace
@@ -647,26 +549,13 @@ extern KPSEDLL address xcalloc (size_t nelem, size_t elsize);
 #define XTALLOC1(t) XTALLOC (1, t)
 #define XRETALLOC(addr, n, t) ((addr) = (t *) xrealloc (addr, (n) * sizeof(t)))
 
-#ifdef __cplusplus
-}
-#endif
-
 #define ST_NLINK_TRICK
 
 /* c-dir.h */
 
-#include <dirent.h>
 #define NAMLEN(dirent) strlen ((dirent)->d_name)
 
 /* c-limits.h */
-
-#if defined (HAVE_FLOAT_H) && !defined (FLT_MAX)
-#include <float.h>
-#endif
-
-#ifdef __cplusplus
-extern "C" {
-#endif
 
 /* c-ctype.h */
 

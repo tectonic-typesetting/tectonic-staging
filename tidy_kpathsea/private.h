@@ -143,12 +143,75 @@ typedef struct {
   boolean expanding;
 } expansion_type;
 
+typedef struct
+{
+  const_string type;            /* Human-readable description.  */
+  string path;                  /* The search path to use.  */
+  const_string raw_path;        /* Pre-$~ (but post-default) expansion.  */
+  const_string path_source;     /* Where the path started from.  */
+  const_string override_path;   /* From client environment variable.  */
+  const_string client_path;     /* E.g., from dvips's config.ps.  */
+  const_string cnf_path;        /* From texmf.cnf.  */
+  const_string default_path;    /* If all else fails.  */
+  const_string *suffix;         /* For kpse_find_file to check for/append.  */
+  const_string *alt_suffix;     /* More suffixes to check for.  */
+  boolean suffix_search_only;   /* Only search with a suffix?  */
+  const_string program;         /* ``mktexpk'', etc.  */
+  int argc;                     /* Count of standard arguments.  */
+  const_string *argv;           /* Standard arguments to `program'.  */
+  boolean program_enabled_p;    /* Invoke `program'?  */
+  kpse_src_type program_enable_level; /* Who said to invoke `program'.  */
+  boolean binmode;              /* Open files in binary mode?  */
+} kpse_format_info_type;
+
 /* db.h */
 
 extern void kpathsea_init_db (kpathsea kpse);
 extern str_list_type *kpathsea_db_search (kpathsea kpse, const_string name, const_string path_elt, boolean all);
 extern str_list_type *kpathsea_db_search_list (kpathsea kpse, string* names, const_string  path_elt, boolean all);
 extern void kpathsea_db_insert (kpathsea kpse, const_string fname);
+
+/* debug.h */
+
+/* Test if a bit is on.  */
+#define KPATHSEA_DEBUG_P(bit) (kpse->debug & (1 << (bit)))
+
+/* Set a bit.  */
+#define KPSE_DEBUG_SET(bit) kpathsea_debug |= 1 << (bit)
+
+/* Test if a bit is on.  */
+#define KPSE_DEBUG_P(bit) (kpathsea_debug & (1 << (bit)))
+
+#define KPSE_DEBUG_STAT 0               /* stat calls */
+#define KPSE_DEBUG_HASH 1               /* hash lookups */
+#define KPSE_DEBUG_FOPEN 2              /* fopen/fclose calls */
+#define KPSE_DEBUG_PATHS 3              /* search path initializations */
+#define KPSE_DEBUG_EXPAND 4             /* path element expansion */
+#define KPSE_DEBUG_SEARCH 5             /* searches */
+#define KPSE_DEBUG_VARS 6               /* variable values */
+#define KPSE_LAST_DEBUG KPSE_DEBUG_VARS
+
+/* A printf for the debugging.  */
+#define DEBUGF_START() do { fputs ("kdebug:", stderr)
+#define DEBUGF_END()        fflush (stderr); } while (0)
+
+#define DEBUGF(str)                                                     \
+  DEBUGF_START (); fputs (str, stderr); DEBUGF_END ()
+#define DEBUGF1(str, e1)                                                \
+  DEBUGF_START (); fprintf (stderr, str, e1); DEBUGF_END ()
+#define DEBUGF2(str, e1, e2)                                            \
+  DEBUGF_START (); fprintf (stderr, str, e1, e2); DEBUGF_END ()
+#define DEBUGF3(str, e1, e2, e3)                                        \
+  DEBUGF_START (); fprintf (stderr, str, e1, e2, e3); DEBUGF_END ()
+#define DEBUGF4(str, e1, e2, e3, e4)                                    \
+  DEBUGF_START (); fprintf (stderr, str, e1, e2, e3, e4); DEBUGF_END ()
+
+#undef fopen
+#define fopen kpse_fopen_trace
+extern KPSEDLL FILE *fopen (const char *filename, const char *mode);
+#undef fclose
+#define fclose kpse_fclose_trace
+extern KPSEDLL int fclose (FILE *);
 
 /* hash.h */
 

@@ -107,8 +107,6 @@ extern "C" {
 typedef void (*p_record_input) (const_string);
 typedef void (*p_record_output) (const_string);
 
-/* from old tex-file.h */
-
 typedef enum
 {
   kpse_gf_format,
@@ -184,36 +182,10 @@ typedef enum
   kpse_src_cmdline     /* command-line option */
 } kpse_src_type;
 
-typedef struct
-{
-  const_string type;            /* Human-readable description.  */
-  string path;                  /* The search path to use.  */
-  const_string raw_path;        /* Pre-$~ (but post-default) expansion.  */
-  const_string path_source;     /* Where the path started from.  */
-  const_string override_path;   /* From client environment variable.  */
-  const_string client_path;     /* E.g., from dvips's config.ps.  */
-  const_string cnf_path;        /* From texmf.cnf.  */
-  const_string default_path;    /* If all else fails.  */
-  const_string *suffix;         /* For kpse_find_file to check for/append.  */
-  const_string *alt_suffix;     /* More suffixes to check for.  */
-  boolean suffix_search_only;   /* Only search with a suffix?  */
-  const_string program;         /* ``mktexpk'', etc.  */
-  int argc;                     /* Count of standard arguments.  */
-  const_string *argv;           /* Standard arguments to `program'.  */
-  boolean program_enabled_p;    /* Invoke `program'?  */
-  kpse_src_type program_enable_level; /* Who said to invoke `program'.  */
-  boolean binmode;              /* Open files in binary mode?  */
-} kpse_format_info_type;
+/* global instance opaque struct def */
 
-typedef struct kpathsea_instance *kpathsea;
 typedef struct kpathsea_instance kpathsea_instance;
-
-/* these come from kpathsea.c */
-extern KPSEDLL kpathsea kpathsea_new (void) ;
-extern KPSEDLL void kpathsea_finish (kpathsea kpse) ;
-
-#define kpse_bug_address kpathsea_bug_address
-
+typedef kpathsea_instance *kpathsea;
 extern KPSEDLL kpathsea kpse_def;
 
 extern string kpse_pkgw_get_definst_program_name (void);
@@ -226,51 +198,6 @@ extern void kpse_pkgw_set_definst_record_input (p_record_input val);
 extern void kpse_pkgw_set_definst_record_output (p_record_output val);
 extern void kpse_pkgw_set_definst_make_tex_discard_errors (boolean val);
 
-/* config.h */
-
-/* Test if a bit is on.  */
-#define KPATHSEA_DEBUG_P(bit) (kpse->debug & (1 << (bit)))
-
-#if defined (KPSE_COMPAT_API)
-
-/* Set a bit.  */
-#define KPSE_DEBUG_SET(bit) kpathsea_debug |= 1 << (bit)
-
-/* Test if a bit is on.  */
-#define KPSE_DEBUG_P(bit) (kpathsea_debug & (1 << (bit)))
-
-#endif /* KPSE_COMPAT_API */
-
-#define KPSE_DEBUG_STAT 0               /* stat calls */
-#define KPSE_DEBUG_HASH 1               /* hash lookups */
-#define KPSE_DEBUG_FOPEN 2              /* fopen/fclose calls */
-#define KPSE_DEBUG_PATHS 3              /* search path initializations */
-#define KPSE_DEBUG_EXPAND 4             /* path element expansion */
-#define KPSE_DEBUG_SEARCH 5             /* searches */
-#define KPSE_DEBUG_VARS 6               /* variable values */
-#define KPSE_LAST_DEBUG KPSE_DEBUG_VARS
-
-/* A printf for the debugging.  */
-#define DEBUGF_START() do { fputs ("kdebug:", stderr)
-#define DEBUGF_END()        fflush (stderr); } while (0)
-
-#define DEBUGF(str)                                                     \
-  DEBUGF_START (); fputs (str, stderr); DEBUGF_END ()
-#define DEBUGF1(str, e1)                                                \
-  DEBUGF_START (); fprintf (stderr, str, e1); DEBUGF_END ()
-#define DEBUGF2(str, e1, e2)                                            \
-  DEBUGF_START (); fprintf (stderr, str, e1, e2); DEBUGF_END ()
-#define DEBUGF3(str, e1, e2, e3)                                        \
-  DEBUGF_START (); fprintf (stderr, str, e1, e2, e3); DEBUGF_END ()
-#define DEBUGF4(str, e1, e2, e3, e4)                                    \
-  DEBUGF_START (); fprintf (stderr, str, e1, e2, e3, e4); DEBUGF_END ()
-
-#undef fopen
-#define fopen kpse_fopen_trace
-extern KPSEDLL FILE *fopen (const char *filename, const char *mode);
-#undef fclose
-#define fclose kpse_fclose_trace
-extern KPSEDLL int fclose (FILE *);
 
 /* lib.h */
 
@@ -319,6 +246,8 @@ extern KPSEDLL int fclose (FILE *);
   LIB_START_FATAL (); fprintf (stderr, str, e1); END_FATAL ()
 #define LIB_FATAL2(str, e1, e2)                                         \
   LIB_START_FATAL (); fprintf (stderr, str, e1, e2); END_FATAL ()
+
+/* config.h */
 
 #define STREQ(s1, s2) (((s1) != NULL) && ((s2) != NULL) && (strcmp (s1, s2) == 0))
 #define STRNEQ(s1, s2, n) ((s1) && (s2) && (strncmp (s1, s2, n) == 0))

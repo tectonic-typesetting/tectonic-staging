@@ -38,9 +38,7 @@
 #include <sys/types.h>
 #include <unistd.h>
 
-#define KPSEDLL
-
-typedef int boolean;
+/* high-level defines */
 
 #ifndef __cplusplus
 #ifndef true
@@ -54,11 +52,111 @@ typedef int boolean;
 #define TRUE true
 #endif /* FALSE */
 
+#define KPSEDLL
+#define KPSE_COMPAT_API 1
+#define DEV_NULL "/dev/null"
+#define KPATHSEA 34
+#define TRANSFORM(x) (x)
+#define __TYPES__
+#define KPSE_DEBUG
+#define KPSEVERSION "kpathsea version 6.2.3/dev"
+#define MAKE_TEX_FMT_BY_DEFAULT 0
+#define MAKE_TEX_MF_BY_DEFAULT 0
+#define MAKE_TEX_PK_BY_DEFAULT 0
+#define MAKE_TEX_TEX_BY_DEFAULT 0
+#define MAKE_TEX_TFM_BY_DEFAULT 0
+#define SIZEOF_LONG 8
+#define STDC_HEADERS 1
+#define _DARWIN_USE_64_BIT_INODE 1
+#define ST_NLINK_TRICK
+
+#define HAVE_ASSERT_H 1
+#define HAVE_DECL_ISASCII 1
+#define HAVE_DECL_PUTENV 1
+#define HAVE_DIRENT_H 1
+#define HAVE_INTTYPES_H 1
+#define HAVE_FLOAT_H 1
+#define HAVE_GETCWD 1
+#define HAVE_GETWD 1
+#define HAVE_LIMITS_H 1
+#define HAVE_MEMCMP 1
+#define HAVE_MEMCPY 1
+#define HAVE_MEMORY_H 1
+#define HAVE_PWD_H 1
+#define HAVE_STDINT_H 1
+#define HAVE_STDLIB_H 1
+#define HAVE_STRCHR 1
+#define HAVE_STRING_H 1
+#define HAVE_STRINGS_H 1
+#define HAVE_STRRCHR 1
+#define HAVE_SYS_PARAM_H 1
+#define HAVE_UNISTD_H 1
+
+
+#define DEFAULT_TEXMFDBS "/nonesuch"
+#define DEFAULT_WEB2C "/nonesuch"
+#define DEFAULT_TEXINPUTS "/nonesuch"
+#define DEFAULT_MFINPUTS "/nonesuch"
+#define DEFAULT_MPINPUTS "/nonesuch"
+#define DEFAULT_TEXFORMATS "/nonesuch"
+#define DEFAULT_MFBASES "/nonesuch"
+#define DEFAULT_MPMEMS "/nonesuch"
+#define DEFAULT_TEXPOOL "/nonesuch"
+#define DEFAULT_MFPOOL "/nonesuch"
+#define DEFAULT_MPPOOL "/nonesuch"
+#define DEFAULT_VFFONTS "/nonesuch"
+#define DEFAULT_TFMFONTS "/nonesuch"
+#define DEFAULT_PKFONTS "/nonesuch"
+#define DEFAULT_GFFONTS "/nonesuch"
+#define DEFAULT_GLYPHFONTS "/nonesuch"
+#define DEFAULT_MISCFONTS "/nonesuch"
+#define DEFAULT_TEXFONTMAPS "/nonesuch"
+#define DEFAULT_BIBINPUTS "/nonesuch"
+#define DEFAULT_BSTINPUTS "/nonesuch"
+#define DEFAULT_MLBIBINPUTS "/nonesuch"
+#define DEFAULT_MLBSTINPUTS "/nonesuch"
+#define DEFAULT_RISINPUTS "/nonesuch"
+#define DEFAULT_BLTXMLINPUTS "/nonesuch"
+#define DEFAULT_MFTINPUTS "/nonesuch"
+#define DEFAULT_TEXPSHEADERS "/nonesuch"
+#define DEFAULT_T1FONTS "/nonesuch"
+#define DEFAULT_AFMFONTS "/nonesuch"
+#define DEFAULT_TTFONTS "/nonesuch"
+#define DEFAULT_OPENTYPEFONTS "/nonesuch"
+#define DEFAULT_T42FONTS "/nonesuch"
+#define DEFAULT_LIGFONTS "/nonesuch"
+#define DEFAULT_TEXCONFIG "/nonesuch"
+#define DEFAULT_INDEXSTYLE "/nonesuch"
+#define DEFAULT_ENCFONTS "/nonesuch"
+#define DEFAULT_CMAPFONTS "/nonesuch"
+#define DEFAULT_SFDFONTS "/nonesuch"
+#define DEFAULT_FONTFEATURES "/nonesuch"
+#define DEFAULT_FONTCIDMAPS "/nonesuch"
+#define DEFAULT_PDFTEXCONFIG "/nonesuch"
+#define DEFAULT_TRFONTS "/nonesuch"
+#define DEFAULT_MPSUPPORT "/nonesuch"
+#define DEFAULT_TEXDOCS "/nonesuch"
+#define DEFAULT_TEXSOURCES "/nonesuch"
+#define DEFAULT_WEBINPUTS "/nonesuch"
+#define DEFAULT_CWEBINPUTS "/nonesuch"
+#define DEFAULT_OFMFONTS "/nonesuch"
+#define DEFAULT_OPLFONTS "/nonesuch"
+#define DEFAULT_OVFFONTS "/nonesuch"
+#define DEFAULT_OVPFONTS "/nonesuch"
+#define DEFAULT_OTPINPUTS "/nonesuch"
+#define DEFAULT_OCPINPUTS "/nonesuch"
+#define DEFAULT_LUAINPUTS "/nonesuch"
+#define DEFAULT_CLUAINPUTS "/nonesuch"
+#define DEFAULT_TEXMFSCRIPTS "/nonesuch"
+#define DEFAULT_TEXMFCNF "{$SELFAUTOLOC}"
+
+/* basic types */
+
+typedef int boolean;
+
 typedef char *string;
 typedef const char *const_string;
 typedef void *address;
-
-#define KPSE_COMPAT_API 1
 
 #ifdef __cplusplus
 extern "C" {
@@ -361,54 +459,6 @@ extern KPSEDLL kpathsea kpse_def;
 
 /* config.h */
 
-#define DEV_NULL "/dev/null"
-
-#define HAVE_ASSERT_H 1
-#define HAVE_DECL_ISASCII 1
-#define HAVE_DECL_PUTENV 1
-#define HAVE_DIRENT_H 1
-#define HAVE_INTTYPES_H 1
-#define HAVE_FLOAT_H 1
-#define HAVE_GETCWD 1
-#define HAVE_GETWD 1
-#define HAVE_LIMITS_H 1
-#define HAVE_MEMCMP 1
-#define HAVE_MEMCPY 1
-#define HAVE_MEMORY_H 1
-#define HAVE_PWD_H 1
-#define HAVE_STDINT_H 1
-#define HAVE_STDLIB_H 1
-#define HAVE_STRCHR 1
-#define HAVE_STRING_H 1
-#define HAVE_STRINGS_H 1
-#define HAVE_STRRCHR 1
-#define HAVE_SYS_PARAM_H 1
-#define HAVE_UNISTD_H 1
-
-#define KPSEVERSION "kpathsea version 6.2.3/dev"
-#define MAKE_TEX_FMT_BY_DEFAULT 0
-#define MAKE_TEX_MF_BY_DEFAULT 0
-#define MAKE_TEX_PK_BY_DEFAULT 0
-#define MAKE_TEX_TEX_BY_DEFAULT 0
-#define MAKE_TEX_TFM_BY_DEFAULT 0
-#define SIZEOF_LONG 8
-#define STDC_HEADERS 1
-#define _DARWIN_USE_64_BIT_INODE 1
-
-#ifndef KPATHSEA
-#define KPATHSEA 34
-#endif
-
-#define TRANSFORM(x) (x)
-
-/* systypes.h */
-
-#define __TYPES__
-
-/* debug.h */
-
-#define KPSE_DEBUG
-
 /* Test if a bit is on.  */
 #define KPATHSEA_DEBUG_P(bit) (kpse->debug & (1 << (bit)))
 
@@ -549,7 +599,6 @@ extern KPSEDLL address xcalloc (size_t nelem, size_t elsize);
 #define XTALLOC1(t) XTALLOC (1, t)
 #define XRETALLOC(addr, n, t) ((addr) = (t *) xrealloc (addr, (n) * sizeof(t)))
 
-#define ST_NLINK_TRICK
 
 /* c-dir.h */
 
@@ -655,63 +704,6 @@ extern KPSEDLL address xcalloc (size_t nelem, size_t elsize);
 #endif
 
 /* paths.h */
-
-#define DEFAULT_TEXMFDBS "/nonesuch"
-#define DEFAULT_WEB2C "/nonesuch"
-#define DEFAULT_TEXINPUTS "/nonesuch"
-#define DEFAULT_MFINPUTS "/nonesuch"
-#define DEFAULT_MPINPUTS "/nonesuch"
-#define DEFAULT_TEXFORMATS "/nonesuch"
-#define DEFAULT_MFBASES "/nonesuch"
-#define DEFAULT_MPMEMS "/nonesuch"
-#define DEFAULT_TEXPOOL "/nonesuch"
-#define DEFAULT_MFPOOL "/nonesuch"
-#define DEFAULT_MPPOOL "/nonesuch"
-#define DEFAULT_VFFONTS "/nonesuch"
-#define DEFAULT_TFMFONTS "/nonesuch"
-#define DEFAULT_PKFONTS "/nonesuch"
-#define DEFAULT_GFFONTS "/nonesuch"
-#define DEFAULT_GLYPHFONTS "/nonesuch"
-#define DEFAULT_MISCFONTS "/nonesuch"
-#define DEFAULT_TEXFONTMAPS "/nonesuch"
-#define DEFAULT_BIBINPUTS "/nonesuch"
-#define DEFAULT_BSTINPUTS "/nonesuch"
-#define DEFAULT_MLBIBINPUTS "/nonesuch"
-#define DEFAULT_MLBSTINPUTS "/nonesuch"
-#define DEFAULT_RISINPUTS "/nonesuch"
-#define DEFAULT_BLTXMLINPUTS "/nonesuch"
-#define DEFAULT_MFTINPUTS "/nonesuch"
-#define DEFAULT_TEXPSHEADERS "/nonesuch"
-#define DEFAULT_T1FONTS "/nonesuch"
-#define DEFAULT_AFMFONTS "/nonesuch"
-#define DEFAULT_TTFONTS "/nonesuch"
-#define DEFAULT_OPENTYPEFONTS "/nonesuch"
-#define DEFAULT_T42FONTS "/nonesuch"
-#define DEFAULT_LIGFONTS "/nonesuch"
-#define DEFAULT_TEXCONFIG "/nonesuch"
-#define DEFAULT_INDEXSTYLE "/nonesuch"
-#define DEFAULT_ENCFONTS "/nonesuch"
-#define DEFAULT_CMAPFONTS "/nonesuch"
-#define DEFAULT_SFDFONTS "/nonesuch"
-#define DEFAULT_FONTFEATURES "/nonesuch"
-#define DEFAULT_FONTCIDMAPS "/nonesuch"
-#define DEFAULT_PDFTEXCONFIG "/nonesuch"
-#define DEFAULT_TRFONTS "/nonesuch"
-#define DEFAULT_MPSUPPORT "/nonesuch"
-#define DEFAULT_TEXDOCS "/nonesuch"
-#define DEFAULT_TEXSOURCES "/nonesuch"
-#define DEFAULT_WEBINPUTS "/nonesuch"
-#define DEFAULT_CWEBINPUTS "/nonesuch"
-#define DEFAULT_OFMFONTS "/nonesuch"
-#define DEFAULT_OPLFONTS "/nonesuch"
-#define DEFAULT_OVFFONTS "/nonesuch"
-#define DEFAULT_OVPFONTS "/nonesuch"
-#define DEFAULT_OTPINPUTS "/nonesuch"
-#define DEFAULT_OCPINPUTS "/nonesuch"
-#define DEFAULT_LUAINPUTS "/nonesuch"
-#define DEFAULT_CLUAINPUTS "/nonesuch"
-#define DEFAULT_TEXMFSCRIPTS "/nonesuch"
-#define DEFAULT_TEXMFCNF "{$SELFAUTOLOC}"
 
 /* absolute.h */
 

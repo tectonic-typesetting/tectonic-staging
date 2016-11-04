@@ -424,6 +424,13 @@ extern KPSEDLL const char *kpathsea_bug_address;
 extern DIR *xopendir (const_string dirname);
 extern void xclosedir (DIR *);
 
+/* xstat.h */
+
+#define SAME_FILE_P(s1, s2) ((s1).st_ino == (s2).st_ino && (s1).st_dev == (s2).st_dev)
+
+extern struct stat xstat (const_string path);
+extern struct stat xlstat (const_string path);
+
 #ifdef __cplusplus
 }
 #endif

@@ -27,7 +27,10 @@
 #include <sys/stat.h>
 
 #include <tidy_kpathsea/types.h>
-#include <tidy_kpathsea/c-proto.h>
+
+#ifndef KPSEDLL
+#define KPSEDLL
+#endif
 
 /* c-dir.h */
 

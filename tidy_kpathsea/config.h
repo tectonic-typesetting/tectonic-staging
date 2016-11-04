@@ -59,7 +59,9 @@
 #define KPATHSEA 34
 #endif
 
-#include <tidy_kpathsea/c-proto.h>  /* KPSEDLL.  */
+#ifndef KPSEDLL
+#define KPSEDLL
+#endif
 
 #define TRANSFORM(x) (x)
 

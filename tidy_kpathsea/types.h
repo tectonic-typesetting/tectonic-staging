@@ -70,20 +70,30 @@ typedef void *address;
 extern "C" {
 #endif
 
+/* str-llist.h */
+
+struct str_llist_elt
+{
+  string str;
+  boolean moved;
+  struct str_llist_elt *next;
+};
+
+typedef struct str_llist_elt str_llist_elt_type;
+typedef struct str_llist_elt *str_llist_type;
+
+#define STR_LLIST(sl) ((sl).str)
+#define STR_LLIST_MOVED(sl) ((sl).moved)
+#define STR_LLIST_NEXT(sl) ((sl).next)
+
+extern void str_llist_add (str_llist_type *l, string e);
+extern void str_llist_float (str_llist_type *l, str_llist_elt_type *e);
+
 /* function pointer prototype definitions for recorder */
 typedef void (*p_record_input) (const_string);
 typedef void (*p_record_output) (const_string);
 
-#ifdef __cplusplus
-}
-#endif
-
 /* the cache structure from elt-dirs.c */
-#include <tidy_kpathsea/str-llist.h>
-
-#ifdef __cplusplus
-extern "C" {
-#endif
 
 typedef struct
 {
@@ -96,11 +106,6 @@ typedef struct {
   const_string var;
   boolean expanding;
 } expansion_type;
-
-#ifdef __cplusplus
-}
-#endif
-
 
 /* hash.h */
 
@@ -117,20 +122,12 @@ typedef struct
   unsigned size;
 } hash_table_type;
 
-#ifdef __cplusplus
-extern "C" {
-#endif
-
 extern KPSEDLL hash_table_type hash_create (unsigned size);
 extern KPSEDLL void hash_insert (hash_table_type *table, const_string key, const_string value);
 extern void hash_insert_normalized (hash_table_type *table, const_string key, const_string value);
 extern KPSEDLL void hash_remove (hash_table_type *table,  const_string key, const_string value);
 extern KPSEDLL const_string *hash_lookup (hash_table_type table, const_string key);
 extern void hash_print (hash_table_type table, boolean summary_only);
-
-#ifdef __cplusplus
-}
-#endif
 
 /* str-list.h */
 
@@ -173,9 +170,6 @@ cstr_list_init (void)
   return ret;
 }
 
-#ifdef __cplusplus
-extern "C" {
-#endif
 
 extern KPSEDLL void str_list_add (str_list_type *l, string s);
 extern KPSEDLL void cstr_list_add (cstr_list_type *l, const_string s);

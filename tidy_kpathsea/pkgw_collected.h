@@ -174,6 +174,31 @@ extern KPSEDLL string kpathsea_path_expand (kpathsea kpse, const_string path);
 extern KPSEDLL string kpse_brace_expand (const_string path);
 extern KPSEDLL string kpse_path_expand (const_string path);
 
+/* fn.h */
+
+typedef struct
+{
+  string str;
+  unsigned allocated;
+  unsigned length; /* includes the terminating null byte, if any */
+} fn_type;
+
+#define FN_STRING(fn) ((fn).str)
+#define FN_ALLOCATED(fn) ((fn).allocated)
+#define FN_LENGTH(fn) ((fn).length)
+
+extern fn_type fn_init (void);
+extern fn_type fn_copy0 (const_string s,  unsigned len);
+extern void fn_free (fn_type *f);
+extern void fn_1grow (fn_type *f, char c);
+extern void fn_grow (fn_type *f, const_string source, unsigned length);
+extern void fn_str_grow (fn_type *f, const_string s);
+extern void fn_shrink_to (fn_type *f, unsigned loc);
+
+/* fontmap.h */
+
+extern const_string *kpathsea_fontmap_lookup (kpathsea kpse, const_string key);
+
 #ifdef __cplusplus
 }
 #endif

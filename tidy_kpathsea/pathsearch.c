@@ -18,7 +18,6 @@
 
 #include <tidy_kpathsea/config.h>
 #include <tidy_kpathsea/pkgw_collected.h>
-#include <tidy_kpathsea/pathsearch.h>
 #include <tidy_kpathsea/readable.h>
 #include <tidy_kpathsea/str-list.h>
 #include <tidy_kpathsea/str-llist.h>

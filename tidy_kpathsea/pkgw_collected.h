@@ -361,7 +361,7 @@ typedef struct
   unsigned dpi;                 /* size found, for glyphs */
   kpse_file_format_type format; /* glyph format found */
   kpse_glyph_source_type source;        /* where we found it */
-} kpse_glyph_file_type;         
+} kpse_glyph_file_type;
 
 #define KPSE_GLYPH_FILE_NAME(f) ((f).name)
 #define KPSE_GLYPH_FILE_DPI(f) ((f).dpi)
@@ -397,11 +397,15 @@ extern KPSEDLL boolean kpse_tex_hush (const_string what);
 
 /* tex-make.h */
 
-extern KPSEDLL string kpathsea_make_tex (kpathsea kpse, 
+extern KPSEDLL string kpathsea_make_tex (kpathsea kpse,
                                  kpse_file_format_type format,
                                  const_string base_file);
 extern KPSEDLL string kpse_make_tex (kpse_file_format_type format,
                              const_string base_file);
+
+/* tilde.h */
+
+extern string kpathsea_tilde_expand (kpathsea kpse, string filename);
 
 #ifdef __cplusplus
 }

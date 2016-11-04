@@ -419,10 +419,19 @@ extern KPSEDLL void kpathsea_init_prog (kpathsea kpse, const_string prefix, unsi
 extern KPSEDLL void kpse_init_prog (const_string prefix,  unsigned dpi,  const_string mode,
 				    const_string fallback);
 
+/* absolute.h */
+
+extern KPSEDLL boolean kpathsea_absolute_p (kpathsea kpse, const_string filename, boolean relative_ok);
+
 /* progname.h */
 
+extern KPSEDLL void kpathsea_set_program_name (kpathsea kpse, const_string argv0, const_string progname);
 extern KPSEDLL string kpathsea_selfdir (kpathsea kpse, const_string argv0);
 extern KPSEDLL string kpse_selfdir (const_string argv0);
+
+/* readable.h */
+
+extern KPSEDLL string kpathsea_readable_file (kpathsea kpse, string name);
 
 /* tex-file.h */
 
@@ -450,6 +459,51 @@ extern KPSEDLL boolean kpathsea_in_name_ok_silent (kpathsea kpse, const_string f
 extern KPSEDLL boolean kpathsea_out_name_ok_silent (kpathsea kpse, const_string fname);
 extern KPSEDLL FILE *kpathsea_open_file (kpathsea kpse, const_string name,
                                          kpse_file_format_type format);
+
+/* tex-glyph.h */
+
+typedef enum
+{
+  kpse_glyph_source_normal,  /* the searched-for font: already existed */
+  kpse_glyph_source_alias,   /* : was an alias for an existing file */
+  kpse_glyph_source_maketex, /* : was created on the fly */
+  kpse_glyph_source_fallback /* : wasn't found, but the fallback font was */
+} kpse_glyph_source_type;
+
+typedef struct
+{
+  const_string name;            /* font name found */
+  unsigned dpi;                 /* size found, for glyphs */
+  kpse_file_format_type format; /* glyph format found */
+  kpse_glyph_source_type source;        /* where we found it */
+} kpse_glyph_file_type;
+
+#define KPSE_GLYPH_FILE_NAME(f) ((f).name)
+#define KPSE_GLYPH_FILE_DPI(f) ((f).dpi)
+#define KPSE_GLYPH_FILE_FORMAT(f) ((f).format)
+#define KPSE_GLYPH_FILE_SOURCE(f) ((f).source)
+
+
+extern KPSEDLL string kpathsea_find_glyph (kpathsea kpse,
+                                  const_string font_name, unsigned dpi,
+                                  kpse_file_format_type format,
+                                  kpse_glyph_file_type *glyph_file);
+
+#define KPSE_BITMAP_TOLERANCE(r) ((r) / 500.0 + 1)
+
+extern KPSEDLL boolean kpathsea_bitmap_tolerance (kpathsea kpse,
+                                  double dpi1, double dpi2);
+
+extern KPSEDLL string kpse_find_glyph (const_string font_name, unsigned dpi,
+                                  kpse_file_format_type format,
+                                  kpse_glyph_file_type *glyph_file);
+
+#define kpse_find_pk(font_name, dpi, glyph_file) \
+  kpse_find_glyph (font_name, dpi, kpse_pk_format, glyph_file)
+#define kpse_find_gf(font_name, dpi, glyph_file) \
+  kpse_find_glyph (font_name, dpi, kpse_gf_format, glyph_file)
+
+extern KPSEDLL boolean kpse_bitmap_tolerance (double dpi1, double dpi2);
 
 /* internal utilities */
 

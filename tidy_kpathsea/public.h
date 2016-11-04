@@ -52,22 +52,11 @@
 #define TRUE true
 #endif /* FALSE */
 
-#define KPSE_COMPAT_API 1
-#define DEV_NULL "/dev/null"
-#define KPATHSEA 34
-#define TRANSFORM(x) (x)
-#define __TYPES__
-#define KPSE_DEBUG
-#define KPSEVERSION "kpathsea version 6.2.3/dev"
 #define MAKE_TEX_FMT_BY_DEFAULT 0
 #define MAKE_TEX_MF_BY_DEFAULT 0
 #define MAKE_TEX_PK_BY_DEFAULT 0
 #define MAKE_TEX_TEX_BY_DEFAULT 0
 #define MAKE_TEX_TFM_BY_DEFAULT 0
-#define SIZEOF_LONG 8
-#define STDC_HEADERS 1
-#define _DARWIN_USE_64_BIT_INODE 1
-#define ST_NLINK_TRICK
 
 #define HAVE_ASSERT_H 1
 #define HAVE_DECL_ISASCII 1
@@ -90,6 +79,8 @@
 #define HAVE_STRRCHR 1
 #define HAVE_SYS_PARAM_H 1
 #define HAVE_UNISTD_H 1
+#define SIZEOF_LONG 8
+#define STDC_HEADERS 1
 
 /* lib.h */
 
@@ -140,8 +131,6 @@
 
 /* other lame #defines */
 
-#define XTALLOC(n, t) ((t *) xmalloc ((n) * sizeof (t)))
-#define XTALLOC1(t) XTALLOC (1, t)
 #define XRETALLOC(addr, n, t) ((addr) = (t *) xrealloc (addr, (n) * sizeof(t)))
 
 #ifndef isblank
@@ -296,7 +285,7 @@ extern string kpse_program_basename (const_string argv0);
 extern string kpse_readable_file (string name);
 extern void kpse_set_program_enabled (kpse_file_format_type fmt, boolean value, kpse_src_type level);
 extern void kpse_maketex_option (const_string fmtname,  boolean value);
-extern string kpse_find_file (const_string name, kpse_file_format_type format,  boolean must_exist);
+extern string kpse_find_file (const_string name, kpse_file_format_type format, boolean must_exist);
 extern boolean kpse_in_name_ok (const_string fname);
 extern boolean kpse_out_name_ok (const_string fname);
 extern FILE *kpse_open_file (const_string, kpse_file_format_type);

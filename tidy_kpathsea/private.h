@@ -1,6 +1,13 @@
 #ifndef TIDY_KPATHSEA_PRIVATE_H
 #define TIDY_KPATHSEA_PRIVATE_H
 
+#define KPSE_COMPAT_API 1
+#define ST_NLINK_TRICK
+#define TRANSFORM(x) (x)
+#define KPSE_DEBUG
+#define XTALLOC(n, t) ((t *) xmalloc ((n) * sizeof (t)))
+#define XTALLOC1(t) XTALLOC (1, t)
+
 #define DEFAULT_TEXMFDBS "/nonesuch"
 #define DEFAULT_WEB2C "/nonesuch"
 #define DEFAULT_TEXINPUTS "/nonesuch"

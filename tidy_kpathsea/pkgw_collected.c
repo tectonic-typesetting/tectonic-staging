@@ -2023,7 +2023,7 @@ kpse_var_expand (const_string src)
 
 /* version.c */
 
-const char *kpathsea_version_string = KPSEVERSION;
+const char *kpathsea_version_string = "kpathsea version 6.2.3/dev";
 
 /* If you are redistributing a modified version of the original
    distribution, please change this address here, among many other

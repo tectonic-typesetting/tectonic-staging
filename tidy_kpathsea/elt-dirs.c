@@ -19,7 +19,6 @@
 #include <tidy_kpathsea/config.h>
 
 #include <tidy_kpathsea/pkgw_collected.h>
-#include <tidy_kpathsea/pathsearch.h>
 #include <tidy_kpathsea/xopendir.h>
 
 /* To avoid giving prototypes for all the routines and then their real

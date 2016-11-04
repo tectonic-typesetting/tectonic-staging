@@ -22,7 +22,6 @@
 #include <stdarg.h>
 #include <tidy_kpathsea/pkgw_collected.h>
 #include <tidy_kpathsea/paths.h>
-#include <tidy_kpathsea/pathsearch.h>
 #include <tidy_kpathsea/tex-file.h>
 #include <tidy_kpathsea/tex-make.h>
 #include <tidy_kpathsea/variable.h>

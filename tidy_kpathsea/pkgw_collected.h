@@ -204,6 +204,18 @@ extern const_string *kpathsea_fontmap_lookup (kpathsea kpse, const_string key);
 
 extern KPSEDLL string read_line (FILE *f);
 
+/* pathsearch.h */
+
+extern string kpathsea_path_element (kpathsea kpse, const_string path);
+extern string kpathsea_filename_component (kpathsea kpse, const_string path);
+extern unsigned kpathsea_normalize_path (kpathsea kpse, string elt);
+extern str_llist_type *kpathsea_element_dirs (kpathsea kpse, string elt);
+extern KPSEDLL string kpathsea_path_search (kpathsea kpse, const_string path, const_string name, boolean must_exist);
+extern KPSEDLL string *kpathsea_all_path_search (kpathsea kpse, const_string path, const_string name);
+extern string *kpathsea_path_search_list_generic (kpathsea kpse, const_string path, string* names, boolean must_exist, boolean all);
+extern KPSEDLL string kpse_path_search (const_string path, const_string name, boolean must_exist);
+extern KPSEDLL string *kpse_all_path_search (const_string path, const_string name);
+
 #ifdef __cplusplus
 }
 #endif

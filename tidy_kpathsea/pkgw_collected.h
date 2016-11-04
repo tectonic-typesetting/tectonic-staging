@@ -200,6 +200,10 @@ extern void fn_shrink_to (fn_type *f, unsigned loc);
 
 extern const_string *kpathsea_fontmap_lookup (kpathsea kpse, const_string key);
 
+/* line.h */
+
+extern KPSEDLL string read_line (FILE *f);
+
 #ifdef __cplusplus
 }
 #endif

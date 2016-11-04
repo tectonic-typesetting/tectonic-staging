@@ -19,7 +19,6 @@
 #include <tidy_kpathsea/config.h>
 #include <tidy_kpathsea/pkgw_collected.h>
 /* For kpse_reset_progname */
-#include <tidy_kpathsea/tex-file.h>
 
 
 #if defined(__i386_pc_gnu__)

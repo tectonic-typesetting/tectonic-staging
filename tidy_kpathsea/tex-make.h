@@ -20,7 +20,6 @@
 #define KPATHSEA_TEX_MAKE_H
 
 #include <tidy_kpathsea/c-proto.h>
-#include <tidy_kpathsea/tex-file.h>
 #include <tidy_kpathsea/types.h>
 
 #ifdef __cplusplus

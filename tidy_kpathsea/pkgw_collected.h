@@ -296,6 +296,55 @@ extern KPSEDLL string kpse_program_basename (const_string argv0);
 extern KPSEDLL string kpathsea_readable_file (kpathsea kpse, string name);
 extern KPSEDLL string kpse_readable_file (string name);
 
+/* tex-file.h */
+
+extern void kpathsea_init_fallback_resolutions (kpathsea kpse, string envvar);
+extern KPSEDLL void kpathsea_set_program_enabled (kpathsea kpse,
+    kpse_file_format_type fmt, boolean value, kpse_src_type level);
+extern KPSEDLL void kpathsea_maketex_option (kpathsea kpse,
+    const_string fmtname, boolean value);
+extern KPSEDLL void kpathsea_set_suffixes (kpathsea kpse,
+    kpse_file_format_type format, boolean alternate, ...);
+extern KPSEDLL const_string kpathsea_init_format (kpathsea kpse,
+    kpse_file_format_type format);
+extern KPSEDLL const_string kpathsea_init_format_return_varlist (kpathsea kpse,
+  kpse_file_format_type format);
+extern KPSEDLL string kpathsea_find_file (kpathsea kpse, const_string name,
+    kpse_file_format_type format,  boolean must_exist);
+extern KPSEDLL string *kpathsea_find_file_generic (kpathsea kpse,
+     const_string name, kpse_file_format_type format, boolean must_exist,
+     boolean all);
+extern KPSEDLL boolean kpathsea_in_name_ok (kpathsea kpse, const_string fname);
+extern KPSEDLL boolean kpathsea_out_name_ok (kpathsea kpse, const_string fname);
+extern KPSEDLL boolean kpathsea_in_name_ok_silent (kpathsea kpse, const_string fname);
+extern KPSEDLL boolean kpathsea_out_name_ok_silent (kpathsea kpse, const_string fname);
+extern KPSEDLL FILE *kpathsea_open_file (kpathsea kpse, const_string name,
+                                         kpse_file_format_type format);
+extern KPSEDLL void kpathsea_reset_program_name (kpathsea kpse, const_string progname);
+extern void kpse_init_fallback_resolutions (string envvar);
+extern KPSEDLL void kpse_set_program_enabled (kpse_file_format_type fmt,
+                                         boolean value, kpse_src_type level);
+extern KPSEDLL void kpse_maketex_option (const_string fmtname,  boolean value);
+extern KPSEDLL void kpse_set_suffixes (kpse_file_format_type format, boolean alternate, ...);
+extern KPSEDLL const_string kpse_init_format (kpse_file_format_type);
+extern KPSEDLL string kpse_find_file (const_string name, kpse_file_format_type format,  boolean must_exist);
+extern KPSEDLL string *kpse_find_file_generic (const_string name, kpse_file_format_type format,
+      boolean must_exist, boolean all);
+extern KPSEDLL boolean kpse_in_name_ok (const_string fname);
+extern KPSEDLL boolean kpse_out_name_ok (const_string fname);
+
+#define kpse_find_mf(name)   kpse_find_file (name, kpse_mf_format, true)
+#define kpse_find_mft(name)  kpse_find_file (name, kpse_mft_format, true)
+#define kpse_find_pict(name) kpse_find_file (name, kpse_pict_format, true)
+#define kpse_find_tex(name)  kpse_find_file (name, kpse_tex_format, true)
+#define kpse_find_tfm(name)  kpse_find_file (name, kpse_tfm_format, true)
+#define kpse_find_ofm(name)  kpse_find_file (name, kpse_ofm_format, true)
+#define kpse_find_vf(name) kpse_find_file (name, kpse_vf_format, false)
+#define kpse_find_ovf(name) kpse_find_file (name, kpse_ovf_format, false)
+
+extern KPSEDLL FILE *kpse_open_file (const_string, kpse_file_format_type);
+extern KPSEDLL void kpse_reset_program_name (const_string progname);
+
 #ifdef __cplusplus
 }
 #endif

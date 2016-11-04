@@ -18,7 +18,6 @@
 
 #include <tidy_kpathsea/config.h>
 #include <tidy_kpathsea/pkgw_collected.h>
-#include <tidy_kpathsea/tex-file.h>
 #include <tidy_kpathsea/variable.h>
 
 #ifndef DB_HASH_SIZE

@@ -17,7 +17,6 @@
 
 /* Almost everybody needs path searching.  May as well always include
    them and simplify the change files.  */
-#include <tidy_kpathsea/tex-file.h>
 #include <tidy_kpathsea/variable.h>
 
 /* Help messages.  */

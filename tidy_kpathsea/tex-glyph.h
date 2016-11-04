@@ -19,9 +19,6 @@
 #ifndef KPATHSEA_TEX_GLYPH_H
 #define KPATHSEA_TEX_GLYPH_H
 
-#include <tidy_kpathsea/tex-file.h>
-
-
 #ifdef __cplusplus
 extern "C" {
 #endif

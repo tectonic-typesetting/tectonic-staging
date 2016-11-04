@@ -15,9 +15,6 @@
 /* We must include this first, to resolve many C issues.  */
 #include <w2c/config.h>
 
-/* We only use getopt in the applications, not in web2c itself.  */
-#include <tidy_kpathsea/getopt.h>
-
 /* Almost everybody needs path searching.  May as well always include
    them and simplify the change files.  */
 #include <tidy_kpathsea/progname.h>

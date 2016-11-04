@@ -22,6 +22,7 @@
 #include <ctype.h>
 #include <errno.h>
 #include <fcntl.h>
+#include <getopt.h>
 #include <limits.h>
 #include <sys/stat.h>
 

@@ -213,6 +213,16 @@ extern KPSEDLL FILE *fopen (const char *filename, const char *mode);
 #define fclose kpse_fclose_trace
 extern KPSEDLL int fclose (FILE *);
 
+#define LIB_START_FATAL() do { \
+  fprintf (stderr, "%s: fatal: ", kpse->invocation_name);
+
+#define LIB_FATAL(str)                                                  \
+  LIB_START_FATAL (); fputs (str, stderr); END_FATAL ()
+#define LIB_FATAL1(str, e1)                                             \
+  LIB_START_FATAL (); fprintf (stderr, str, e1); END_FATAL ()
+#define LIB_FATAL2(str, e1, e2)                                         \
+  LIB_START_FATAL (); fprintf (stderr, str, e1, e2); END_FATAL ()
+
 /* hash.h */
 
 typedef struct hash_element_struct
@@ -312,6 +322,29 @@ typedef struct kpathsea_instance {
 extern KPSEDLL kpathsea_instance kpse_def_inst;
 
 #define kpathsea_debug kpse_def_inst.debug
+
+/* internal utilities */
+
+extern KPSEDLL string uppercasify (const_string s);
+extern KPSEDLL unsigned atou (const_string);
+extern KPSEDLL string xdirname (const_string name);
+extern KPSEDLL boolean same_file_p (const_string filename1, const_string filename2);
+extern KPSEDLL string remove_suffix (const_string name);
+extern KPSEDLL string make_suffix (const_string s,  const_string suffix);
+extern KPSEDLL string make_prefix (string stem_prefix, string name);
+extern KPSEDLL const_string extend_filename (const_string name, const_string suffix);
+extern KPSEDLL void kpathsea_xputenv (kpathsea kpse, const_string var, const_string value);
+extern KPSEDLL void kpathsea_xputenv_int (kpathsea kpse, const_string var, int value);
+extern KPSEDLL void xputenv_int (const_string var, int value);
+extern KPSEDLL boolean kpathsea_dir_p (kpathsea kpse, string fn);
+extern KPSEDLL boolean dir_p (string fn);
+extern KPSEDLL int dir_links (const_string fn, long nlinks);
+extern KPSEDLL int kpathsea_dir_links (kpathsea kpse, const_string fn, long nlinks);
+extern KPSEDLL void xfseek (FILE *fp, long offset, int wherefrom, const_string filename);
+extern KPSEDLL void xfseeko (FILE *fp, off_t offset, int wherefrom, const_string filename);
+extern KPSEDLL long xftell (FILE *fp, const_string filename);
+extern KPSEDLL off_t xftello (FILE *fp, const_string filename);
+
 
 #ifdef __cplusplus
 }

@@ -20,6 +20,8 @@
 #include <tidy_kpathsea/public.h>
 #include <tidy_kpathsea/private.h>
 
+#define ENVVAR(test, default) (getenv (test) ? (test) : (default))
+
 #include <stdarg.h>
 
 /* These are not in the structure

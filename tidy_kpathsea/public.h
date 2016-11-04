@@ -52,7 +52,6 @@
 #define TRUE true
 #endif /* FALSE */
 
-#define KPSEDLL
 #define KPSE_COMPAT_API 1
 #define DEV_NULL "/dev/null"
 #define KPATHSEA 34
@@ -139,6 +138,38 @@
 #define FILECHARCASEEQ(c1,c2) ((c1) == (c2))
 #define MAX_INT_LENGTH 21
 
+/* other lame #defines */
+
+#define XTALLOC(n, t) ((t *) xmalloc ((n) * sizeof (t)))
+#define XTALLOC1(t) XTALLOC (1, t)
+#define XRETALLOC(addr, n, t) ((addr) = (t *) xrealloc (addr, (n) * sizeof(t)))
+
+#ifndef isblank
+#define isblank(c) ((c) == ' ' || (c) == '\t')
+#endif
+#define ISBLANK(c) (isascii (c) && isblank ((unsigned char)c))
+
+/* c-fopen.h */
+
+#define FOPEN_A_MODE "ab"
+#define FOPEN_R_MODE "r"
+#define FOPEN_W_MODE "wb"
+#define FOPEN_RBIN_MODE "rb"
+#define FOPEN_WBIN_MODE "wb"
+#define FOPEN_ABIN_MODE "ab"
+
+/* c-pathch.h */
+
+/* What separates filename components?  */
+#ifndef DIR_SEP
+# define DIR_SEP '/'
+# define DIR_SEP_STRING "/"
+#endif
+
+#ifndef IS_DIR_SEP
+#define IS_DIR_SEP(ch) ((ch) == DIR_SEP)
+#endif
+
 /* basic types */
 
 typedef int boolean;
@@ -146,10 +177,6 @@ typedef int boolean;
 typedef char *string;
 typedef const char *const_string;
 typedef void *address;
-
-#ifdef __cplusplus
-extern "C" {
-#endif
 
 typedef void (*p_record_input) (const_string);
 typedef void (*p_record_output) (const_string);
@@ -229,94 +256,57 @@ typedef enum
   kpse_src_cmdline     /* command-line option */
 } kpse_src_type;
 
-/* global instance opaque struct def */
-
 typedef struct kpathsea_instance kpathsea_instance;
 typedef kpathsea_instance *kpathsea;
-extern KPSEDLL kpathsea kpse_def;
 
-extern string kpse_pkgw_get_definst_program_name (void);
+
+#ifdef __cplusplus
+extern "C" {
+#endif
+
+/* global instance opaque struct plus custom accessors */
+
+extern kpathsea kpse_def;
+extern const char *kpathsea_version_string;
+
 #define kpse_program_name (kpse_pkgw_get_definst_program_name ())
-
-extern string kpse_pkgw_get_definst_invocation_name (void);
 #define kpse_invocation_name (kpse_pkgw_get_definst_invocation_name ())
 
+extern string kpse_pkgw_get_definst_program_name (void);
+extern string kpse_pkgw_get_definst_invocation_name (void);
 extern void kpse_pkgw_set_definst_record_input (p_record_input val);
 extern void kpse_pkgw_set_definst_record_output (p_record_output val);
 extern void kpse_pkgw_set_definst_make_tex_discard_errors (boolean val);
 
 /* these utility routines are (ab)used outside of kpse */
 
-extern KPSEDLL string concat (const_string s1, const_string s2);
-extern KPSEDLL string concat3 (const_string, const_string, const_string);
-extern KPSEDLL string concatn(const_string str1, ...);
-extern KPSEDLL string xstrdup (const_string s);
-extern KPSEDLL const_string xbasename (const_string name);
-extern KPSEDLL const_string find_suffix (const_string name);
-extern KPSEDLL void xputenv (const_string var, const_string value);
-extern KPSEDLL string xgetcwd (void);
-extern KPSEDLL FILE *xfopen (const_string filename, const_string mode);
-extern KPSEDLL void xfclose (FILE *fp, const_string filename);
-extern KPSEDLL address xmalloc (size_t size);
-extern KPSEDLL address xrealloc (address old_address, size_t new_size);
-extern KPSEDLL address xcalloc (size_t nelem, size_t elsize);
+extern string concat (const_string s1, const_string s2);
+extern string concat3 (const_string, const_string, const_string);
+extern string concatn(const_string str1, ...);
+extern string xstrdup (const_string s);
+extern const_string xbasename (const_string name);
+extern const_string find_suffix (const_string name);
+extern void xputenv (const_string var, const_string value);
+extern string xgetcwd (void);
+extern FILE *xfopen (const_string filename, const_string mode);
+extern void xfclose (FILE *fp, const_string filename);
+extern address xmalloc (size_t size);
+extern address xrealloc (address old_address, size_t new_size);
+extern address xcalloc (size_t nelem, size_t elsize);
 
-#define XTALLOC(n, t) ((t *) xmalloc ((n) * sizeof (t)))
-#define XTALLOC1(t) XTALLOC (1, t)
-#define XRETALLOC(addr, n, t) ((addr) = (t *) xrealloc (addr, (n) * sizeof(t)))
-
-#ifndef isblank
-#define isblank(c) ((c) == ' ' || (c) == '\t')
-#endif
-#define ISBLANK(c) (isascii (c) && isblank ((unsigned char)c))
-
-/* c-fopen.h */
-
-#define FOPEN_A_MODE "ab"
-#define FOPEN_R_MODE "r"
-#define FOPEN_W_MODE "wb"
-#define FOPEN_RBIN_MODE "rb"
-#define FOPEN_WBIN_MODE "wb"
-#define FOPEN_ABIN_MODE "ab"
-
-/* c-pathch.h */
-
-/* What separates filename components?  */
-#ifndef DIR_SEP
-# define DIR_SEP '/'
-# define DIR_SEP_STRING "/"
-#endif
-
-#ifndef IS_DIR_SEP
-#define IS_DIR_SEP(ch) ((ch) == DIR_SEP)
-#endif
-
-/* absolute.h */
-
-extern KPSEDLL boolean kpse_absolute_p (const_string filename, boolean relative_ok);
-
-/* line.h */
-
-extern KPSEDLL string read_line (FILE *f);
-
-/* progname.h */
-
-extern KPSEDLL void kpse_set_program_name (const_string argv0, const_string progname);
-extern KPSEDLL string kpse_program_basename (const_string argv0);
-
-/* readable.h */
-
-extern KPSEDLL string kpse_readable_file (string name);
-
-/* tex-file.h */
-
-extern KPSEDLL void kpse_set_program_enabled (kpse_file_format_type fmt, boolean value, kpse_src_type level);
-extern KPSEDLL void kpse_maketex_option (const_string fmtname,  boolean value);
-extern KPSEDLL string kpse_find_file (const_string name, kpse_file_format_type format,  boolean must_exist);
-extern KPSEDLL boolean kpse_in_name_ok (const_string fname);
-extern KPSEDLL boolean kpse_out_name_ok (const_string fname);
-extern KPSEDLL FILE *kpse_open_file (const_string, kpse_file_format_type);
-extern KPSEDLL void kpse_reset_program_name (const_string progname);
+extern boolean kpse_absolute_p (const_string filename, boolean relative_ok);
+extern string read_line (FILE *f);
+extern void kpse_set_program_name (const_string argv0, const_string progname);
+extern string kpse_program_basename (const_string argv0);
+extern string kpse_readable_file (string name);
+extern void kpse_set_program_enabled (kpse_file_format_type fmt, boolean value, kpse_src_type level);
+extern void kpse_maketex_option (const_string fmtname,  boolean value);
+extern string kpse_find_file (const_string name, kpse_file_format_type format,  boolean must_exist);
+extern boolean kpse_in_name_ok (const_string fname);
+extern boolean kpse_out_name_ok (const_string fname);
+extern FILE *kpse_open_file (const_string, kpse_file_format_type);
+extern void kpse_reset_program_name (const_string progname);
+extern string kpse_var_value (const_string var);
 
 #define kpse_find_mf(name)   kpse_find_file (name, kpse_mf_format, true)
 #define kpse_find_mft(name)  kpse_find_file (name, kpse_mft_format, true)
@@ -326,14 +316,6 @@ extern KPSEDLL void kpse_reset_program_name (const_string progname);
 #define kpse_find_ofm(name)  kpse_find_file (name, kpse_ofm_format, true)
 #define kpse_find_vf(name) kpse_find_file (name, kpse_vf_format, false)
 #define kpse_find_ovf(name) kpse_find_file (name, kpse_ovf_format, false)
-
-/* variable.h */
-
-extern KPSEDLL string kpse_var_value (const_string var);
-
-/* version.h */
-
-extern KPSEDLL const char *kpathsea_version_string;
 
 #ifdef __cplusplus
 }

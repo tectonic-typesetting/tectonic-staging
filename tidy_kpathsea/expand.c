@@ -18,6 +18,7 @@
    along with this library; if not, see <http://www.gnu.org/licenses/>.  */
 
 #include <tidy_kpathsea/public.h>
+#include <tidy_kpathsea/private.h>
 
 /* Do variable expansion first so ~${USER} works.  (Besides, it's what the
    shells do.)  */

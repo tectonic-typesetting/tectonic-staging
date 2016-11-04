@@ -17,8 +17,10 @@
    You should have received a copy of the GNU Lesser General Public License
    along with this library; if not, see <http://www.gnu.org/licenses/>.  */
 
-#include <stdarg.h>
 #include <tidy_kpathsea/public.h>
+#include <tidy_kpathsea/private.h>
+
+#include <stdarg.h>
 
 /* These are not in the structure
    because it's annoying to initialize lists in C.  */

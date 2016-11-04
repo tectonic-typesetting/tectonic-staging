@@ -17,6 +17,7 @@
    along with this library; if not, see <http://www.gnu.org/licenses/>.  */
 
 #include <tidy_kpathsea/public.h>
+#include <tidy_kpathsea/private.h>
 
 #ifndef DB_HASH_SIZE
 /* Based on the size of 2014 texmf-dist/ls-R, about 130,000 entries.  */

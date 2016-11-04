@@ -16,8 +16,8 @@
    You should have received a copy of the GNU Lesser General Public License
    along with this library; if not, see <http://www.gnu.org/licenses/>.  */
 
-#ifndef TIDY_KPATHSEA_COLLECTED_H
-#define TIDY_KPATHSEA_COLLECTED_H
+#ifndef TIDY_KPATHSEA_PUBLIC_H
+#define TIDY_KPATHSEA_PUBLIC_H
 
 #include <assert.h>
 #include <ctype.h>
@@ -939,4 +939,4 @@ extern struct stat xlstat (const_string path);
 }
 #endif
 
-#endif /* not TIDY_KPATHSEA_COLLECTED_H */
+#endif /* not TIDY_KPATHSEA_PUBLIC_H */

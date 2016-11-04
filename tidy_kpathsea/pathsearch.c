@@ -17,6 +17,7 @@
    along with this library; if not, see <http://www.gnu.org/licenses/>.  */
 
 #include <tidy_kpathsea/public.h>
+#include <tidy_kpathsea/private.h>
 
 #include <time.h> /* for `time' */
 

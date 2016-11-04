@@ -17,6 +17,7 @@
    along with this library; if not, see <http://www.gnu.org/licenses/>.  */
 
 #include <tidy_kpathsea/public.h>
+#include <tidy_kpathsea/private.h>
 
 /* To avoid giving prototypes for all the routines and then their real
    definitions, we give all the subroutines first.  The entry point is

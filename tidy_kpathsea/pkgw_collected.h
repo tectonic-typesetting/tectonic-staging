@@ -291,6 +291,11 @@ extern KPSEDLL string kpse_selfdir (const_string argv0);
 extern KPSEDLL void kpse_set_program_name (const_string argv0, const_string progname);
 extern KPSEDLL string kpse_program_basename (const_string argv0);
 
+/* readable.h */
+
+extern KPSEDLL string kpathsea_readable_file (kpathsea kpse, string name);
+extern KPSEDLL string kpse_readable_file (string name);
+
 #ifdef __cplusplus
 }
 #endif

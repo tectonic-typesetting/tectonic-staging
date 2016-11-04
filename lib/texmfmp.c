@@ -13,7 +13,6 @@
    Makefile rule.  */
 
 #include <tidy_kpathsea/config.h>
-#include <tidy_kpathsea/readable.h>
 #include <tidy_kpathsea/variable.h>
 #include <tidy_kpathsea/pkgw_collected.h>
 

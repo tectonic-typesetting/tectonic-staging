@@ -63,12 +63,17 @@
 
 #define TRANSFORM(x) (x)
 
+
+/* systypes.h */
+
+#include <sys/types.h>
+#define __TYPES__
+
 /* debug.h */
 
 #include <math.h>
 #include <stdio.h>
 #include <stdarg.h>
-#include <tidy_kpathsea/systypes.h>
 #include <unistd.h>
 #include <stdlib.h>
 #include <string.h>
@@ -226,8 +231,6 @@ extern KPSEDLL address xcalloc (size_t nelem, size_t elsize);
 #ifdef __cplusplus
 }
 #endif
-
-#include <tidy_kpathsea/types.h>    /* <sys/types.h>, boolean, string, etc. */
 
 #define ST_NLINK_TRICK
 

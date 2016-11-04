@@ -59,9 +59,27 @@ def inner (top, w):
     builddir = top / 'BUILD'
     w.build (str(builddir), 'ensuredir')
 
+    # "tidy_kpathutil" -- C utilities extracted from tidied-up kpathsea
+
+    libkpu = builddir / 'libtidykpathutil.a'
+    cflags = '-I. %(base_cflags)s' % config
+    objs = []
+
+    for src in (top / 'tidy_kpathutil').glob ('*.c'):
+        obj = builddir / ('tidy_kpathutil_' + src.name.replace ('.c', '.o'))
+        w.build (
+            str(obj), 'cc',
+            inputs = [str(src)],
+            order_only = [str(builddir)],
+            variables = {'cflags': cflags},
+        )
+        objs.append (str (obj))
+
+    w.build (str(libkpu), 'staticlib', inputs = objs)
+
     # (tidied) kpathsea
 
-    libkp = builddir / 'libtidykpathsea.a'
+    libkps = builddir / 'libtidykpathsea.a'
     cflags = '-DHAVE_CONFIG_H -DMAKE_KPSE_DLL -Itidy_kpathsea -I. %(base_cflags)s' % config
     objs = []
 
@@ -75,7 +93,7 @@ def inner (top, w):
         )
         objs.append (str (obj))
 
-    w.build (str(libkp), 'staticlib', inputs = objs)
+    w.build (str(libkps), 'staticlib', inputs = objs)
 
     # teckit
 
@@ -183,7 +201,7 @@ def inner (top, w):
         )
         objs.append (str (obj))
 
-    objs += map (str, [libsynctex, libbase, libmd5, libtk, libkp])
+    objs += map (str, [libsynctex, libbase, libmd5, libtk, libkps, libkpu])
     libs = '%(pkgconfig_libs)s -lz' % config
 
     w.build (str(builddir / 'xetex'), 'executable',

@@ -17,6 +17,7 @@
 
 /* Almost everybody needs path searching.  May as well always include
    them and simplify the change files.  */
+#include <tidy_kpathutil/public.h>
 #include <tidy_kpathsea/public.h>
 
 /* Help messages.  */

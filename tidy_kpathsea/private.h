@@ -271,6 +271,10 @@ extern int fclose (FILE *);
 #define IS_ENV_SEP(ch) ((ch) == ENV_SEP)
 #endif
 
+/* hack for kpathutil split */
+
+#define kpathsea_absolute_p(pkse, fn, rok) kpse_absolute_p(fn, rok)
+
 /* hash.h */
 
 typedef struct hash_element_struct

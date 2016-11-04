@@ -494,20 +494,3 @@ kpse_set_program_name (const_string argv0, const_string progname)
   kpathsea_set_program_name (kpse_def, argv0, progname);
 }
 #endif
-
-/* Returns ARGV0 with any leading path and on some systems the suffix
-   for executables stripped off.  This returns a new string.
-   For example, `kpse_program_basename ("/foo/bar.EXE")' returns "bar"
-   on WIndows or Cygwin and "bar.EXE" otherwise.  */
-
-string
-kpse_program_basename (const_string argv0)
-{
-  string base = xstrdup (xbasename (argv0));
-#ifdef EXEEXT
-  string dot = strrchr (base, '.');
-  if (dot && FILESTRCASEEQ (dot, EXEEXT))
-    *dot = 0;
-#endif
-  return base;
-}

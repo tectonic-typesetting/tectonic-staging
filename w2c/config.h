@@ -24,6 +24,7 @@ along with this program; if not, see <http://www.gnu.org/licenses/.  */
 #include <stdarg.h>
 
 /* How to open a binary file.  */
+#include <tidy_kpathutil/public.h>
 #include <tidy_kpathsea/public.h>
 
 #ifdef __cplusplus

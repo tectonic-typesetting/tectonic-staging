@@ -28805,8 +28805,8 @@ newinteraction ( void )
   println () ;
   interaction = curchr ;
   if ( interaction == 0 ) 
-  kpse_make_tex_discard_errors = 1 ;
-  else kpse_make_tex_discard_errors = 0 ;
+  kpse_pkgw_set_definst_make_tex_discard_errors (1);
+  else kpse_pkgw_set_definst_make_tex_discard_errors (0);
   if ( interaction == 0 ) 
   selector = 16 ;
   else selector = 17 ;

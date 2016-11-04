@@ -1088,19 +1088,45 @@ kpathsea_finish (kpathsea kpse)
 {
     if (kpse==NULL)
         return;
-#if defined (KPSE_COMPAT_API)
     if (kpse == kpse_def)
         return;
-#endif
     free (kpse);
 }
-
-#if defined (KPSE_COMPAT_API)
 
 kpathsea_instance kpse_def_inst;
 kpathsea kpse_def = &kpse_def_inst;
 
-#endif /* KPSE_COMPAT_API */
+/* accessors to make it so we don't have to make the kpse instance struct public */
+
+string
+kpse_pkgw_get_definst_program_name (void)
+{
+    return kpse_def_inst.program_name;
+}
+
+string
+kpse_pkgw_get_definst_invocation_name (void)
+{
+    return kpse_def_inst.invocation_name;
+}
+
+void
+kpse_pkgw_set_definst_record_input (p_record_input val)
+{
+    kpse_def_inst.record_input = val;
+}
+
+void
+kpse_pkgw_set_definst_record_output (p_record_output val)
+{
+    kpse_def_inst.record_output = val;
+}
+
+void
+kpse_pkgw_set_definst_make_tex_discard_errors (boolean val)
+{
+    kpse_def_inst.make_tex_discard_errors = val;
+}
 
 /* line.c */
 

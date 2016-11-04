@@ -693,8 +693,8 @@ maininit (int ac, string *av)
   interactionoption = 4;
 
   /* Have things to record as we go along.  */
-  kpse_record_input = recorder_record_input;
-  kpse_record_output = recorder_record_output;
+  kpse_pkgw_set_definst_record_input (recorder_record_input);
+  kpse_pkgw_set_definst_record_output (recorder_record_output);
 
 #if defined(__SyncTeX__)
   /* 0 means "disable Synchronize TeXnology".
@@ -1612,7 +1612,6 @@ static struct option long_options[]
       { "ini",                       0, &iniversion, 1 },
       { "interaction",               1, 0, 0 },
       { "halt-on-error",             0, &haltonerrorp, 1 },
-      { "kpathsea-debug",            1, 0, 0 },
       { "progname",                  1, 0, 0 },
       { "version",                   0, 0, 0 },
       { "recorder",                  0, &recorder_enabled, 1 },
@@ -1700,8 +1699,8 @@ parse_options (int argc, string *argv)
 
     assert (g == 0); /* We have no short option names.  */
 
-    if (ARGUMENT_IS ("kpathsea-debug")) {
-      kpathsea_debug |= atoi (optarg);
+    if (ARGUMENT_IS ("progname")) {
+      user_progname = optarg;
 
 #ifdef XeTeX
     } else if (ARGUMENT_IS ("papersize")) {
@@ -1709,9 +1708,6 @@ parse_options (int argc, string *argv)
     } else if (ARGUMENT_IS ("output-driver")) {
       outputdriver = optarg;
 #endif
-
-    } else if (ARGUMENT_IS ("progname")) {
-      user_progname = optarg;
 
     } else if (ARGUMENT_IS ("jobname")) {
 #ifdef XeTeX
@@ -2965,13 +2961,7 @@ void pdftex_fail(const char *fmt, ...)
     println();
     safe_print(" ==> Fatal error occurred, output file will be damaged!");
     println();
-    if (kpathsea_debug) {
-        safe_print("kpathsea_debug enabled, calling abort()...");
-        println();
-        abort();
-    } else {
-        exit(EXIT_FAILURE);
-    }
+    exit(EXIT_FAILURE);
 }
 #endif /* not pdfTeX */
 

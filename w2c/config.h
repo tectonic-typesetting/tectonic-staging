@@ -20,7 +20,6 @@ along with this program; if not, see <http://www.gnu.org/licenses/.  */
 #define WEB2C_CONFIG_H
 
 /* The stuff from the path searching library.  */
-#include <tidy_kpathsea/config.h>
 #include <w2c/c-auto.h>
 #include <stdarg.h>
 

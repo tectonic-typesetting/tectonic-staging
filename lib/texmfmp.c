@@ -12,7 +12,6 @@
    #defines TeX or MF, which avoids the need for a special
    Makefile rule.  */
 
-#include <tidy_kpathsea/config.h>
 #include <tidy_kpathsea/pkgw_collected.h>
 
 #if defined (HAVE_SYS_TIME_H)

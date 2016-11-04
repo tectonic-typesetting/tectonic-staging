@@ -17,7 +17,6 @@
    You should have received a copy of the GNU Lesser General Public License
    along with this library; if not, see <http://www.gnu.org/licenses/>.  */
 
-#include <tidy_kpathsea/config.h>
 #include <tidy_kpathsea/pkgw_collected.h>
 
 /* Do variable expansion first so ~${USER} works.  (Besides, it's what the

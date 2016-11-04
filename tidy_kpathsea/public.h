@@ -249,6 +249,7 @@ extern void kpse_pkgw_set_definst_make_tex_discard_errors (boolean val);
 
 extern KPSEDLL string concat (const_string s1, const_string s2);
 extern KPSEDLL string concat3 (const_string, const_string, const_string);
+extern KPSEDLL string concatn(const_string str1, ...);
 extern KPSEDLL string xstrdup (const_string s);
 extern KPSEDLL const_string xbasename (const_string name);
 extern KPSEDLL const_string find_suffix (const_string name);
@@ -264,66 +265,19 @@ extern KPSEDLL address xcalloc (size_t nelem, size_t elsize);
 #define XTALLOC1(t) XTALLOC (1, t)
 #define XRETALLOC(addr, n, t) ((addr) = (t *) xrealloc (addr, (n) * sizeof(t)))
 
-/* Be sure we have `isascii'.  */
-#ifndef WIN32
-#if !(defined(HAVE_DECL_ISASCII) && HAVE_DECL_ISASCII)
-#define isascii(c) (((c) & ~0x7f) == 0)
-#endif
-#endif
-
-#define ISALNUM(c) (isascii (c) && isalnum((unsigned char)c))
-#define ISALPHA(c) (isascii (c) && isalpha((unsigned char)c))
-#define ISASCII isascii
-#define ISCNTRL(c) (isascii (c) && iscntrl((unsigned char)c))
-#define ISDIGIT(c) (isascii (c) && isdigit ((unsigned char)c))
-#define ISGRAPH(c) (isascii (c) && isgraph((unsigned char)c))
-#define ISLOWER(c) (isascii (c) && islower((unsigned char)c))
-#define ISPRINT(c) (isascii (c) && isprint((unsigned char)c))
-#define ISPUNCT(c) (isascii (c) && ispunct((unsigned char)c))
-#define ISSPACE(c) (isascii (c) && isspace((unsigned char)c))
-#define ISUPPER(c) (isascii (c) && isupper((unsigned char)c))
-#define ISXDIGIT(c) (isascii (c) && isxdigit((unsigned char)c))
-#define TOASCII toascii
-#define TOLOWER(c) (ISUPPER (c) ? tolower ((unsigned char)c) : (c))
-#define TOUPPER(c) (ISLOWER (c) ? toupper ((unsigned char)c) : (c))
-
-/* This isn't part of the usual <ctype.h>, but it's useful sometimes.  */
 #ifndef isblank
 #define isblank(c) ((c) == ' ' || (c) == '\t')
 #endif
-
 #define ISBLANK(c) (isascii (c) && isblank ((unsigned char)c))
 
 /* c-fopen.h */
 
-#ifndef FOPEN_A_MODE
 #define FOPEN_A_MODE "ab"
-#endif
-
-#ifndef FOPEN_R_MODE
 #define FOPEN_R_MODE "r"
-#endif
-
-#ifndef FOPEN_W_MODE
 #define FOPEN_W_MODE "wb"
-#endif
-
-#ifndef FOPEN_RBIN_MODE
 #define FOPEN_RBIN_MODE "rb"
-#endif
-
-#ifndef FOPEN_WBIN_MODE
 #define FOPEN_WBIN_MODE "wb"
-#endif
-
-#ifndef FOPEN_ABIN_MODE
 #define FOPEN_ABIN_MODE "ab"
-#endif
-
-#ifndef O_BINARY
-#define O_BINARY 0
-#endif
-#define SET_BINARY(f) (void)0
 
 /* c-pathch.h */
 
@@ -336,107 +290,19 @@ extern KPSEDLL address xcalloc (size_t nelem, size_t elsize);
 #ifndef IS_DIR_SEP
 #define IS_DIR_SEP(ch) ((ch) == DIR_SEP)
 #endif
-#ifndef IS_DIR_SEP_CH
-#define IS_DIR_SEP_CH(ch) IS_DIR_SEP(ch)
-#endif
-#ifndef IS_DEVICE_SEP /* No `devices' on, e.g., Unix.  */
-#define IS_DEVICE_SEP(ch) 0
-#endif
-#ifndef NAME_BEGINS_WITH_DEVICE
-#define NAME_BEGINS_WITH_DEVICE(name) 0
-#endif
-#ifndef IS_UNC_NAME /* Unc names are in practice found on Win32 only. */
-#define IS_UNC_NAME(name) 0
-#endif
-
-/* What separates elements in environment variable path lists?  */
-#ifndef ENV_SEP
-# define ENV_SEP ':'
-# define ENV_SEP_STRING ":"
-#endif /* not ENV_SEP */
-
-#ifndef IS_ENV_SEP
-#define IS_ENV_SEP(ch) ((ch) == ENV_SEP)
-#endif
-
-/* paths.h */
 
 /* absolute.h */
 
 extern KPSEDLL boolean kpathsea_absolute_p (kpathsea kpse, const_string filename, boolean relative_ok);
 extern KPSEDLL boolean kpse_absolute_p (const_string filename, boolean relative_ok);
 
-/* cnf.h */
-
-extern KPSEDLL const_string kpathsea_cnf_get (kpathsea kpse, const_string name);
-extern KPSEDLL const_string kpse_cnf_get (const_string var);
-
-/* concatn.h */
-
-extern KPSEDLL string concatn(const_string str1, ...);
-
-/* default.h */
-
-extern string kpathsea_expand_default (kpathsea kpse, const_string path, const_string dflt);
-
-/* expand.h */
-
-extern string kpathsea_expand (kpathsea kpse, const_string s);
-
-extern KPSEDLL string kpathsea_brace_expand (kpathsea kpse, const_string path);
-extern KPSEDLL string kpathsea_path_expand (kpathsea kpse, const_string path);
-extern KPSEDLL string kpse_brace_expand (const_string path);
-extern KPSEDLL string kpse_path_expand (const_string path);
-
-/* fn.h */
-
-typedef struct
-{
-  string str;
-  unsigned allocated;
-  unsigned length; /* includes the terminating null byte, if any */
-} fn_type;
-
-#define FN_STRING(fn) ((fn).str)
-#define FN_ALLOCATED(fn) ((fn).allocated)
-#define FN_LENGTH(fn) ((fn).length)
-
-extern fn_type fn_init (void);
-extern fn_type fn_copy0 (const_string s,  unsigned len);
-extern void fn_free (fn_type *f);
-extern void fn_1grow (fn_type *f, char c);
-extern void fn_grow (fn_type *f, const_string source, unsigned length);
-extern void fn_str_grow (fn_type *f, const_string s);
-extern void fn_shrink_to (fn_type *f, unsigned loc);
-
-/* fontmap.h */
-
-extern const_string *kpathsea_fontmap_lookup (kpathsea kpse, const_string key);
-
 /* line.h */
 
 extern KPSEDLL string read_line (FILE *f);
 
-/* pathsearch.h */
-
-extern KPSEDLL string kpathsea_path_search (kpathsea kpse, const_string path, const_string name, boolean must_exist);
-extern KPSEDLL string *kpathsea_all_path_search (kpathsea kpse, const_string path, const_string name);
-extern KPSEDLL string kpse_path_search (const_string path, const_string name, boolean must_exist);
-extern KPSEDLL string *kpse_all_path_search (const_string path, const_string name);
-
-/* proginit.h */
-
-extern KPSEDLL void kpathsea_init_prog (kpathsea kpse, const_string prefix, unsigned dpi,
-					const_string mode, const_string fallback);
-
-extern KPSEDLL void kpse_init_prog (const_string prefix,  unsigned dpi,  const_string mode,
-				    const_string fallback);
-
 /* progname.h */
 
-extern KPSEDLL string kpathsea_selfdir (kpathsea kpse, const_string argv0);
 extern KPSEDLL void kpathsea_set_program_name (kpathsea kpse, const_string argv0, const_string progname);
-extern KPSEDLL string kpse_selfdir (const_string argv0);
 extern KPSEDLL void kpse_set_program_name (const_string argv0, const_string progname);
 extern KPSEDLL string kpse_program_basename (const_string argv0);
 
@@ -447,38 +313,9 @@ extern KPSEDLL string kpse_readable_file (string name);
 
 /* tex-file.h */
 
-extern void kpathsea_init_fallback_resolutions (kpathsea kpse, string envvar);
-extern KPSEDLL void kpathsea_set_program_enabled (kpathsea kpse,
-    kpse_file_format_type fmt, boolean value, kpse_src_type level);
-extern KPSEDLL void kpathsea_maketex_option (kpathsea kpse,
-    const_string fmtname, boolean value);
-extern KPSEDLL void kpathsea_set_suffixes (kpathsea kpse,
-    kpse_file_format_type format, boolean alternate, ...);
-extern KPSEDLL const_string kpathsea_init_format (kpathsea kpse,
-    kpse_file_format_type format);
-extern KPSEDLL const_string kpathsea_init_format_return_varlist (kpathsea kpse,
-  kpse_file_format_type format);
-extern KPSEDLL string kpathsea_find_file (kpathsea kpse, const_string name,
-    kpse_file_format_type format,  boolean must_exist);
-extern KPSEDLL string *kpathsea_find_file_generic (kpathsea kpse,
-     const_string name, kpse_file_format_type format, boolean must_exist,
-     boolean all);
-extern KPSEDLL boolean kpathsea_in_name_ok (kpathsea kpse, const_string fname);
-extern KPSEDLL boolean kpathsea_out_name_ok (kpathsea kpse, const_string fname);
-extern KPSEDLL boolean kpathsea_in_name_ok_silent (kpathsea kpse, const_string fname);
-extern KPSEDLL boolean kpathsea_out_name_ok_silent (kpathsea kpse, const_string fname);
-extern KPSEDLL FILE *kpathsea_open_file (kpathsea kpse, const_string name,
-                                         kpse_file_format_type format);
-extern KPSEDLL void kpathsea_reset_program_name (kpathsea kpse, const_string progname);
-extern void kpse_init_fallback_resolutions (string envvar);
-extern KPSEDLL void kpse_set_program_enabled (kpse_file_format_type fmt,
-                                         boolean value, kpse_src_type level);
+extern KPSEDLL void kpse_set_program_enabled (kpse_file_format_type fmt, boolean value, kpse_src_type level);
 extern KPSEDLL void kpse_maketex_option (const_string fmtname,  boolean value);
-extern KPSEDLL void kpse_set_suffixes (kpse_file_format_type format, boolean alternate, ...);
-extern KPSEDLL const_string kpse_init_format (kpse_file_format_type);
 extern KPSEDLL string kpse_find_file (const_string name, kpse_file_format_type format,  boolean must_exist);
-extern KPSEDLL string *kpse_find_file_generic (const_string name, kpse_file_format_type format,
-      boolean must_exist, boolean all);
 extern KPSEDLL boolean kpse_in_name_ok (const_string fname);
 extern KPSEDLL boolean kpse_out_name_ok (const_string fname);
 

@@ -173,13 +173,8 @@ extern void kpathsea_db_insert (kpathsea kpse, const_string fname);
 
 /* debug.h */
 
-/* Test if a bit is on.  */
 #define KPATHSEA_DEBUG_P(bit) (kpse->debug & (1 << (bit)))
-
-/* Set a bit.  */
 #define KPSE_DEBUG_SET(bit) kpathsea_debug |= 1 << (bit)
-
-/* Test if a bit is on.  */
 #define KPSE_DEBUG_P(bit) (kpathsea_debug & (1 << (bit)))
 
 #define KPSE_DEBUG_STAT 0               /* stat calls */
@@ -191,7 +186,6 @@ extern void kpathsea_db_insert (kpathsea kpse, const_string fname);
 #define KPSE_DEBUG_VARS 6               /* variable values */
 #define KPSE_LAST_DEBUG KPSE_DEBUG_VARS
 
-/* A printf for the debugging.  */
 #define DEBUGF_START() do { fputs ("kdebug:", stderr)
 #define DEBUGF_END()        fflush (stderr); } while (0)
 
@@ -213,6 +207,8 @@ extern KPSEDLL FILE *fopen (const char *filename, const char *mode);
 #define fclose kpse_fclose_trace
 extern KPSEDLL int fclose (FILE *);
 
+/* lib.h */
+
 #define LIB_START_FATAL() do { \
   fprintf (stderr, "%s: fatal: ", kpse->invocation_name);
 
@@ -222,6 +218,48 @@ extern KPSEDLL int fclose (FILE *);
   LIB_START_FATAL (); fprintf (stderr, str, e1); END_FATAL ()
 #define LIB_FATAL2(str, e1, e2)                                         \
   LIB_START_FATAL (); fprintf (stderr, str, e1, e2); END_FATAL ()
+
+/* c-ctype.h */
+
+#define ISALNUM(c) (isascii (c) && isalnum((unsigned char)c))
+#define ISALPHA(c) (isascii (c) && isalpha((unsigned char)c))
+#define ISASCII isascii
+#define ISCNTRL(c) (isascii (c) && iscntrl((unsigned char)c))
+#define ISDIGIT(c) (isascii (c) && isdigit ((unsigned char)c))
+#define ISGRAPH(c) (isascii (c) && isgraph((unsigned char)c))
+#define ISLOWER(c) (isascii (c) && islower((unsigned char)c))
+#define ISPRINT(c) (isascii (c) && isprint((unsigned char)c))
+#define ISPUNCT(c) (isascii (c) && ispunct((unsigned char)c))
+#define ISSPACE(c) (isascii (c) && isspace((unsigned char)c))
+#define ISUPPER(c) (isascii (c) && isupper((unsigned char)c))
+#define ISXDIGIT(c) (isascii (c) && isxdigit((unsigned char)c))
+#define TOASCII toascii
+#define TOLOWER(c) (ISUPPER (c) ? tolower ((unsigned char)c) : (c))
+#define TOUPPER(c) (ISLOWER (c) ? toupper ((unsigned char)c) : (c))
+
+/* c-pathch.h */
+
+#ifndef IS_DIR_SEP_CH
+#define IS_DIR_SEP_CH(ch) IS_DIR_SEP(ch)
+#endif
+#ifndef IS_DEVICE_SEP /* No `devices' on, e.g., Unix.  */
+#define IS_DEVICE_SEP(ch) 0
+#endif
+#ifndef NAME_BEGINS_WITH_DEVICE
+#define NAME_BEGINS_WITH_DEVICE(name) 0
+#endif
+#ifndef IS_UNC_NAME /* Unc names are in practice found on Win32 only. */
+#define IS_UNC_NAME(name) 0
+#endif
+
+#ifndef ENV_SEP
+# define ENV_SEP ':'
+# define ENV_SEP_STRING ":"
+#endif /* not ENV_SEP */
+
+#ifndef IS_ENV_SEP
+#define IS_ENV_SEP(ch) ((ch) == ENV_SEP)
+#endif
 
 /* hash.h */
 
@@ -322,6 +360,96 @@ typedef struct kpathsea_instance {
 extern KPSEDLL kpathsea_instance kpse_def_inst;
 
 #define kpathsea_debug kpse_def_inst.debug
+
+/* cnf.h */
+
+extern KPSEDLL const_string kpathsea_cnf_get (kpathsea kpse, const_string name);
+extern KPSEDLL const_string kpse_cnf_get (const_string var);
+
+/* default.h */
+
+extern string kpathsea_expand_default (kpathsea kpse, const_string path, const_string dflt);
+
+/* expand.h */
+
+extern string kpathsea_expand (kpathsea kpse, const_string s);
+
+extern KPSEDLL string kpathsea_brace_expand (kpathsea kpse, const_string path);
+extern KPSEDLL string kpathsea_path_expand (kpathsea kpse, const_string path);
+extern KPSEDLL string kpse_brace_expand (const_string path);
+extern KPSEDLL string kpse_path_expand (const_string path);
+
+/* fn.h */
+
+typedef struct
+{
+  string str;
+  unsigned allocated;
+  unsigned length; /* includes the terminating null byte, if any */
+} fn_type;
+
+#define FN_STRING(fn) ((fn).str)
+#define FN_ALLOCATED(fn) ((fn).allocated)
+#define FN_LENGTH(fn) ((fn).length)
+
+extern fn_type fn_init (void);
+extern fn_type fn_copy0 (const_string s,  unsigned len);
+extern void fn_free (fn_type *f);
+extern void fn_1grow (fn_type *f, char c);
+extern void fn_grow (fn_type *f, const_string source, unsigned length);
+extern void fn_str_grow (fn_type *f, const_string s);
+extern void fn_shrink_to (fn_type *f, unsigned loc);
+
+/* fontmap.h */
+
+extern const_string *kpathsea_fontmap_lookup (kpathsea kpse, const_string key);
+
+/* pathsearch.h */
+
+extern KPSEDLL string kpathsea_path_search (kpathsea kpse, const_string path, const_string name, boolean must_exist);
+extern KPSEDLL string *kpathsea_all_path_search (kpathsea kpse, const_string path, const_string name);
+extern KPSEDLL string kpse_path_search (const_string path, const_string name, boolean must_exist);
+extern KPSEDLL string *kpse_all_path_search (const_string path, const_string name);
+
+/* proginit.h */
+
+extern KPSEDLL void kpathsea_init_prog (kpathsea kpse, const_string prefix, unsigned dpi,
+					const_string mode, const_string fallback);
+
+extern KPSEDLL void kpse_init_prog (const_string prefix,  unsigned dpi,  const_string mode,
+				    const_string fallback);
+
+/* progname.h */
+
+extern KPSEDLL string kpathsea_selfdir (kpathsea kpse, const_string argv0);
+extern KPSEDLL string kpse_selfdir (const_string argv0);
+
+/* tex-file.h */
+
+extern KPSEDLL void kpathsea_set_program_enabled (kpathsea kpse, kpse_file_format_type fmt, boolean value, kpse_src_type level);
+extern KPSEDLL void kpathsea_maketex_option (kpathsea kpse, const_string fmtname, boolean value);
+extern KPSEDLL string kpathsea_find_file (kpathsea kpse, const_string name, kpse_file_format_type format,  boolean must_exist);
+extern KPSEDLL boolean kpathsea_in_name_ok (kpathsea kpse, const_string fname);
+extern KPSEDLL boolean kpathsea_out_name_ok (kpathsea kpse, const_string fname);
+extern KPSEDLL void kpathsea_reset_program_name (kpathsea kpse, const_string progname);
+extern void kpathsea_init_fallback_resolutions (kpathsea kpse, string envvar);
+extern void kpse_init_fallback_resolutions (string envvar);
+extern KPSEDLL void kpathsea_set_suffixes (kpathsea kpse, kpse_file_format_type format, boolean alternate, ...);
+extern KPSEDLL void kpse_set_suffixes (kpse_file_format_type format, boolean alternate, ...);
+extern KPSEDLL const_string kpathsea_init_format (kpathsea kpse,
+    kpse_file_format_type format);
+extern KPSEDLL const_string kpathsea_init_format_return_varlist (kpathsea kpse,
+  kpse_file_format_type format);
+extern KPSEDLL const_string kpse_init_format (kpse_file_format_type);
+extern KPSEDLL string *kpathsea_find_file_generic (kpathsea kpse,
+     const_string name, kpse_file_format_type format, boolean must_exist,
+     boolean all);
+extern KPSEDLL string *kpse_find_file_generic (const_string name, kpse_file_format_type format,
+      boolean must_exist, boolean all);
+extern KPSEDLL boolean kpathsea_in_name_ok_silent (kpathsea kpse, const_string fname);
+extern KPSEDLL boolean kpathsea_out_name_ok_silent (kpathsea kpse, const_string fname);
+extern KPSEDLL FILE *kpathsea_open_file (kpathsea kpse, const_string name,
+                                         kpse_file_format_type format);
 
 /* internal utilities */
 

@@ -132,11 +132,58 @@ extern void hash_print (hash_table_type table, boolean summary_only);
 }
 #endif
 
-#include <tidy_kpathsea/str-list.h>
+/* str-list.h */
+
+typedef struct
+{
+  unsigned length;
+  string *list;
+} str_list_type;
+
+typedef struct
+{
+  unsigned length;
+  const_string *list;
+} cstr_list_type;
+
+#define STR_LIST_LENGTH(l) ((l).length)
+#define STR_LIST(l) ((l).list)
+#define STR_LIST_ELT(l, n) STR_LIST (l)[n]
+#define STR_LIST_LAST_ELT(l) STR_LIST_ELT (l, STR_LIST_LENGTH (l) - 1)
+
+static inline str_list_type
+str_list_init (void)
+{
+  str_list_type ret;
+
+  STR_LIST_LENGTH (ret) = 0;
+  STR_LIST (ret) = NULL;
+
+  return ret;
+}
+
+static inline cstr_list_type
+cstr_list_init (void)
+{
+  cstr_list_type ret;
+
+  STR_LIST_LENGTH (ret) = 0;
+  STR_LIST (ret) = NULL;
+
+  return ret;
+}
 
 #ifdef __cplusplus
 extern "C" {
 #endif
+
+extern KPSEDLL void str_list_add (str_list_type *l, string s);
+extern KPSEDLL void cstr_list_add (cstr_list_type *l, const_string s);
+
+extern void str_list_concat (str_list_type * target, str_list_type more);
+extern void str_list_free (str_list_type *l);
+extern void str_list_concat_elements (str_list_type *target, str_list_type more);
+extern void str_list_uniqify (str_list_type *l);
 
 /* from old tex-file.h */
 

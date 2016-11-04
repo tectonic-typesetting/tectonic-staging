@@ -92,7 +92,6 @@
 #define HAVE_SYS_PARAM_H 1
 #define HAVE_UNISTD_H 1
 
-
 #define DEFAULT_TEXMFDBS "/nonesuch"
 #define DEFAULT_WEB2C "/nonesuch"
 #define DEFAULT_TEXINPUTS "/nonesuch"

@@ -5,7 +5,7 @@
 
 #include <w2c/config.h>
 #include "lib.h"
-#include <tidy_kpathsea/pkgw_collected.h>
+#include <tidy_kpathsea/public.h>
 
 /* Look up VAR_NAME in texmf.cnf; assign either the value found there or
    DFLT to *VAR.  */

@@ -41,7 +41,7 @@ XeTeX_pic.c
 
 #include "XeTeX_ext.h"
 
-#include <tidy_kpathsea/pkgw_collected.h>
+#include <tidy_kpathsea/public.h>
 
 #include "pdfimage.h"
 #include "image/pngimage.h"

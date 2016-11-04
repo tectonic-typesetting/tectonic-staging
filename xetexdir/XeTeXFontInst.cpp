@@ -40,7 +40,7 @@ authorization from the copyright holders.
  */
 
 #include <w2c/config.h>
-#include <tidy_kpathsea/pkgw_collected.h>
+#include <tidy_kpathsea/public.h>
 
 #include "XeTeXFontInst.h"
 #include "XeTeXLayoutInterface.h"

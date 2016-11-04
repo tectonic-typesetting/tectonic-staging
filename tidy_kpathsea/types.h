@@ -18,8 +18,27 @@
 #ifndef KPATHSEA_TYPES_H
 #define KPATHSEA_TYPES_H
 
-/* Our string, boolean, etc.  */
-#include <tidy_kpathsea/simpletypes.h>
+/* simpletypes.h */
+
+#ifndef HAVE_BOOLEAN
+#define HAVE_BOOLEAN
+typedef int boolean;
+#ifndef __cplusplus
+#ifndef true
+#define true 1
+#define false 0
+#endif /* not true */
+#endif /* not __cplusplus */
+#endif /* not HAVE_BOOLEAN */
+
+#ifndef FALSE
+#define FALSE false
+#define TRUE true
+#endif /* FALSE */
+
+typedef char *string;
+typedef const char *const_string;
+typedef void *address;
 
 /* Required until all programs use the new API, if ever.  */
 #define KPSE_COMPAT_API 1

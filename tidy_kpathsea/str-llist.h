@@ -23,7 +23,6 @@
 #define STR_LLIST_H
 
 #include <tidy_kpathsea/c-proto.h>
-#include <tidy_kpathsea/simpletypes.h>
 
 #ifdef __cplusplus
 extern "C" {

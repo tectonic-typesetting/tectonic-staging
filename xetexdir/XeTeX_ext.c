@@ -61,7 +61,6 @@ authorization from the copyright holders.
 
 #include <teckit/TECkit_Engine.h>
 
-#include <tidy_kpathsea/variable.h>
 #include <tidy_kpathsea/pkgw_collected.h>
 
 #include <math.h> /* for fabs() */

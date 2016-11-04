@@ -407,6 +407,13 @@ extern KPSEDLL string kpse_make_tex (kpse_file_format_type format,
 
 extern string kpathsea_tilde_expand (kpathsea kpse, string filename);
 
+/* variable.h */
+
+extern KPSEDLL string kpathsea_var_value (kpathsea kpse, const_string var);
+extern KPSEDLL string kpathsea_var_expand (kpathsea kpse, const_string src);
+extern KPSEDLL string kpse_var_value (const_string var);
+extern KPSEDLL string kpse_var_expand (const_string src);
+
 #ifdef __cplusplus
 }
 #endif

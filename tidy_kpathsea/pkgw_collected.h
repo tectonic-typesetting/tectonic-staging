@@ -275,6 +275,14 @@ extern string *kpathsea_path_search_list_generic (kpathsea kpse, const_string pa
 extern KPSEDLL string kpse_path_search (const_string path, const_string name, boolean must_exist);
 extern KPSEDLL string *kpse_all_path_search (const_string path, const_string name);
 
+/* proginit.h */
+
+extern KPSEDLL void kpathsea_init_prog (kpathsea kpse, const_string prefix, unsigned dpi,
+					const_string mode, const_string fallback);
+
+extern KPSEDLL void kpse_init_prog (const_string prefix,  unsigned dpi,  const_string mode,
+				    const_string fallback);
+
 #ifdef __cplusplus
 }
 #endif

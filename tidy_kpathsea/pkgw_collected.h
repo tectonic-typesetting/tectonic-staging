@@ -345,6 +345,51 @@ extern KPSEDLL boolean kpse_out_name_ok (const_string fname);
 extern KPSEDLL FILE *kpse_open_file (const_string, kpse_file_format_type);
 extern KPSEDLL void kpse_reset_program_name (const_string progname);
 
+/* tex-glyph.h */
+
+typedef enum
+{
+  kpse_glyph_source_normal,  /* the searched-for font: already existed */
+  kpse_glyph_source_alias,   /* : was an alias for an existing file */
+  kpse_glyph_source_maketex, /* : was created on the fly */
+  kpse_glyph_source_fallback /* : wasn't found, but the fallback font was */
+} kpse_glyph_source_type;
+
+typedef struct
+{
+  const_string name;            /* font name found */
+  unsigned dpi;                 /* size found, for glyphs */
+  kpse_file_format_type format; /* glyph format found */
+  kpse_glyph_source_type source;        /* where we found it */
+} kpse_glyph_file_type;         
+
+#define KPSE_GLYPH_FILE_NAME(f) ((f).name)
+#define KPSE_GLYPH_FILE_DPI(f) ((f).dpi)
+#define KPSE_GLYPH_FILE_FORMAT(f) ((f).format)
+#define KPSE_GLYPH_FILE_SOURCE(f) ((f).source)
+
+
+extern KPSEDLL string kpathsea_find_glyph (kpathsea kpse,
+                                  const_string font_name, unsigned dpi,
+                                  kpse_file_format_type format,
+                                  kpse_glyph_file_type *glyph_file);
+
+#define KPSE_BITMAP_TOLERANCE(r) ((r) / 500.0 + 1)
+
+extern KPSEDLL boolean kpathsea_bitmap_tolerance (kpathsea kpse,
+                                  double dpi1, double dpi2);
+
+extern KPSEDLL string kpse_find_glyph (const_string font_name, unsigned dpi,
+                                  kpse_file_format_type format,
+                                  kpse_glyph_file_type *glyph_file);
+
+#define kpse_find_pk(font_name, dpi, glyph_file) \
+  kpse_find_glyph (font_name, dpi, kpse_pk_format, glyph_file)
+#define kpse_find_gf(font_name, dpi, glyph_file) \
+  kpse_find_glyph (font_name, dpi, kpse_gf_format, glyph_file)
+
+extern KPSEDLL boolean kpse_bitmap_tolerance (double dpi1, double dpi2);
+
 #ifdef __cplusplus
 }
 #endif

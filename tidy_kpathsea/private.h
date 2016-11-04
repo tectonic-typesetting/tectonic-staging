@@ -62,6 +62,9 @@
 extern "C" {
 #endif
 
+typedef struct kpathsea_instance kpathsea_instance;
+typedef kpathsea_instance *kpathsea;
+
 /* str-list.h */
 
 typedef struct
@@ -358,6 +361,7 @@ typedef struct kpathsea_instance {
 } kpathsea_instance;
 
 extern kpathsea_instance kpse_def_inst;
+extern kpathsea kpse_def;
 
 #define kpathsea_debug kpse_def_inst.debug
 

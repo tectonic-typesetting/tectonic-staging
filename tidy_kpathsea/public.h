@@ -256,17 +256,12 @@ typedef enum
   kpse_src_cmdline     /* command-line option */
 } kpse_src_type;
 
-typedef struct kpathsea_instance kpathsea_instance;
-typedef kpathsea_instance *kpathsea;
-
-
 #ifdef __cplusplus
 extern "C" {
 #endif
 
 /* global instance opaque struct plus custom accessors */
 
-extern kpathsea kpse_def;
 extern const char *kpathsea_version_string;
 
 #define kpse_program_name (kpse_pkgw_get_definst_program_name ())

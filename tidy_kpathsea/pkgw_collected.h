@@ -395,6 +395,14 @@ extern KPSEDLL boolean kpse_bitmap_tolerance (double dpi1, double dpi2);
 extern KPSEDLL boolean kpathsea_tex_hush (kpathsea kpse, const_string what);
 extern KPSEDLL boolean kpse_tex_hush (const_string what);
 
+/* tex-make.h */
+
+extern KPSEDLL string kpathsea_make_tex (kpathsea kpse, 
+                                 kpse_file_format_type format,
+                                 const_string base_file);
+extern KPSEDLL string kpse_make_tex (kpse_file_format_type format,
+                             const_string base_file);
+
 #ifdef __cplusplus
 }
 #endif

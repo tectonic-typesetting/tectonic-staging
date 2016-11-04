@@ -162,6 +162,7 @@ void
 kpse_set_program_enabled (kpse_file_format_type fmt,
                           boolean value, kpse_src_type level)
 {
+  fprintf (stderr, "PKGW: kpse_set_program_enabled(%d, %d, %d)\n", (int) fmt, (int) value, (int) level);
   kpathsea_set_program_enabled (kpse_def, fmt, value, level);
 }
 
@@ -205,6 +206,7 @@ kpathsea_maketex_option (kpathsea kpse, const_string fmtname, boolean value)
 void
 kpse_maketex_option (const_string fmtname,  boolean value)
 {
+  fprintf (stderr, "PKGW: kpse_maketex_option(%s, %d)\n", fmtname, (int) value);
   kpathsea_maketex_option (kpse_def, fmtname,  value);
 }
 #endif
@@ -987,7 +989,9 @@ string
 kpse_find_file (const_string name,  kpse_file_format_type format,
                 boolean must_exist)
 {
-  return kpathsea_find_file(kpse_def, name, format, must_exist);
+  string tmp = kpathsea_find_file(kpse_def, name, format, must_exist);
+  fprintf (stderr, "PKGW: kpse_find_file(%s, %d, %d) => %s\n", name, (int) format, (int) must_exist, tmp);
+  return tmp;
 }
 #endif
 
@@ -1339,14 +1343,18 @@ boolean
 kpse_in_name_ok (const_string fname)
 {
   /* For input default to all. */
-  return kpathsea_in_name_ok (kpse_def, fname);
+  boolean tmp = kpathsea_in_name_ok (kpse_def, fname);
+  fprintf (stderr, "PKGW: kpse_in_name_ok(%s) => %d\n", fname, (int) tmp);
+  return tmp;
 }
 
 boolean
 kpse_out_name_ok (const_string fname)
 {
   /* For output, default to paranoid. */
-  return kpathsea_out_name_ok (kpse_def, fname);
+  boolean tmp = kpathsea_out_name_ok (kpse_def, fname);
+  fprintf (stderr, "PKGW: kpse_out_name_ok(%s) => %d\n", fname, (int) tmp);
+  return tmp;
 }
 #endif
 
@@ -1380,6 +1388,7 @@ kpathsea_open_file (kpathsea kpse, const_string name,
 FILE *
 kpse_open_file (const_string name,  kpse_file_format_type type)
 {
+    fprintf (stderr, "PKGW: kpse_open_file(%s, %d)\n", name, (int) type);
     return kpathsea_open_file(kpse_def, name, type);
 }
 #endif
@@ -1400,6 +1409,7 @@ kpathsea_reset_program_name (kpathsea kpse, const_string progname)
 {
   int i;
 
+  fprintf (stderr, "PKGW: kpse_reset_program_name(%s)\n", progname);
   /* It is a fatal error for either of these to be NULL. */
   assert (progname && kpse->program_name);
   /* Do nothing if the name is unchanged. */

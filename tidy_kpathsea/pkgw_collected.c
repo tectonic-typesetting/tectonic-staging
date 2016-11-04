@@ -979,30 +979,35 @@ kpathsea kpse_def = &kpse_def_inst;
 string
 kpse_pkgw_get_definst_program_name (void)
 {
+    fprintf (stderr, "PKGW: kpse_pkgw_get_definst_program_name() => %s\n", kpse_def_inst.program_name);
     return kpse_def_inst.program_name;
 }
 
 string
 kpse_pkgw_get_definst_invocation_name (void)
 {
+    fprintf (stderr, "PKGW: kpse_pkgw_get_definst_invocation_name() => %s\n", kpse_def_inst.invocation_name);
     return kpse_def_inst.invocation_name;
 }
 
 void
 kpse_pkgw_set_definst_record_input (p_record_input val)
 {
+    fprintf (stderr, "PKGW: kpse_pkgw_set_definst_record_input(%x)\n", val);
     kpse_def_inst.record_input = val;
 }
 
 void
 kpse_pkgw_set_definst_record_output (p_record_output val)
 {
+    fprintf (stderr, "PKGW: kpse_pkgw_set_definst_record_output(%x)\n", val);
     kpse_def_inst.record_output = val;
 }
 
 void
 kpse_pkgw_set_definst_make_tex_discard_errors (boolean val)
 {
+    fprintf (stderr, "PKGW: kpse_pkgw_set_definst_make_tex_discard_errors(%d)\n", (int)val);
     kpse_def_inst.make_tex_discard_errors = val;
 }
 
@@ -1232,7 +1237,9 @@ kpathsea_readable_file (kpathsea kpse, string name)
 string
 kpse_readable_file (string name)
 {
-    return kpathsea_readable_file (kpse_def, name);
+    string tmp = kpathsea_readable_file (kpse_def, name);
+    fprintf (stderr, "PKGW: kpse_readable_file(%s) => %s\n", name, tmp);
+    return tmp;
 }
 #endif
 
@@ -1665,7 +1672,9 @@ kpathsea_var_value (kpathsea kpse, const_string var)
 string
 kpse_var_value (const_string var)
 {
-    return kpathsea_var_value (kpse_def,var);
+    string tmp = kpathsea_var_value (kpse_def,var);
+    fprintf (stderr, "PKGW: kpse_var_value(%s) => %s\n", var, tmp);
+    return tmp;
 }
 #endif
 

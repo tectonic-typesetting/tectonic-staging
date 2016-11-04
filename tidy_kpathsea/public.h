@@ -110,14 +110,22 @@ extern const char *kpathsea_version_string;
 #define kpse_program_name (kpse_pkgw_get_definst_program_name ())
 #define kpse_invocation_name (kpse_pkgw_get_definst_invocation_name ())
 
+/* pkgw_collected.c */
+
 extern string kpse_pkgw_get_definst_program_name (void);
 extern string kpse_pkgw_get_definst_invocation_name (void);
 extern void kpse_pkgw_set_definst_record_input (p_record_input val);
 extern void kpse_pkgw_set_definst_record_output (p_record_output val);
 extern void kpse_pkgw_set_definst_make_tex_discard_errors (boolean val);
+extern string kpse_readable_file (string name);
+extern string kpse_var_value (const_string var);
+
+/* progname.c */
 
 extern void kpse_set_program_name (const_string argv0, const_string progname);
-extern string kpse_readable_file (string name);
+
+/* tex-file.c */
+
 extern void kpse_set_program_enabled (kpse_file_format_type fmt, boolean value, kpse_src_type level);
 extern void kpse_maketex_option (const_string fmtname,  boolean value);
 extern string kpse_find_file (const_string name, kpse_file_format_type format, boolean must_exist);
@@ -125,7 +133,6 @@ extern boolean kpse_in_name_ok (const_string fname);
 extern boolean kpse_out_name_ok (const_string fname);
 extern FILE *kpse_open_file (const_string, kpse_file_format_type);
 extern void kpse_reset_program_name (const_string progname);
-extern string kpse_var_value (const_string var);
 
 #define kpse_find_mf(name)   kpse_find_file (name, kpse_mf_format, true)
 #define kpse_find_mft(name)  kpse_find_file (name, kpse_mft_format, true)

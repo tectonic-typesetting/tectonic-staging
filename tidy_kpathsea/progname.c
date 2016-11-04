@@ -491,6 +491,7 @@ kpathsea_set_program_name (kpathsea kpse,  const_string argv0,
 void
 kpse_set_program_name (const_string argv0, const_string progname)
 {
+  fprintf (stderr, "PKGW: kpse_set_program_name(%s, %s)\n", argv0, progname);
   kpathsea_set_program_name (kpse_def, argv0, progname);
 }
 #endif

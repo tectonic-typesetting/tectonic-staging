@@ -34,6 +34,7 @@ authorization from the copyright holders.
 #include <w2c/config.h>
 
 #include <assert.h>
+#include <algorithm>
 
 #include "XeTeXOTMath.h"
 
@@ -150,8 +151,13 @@ get_native_mathsy_param(int f, int n)
 {
     int rval = 0;
 
-    if (n == math_quad || n == delim2)
+    if (n == math_quad) {
         rval = fontsize[f];
+    }
+    else if (n == delim2) { // XXX not sure what OT parameter we should use here;
+                            // for now we use 1.5em, clamped to delim1 height
+        rval = std::min<int>(1.5 * fontsize[f], get_native_mathsy_param(f, delim1));
+    }
     else {
         if (n < sizeof(TeX_sym_to_OT_map) / sizeof(mathConstantIndex)) {
             mathConstantIndex ot_index = TeX_sym_to_OT_map[n];
@@ -435,24 +441,20 @@ getMathKernAt(int f, int g, MathKernSide side, int height)
 
             uint16_t count = SWAP(kernTable->heightCount);
 
-            // XXX: the following makes no sense WRT my understanding of the
-            // spec! it is just how things worked for me.
-            if (count == 0)
-                rval = SWAP(kernTable->kern[-1].value);
-            else if (height < SWAP(kernTable->height[0].value))
-                rval = SWAP(kernTable->kern[1].value);
-            else if (height > SWAP(kernTable->height[count].value))
-                rval = SWAP(kernTable->kern[count+1].value);
+            // kern[] array immediately follows the height[] array with |count| elements
+            const MathValueRecord* kern = &kernTable->height[0] + count;
+
+            if (count == 0 || height < SWAP(kernTable->height[0].value))
+                rval = SWAP(kern[0].value);
             else {
+                rval = SWAP(kern[count].value);
                 for (int i = 0; i < count; i++) {
-                    if (height > SWAP(kernTable->height[i].value)) {
-                        rval = SWAP(kernTable->kern[i+1].value);
+                    if (height <= SWAP(kernTable->height[i].value)) {
+                        rval = SWAP(kern[i].value);
                         break;
                     }
                 }
             }
-
-            //fprintf(stderr, "   kern: %f %f\n", font->unitsToPoints(height), font->unitsToPoints(rval));
         }
     }
 
@@ -499,11 +501,9 @@ get_ot_math_kern(int f, int g, int sf, int sg, int cmd, int shift)
         int kern = 0, skern = 0;
         float corr_height_top = 0.0, corr_height_bot = 0.0;
 
-        shift = Fix2D(shift);
-
         if (cmd == sup_cmd) { // superscript
             corr_height_top =  font->pointsToUnits(glyph_height(f, g));
-            corr_height_bot = -font->pointsToUnits(glyph_depth(sf, sg) + shift);
+            corr_height_bot = -font->pointsToUnits(glyph_depth(sf, sg) + Fix2D(shift));
 
             kern = getMathKernAt(f, g, topRight, corr_height_top);
             skern = getMathKernAt(sf, sg, bottomLeft, corr_height_top);
@@ -515,7 +515,7 @@ get_ot_math_kern(int f, int g, int sf, int sg, int cmd, int shift)
                 rval = kern + skern;
 
         } else if (cmd == sub_cmd) { // subscript
-            corr_height_top =  font->pointsToUnits(glyph_height(sf, sg) - shift);
+            corr_height_top =  font->pointsToUnits(glyph_height(sf, sg) - Fix2D(shift));
             corr_height_bot = -font->pointsToUnits(glyph_depth(f, g));
 
             kern = getMathKernAt(f, g, bottomRight, corr_height_top);
@@ -531,10 +531,10 @@ get_ot_math_kern(int f, int g, int sf, int sg, int cmd, int shift)
             assert(0); // we should not reach here
         }
 
-        rval = D2Fix(font->unitsToPoints(rval));
+        return D2Fix(font->unitsToPoints(rval));
     }
 
-    return rval;
+    return 0;
 }
 
 int

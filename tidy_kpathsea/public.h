@@ -133,14 +133,7 @@ extern boolean kpse_in_name_ok (const_string fname);
 extern boolean kpse_out_name_ok (const_string fname);
 extern void kpse_reset_program_name (const_string progname);
 
-#define kpse_find_mf(name)   kpse_find_file (name, kpse_mf_format, true)
-#define kpse_find_mft(name)  kpse_find_file (name, kpse_mft_format, true)
-#define kpse_find_pict(name) kpse_find_file (name, kpse_pict_format, true)
-#define kpse_find_tex(name)  kpse_find_file (name, kpse_tex_format, true)
-#define kpse_find_tfm(name)  kpse_find_file (name, kpse_tfm_format, true)
-#define kpse_find_ofm(name)  kpse_find_file (name, kpse_ofm_format, true)
-#define kpse_find_vf(name) kpse_find_file (name, kpse_vf_format, false)
-#define kpse_find_ovf(name) kpse_find_file (name, kpse_ovf_format, false)
+#define kpse_find_tex(name) kpse_find_file (name, kpse_tex_format, true)
 
 #ifdef __cplusplus
 }

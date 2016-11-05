@@ -1,7 +1,7 @@
 #! /bin/bash
 
-src=/a/texlive-src/Build/source
-build=/a/texlive-src/Build/source/BUILD
+src=/a/texlive-state/repo/Build/source
+build=/a/texlive-state/rbuild
 
 cd $(dirname $0)
 

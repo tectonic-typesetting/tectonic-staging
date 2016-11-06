@@ -21,6 +21,7 @@ cp $src/texk/web2c/tex.ch xetexdir/
 cp $src/texk/web2c/tex-binpool.ch xetexdir/
 cp $src/texk/web2c/xetexdir/*.web xetexdir/
 cp $src/texk/web2c/xetexdir/*.ch* xetexdir/
+cp $src/texk/web2c/xetexdir/*.defines xetexdir/
 
 # web2c'd sources XeTeX sources -- to be superseded, hopefully.
 
@@ -43,6 +44,7 @@ cp $src/texk/web2c/synctexdir/synctex-xe-*.ch* synctexdir/
 cp $src/texk/web2c/synctexdir/synctex-e-*.ch* synctexdir/
 cp $src/texk/web2c/synctexdir/synctex-mem.ch0 synctexdir/
 cp $src/texk/web2c/synctexdir/synctex-rec.ch0 synctexdir/
+cp $src/texk/web2c/synctexdir/*.defines synctexdir/
 
 # base lib
 
@@ -101,4 +103,3 @@ cp $src/texk/web2c/web2c/*.sed web2c/
 cp $src/texk/web2c/web2c/*.defines web2c/
 cp $src/texk/web2c/web2c/*.c web2c/
 cp $src/texk/web2c/web2c/*.h web2c/
-cp $src/texk/web2c/web2c/convert web2c/

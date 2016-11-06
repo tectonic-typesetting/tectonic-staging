@@ -60,6 +60,10 @@ def inner (top, w):
             command='WEBINPUTS=. BUILD/otangle $in && mv $basename.p $basename.pool $outdir',
             description='OTANGLE $out')
 
+    w.rule ('convert',
+            command='$convert . $outdir $basename && mv $basename*.c $basename*.h $outdir',
+            description='CONVERT $out')
+
     # build dir
 
     builddir = top / 'BUILD'
@@ -181,7 +185,7 @@ def inner (top, w):
         cflags = '-I. -Ilib -Ixetexdir %(base_cflags)s' % config,
     )
 
-    # web2c
+    # web2c programs
 
     def web2c_c_sources ():
         for src in (top / 'web2c').glob ('web2c*.c'):
@@ -191,6 +195,22 @@ def inner (top, w):
     web2cprog = executable (
         output = w2cbdir / 'web2c',
         sources = web2c_c_sources (),
+        rule = 'cc',
+        slibs = [libbase, libkp],
+        cflags = '-I. %(base_cflags)s' % config,
+    )
+
+    splitupprog = executable (
+        output = w2cbdir / 'splitup',
+        sources = (top / 'web2c').glob ('splitup*.c'),
+        rule = 'cc',
+        slibs = [libbase, libkp],
+        cflags = '-I. %(base_cflags)s' % config,
+    )
+
+    fixwritesprog = executable (
+        output = w2cbdir / 'fixwrites',
+        sources = (top / 'web2c').glob ('fixwrites*.c'),
         rule = 'cc',
         slibs = [libbase, libkp],
         cflags = '-I. %(base_cflags)s' % config,
@@ -234,6 +254,26 @@ def inner (top, w):
              variables = {
                  'basename': 'xetex',
                  'outdir': str(builddir),
+             },
+    )
+
+    # "convert"ed Pascal code into C code
+
+    xetex_c = map (str, [
+        builddir / 'xetex0.c',
+        builddir / 'xetexini.c',
+        builddir / 'xetexcoerce.h',
+        builddir / 'xetexd.h',
+    ])
+    convert = str(top / 'web2c' / 'local-convert.sh')
+
+    w.build (xetex_c, 'convert',
+             inputs = map (str, [xetex_p, xetex_pool]),
+             order_only = [str(builddir), convert, web2cprog, splitupprog, fixwritesprog],
+             variables = {
+                 'outdir': str(builddir),
+                 'convert': convert,
+                 'basename': 'xetex',
              },
     )
 

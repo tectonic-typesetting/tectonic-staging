@@ -3,9 +3,15 @@
 # Public domain.  Originally written ca.1985 by Tom Rokicki,
 # Tim Morgan, Karl Berry, et al.
 
-: ${srcdir=.}
+# Modified from texlive:Build/sourec/wexk/web2c/web2c/convert by PKGW to work
+# with our build system. The diff is small. 2016 Nov 6.
 
-usage="Usage: $0 BASE
+srcdir="$1"
+shift
+builddir="$1"
+shift
+
+usage="Usage: $0 SRCDIR BUILDDIR BASE
 
 BASE is the root part of the file to be converted; it is extended with
 .p to make the name of the (input) Pascal file, and extended with .c and
@@ -29,8 +35,8 @@ if test -z "$basefile"; then
   exit 1
 fi
 
-pascalfile=$basefile.p
-cfile=$basefile.c
+pascalfile=$builddir/$basefile.p
+cfile=$builddir/$basefile.c
 
 # This is for tangleboot if the build and source directories are different.
 test -r $pascalfile || pascalfile=$srcdir/$pascalfile
@@ -86,7 +92,7 @@ case $basefile in
       more_defines="$more_defines $prog_defines"
     fi
     hfile=texmfmp.h
-    postcmd="| ./web2c/splitup $splitup_options $basefile"
+    postcmd="| $builddir/web2c/splitup $splitup_options $basefile"
     cfile=${basefile}0.c # last output file, or thereabouts
     output=
     output_files="$basefile[0-9].c ${basefile}ini.c ${basefile}d.h \
@@ -98,9 +104,9 @@ esac
 #set -x
 eval "cat $srcdir/web2c/common.defines $more_defines $pascalfile \
   $precmd \
-  | ./web2c/web2c -h$hfile $web2c_options \
+  | $builddir/web2c/web2c -h$hfile $web2c_options \
   $midcmd \
-  | ./web2c/fixwrites $fixwrites_options $basefile \
+  | $builddir/web2c/fixwrites $fixwrites_options $basefile \
   $postcmd \
   $output"
 

@@ -5,28 +5,7 @@ build=/a/texlive-state/rbuild
 
 cd $(dirname $0)
 
-# To validate:
-#
-# - base sources
-# - synctex
-# - (local) libmd5
-# - (local) lib.a
-# - libkpathsea
-# - libTECkit
-#
-# External:
-#
-# - harfbuzz
-# - graphite2
-# - libicuuc
-# - libicudata
-# - libpoppler
-# - libpng
-# - libfreetype2
-# - libz
-# - libfontconfig
-
-# Raw sources
+# XeTeX base sources
 
 mkdir -p xetexdir/image
 
@@ -38,7 +17,7 @@ cp $src/texk/web2c/xetexdir/image/*.h xetexdir/image/
 cp $src/texk/web2c/*.h xetexdir/
 rm xetexdir/XeTeX_mac.c xetexdir/XeTeXFontInst_Mac.cpp
 
-# web2c'd sources
+# web2c'd sources XeTeX sources -- to be superseded, hopefully.
 
 cp $build/texk/web2c/xetex*.c xetexdir/
 cp $build/texk/web2c/xetex*.h xetexdir/
@@ -86,3 +65,8 @@ cp $src/libs/teckit/TECkit-src/source/Engine.cpp teckit/
 cp $src/libs/teckit/TECkit-src/source/*.h teckit/
 cp $src/libs/teckit/TECkit-src/source/NormalizationData.c teckit/
 cp $src/libs/teckit/TECkit-src/source/Public-headers/*.h teckit/
+
+# tie
+
+mkdir -p tiedir
+cp $src/texk/web2c/tiedir/tie.c tiedir/

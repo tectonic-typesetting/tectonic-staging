@@ -66,97 +66,87 @@ def inner (top, w):
     w2cbdir = builddir / 'web2c'
     w.build (str(builddir), 'ensuredir')
 
+    # utility.
+
+    def compile (sources=None, bldprefix=None, rule=None, **kwargs):
+        objs = []
+
+        for src in sources:
+            obj = builddir / (bldprefix + src.name.replace ('.c', '.o'))
+            w.build (
+                str(obj), rule,
+                inputs = [str(src)],
+                order_only = [str(builddir)],
+                variables = kwargs,
+            )
+            objs.append (str (obj))
+
+        return objs
+
     # kpathsea
 
     libkp = builddir / 'libkpathsea.a'
     cflags = '-DHAVE_CONFIG_H -DMAKE_KPSE_DLL -Ikpathsea -I. %(base_cflags)s' % config
-    objs = []
-
-    for src in (top / 'kpathsea').glob ('*.c'):
-        obj = builddir / ('kpathsea_' + src.name.replace ('.c', '.o'))
-        w.build (
-            str(obj), 'cc',
-            inputs = [str(src)],
-            order_only = [str(builddir)],
-            variables = {'cflags': cflags},
-        )
-        objs.append (str (obj))
-
+    objs = compile (
+        sources = (top / 'kpathsea').glob ('*.c'),
+        bldprefix = 'kpathsea_',
+        rule = 'cc',
+        cflags = cflags,
+    )
     w.build (str(libkp), 'staticlib', inputs = objs)
 
     # teckit
 
     libtk = builddir / 'libteckit.a'
     cflags = '-DHAVE_CONFIG_H -Iteckit -DNDEBUG %(base_cflags)s' % config
-    objs = []
-
-    for src in (top / 'teckit').glob ('*.cpp'):
-        obj = builddir / ('teckit_' + src.name.replace ('.cpp', '.o'))
-        w.build (
-            str(obj), 'cxx',
-            inputs = [str(src)],
-            order_only = [str(builddir)],
-            variables = {'cflags': cflags},
-        )
-        objs.append (str (obj))
-
+    objs = compile (
+        sources = (top / 'teckit').glob ('*.cpp'),
+        bldprefix = 'teckit_',
+        rule = 'cxx',
+        cflags = cflags,
+    )
     w.build (str(libtk), 'staticlib', inputs = objs)
 
     # libmd5
 
     libmd5 = builddir / 'libmd5.a'
     cflags = '-DHAVE_CONFIG_H -Ilibmd5 %(base_cflags)s' % config
-    objs = []
-
-    for src in (top / 'libmd5').glob ('*.c'):
-        obj = builddir / ('libmd5_' + src.name.replace ('.c', '.o'))
-        w.build (
-            str(obj), 'cc',
-            inputs = [str(src)],
-            order_only = [str(builddir)],
-            variables = {'cflags': cflags},
-        )
-        objs.append (str (obj))
-
+    objs = compile (
+        sources = (top / 'libmd5').glob ('*.c'),
+        bldprefix = 'libmd5_',
+        rule = 'cc',
+        cflags = cflags,
+    )
     w.build (str(libmd5), 'staticlib', inputs = objs)
 
     # lib / libbase
 
     libbase = builddir / 'libbase.a'
     cflags = '-DHAVE_CONFIG_H -Ilib -I. %(base_cflags)s' % config
-    objs = []
 
-    for src in (top / 'lib').glob ('*.c'):
-        if src.name == 'texmfmp.c':
-            continue # #included in xetexdir/xetexextra.c
+    def libbase_sources ():
+        for src in (top / 'lib').glob ('*.c'):
+            if src.name != 'texmfmp.c': # #included in xetexdir/xetexextra.c
+                yield src
 
-        obj = builddir / ('baselib_' + src.name.replace ('.c', '.o'))
-        w.build (
-            str(obj), 'cc',
-            inputs = [str(src)],
-            order_only = [str(builddir)],
-            variables = {'cflags': cflags},
-        )
-        objs.append (str (obj))
-
+    objs = compile (
+        sources = libbase_sources (),
+        bldprefix = 'baselib_',
+        rule = 'cc',
+        cflags = cflags,
+    )
     w.build (str(libbase), 'staticlib', inputs = objs)
 
     # synctex
 
     libsynctex = builddir / 'libsynctex.a'
     cflags = '-DHAVE_CONFIG_H -Ixetexdir -I. -DU_STATIC_IMPLEMENTATION -D__SyncTeX__ -DSYNCTEX_ENGINE_H=\\"synctexdir/synctex-xetex.h\\" %(pkgconfig_cflags)s %(base_cflags)s' % config
-    objs = []
-
-    for src in (top / 'synctexdir').glob ('*.c'):
-        obj = builddir / ('synctex_' + src.name.replace ('.c', '.o'))
-        w.build (
-            str(obj), 'cc',
-            inputs = [str(src)],
-            order_only = [str(builddir)],
-            variables = {'cflags': cflags},
-        )
-        objs.append (str (obj))
-
+    objs = compile (
+        sources = (top / 'synctexdir').glob ('*.c'),
+        bldprefix = 'synctex_',
+        rule = 'cc',
+        cflags = cflags,
+    )
     w.build (str(libsynctex), 'staticlib', inputs = objs)
 
     # tie

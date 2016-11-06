@@ -561,14 +561,12 @@ extern struct stat xlstat (const_string path);
 
 /* internal utilities */
 
-extern string uppercasify (const_string s);
 extern unsigned atou (const_string);
 extern string xdirname (const_string name);
 extern boolean same_file_p (const_string filename1, const_string filename2);
 extern string remove_suffix (const_string name);
 extern string make_suffix (const_string s,  const_string suffix);
 extern string make_prefix (string stem_prefix, string name);
-extern const_string extend_filename (const_string name, const_string suffix);
 extern void kpathsea_xputenv (kpathsea kpse, const_string var, const_string value);
 extern void kpathsea_xputenv_int (kpathsea kpse, const_string var, int value);
 extern void xputenv_int (const_string var, int value);

@@ -72,7 +72,7 @@ term_new_line;jump_out() ; \
 #line 34 "../../../repo/Build/source/texk/web2c/tiedir/tie-w2c.ch"
 #include "cpascal.h"
 #include <stdio.h> 
-#include <kpathsea/kpathsea.h> 
+#include <tidy_kpathsea/public.h>
 
 #define usage tieusage
 #line 480 "../../../repo/Build/source/texk/web2c/tiedir/tie.w"

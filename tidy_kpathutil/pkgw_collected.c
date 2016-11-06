@@ -33,6 +33,9 @@
 #define IS_UNC_NAME(name) 0
 #endif
 
+#define ISLOWER(c) (isascii (c) && islower((unsigned char)c))
+#define TOUPPER(c) (ISLOWER (c) ? toupper ((unsigned char)c) : (c))
+
 /* absolute.c  */
 
 boolean
@@ -114,6 +117,19 @@ concatn (const_string str1, ...)
   return ret;
 }
 
+/* extend-fname.c */
+
+const_string
+extend_filename (const_string name, const_string default_suffix)
+{
+  const_string new_s;
+  const_string suffix = find_suffix (name);
+
+  new_s = suffix == NULL ? concat3 (name, ".", default_suffix)
+                         : name;
+  return new_s;
+}
+
 /* find-suffix.c */
 
 const_string
@@ -183,6 +199,22 @@ read_line (FILE *f)
   funlockfile (f);
 
   return line;
+}
+
+/* uppercasify.c */
+
+string
+uppercasify (const_string s)
+{
+  string target;
+  string ret = xstrdup (s);
+
+  for (target = ret; *target; target++)
+    {
+      *target = TOUPPER (*target);
+    }
+
+  return ret;
 }
 
 /* x*.c */

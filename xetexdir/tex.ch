@@ -3333,14 +3333,14 @@ flushable_string:=str_ptr-1;
     begin if s>0 then
 @z
 
-@x [49.1265] if batchmode, mktex... scripts should be silent.
-interaction:=cur_chr;
-@y
-interaction:=cur_chr;
-if interaction = batch_mode
-then kpse_make_tex_discard_errors := 1
-else kpse_make_tex_discard_errors := 0;
-@z
+%%% @x [49.1265] if batchmode, mktex... scripts should be silent.
+%%% interaction:=cur_chr;
+%%% @y
+%%% interaction:=cur_chr;
+%%% if interaction = batch_mode
+%%% then kpse_make_tex_discard_errors := 1
+%%% else kpse_make_tex_discard_errors := 0;
+%%% @z
 
 @x [49.1275] l.23441 - Same stuff as for \input, this time for \openin.
   if cur_ext="" then cur_ext:=".tex";

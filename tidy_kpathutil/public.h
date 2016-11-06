@@ -129,6 +129,7 @@
 #define FILESTRNCASEEQ STRNEQ
 #define FILECHARCASEEQ(c1,c2) ((c1) == (c2))
 #define MAX_INT_LENGTH 21
+#define DEV_NULL "/dev/null"
 
 /* other lame #defines */
 
@@ -190,6 +191,8 @@ extern address xcalloc (size_t nelem, size_t elsize);
 extern boolean kpse_absolute_p (const_string filename, boolean relative_ok);
 extern string read_line (FILE *f);
 extern string kpse_program_basename (const_string argv0);
+extern const_string extend_filename (const_string name, const_string suffix);
+extern string uppercasify (const_string s);
 
 #ifdef __cplusplus
 }

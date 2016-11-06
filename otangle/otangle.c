@@ -197,7 +197,7 @@ initialize ( void )
   unsigned char wi  ;
   unsigned char zi  ;
   integer h  ;
-  kpsesetprogramname ( argv [0 ], "otangle" ) ;
+  kpse_set_program_name ( argv [0 ], "otangle" ) ;
   parsearguments () ;
   history = 0 ;
   xchr [32 ]= ' ' ;
@@ -347,9 +347,9 @@ initialize ( void )
 void 
 openinput ( void ) 
 {
-  webfile = kpseopenfile ( webname , kpsewebformat ) ;
+  webfile = kpse_open_file ( webname , kpse_web_format ) ;
   if ( chgname ) 
-  changefile = kpseopenfile ( chgname , kpsewebformat ) ;
+  changefile = kpse_open_file ( chgname , kpse_web_format ) ;
 } 
 boolean 
 zinputln ( textfile f ) 

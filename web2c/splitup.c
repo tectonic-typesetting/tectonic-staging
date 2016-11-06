@@ -7,7 +7,6 @@
    Tim Morgan  September 19, 1987.  */
 
 #include <w2c/config.h>
-#include <kpathsea/getopt.h>
 
 #if defined (FATAL)
 #undef FATAL
@@ -59,7 +58,7 @@ FILE *out, *ini, *temp;
  * so we know when it's safe to finish writing the current file.
  */
 static int
-read_line (void)
+splitup_read_line (void)
 {
   if (fgets (buffer, sizeof (buffer), stdin) == NULL)
     return false;
@@ -198,13 +197,13 @@ main (int argc, string *argv)
       has_ini = false;
       temp = xfopen (tempfile, "wb+");
 
-      while (read_line ())
+      while (splitup_read_line ())
 	{
 	  fputs (buffer, temp);
 	  if (buffer[0] == '}')
 	    break;		/* End of procedure */
 	}
-      while (ifdef_nesting > 0 && read_line ())
+      while (ifdef_nesting > 0 && splitup_read_line ())
 	fputs (buffer, temp);
       rewind (temp);
 

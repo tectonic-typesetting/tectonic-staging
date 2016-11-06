@@ -356,19 +356,6 @@ dir_links (const_string fn, long nlinks)
 }
 #endif
 
-/* extend-fname.c */
-
-const_string
-extend_filename (const_string name, const_string default_suffix)
-{
-  const_string new_s;
-  const_string suffix = find_suffix (name);
-
-  new_s = suffix == NULL ? concat3 (name, ".", default_suffix)
-                         : name;
-  return new_s;
-}
-
 /* file-p.c */
 
 /* Test whether FILENAME1 and FILENAME2 are actually the same file.  If
@@ -1603,22 +1590,6 @@ kpathsea_tilde_expand (kpathsea kpse, string name)
   /* We may return the same thing as the original, and then we might not
      be returning a malloc-ed string.  Callers beware.  Sorry.  */
   return expansion;
-}
-
-/* uppercasify.c */
-
-string
-uppercasify (const_string s)
-{
-  string target;
-  string ret = xstrdup (s);
-
-  for (target = ret; *target; target++)
-    {
-      *target = TOUPPER (*target);
-    }
-
-  return ret;
 }
 
 /* variable.c */

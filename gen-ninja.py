@@ -10,6 +10,7 @@ from pwkit import io, ninja_syntax
 
 
 config = {
+    'build_name': 'BUILD',
     'base_cflags': '-g -O0',
     # pkg-config --cflags fontconfig harfbuzz harfbuzz-icu freetype2 graphite2 libpng zlib icu-uc poppler
     'pkgconfig_cflags': '-I/usr/include/freetype2 -I/usr/include/libpng16 -I/usr/include/harfbuzz -I/usr/include/glib-2.0 -I/usr/lib64/glib-2.0/include -I/usr/include/freetype2 -I/usr/include/libpng16 -I/usr/include/poppler',
@@ -53,20 +54,24 @@ def inner (top, w):
             description='LINK $out')
 
     w.rule ('tie',
-            command='WEBINPUTS=. BUILD/tie -c $out $in',
+            command='WEBINPUTS=. BUILD/tie -c $out $in', # TODO: config
             description='TIE $out')
 
     w.rule ('otangle',
-            command='WEBINPUTS=. BUILD/otangle $in && mv $basename.p $basename.pool $outdir',
+            command='WEBINPUTS=. BUILD/otangle $in && mv $basename.p $basename.pool $outdir', # TODO: config
             description='OTANGLE $out')
 
     w.rule ('convert',
             command='$convert . $outdir $basename && mv $basename*.c $basename*.h $outdir',
             description='CONVERT $out')
 
+    w.rule ('makecpool',
+            command='BUILD/web2c/makecpool $basename >$out', # TODO: config
+            description='MAKECPOOL $out')
+
     # build dir
 
-    builddir = top / 'BUILD'
+    builddir = top / config['build_name']
     w2cbdir = builddir / 'web2c'
     w.build (str(builddir), 'ensuredir')
 
@@ -87,14 +92,17 @@ def inner (top, w):
 
         return objs
 
-    def staticlib (sources=None, basename=None, rule=None, **kwargs):
+    def staticlib (sources=None, basename=None, rule=None, order_only=[], **kwargs):
         lib = builddir / ('lib' + basename + '.a')
         objs = compile (
             sources = sources,
             bldprefix = basename + '_',
             rule = rule,
             **kwargs)
-        w.build (str(lib), 'staticlib', inputs = objs)
+        w.build (str(lib), 'staticlib',
+                 inputs = objs,
+                 order_only = order_only,
+        )
         return lib
 
     def executable (output=None, sources=None, rule=None, slibs=[], libs='', **kwargs):
@@ -154,17 +162,6 @@ def inner (top, w):
         cflags = '-DHAVE_CONFIG_H -Ilib -I. %(base_cflags)s' % config
     )
 
-    # synctex
-
-    libsynctex = staticlib (
-        basename = 'synctex',
-        sources = (top / 'synctexdir').glob ('*.c'),
-        rule = 'cc',
-        cflags = ('-DHAVE_CONFIG_H -Ixetexdir -I. -DU_STATIC_IMPLEMENTATION '
-                  '-D__SyncTeX__ -DSYNCTEX_ENGINE_H=\\"synctexdir/synctex-xetex.h\\" '
-                  '%(pkgconfig_cflags)s %(base_cflags)s' % config),
-    )
-
     # tie
 
     tieprog = executable (
@@ -216,6 +213,14 @@ def inner (top, w):
         cflags = '-I. %(base_cflags)s' % config,
     )
 
+    makecpoolprog = executable (
+        output = w2cbdir / 'makecpool',
+        sources = (top / 'web2c').glob ('makecpool*.c'),
+        rule = 'cc',
+        slibs = [libbase, libkp],
+        cflags = '-I. %(base_cflags)s' % config,
+    )
+
     # "tie"d xetex.ch file. Not sure if the ordering of changefiles matters so
     # I'm being paranoid here and reproducing what the TeXLive build system
     # uses.
@@ -259,15 +264,15 @@ def inner (top, w):
 
     # "convert"ed Pascal code into C code
 
-    xetex_c = map (str, [
+    xetex_c = [
         builddir / 'xetex0.c',
         builddir / 'xetexini.c',
         builddir / 'xetexcoerce.h',
         builddir / 'xetexd.h',
-    ])
+    ]
     convert = str(top / 'web2c' / 'local-convert.sh')
 
-    w.build (xetex_c, 'convert',
+    w.build (map (str, xetex_c), 'convert',
              inputs = map (str, [xetex_p, xetex_pool]),
              order_only = [str(builddir), convert, web2cprog, splitupprog, fixwritesprog],
              variables = {
@@ -277,9 +282,34 @@ def inner (top, w):
              },
     )
 
+    # C string cpool file
+
+    xetex_cpool = builddir / 'xetex-pool.c'
+
+    w.build (str (xetex_cpool), 'makecpool',
+             inputs = map (str, [xetex_p, xetex_pool]),
+             order_only = [str(builddir), makecpoolprog],
+             variables = {
+                 'outdir': str(builddir),
+                 'basename': str(builddir / 'xetex'),
+             },
+    )
+
+    # synctex
+
+    libsynctex = staticlib (
+        basename = 'synctex',
+        sources = (top / 'synctexdir').glob ('*.c'),
+        rule = 'cc',
+        cflags = ('-DHAVE_CONFIG_H -Ixetexdir -I. -I%(build_name)s -DU_STATIC_IMPLEMENTATION '
+                  '-D__SyncTeX__ -DSYNCTEX_ENGINE_H=\\"synctexdir/synctex-xetex.h\\" '
+                  '%(pkgconfig_cflags)s %(base_cflags)s' % config),
+        order_only = map (str, xetex_c),
+    )
+
     # xetex
 
-    cflags = '-DHAVE_CONFIG_H -D__SyncTeX__ -Ixetexdir -I. -Ilibmd5 %(pkgconfig_cflags)s %(base_cflags)s' % config
+    cflags = '-DHAVE_CONFIG_H -D__SyncTeX__ -Ixetexdir -I%(build_name)s -I. -Ilibmd5 %(pkgconfig_cflags)s %(base_cflags)s' % config
     objs = []
 
     def xetex_c_sources ():
@@ -287,6 +317,10 @@ def inner (top, w):
             yield src
         for src in (top / 'xetexdir' / 'image').glob ('*.c'):
             yield src
+        for src in xetex_c:
+            if src.name.endswith ('.c'):
+                yield src
+        yield xetex_cpool
 
     for src in xetex_c_sources ():
         obj = builddir / ('xetex_' + src.name.replace ('.c', '.o'))

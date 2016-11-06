@@ -23,11 +23,6 @@ cp $src/texk/web2c/xetexdir/*.web xetexdir/
 cp $src/texk/web2c/xetexdir/*.ch* xetexdir/
 cp $src/texk/web2c/xetexdir/*.defines xetexdir/
 
-# web2c'd sources XeTeX sources -- to be superseded, hopefully.
-
-cp $build/texk/web2c/xetex*.c xetexdir/
-cp $build/texk/web2c/xetex*.h xetexdir/
-
 # web2c support
 
 mkdir -p w2c

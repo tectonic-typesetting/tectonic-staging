@@ -4025,33 +4025,33 @@ begin @!{|start_here|}
  underscores, so we're stuck giving the names twice, once as a string,
  once as the identifier. How ugly.}
   setup_bound_var (0)('mem_bot')(mem_bot);
-  setup_bound_var (250000)('main_memory')(main_memory);
+  setup_bound_var (5000000)('main_memory')(main_memory);
     {|memory_word|s for |mem| in \.{INITEX}}
   setup_bound_var (0)('extra_mem_top')(extra_mem_top);
     {increase high mem in \.{VIRTEX}}
   setup_bound_var (0)('extra_mem_bot')(extra_mem_bot);
     {increase low mem in \.{VIRTEX}}
-  setup_bound_var (200000)('pool_size')(pool_size);
-  setup_bound_var (75000)('string_vacancies')(string_vacancies);
-  setup_bound_var (5000)('pool_free')(pool_free); {min pool avail after fmt}
-  setup_bound_var (15000)('max_strings')(max_strings);
+  setup_bound_var (6250000)('pool_size')(pool_size);
+  setup_bound_var (90000)('string_vacancies')(string_vacancies);
+  setup_bound_var (47500)('pool_free')(pool_free); {min pool avail after fmt}
+  setup_bound_var (500000)('max_strings')(max_strings);
   setup_bound_var (100)('strings_free')(strings_free);
-  setup_bound_var (100000)('font_mem_size')(font_mem_size);
-  setup_bound_var (500)('font_max')(font_max);
-  setup_bound_var (20000)('trie_size')(trie_size);
+  setup_bound_var (8000000)('font_mem_size')(font_mem_size);
+  setup_bound_var (9000)('font_max')(font_max);
+  setup_bound_var (1000000)('trie_size')(trie_size);
     {if |ssup_trie_size| increases, recompile}
-  setup_bound_var (659)('hyph_size')(hyph_size);
-  setup_bound_var (3000)('buf_size')(buf_size);
-  setup_bound_var (50)('nest_size')(nest_size);
+  setup_bound_var (8191)('hyph_size')(hyph_size);
+  setup_bound_var (200000)('buf_size')(buf_size);
+  setup_bound_var (500)('nest_size')(nest_size);
   setup_bound_var (15)('max_in_open')(max_in_open);
-  setup_bound_var (60)('param_size')(param_size);
-  setup_bound_var (4000)('save_size')(save_size);
-  setup_bound_var (300)('stack_size')(stack_size);
+  setup_bound_var (10000)('param_size')(param_size);
+  setup_bound_var (100000)('save_size')(save_size);
+  setup_bound_var (5000)('stack_size')(stack_size);
   setup_bound_var (16384)('dvi_buf_size')(dvi_buf_size);
   setup_bound_var (79)('error_line')(error_line);
   setup_bound_var (50)('half_error_line')(half_error_line);
   setup_bound_var (79)('max_print_line')(max_print_line);
-  setup_bound_var (0)('hash_extra')(hash_extra);
+  setup_bound_var (600000)('hash_extra')(hash_extra);
   setup_bound_var (10000)('expand_depth')(expand_depth);
 
   const_chk (mem_bot);

@@ -679,9 +679,9 @@ undump_things(font_check[null_font], font_ptr+1-null_font);
 @z
 
 @x [51.1332] l.24203 - make the main program a procedure, for eqtb hack.
-  setup_bound_var (15000)('max_strings')(max_strings);
+  setup_bound_var (500000)('max_strings')(max_strings);
 @y
-  setup_bound_var (15000)('max_strings')(max_strings);
+  setup_bound_var (500000)('max_strings')(max_strings);
   max_strings:=max_strings+too_big_char; {the |max_strings| value doesn't include the 64K synthetic strings}
 @z
 

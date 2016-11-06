@@ -5,28 +5,7 @@ build=/a/texlive-state/rbuild
 
 cd $(dirname $0)
 
-# To validate:
-#
-# - base sources
-# - synctex
-# - (local) libmd5
-# - (local) lib.a
-# - libkpathsea
-# - libTECkit
-#
-# External:
-#
-# - harfbuzz
-# - graphite2
-# - libicuuc
-# - libicudata
-# - libpoppler
-# - libpng
-# - libfreetype2
-# - libz
-# - libfontconfig
-
-# Raw sources
+# XeTeX base sources
 
 mkdir -p xetexdir/image
 
@@ -38,10 +17,11 @@ cp $src/texk/web2c/xetexdir/image/*.h xetexdir/image/
 cp $src/texk/web2c/*.h xetexdir/
 rm xetexdir/XeTeX_mac.c xetexdir/XeTeXFontInst_Mac.cpp
 
-# web2c'd sources
-
-cp $build/texk/web2c/xetex*.c xetexdir/
-cp $build/texk/web2c/xetex*.h xetexdir/
+cp $src/texk/web2c/tex.ch xetexdir/
+cp $src/texk/web2c/tex-binpool.ch xetexdir/
+cp $src/texk/web2c/xetexdir/*.web xetexdir/
+cp $src/texk/web2c/xetexdir/*.ch* xetexdir/
+cp $src/texk/web2c/xetexdir/*.defines xetexdir/
 
 # web2c support
 
@@ -55,12 +35,23 @@ for f in synctex.c synctex.h synctex-common.h synctex-xetex.h ; do
     cp $src/texk/web2c/synctexdir/$f synctexdir/
 done
 
+cp $src/texk/web2c/synctexdir/synctex-xe-*.ch* synctexdir/
+cp $src/texk/web2c/synctexdir/synctex-e-*.ch* synctexdir/
+cp $src/texk/web2c/synctexdir/synctex-mem.ch0 synctexdir/
+cp $src/texk/web2c/synctexdir/synctex-rec.ch0 synctexdir/
+cp $src/texk/web2c/synctexdir/*.defines synctexdir/
+
 # base lib
 
 mkdir -p lib
 cp $src/texk/web2c/lib/*.c lib/
 cp $src/texk/web2c/lib/*.h lib/
-rm lib/alloca.c lib/main.c lib/mfmpw32.c
+rm lib/alloca.c lib/mfmpw32.c
+
+# haaack
+
+mkdir -p otangle
+mv lib/main.c otangle/
 
 # libmd5
 
@@ -86,3 +77,24 @@ cp $src/libs/teckit/TECkit-src/source/Engine.cpp teckit/
 cp $src/libs/teckit/TECkit-src/source/*.h teckit/
 cp $src/libs/teckit/TECkit-src/source/NormalizationData.c teckit/
 cp $src/libs/teckit/TECkit-src/source/Public-headers/*.h teckit/
+
+# tie -- which is itself generated from another program, so its source comes
+# out of the build directory. We shouldn't need to go any farther down this
+# particular rabbit hole though.
+
+mkdir -p tiedir
+cp $build/texk/web2c/tie.c tiedir/
+
+# otangle -- more rabbit-holery. Also, note hack for lib/main.c up above.
+
+mkdir -p otangle
+cp $build/texk/web2c/otangle.c otangle/
+cp $build/texk/web2c/otangle.h otangle/
+
+# Pascal-to-C conversion script and support files
+
+mkdir -p web2c
+cp $src/texk/web2c/web2c/*.sed web2c/
+cp $src/texk/web2c/web2c/*.defines web2c/
+cp $src/texk/web2c/web2c/*.c web2c/
+cp $src/texk/web2c/web2c/*.h web2c/

@@ -52,6 +52,10 @@ def inner (top, w):
             command='g++ -o $out $in $libs',
             description='LINK $out')
 
+    w.rule ('tie',
+            command='WEBINPUTS=. BUILD/tie -c $out $in',
+            description='TIE $OUT')
+
     # build dir
 
     builddir = top / 'BUILD'
@@ -167,10 +171,35 @@ def inner (top, w):
 
     objs += map (str, [libbase, libkp])
     libs = ''
+    tieprog = str(builddir / 'tie')
 
-    w.build (str(builddir / 'tie'), 'executable',
+    w.build (tieprog, 'executable',
              inputs = objs,
              variables = {'libs': libs},
+    )
+
+    # "tie"d xetex.ch file. Not sure if the ordering of changefiles matters so
+    # I'm being paranoid here and reproducing what the TeXLive build system
+    # uses.
+
+    xetexch = builddir / 'xetex.ch'
+
+    w.build (str(xetexch), 'tie',
+             inputs = map (str, [
+                 top / 'xetexdir' / 'xetex.web',
+                 top / 'xetexdir' / 'tex.ch0',
+                 top / 'xetexdir' / 'tex.ch',
+                 top / 'synctexdir' / 'synctex-xe-def.ch0',
+                 top / 'synctexdir' / 'synctex-mem.ch0',
+                 top / 'synctexdir' / 'synctex-e-mem.ch0',
+                 top / 'synctexdir' / 'synctex-e-mem.ch1',
+                 top / 'synctexdir' / 'synctex-rec.ch0',
+                 top / 'synctexdir' / 'synctex-e-rec.ch0',
+                 top / 'xetexdir' / 'xetex.ch',
+                 top / 'synctexdir' / 'synctex-xe-rec.ch3',
+                 top / 'xetexdir' / 'tex-binpool.ch',
+             ]),
+             order_only = [str(builddir), tieprog],
     )
 
     # xetex

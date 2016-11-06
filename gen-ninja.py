@@ -150,6 +150,29 @@ def inner (top, w):
 
     w.build (str(libsynctex), 'staticlib', inputs = objs)
 
+    # tie
+
+    cflags = '-DHAVE_CONFIG_H -DNOT_WEB2C -I. %(base_cflags)s' % config
+    objs = []
+
+    for src in (top / 'tiedir').glob ('*.c'):
+        obj = builddir / ('tie_' + src.name.replace ('.c', '.o'))
+        w.build (
+            str(obj), 'cc',
+            inputs = [str(src)],
+            order_only = [str(builddir)],
+            variables = {'cflags': cflags},
+        )
+        objs.append (str (obj))
+
+    objs += map (str, [libkp])
+    libs = ''
+
+    w.build (str(builddir / 'tie'), 'executable',
+             inputs = objs,
+             variables = {'libs': libs},
+    )
+
     # xetex
 
     cflags = '-DHAVE_CONFIG_H -D__SyncTeX__ -Ixetexdir -I. -Ilibmd5 %(pkgconfig_cflags)s %(base_cflags)s' % config

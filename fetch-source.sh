@@ -49,7 +49,12 @@ cp $src/texk/web2c/synctexdir/synctex-rec.ch0 synctexdir/
 mkdir -p lib
 cp $src/texk/web2c/lib/*.c lib/
 cp $src/texk/web2c/lib/*.h lib/
-rm lib/alloca.c lib/main.c lib/mfmpw32.c
+rm lib/alloca.c lib/mfmpw32.c
+
+# haaack
+
+mkdir -p otangle
+mv lib/main.c otangle/
 
 # libmd5
 
@@ -82,3 +87,9 @@ cp $src/libs/teckit/TECkit-src/source/Public-headers/*.h teckit/
 
 mkdir -p tiedir
 cp $build/texk/web2c/tie.c tiedir/
+
+# otangle -- more rabbit-holery. Also, note hack for lib/main.c up above.
+
+mkdir -p otangle
+cp $build/texk/web2c/otangle.c otangle/
+cp $build/texk/web2c/otangle.h otangle/

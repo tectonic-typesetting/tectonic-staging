@@ -54,7 +54,11 @@ def inner (top, w):
 
     w.rule ('tie',
             command='WEBINPUTS=. BUILD/tie -c $out $in',
-            description='TIE $OUT')
+            description='TIE $out')
+
+    w.rule ('otangle',
+            command='WEBINPUTS=. BUILD/otangle $in && mv $basename.p $basename.pool $outdir',
+            description='OTANGLE $out')
 
     # build dir
 
@@ -178,13 +182,37 @@ def inner (top, w):
              variables = {'libs': libs},
     )
 
+    # otangle
+
+    cflags = '-I. -Ilib -Ixetexdir %(base_cflags)s' % config
+    objs = []
+
+    for src in (top / 'otangle').glob ('*.c'):
+        obj = builddir / ('otangle_' + src.name.replace ('.c', '.o'))
+        w.build (
+            str(obj), 'cc',
+            inputs = [str(src)],
+            order_only = [str(builddir)],
+            variables = {'cflags': cflags},
+        )
+        objs.append (str (obj))
+
+    objs += map (str, [libbase, libkp])
+    libs = ''
+    otangleprog = str(builddir / 'otangle')
+
+    w.build (otangleprog, 'executable',
+             inputs = objs,
+             variables = {'libs': libs},
+    )
+
     # "tie"d xetex.ch file. Not sure if the ordering of changefiles matters so
     # I'm being paranoid here and reproducing what the TeXLive build system
     # uses.
 
-    xetexch = builddir / 'xetex.ch'
+    xetex_ch = builddir / 'xetex.ch'
 
-    w.build (str(xetexch), 'tie',
+    w.build (str(xetex_ch), 'tie',
              inputs = map (str, [
                  top / 'xetexdir' / 'xetex.web',
                  top / 'xetexdir' / 'tex.ch0',
@@ -200,6 +228,23 @@ def inner (top, w):
                  top / 'xetexdir' / 'tex-binpool.ch',
              ]),
              order_only = [str(builddir), tieprog],
+    )
+
+    # "otangle"d Pascal source for XeTeX.
+
+    xetex_p = builddir / 'xetex.p'
+    xetex_pool = builddir / 'xetex.pool'
+
+    w.build ([str(xetex_p), str(xetex_pool)], 'otangle',
+             inputs = map (str, [
+                 top / 'xetexdir' / 'xetex.web',
+                 xetex_ch,
+             ]),
+             order_only = [str(builddir), otangleprog],
+             variables = {
+                 'basename': 'xetex',
+                 'outdir': str(builddir),
+             },
     )
 
     # xetex

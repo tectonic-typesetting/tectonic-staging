@@ -66,7 +66,9 @@ cp $src/libs/teckit/TECkit-src/source/*.h teckit/
 cp $src/libs/teckit/TECkit-src/source/NormalizationData.c teckit/
 cp $src/libs/teckit/TECkit-src/source/Public-headers/*.h teckit/
 
-# tie
+# tie -- which is itself generated from another program, so its source comes
+# out of the build directory. We shouldn't need to go any farther down this
+# particular rabbit hole though.
 
 mkdir -p tiedir
-cp $src/texk/web2c/tiedir/tie.c tiedir/
+cp $build/texk/web2c/tie.c tiedir/

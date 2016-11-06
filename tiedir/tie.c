@@ -3,12 +3,8 @@
 "Copyright (c) 1989,1992 by THD/ITI. All rights reserved." \
  \
 
-#define incr(v)v+= 1
-#define decr(v)v-= 1
-#define loop while(1)
+#define loop while(1) 
 #define do_nothing 
-#define false 0
-#define true 1
 #define spotless 0
 #define troublesome 1
 #define fatal 2 \
@@ -16,9 +12,9 @@
 #define first_text_char 0
 #define last_text_char 255 \
 
-#define map_xchr(c)(text_char)(c) \
+#define map_xchr(c) (text_char) (c)  \
 
-#define map_xord(c)(ASCII_Code)(c) \
+#define map_xord(c) (ASCII_Code) (c)  \
  \
 
 #define tab_mark 9
@@ -27,88 +23,89 @@
  \
 
 #define term_out stdout
-#define print(a)fprintf(term_out,a)
-#define print2(a,b)fprintf(term_out,a,b)
-#define print3(a,b,c)fprintf(term_out,a,b,c)
-#define print_c(v)fputc(v,term_out);
-#define new_line(v)fputc('\n',v)
-#define term_new_line new_line(term_out) \
+#define print(a) fprintf(term_out,a) 
+#define print2(a,b) fprintf(term_out,a,b) 
+#define print3(a,b,c) fprintf(term_out,a,b,c) 
+#define print_c(v) fputc(v,term_out) ;
+#define new_line(v) fputc('\n',v) 
+#define term_new_line new_line(term_out)  \
 
-#define print_ln(v){fprintf(term_out,v);term_new_line;} \
+#define print_ln(v) {fprintf(term_out,v) ;term_new_line;} \
 
-#define print2_ln(a,b){print2(a,b);term_new_line;}
-#define print3_ln(a,b,c){print3(a,b,c);term_new_line;} \
+#define print2_ln(a,b) {print2(a,b) ;term_new_line;}
+#define print3_ln(a,b,c) {print3(a,b,c) ;term_new_line;} \
 
-#define print_nl(v){term_new_line;print(v);} \
+#define print_nl(v) {term_new_line;print(v) ;} \
 
-#define print2_nl(a,b){term_new_line;print2(a,b);} \
+#define print2_nl(a,b) {term_new_line;print2(a,b) ;} \
  \
 
-#define update_terminal fflush(term_out) \
+#define update_terminal fflush(term_out)  \
  \
  \
  \
  \
 
-#define error_loc(m)err_loc(m);history= troublesome;}
-#define err_print(m){print_nl(m);error_loc \
+#define error_loc(m) err_loc(m) ;history= troublesome;}
+#define err_print(m) {print_nl(m) ;error_loc \
 
-#define fatal_error(m){ \
-print(m);print_c('.');history= fatal; \
-term_new_line;jump_out(); \
+#define fatal_error(m) { \
+print(m) ;print_c('.') ;history= fatal; \
+term_new_line;jump_out() ; \
 } \
  \
 
-#define jump_out()exit(1) \
+#define jump_out() exit(1)  \
  \
  \
  \
  \
 
-#define none (max_file_index+1) \
+#define none (max_file_index+1)  \
 
 /*2:*/
-#line 112 "tie.w"
+#line 112 "../../../repo/Build/source/texk/web2c/tiedir/tie.w"
 
 /*15:*/
-#line 478 "tie.w"
+#line 478 "../../../repo/Build/source/texk/web2c/tiedir/tie.w"
 
-#include <stdio.h>
+#line 34 "../../../repo/Build/source/texk/web2c/tiedir/tie-w2c.ch"
+#include "cpascal.h"
+#include <stdio.h> 
+#include <kpathsea/kpathsea.h> 
+
+#define usage tieusage
+#line 480 "../../../repo/Build/source/texk/web2c/tiedir/tie.w"
 
 
 /*:15*//*16:*/
-#line 486 "tie.w"
+#line 486 "../../../repo/Build/source/texk/web2c/tiedir/tie.w"
 
 #ifdef __STDC__
-#include <stdlib.h>
+#include <stdlib.h> 
 #else
-#include <malloc.h>
+#include <malloc.h> 
 #endif
 
 /*:16*/
-#line 113 "tie.w"
+#line 113 "../../../repo/Build/source/texk/web2c/tiedir/tie.w"
 
 /*5:*/
-#line 142 "tie.w"
+#line 142 "../../../repo/Build/source/texk/web2c/tiedir/tie.w"
 
 #define buf_size 512 
-#define max_file_index 9
+#line 27 "../../../repo/Build/source/texk/web2c/tiedir/tie-w2c.ch"
+#define max_file_index 32
 
 
+#line 147 "../../../repo/Build/source/texk/web2c/tiedir/tie.w"
 
 
 /*:5*/
-#line 114 "tie.w"
+#line 114 "../../../repo/Build/source/texk/web2c/tiedir/tie.w"
 
-/*4:*/
-#line 133 "tie.w"
-
-typedef int boolean;
-typedef char*string;
-
-
-/*:4*//*7:*/
-#line 224 "tie.w"
+/*7:*/
+#line 224 "../../../repo/Build/source/texk/web2c/tiedir/tie.w"
 
 #define max_ASCII (126+1)
 typedef unsigned char ASCII_Code;
@@ -116,14 +113,14 @@ typedef unsigned char ASCII_Code;
 
 
 /*:7*//*8:*/
-#line 250 "tie.w"
+#line 250 "../../../repo/Build/source/texk/web2c/tiedir/tie.w"
 
 typedef unsigned char text_char;
 typedef FILE*text_file;
 
 
 /*:8*//*18:*/
-#line 529 "tie.w"
+#line 529 "../../../repo/Build/source/texk/web2c/tiedir/tie.w"
 
 #define search 0
 #define test 1
@@ -137,7 +134,7 @@ typedef int file_types;
 
 
 /*:18*//*19:*/
-#line 547 "tie.w"
+#line 547 "../../../repo/Build/source/texk/web2c/tiedir/tie.w"
 
 #define normal 0
 #define pre 1
@@ -146,14 +143,14 @@ typedef int out_md_type;
 
 
 /*:19*//*20:*/
-#line 557 "tie.w"
+#line 557 "../../../repo/Build/source/texk/web2c/tiedir/tie.w"
 
 typedef int buffer_index;
 typedef int file_index;
 
 
 /*:20*//*21:*/
-#line 566 "tie.w"
+#line 566 "../../../repo/Build/source/texk/web2c/tiedir/tie.w"
 
 typedef struct _idsc{
 string name_of_file;
@@ -167,17 +164,17 @@ text_file the_file;
 
 
 /*:21*/
-#line 115 "tie.w"
+#line 115 "../../../repo/Build/source/texk/web2c/tiedir/tie.w"
 
 /*6:*/
-#line 159 "tie.w"
+#line 159 "../../../repo/Build/source/texk/web2c/tiedir/tie.w"
 
 static int history= spotless;
 
 
 
 /*:6*//*9:*/
-#line 270 "tie.w"
+#line 270 "../../../repo/Build/source/texk/web2c/tiedir/tie.w"
 
 static ASCII_Code xord[last_text_char+1];
 
@@ -186,7 +183,7 @@ static text_char xchr[max_ASCII+1];
 
 
 /*:9*//*22:*/
-#line 582 "tie.w"
+#line 582 "../../../repo/Build/source/texk/web2c/tiedir/tie.w"
 
 static file_index actual_input,test_input,no_ch;
 static file_types prod_chf= unknown;
@@ -194,7 +191,7 @@ static out_md_type out_mode;
 
 
 /*:22*//*23:*/
-#line 594 "tie.w"
+#line 594 "../../../repo/Build/source/texk/web2c/tiedir/tie.w"
 
 static input_description*input_organization[max_file_index+1];
 
@@ -203,26 +200,28 @@ static input_description*input_organization[max_file_index+1];
 
 
 /*:23*//*26:*/
-#line 641 "tie.w"
+#line 641 "../../../repo/Build/source/texk/web2c/tiedir/tie.w"
 
 static boolean input_has_ended= false;
 
 
 /*:26*//*35:*/
-#line 801 "tie.w"
+#line 801 "../../../repo/Build/source/texk/web2c/tiedir/tie.w"
 
 static text_file out_file;
 static string out_name;
 
 
 /*:35*/
-#line 116 "tie.w"
+#line 116 "../../../repo/Build/source/texk/web2c/tiedir/tie.w"
 
 /*31:*/
-#line 744 "tie.w"
+#line 744 "../../../repo/Build/source/texk/web2c/tiedir/tie.w"
 
-void err_loc(i)
-int i;
+#line 65 "../../../repo/Build/source/texk/web2c/tiedir/tie-w2c.ch"
+static void
+err_loc(int i)
+#line 747 "../../../repo/Build/source/texk/web2c/tiedir/tie.w"
 {
 print3_ln(" (file %s, l.%ld).",
 input_organization[i]->name_of_file,
@@ -231,18 +230,20 @@ input_organization[i]->line);
 
 
 /*:31*/
-#line 117 "tie.w"
+#line 117 "../../../repo/Build/source/texk/web2c/tiedir/tie.w"
 
 /*24:*/
-#line 616 "tie.w"
+#line 616 "../../../repo/Build/source/texk/web2c/tiedir/tie.w"
 
-void get_line(i)
-file_index i;
+#line 45 "../../../repo/Build/source/texk/web2c/tiedir/tie-w2c.ch"
+static void
+get_line(file_index i)
+#line 619 "../../../repo/Build/source/texk/web2c/tiedir/tie.w"
 {register input_description*inp_desc= input_organization[i];
 if(inp_desc->mode==ignore)return;
 if(feof(inp_desc->the_file))
 /*25:*/
-#line 630 "tie.w"
+#line 630 "../../../repo/Build/source/texk/web2c/tiedir/tie.w"
 
 {
 inp_desc->mode= ignore;
@@ -253,15 +254,15 @@ return;
 
 
 /*:25*/
-#line 622 "tie.w"
+#line 622 "../../../repo/Build/source/texk/web2c/tiedir/tie.w"
 
 /*27:*/
-#line 655 "tie.w"
+#line 655 "../../../repo/Build/source/texk/web2c/tiedir/tie.w"
 
 {int final_limit;
 int c;
 /*28:*/
-#line 679 "tie.w"
+#line 679 "../../../repo/Build/source/texk/web2c/tiedir/tie.w"
 
 incr(inp_desc->line);
 if(inp_desc->type_of_file==master&&inp_desc->line%100==0){
@@ -272,13 +273,13 @@ update_terminal;
 
 
 /*:28*/
-#line 659 "tie.w"
+#line 659 "../../../repo/Build/source/texk/web2c/tiedir/tie.w"
 
 inp_desc->limit= final_limit= 0;
 while(inp_desc->limit<buf_size){
 c= fgetc(inp_desc->the_file);
 /*29:*/
-#line 696 "tie.w"
+#line 696 "../../../repo/Build/source/texk/web2c/tiedir/tie.w"
 
 if(c==EOF){
 if(inp_desc->limit<=0){
@@ -294,15 +295,17 @@ break;
 
 
 /*:29*/
-#line 664 "tie.w"
+#line 664 "../../../repo/Build/source/texk/web2c/tiedir/tie.w"
 
 inp_desc->buffer[inp_desc->limit++]= c= map_xord(c);
 if(c==nl_mark)break;
-if(c!=32&&c!=tab_mark)
+#line 58 "../../../repo/Build/source/texk/web2c/tiedir/tie-w2c.ch"
+if(c!=32&&c!=tab_mark&&c!=13)
+#line 668 "../../../repo/Build/source/texk/web2c/tiedir/tie.w"
 final_limit= inp_desc->limit;
 }
 /*30:*/
-#line 712 "tie.w"
+#line 712 "../../../repo/Build/source/texk/web2c/tiedir/tie.w"
 
 if(c!=nl_mark){
 err_print("! Input line too long")(i);
@@ -316,23 +319,25 @@ do_nothing;
 
 
 /*:30*/
-#line 670 "tie.w"
+#line 670 "../../../repo/Build/source/texk/web2c/tiedir/tie.w"
 
 inp_desc->limit= final_limit;
 }
 
 
 /*:27*/
-#line 623 "tie.w"
+#line 623 "../../../repo/Build/source/texk/web2c/tiedir/tie.w"
 
 }
 
 
 /*:24*//*38:*/
-#line 850 "tie.w"
+#line 850 "../../../repo/Build/source/texk/web2c/tiedir/tie.w"
 
-boolean lines_dont_match(i,j)
-file_index i,j;
+#line 91 "../../../repo/Build/source/texk/web2c/tiedir/tie-w2c.ch"
+static boolean
+lines_dont_match(file_index i,file_index j)
+#line 853 "../../../repo/Build/source/texk/web2c/tiedir/tie.w"
 {
 buffer_index k,lmt;
 if(input_organization[i]->limit!=input_organization[j]->limit)
@@ -346,13 +351,15 @@ return(false);
 
 
 /*:38*//*39:*/
-#line 871 "tie.w"
+#line 871 "../../../repo/Build/source/texk/web2c/tiedir/tie.w"
 
-void init_change_file(i,b)
-file_index i;boolean b;
+#line 99 "../../../repo/Build/source/texk/web2c/tiedir/tie-w2c.ch"
+static void
+init_change_file(file_index i,boolean b)
+#line 874 "../../../repo/Build/source/texk/web2c/tiedir/tie.w"
 {register input_description*inp_desc= input_organization[i];
 /*40:*/
-#line 885 "tie.w"
+#line 885 "../../../repo/Build/source/texk/web2c/tiedir/tie.w"
 
 loop{ASCII_Code c;
 get_line(i);
@@ -371,10 +378,10 @@ err_print("! Where is the matching @x?")(i);
 
 
 /*:40*/
-#line 875 "tie.w"
+#line 875 "../../../repo/Build/source/texk/web2c/tiedir/tie.w"
 
 /*41:*/
-#line 904 "tie.w"
+#line 904 "../../../repo/Build/source/texk/web2c/tiedir/tie.w"
 
 do{
 get_line(i);
@@ -387,16 +394,18 @@ return;
 
 
 /*:41*/
-#line 876 "tie.w"
+#line 876 "../../../repo/Build/source/texk/web2c/tiedir/tie.w"
 
 }
 
 
 /*:39*//*42:*/
-#line 918 "tie.w"
+#line 918 "../../../repo/Build/source/texk/web2c/tiedir/tie.w"
 
-void put_line(j)
-file_index j;
+#line 107 "../../../repo/Build/source/texk/web2c/tiedir/tie-w2c.ch"
+static void
+put_line(file_index j)
+#line 921 "../../../repo/Build/source/texk/web2c/tiedir/tie.w"
 {buffer_index i;
 buffer_index lmt;
 ASCII_Code*p;
@@ -408,10 +417,12 @@ new_line(out_file);
 
 
 /*:42*//*43:*/
-#line 934 "tie.w"
+#line 934 "../../../repo/Build/source/texk/web2c/tiedir/tie.w"
 
-boolean e_of_ch_module(i)
-file_index i;
+#line 115 "../../../repo/Build/source/texk/web2c/tiedir/tie-w2c.ch"
+static boolean
+e_of_ch_module(file_index i)
+#line 937 "../../../repo/Build/source/texk/web2c/tiedir/tie.w"
 {register input_description*inp_desc= input_organization[i];
 if(inp_desc->limit<0){
 print_nl("! At the end of change file missing @z ");
@@ -427,10 +438,12 @@ return(false);
 
 
 /*:43*//*44:*/
-#line 954 "tie.w"
+#line 954 "../../../repo/Build/source/texk/web2c/tiedir/tie.w"
 
-boolean e_of_ch_preamble(i)
-file_index i;
+#line 123 "../../../repo/Build/source/texk/web2c/tiedir/tie-w2c.ch"
+static boolean
+e_of_ch_preamble(file_index i)
+#line 957 "../../../repo/Build/source/texk/web2c/tiedir/tie.w"
 {register input_description*inp_desc= input_organization[i];
 if(inp_desc->limit>=2&&inp_desc->buffer[0]==64)
 if(inp_desc->buffer[1]==89||inp_desc->buffer[1]==121)return(true);
@@ -440,35 +453,39 @@ return(false);
 
 
 /*:44*//*55:*/
-#line 1157 "tie.w"
+#line 1157 "../../../repo/Build/source/texk/web2c/tiedir/tie.w"
 
-void usage()
+#line 132 "../../../repo/Build/source/texk/web2c/tiedir/tie-w2c.ch"
+static
+void usage(void)
 {
-print("Usage: tie -[mc] outfile master changefile(s)");
+print("Usage: tie -m|-c outfile master changefile(s)");
+#line 1161 "../../../repo/Build/source/texk/web2c/tiedir/tie.w"
 term_new_line;
 jump_out();
 }
 
 
 /*:55*/
-#line 118 "tie.w"
+#line 118 "../../../repo/Build/source/texk/web2c/tiedir/tie.w"
 
 /*59:*/
-#line 1235 "tie.w"
+#line 1235 "../../../repo/Build/source/texk/web2c/tiedir/tie.w"
 
-main(argc,argv)
-int argc;string*argv;
+#line 142 "../../../repo/Build/source/texk/web2c/tiedir/tie-w2c.ch"
+int main(int argc,string*argv)
+#line 1238 "../../../repo/Build/source/texk/web2c/tiedir/tie.w"
 {{/*12:*/
-#line 408 "tie.w"
+#line 408 "../../../repo/Build/source/texk/web2c/tiedir/tie.w"
 
 int i;
 
 
 /*:12*/
-#line 1238 "tie.w"
+#line 1238 "../../../repo/Build/source/texk/web2c/tiedir/tie.w"
 
 /*10:*/
-#line 296 "tie.w"
+#line 296 "../../../repo/Build/source/texk/web2c/tiedir/tie.w"
 
 xchr[32]= ' ';
 xchr[33]= '!';
@@ -569,7 +586,7 @@ xchr[0]= ' ';xchr[0x7F]= ' ';
 
 
 /*:10*//*13:*/
-#line 429 "tie.w"
+#line 429 "../../../repo/Build/source/texk/web2c/tiedir/tie.w"
 
 for(i= 1;i<32;xchr[i++]= ' ');
 xchr[tab_mark]= '\t';
@@ -578,7 +595,7 @@ xchr[nl_mark]= '\n';
 
 
 /*:13*//*14:*/
-#line 440 "tie.w"
+#line 440 "../../../repo/Build/source/texk/web2c/tiedir/tie.w"
 
 for(i= first_text_char;i<=last_text_char;xord[i++]= 32)do_nothing;
 for(i= 1;i<=126;i++)xord[xchr[i]]= i;
@@ -588,22 +605,26 @@ for(i= 1;i<=126;i++)xord[xchr[i]]= i;
 
 
 /*:14*/
-#line 1239 "tie.w"
+#line 1239 "../../../repo/Build/source/texk/web2c/tiedir/tie.w"
 
 }
-print_ln(banner);
+#line 149 "../../../repo/Build/source/texk/web2c/tiedir/tie-w2c.ch"
+kpse_set_program_name(argv[0],"tie");
+print(banner);
+print_ln(versionstring);
 print_ln(copyright);
+#line 1243 "../../../repo/Build/source/texk/web2c/tiedir/tie.w"
 actual_input= 0;
 out_mode= normal;
 /*56:*/
-#line 1177 "tie.w"
+#line 1177 "../../../repo/Build/source/texk/web2c/tiedir/tie.w"
 
 {int act_arg;
-if(argc<5||argc>max_file_index+4-1)usage();
+if(argc<5||argc> max_file_index+4-1)usage();
 no_ch= -1;
 for(act_arg= 1;act_arg<argc;act_arg++){
 if(argv[act_arg][0]=='-')/*57:*/
-#line 1195 "tie.w"
+#line 1195 "../../../repo/Build/source/texk/web2c/tiedir/tie.w"
 
 if(prod_chf!=unknown)usage();
 else
@@ -617,10 +638,10 @@ default:usage();
 
 
 /*:57*/
-#line 1182 "tie.w"
+#line 1182 "../../../repo/Build/source/texk/web2c/tiedir/tie.w"
 
 else/*58:*/
-#line 1211 "tie.w"
+#line 1211 "../../../repo/Build/source/texk/web2c/tiedir/tie.w"
 
 {if(no_ch==(-1)){
 out_name= argv[act_arg];
@@ -642,7 +663,7 @@ incr(no_ch);
 
 
 /*:58*/
-#line 1183 "tie.w"
+#line 1183 "../../../repo/Build/source/texk/web2c/tiedir/tie.w"
 
 }
 if(no_ch<=0||prod_chf==unknown)usage();
@@ -650,13 +671,15 @@ if(no_ch<=0||prod_chf==unknown)usage();
 
 
 /*:56*/
-#line 1245 "tie.w"
+#line 1245 "../../../repo/Build/source/texk/web2c/tiedir/tie.w"
 
 /*34:*/
-#line 788 "tie.w"
+#line 788 "../../../repo/Build/source/texk/web2c/tiedir/tie.w"
 
 {
-out_file= fopen(out_name,"w");
+#line 72 "../../../repo/Build/source/texk/web2c/tiedir/tie-w2c.ch"
+out_file= fopen(out_name,"wb");
+#line 791 "../../../repo/Build/source/texk/web2c/tiedir/tie.w"
 if(out_file==NULL){
 fatal_error("! Could not open/create output file");
 
@@ -665,13 +688,15 @@ fatal_error("! Could not open/create output file");
 
 
 /*:34*/
-#line 1246 "tie.w"
+#line 1246 "../../../repo/Build/source/texk/web2c/tiedir/tie.w"
 
 /*36:*/
-#line 809 "tie.w"
+#line 809 "../../../repo/Build/source/texk/web2c/tiedir/tie.w"
 
 {input_organization[0]->the_file= 
-fopen(input_organization[0]->name_of_file,"r");
+#line 78 "../../../repo/Build/source/texk/web2c/tiedir/tie-w2c.ch"
+kpse_open_file(input_organization[0]->name_of_file,kpse_web_format);
+#line 812 "../../../repo/Build/source/texk/web2c/tiedir/tie.w"
 if(input_organization[0]->the_file==NULL)
 fatal_error("! Could not open master file");
 
@@ -682,16 +707,18 @@ get_line(0);
 }
 
 /*:36*/
-#line 1247 "tie.w"
+#line 1247 "../../../repo/Build/source/texk/web2c/tiedir/tie.w"
 
 /*37:*/
-#line 825 "tie.w"
+#line 825 "../../../repo/Build/source/texk/web2c/tiedir/tie.w"
 
 {file_index i;
 i= 1;
 while(i<no_ch){
 input_organization[i]->the_file= 
-fopen(input_organization[i]->name_of_file,"r");
+#line 84 "../../../repo/Build/source/texk/web2c/tiedir/tie-w2c.ch"
+kpse_open_file(input_organization[i]->name_of_file,kpse_web_format);
+#line 831 "../../../repo/Build/source/texk/web2c/tiedir/tie.w"
 if(input_organization[i]->the_file==NULL)
 fatal_error("!Could not open change file");
 
@@ -707,23 +734,23 @@ incr(i);
 
 
 /*:37*/
-#line 1248 "tie.w"
+#line 1248 "../../../repo/Build/source/texk/web2c/tiedir/tie.w"
 
 /*53:*/
-#line 1128 "tie.w"
+#line 1128 "../../../repo/Build/source/texk/web2c/tiedir/tie.w"
 
 actual_input= 0;
 input_has_ended= false;
 while(input_has_ended==false||actual_input!=0)
 /*45:*/
-#line 970 "tie.w"
+#line 970 "../../../repo/Build/source/texk/web2c/tiedir/tie.w"
 
 {file_index test_file;
 /*46:*/
-#line 985 "tie.w"
+#line 985 "../../../repo/Build/source/texk/web2c/tiedir/tie.w"
 
 {register input_description*inp_desc;
-while(actual_input>0&&e_of_ch_module(actual_input)){
+while(actual_input> 0&&e_of_ch_module(actual_input)){
 inp_desc= input_organization[actual_input];
 if(inp_desc->type_of_file==master){
 
@@ -733,17 +760,17 @@ fatal_error("! This can't happen: change file is master file");
 inp_desc->mode= search;
 init_change_file(actual_input,true);
 while((input_organization[actual_input]->mode!=reading
-&&actual_input>0))decr(actual_input);
+&&actual_input> 0))decr(actual_input);
 }
 }
 
 
 /*:46*/
-#line 972 "tie.w"
+#line 972 "../../../repo/Build/source/texk/web2c/tiedir/tie.w"
 
 if(input_has_ended&&actual_input==0)break;
 /*47:*/
-#line 1009 "tie.w"
+#line 1009 "../../../repo/Build/source/texk/web2c/tiedir/tie.w"
 
 test_input= none;
 test_file= actual_input;
@@ -773,15 +800,15 @@ break;
 
 
 /*:47*/
-#line 974 "tie.w"
+#line 974 "../../../repo/Build/source/texk/web2c/tiedir/tie.w"
 
 /*48:*/
-#line 1043 "tie.w"
+#line 1043 "../../../repo/Build/source/texk/web2c/tiedir/tie.w"
 
 if(prod_chf==chf){
 loop{
 /*49:*/
-#line 1057 "tie.w"
+#line 1057 "../../../repo/Build/source/texk/web2c/tiedir/tie.w"
 
 if(out_mode==normal){
 if(test_input!=none){
@@ -793,10 +820,10 @@ out_mode= pre;
 
 
 /*:49*/
-#line 1046 "tie.w"
+#line 1046 "../../../repo/Build/source/texk/web2c/tiedir/tie.w"
 
 /*50:*/
-#line 1071 "tie.w"
+#line 1071 "../../../repo/Build/source/texk/web2c/tiedir/tie.w"
 
 
 if(out_mode==pre){
@@ -813,10 +840,10 @@ break;
 
 
 /*:50*/
-#line 1047 "tie.w"
+#line 1047 "../../../repo/Build/source/texk/web2c/tiedir/tie.w"
 
 /*51:*/
-#line 1092 "tie.w"
+#line 1092 "../../../repo/Build/source/texk/web2c/tiedir/tie.w"
 
 if(out_mode==post){
 if(input_organization[actual_input]->type_of_file==chf){
@@ -832,7 +859,7 @@ out_mode= normal;
 
 
 /*:51*/
-#line 1048 "tie.w"
+#line 1048 "../../../repo/Build/source/texk/web2c/tiedir/tie.w"
 
 }
 }else
@@ -840,10 +867,10 @@ if(test_input==none)put_line(actual_input);
 
 
 /*:48*/
-#line 975 "tie.w"
+#line 975 "../../../repo/Build/source/texk/web2c/tiedir/tie.w"
 
 /*52:*/
-#line 1109 "tie.w"
+#line 1109 "../../../repo/Build/source/texk/web2c/tiedir/tie.w"
 
 get_line(actual_input);
 if(test_input!=none){
@@ -858,13 +885,13 @@ test_input= none;
 
 
 /*:52*/
-#line 976 "tie.w"
+#line 976 "../../../repo/Build/source/texk/web2c/tiedir/tie.w"
 
 }
 
 
 /*:45*/
-#line 1132 "tie.w"
+#line 1132 "../../../repo/Build/source/texk/web2c/tiedir/tie.w"
 
 if(out_mode==post){
 fputc(map_xchr(64),out_file);fputc(map_xchr(122),out_file);
@@ -873,10 +900,10 @@ new_line(out_file);
 
 
 /*:53*/
-#line 1249 "tie.w"
+#line 1249 "../../../repo/Build/source/texk/web2c/tiedir/tie.w"
 
 /*54:*/
-#line 1143 "tie.w"
+#line 1143 "../../../repo/Build/source/texk/web2c/tiedir/tie.w"
 
 {file_index i;
 for(i= 1;i<no_ch;i++){
@@ -888,17 +915,22 @@ err_print("! Change file entry did not match")(i);
 
 
 /*:54*/
-#line 1250 "tie.w"
+#line 1250 "../../../repo/Build/source/texk/web2c/tiedir/tie.w"
 
 /*60:*/
-#line 1261 "tie.w"
+#line 1261 "../../../repo/Build/source/texk/web2c/tiedir/tie.w"
 
-{string msg;
+#line 158 "../../../repo/Build/source/texk/web2c/tiedir/tie-w2c.ch"
+{const_string msg;
+#line 1263 "../../../repo/Build/source/texk/web2c/tiedir/tie.w"
 switch(history){
 case spotless:msg= "No errors were found";break;
 case troublesome:msg= "Pardon me, but I think I spotted something wrong.";
 break;
+#line 164 "../../../repo/Build/source/texk/web2c/tiedir/tie-w2c.ch"
+default:
 case fatal:msg= "That was a fatal error, my friend";break;
+#line 1268 "../../../repo/Build/source/texk/web2c/tiedir/tie.w"
 }
 print2_nl("(%s.)",msg);term_new_line;
 exit(history==spotless?0:1);
@@ -909,12 +941,12 @@ exit(history==spotless?0:1);
 
 
 /*:60*/
-#line 1251 "tie.w"
+#line 1251 "../../../repo/Build/source/texk/web2c/tiedir/tie.w"
 
 }
 
 /*:59*/
-#line 119 "tie.w"
+#line 119 "../../../repo/Build/source/texk/web2c/tiedir/tie.w"
 
 
 /*:2*/

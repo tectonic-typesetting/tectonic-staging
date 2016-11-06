@@ -152,7 +152,7 @@ def inner (top, w):
 
     # tie
 
-    cflags = '-DHAVE_CONFIG_H -DNOT_WEB2C -I. %(base_cflags)s' % config
+    cflags = '-DHAVE_CONFIG_H -DNOT_WEB2C -I. -Ixetexdir %(base_cflags)s' % config
     objs = []
 
     for src in (top / 'tiedir').glob ('*.c'):
@@ -165,7 +165,7 @@ def inner (top, w):
         )
         objs.append (str (obj))
 
-    objs += map (str, [libkp])
+    objs += map (str, [libbase, libkp])
     libs = ''
 
     w.build (str(builddir / 'tie'), 'executable',

@@ -83,147 +83,117 @@ def inner (top, w):
 
         return objs
 
+    def staticlib (sources=None, basename=None, rule=None, **kwargs):
+        lib = builddir / ('lib' + basename + '.a')
+        objs = compile (
+            sources = sources,
+            bldprefix = basename + '_',
+            rule = rule,
+            **kwargs)
+        w.build (str(lib), 'staticlib', inputs = objs)
+        return lib
+
+    def executable (output=None, sources=None, rule=None, slibs=[], libs='', **kwargs):
+        """slibs are locally-built static libraries. libs is passed to the linker
+        command line.
+
+        """
+        objs = compile (
+            sources = sources,
+            bldprefix = output.name + '_',
+            rule = rule,
+            **kwargs)
+        objs += map (str, slibs)
+        w.build (str(output), 'executable',
+                 inputs = objs,
+                 variables = {'libs': libs})
+        return str(output) # convenience
+
     # kpathsea
 
-    libkp = builddir / 'libkpathsea.a'
-    cflags = '-DHAVE_CONFIG_H -DMAKE_KPSE_DLL -Ikpathsea -I. %(base_cflags)s' % config
-    objs = compile (
+    libkp = staticlib (
+        basename = 'kpathsea',
         sources = (top / 'kpathsea').glob ('*.c'),
-        bldprefix = 'kpathsea_',
         rule = 'cc',
-        cflags = cflags,
+        cflags = '-DHAVE_CONFIG_H -DMAKE_KPSE_DLL -Ikpathsea -I. %(base_cflags)s' % config,
     )
-    w.build (str(libkp), 'staticlib', inputs = objs)
 
     # teckit
 
-    libtk = builddir / 'libteckit.a'
-    cflags = '-DHAVE_CONFIG_H -Iteckit -DNDEBUG %(base_cflags)s' % config
-    objs = compile (
+    libtk = staticlib (
+        basename = 'teckit',
         sources = (top / 'teckit').glob ('*.cpp'),
-        bldprefix = 'teckit_',
         rule = 'cxx',
-        cflags = cflags,
+        cflags = '-DHAVE_CONFIG_H -Iteckit -DNDEBUG %(base_cflags)s' % config,
     )
-    w.build (str(libtk), 'staticlib', inputs = objs)
 
     # libmd5
 
-    libmd5 = builddir / 'libmd5.a'
-    cflags = '-DHAVE_CONFIG_H -Ilibmd5 %(base_cflags)s' % config
-    objs = compile (
+    libmd5 = staticlib (
+        basename = 'md5',
         sources = (top / 'libmd5').glob ('*.c'),
-        bldprefix = 'libmd5_',
         rule = 'cc',
-        cflags = cflags,
+        cflags = '-DHAVE_CONFIG_H -Ilibmd5 %(base_cflags)s' % config,
     )
-    w.build (str(libmd5), 'staticlib', inputs = objs)
 
     # lib / libbase
-
-    libbase = builddir / 'libbase.a'
-    cflags = '-DHAVE_CONFIG_H -Ilib -I. %(base_cflags)s' % config
 
     def libbase_sources ():
         for src in (top / 'lib').glob ('*.c'):
             if src.name != 'texmfmp.c': # #included in xetexdir/xetexextra.c
                 yield src
 
-    objs = compile (
+    libbase = staticlib (
+        basename = 'base',
         sources = libbase_sources (),
-        bldprefix = 'baselib_',
         rule = 'cc',
-        cflags = cflags,
+        cflags = '-DHAVE_CONFIG_H -Ilib -I. %(base_cflags)s' % config
     )
-    w.build (str(libbase), 'staticlib', inputs = objs)
 
     # synctex
 
-    libsynctex = builddir / 'libsynctex.a'
-    cflags = '-DHAVE_CONFIG_H -Ixetexdir -I. -DU_STATIC_IMPLEMENTATION -D__SyncTeX__ -DSYNCTEX_ENGINE_H=\\"synctexdir/synctex-xetex.h\\" %(pkgconfig_cflags)s %(base_cflags)s' % config
-    objs = compile (
+    libsynctex = staticlib (
+        basename = 'synctex',
         sources = (top / 'synctexdir').glob ('*.c'),
-        bldprefix = 'synctex_',
         rule = 'cc',
-        cflags = cflags,
+        cflags = ('-DHAVE_CONFIG_H -Ixetexdir -I. -DU_STATIC_IMPLEMENTATION '
+                  '-D__SyncTeX__ -DSYNCTEX_ENGINE_H=\\"synctexdir/synctex-xetex.h\\" '
+                  '%(pkgconfig_cflags)s %(base_cflags)s' % config),
     )
-    w.build (str(libsynctex), 'staticlib', inputs = objs)
 
     # tie
 
-    cflags = '-DHAVE_CONFIG_H -DNOT_WEB2C -I. -Ixetexdir %(base_cflags)s' % config
-    objs = []
-
-    for src in (top / 'tiedir').glob ('*.c'):
-        obj = builddir / ('tie_' + src.name.replace ('.c', '.o'))
-        w.build (
-            str(obj), 'cc',
-            inputs = [str(src)],
-            order_only = [str(builddir)],
-            variables = {'cflags': cflags},
-        )
-        objs.append (str (obj))
-
-    objs += map (str, [libbase, libkp])
-    libs = ''
-    tieprog = str(builddir / 'tie')
-
-    w.build (tieprog, 'executable',
-             inputs = objs,
-             variables = {'libs': libs},
+    tieprog = executable (
+        output = builddir / 'tie',
+        sources = (top / 'tiedir').glob ('*.c'),
+        rule = 'cc',
+        slibs = [libbase, libkp],
+        cflags = '-DHAVE_CONFIG_H -DNOT_WEB2C -I. -Ixetexdir %(base_cflags)s' % config,
     )
 
     # otangle
 
-    cflags = '-I. -Ilib -Ixetexdir %(base_cflags)s' % config
-    objs = []
-
-    for src in (top / 'otangle').glob ('*.c'):
-        obj = builddir / ('otangle_' + src.name.replace ('.c', '.o'))
-        w.build (
-            str(obj), 'cc',
-            inputs = [str(src)],
-            order_only = [str(builddir)],
-            variables = {'cflags': cflags},
-        )
-        objs.append (str (obj))
-
-    objs += map (str, [libbase, libkp])
-    libs = ''
-    otangleprog = str(builddir / 'otangle')
-
-    w.build (otangleprog, 'executable',
-             inputs = objs,
-             variables = {'libs': libs},
+    otangleprog = executable (
+        output = builddir / 'otangle',
+        sources = (top / 'otangle').glob ('*.c'),
+        rule = 'cc',
+        slibs = [libbase, libkp],
+        cflags = '-I. -Ilib -Ixetexdir %(base_cflags)s' % config,
     )
 
     # web2c
-
-    cflags = '-I. %(base_cflags)s' % config
-    objs = []
 
     def web2c_c_sources ():
         for src in (top / 'web2c').glob ('web2c*.c'):
             yield src
         yield top / 'web2c' / 'main.c'
 
-    for src in web2c_c_sources ():
-        obj = builddir / ('web2c_' + src.name.replace ('.c', '.o'))
-        w.build (
-            str(obj), 'cc',
-            inputs = [str(src)],
-            order_only = [str(builddir)],
-            variables = {'cflags': cflags},
-        )
-        objs.append (str (obj))
-
-    objs += map (str, [libbase, libkp])
-    libs = ''
-    web2cprog = str(w2cbdir / 'web2c')
-
-    w.build (web2cprog, 'executable',
-             inputs = objs,
-             variables = {'libs': libs},
+    web2cprog = executable (
+        output = w2cbdir / 'web2c',
+        sources = web2c_c_sources (),
+        rule = 'cc',
+        slibs = [libbase, libkp],
+        cflags = '-I. %(base_cflags)s' % config,
     )
 
     # "tie"d xetex.ch file. Not sure if the ordering of changefiles matters so

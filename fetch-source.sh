@@ -17,6 +17,11 @@ cp $src/texk/web2c/xetexdir/image/*.h xetexdir/image/
 cp $src/texk/web2c/*.h xetexdir/
 rm xetexdir/XeTeX_mac.c xetexdir/XeTeXFontInst_Mac.cpp
 
+cp $src/texk/web2c/tex.ch xetexdir/
+cp $src/texk/web2c/tex-binpool.ch xetexdir/
+cp $src/texk/web2c/xetexdir/*.web xetexdir/
+cp $src/texk/web2c/xetexdir/*.ch* xetexdir/
+
 # web2c'd sources XeTeX sources -- to be superseded, hopefully.
 
 cp $build/texk/web2c/xetex*.c xetexdir/
@@ -33,6 +38,11 @@ mkdir -p synctexdir
 for f in synctex.c synctex.h synctex-common.h synctex-xetex.h ; do
     cp $src/texk/web2c/synctexdir/$f synctexdir/
 done
+
+cp $src/texk/web2c/synctexdir/synctex-xe-*.ch* synctexdir/
+cp $src/texk/web2c/synctexdir/synctex-e-*.ch* synctexdir/
+cp $src/texk/web2c/synctexdir/synctex-mem.ch0 synctexdir/
+cp $src/texk/web2c/synctexdir/synctex-rec.ch0 synctexdir/
 
 # base lib
 

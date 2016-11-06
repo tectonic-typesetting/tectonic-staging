@@ -31,7 +31,7 @@ def inner (top, w):
     # Base rules
 
     w.rule ('ensuredir',
-            command='mkdir -p $out',
+            command='mkdir -p $out/web2c', # hack for web2c script stuff
             description='MKDIR $out')
 
     w.rule ('cc',
@@ -63,6 +63,7 @@ def inner (top, w):
     # build dir
 
     builddir = top / 'BUILD'
+    w2cbdir = builddir / 'web2c'
     w.build (str(builddir), 'ensuredir')
 
     # kpathsea
@@ -202,6 +203,35 @@ def inner (top, w):
     otangleprog = str(builddir / 'otangle')
 
     w.build (otangleprog, 'executable',
+             inputs = objs,
+             variables = {'libs': libs},
+    )
+
+    # web2c
+
+    cflags = '-I. %(base_cflags)s' % config
+    objs = []
+
+    def web2c_c_sources ():
+        for src in (top / 'web2c').glob ('web2c*.c'):
+            yield src
+        yield top / 'web2c' / 'main.c'
+
+    for src in web2c_c_sources ():
+        obj = builddir / ('web2c_' + src.name.replace ('.c', '.o'))
+        w.build (
+            str(obj), 'cc',
+            inputs = [str(src)],
+            order_only = [str(builddir)],
+            variables = {'cflags': cflags},
+        )
+        objs.append (str (obj))
+
+    objs += map (str, [libbase, libkp])
+    libs = ''
+    web2cprog = str(w2cbdir / 'web2c')
+
+    w.build (web2cprog, 'executable',
              inputs = objs,
              variables = {'libs': libs},
     )

@@ -93,3 +93,12 @@ cp $build/texk/web2c/tie.c tiedir/
 mkdir -p otangle
 cp $build/texk/web2c/otangle.c otangle/
 cp $build/texk/web2c/otangle.h otangle/
+
+# Pascal-to-C conversion script and support files
+
+mkdir -p web2c
+cp $src/texk/web2c/web2c/*.sed web2c/
+cp $src/texk/web2c/web2c/*.defines web2c/
+cp $src/texk/web2c/web2c/*.c web2c/
+cp $src/texk/web2c/web2c/*.h web2c/
+cp $src/texk/web2c/web2c/convert web2c/

@@ -288,7 +288,7 @@ void getline (void);
 eightbits controlcode (ASCIIcode c);
 eightbits skipahead (void);
 void skipcomment (void);
-eightbits getnext (void);
+eightbits get_next (void);
 void scannumeric (namepointer p);
 void scanrepl (eightbits t);
 void definemacro (eightbits t);
@@ -2428,7 +2428,7 @@ void skipcomment(void)
 }
 
 eightbits
-getnext(void)
+get_next(void)
 {
     eightbits Result;
     eightbits c;
@@ -2531,6 +2531,7 @@ getnext(void)
 	} else
 	    c = ASCII_E;
         break;
+
     case DOUBLEQUOTE:
 	doublechars = 0;
 	idfirst = loc - 1;
@@ -2561,6 +2562,7 @@ getnext(void)
 	idloc = loc - 1;
 	c = IDENTIFIER;
         break;
+
     case AT_SIGN:
 	c = controlcode(buffer[loc]);
 	loc = loc + 1;
@@ -2615,6 +2617,7 @@ getnext(void)
 		}
 		modtext[k] = d;
 	    }
+
 	done:
 	    if (k >= longestname - 2) {
 		putc('\n', stdout);
@@ -2650,7 +2653,7 @@ getnext(void)
 	} else if (c == CONTROL_TEXT) {
 	    do {
 		c = skipahead();
-	    } while (!(c != AT_SIGN));
+	    } while (c == AT_SIGN);
 
 	    if (buffer[loc - 1] != GREATER_THAN_SIGN) {
 		putc('\n', stdout);
@@ -2675,6 +2678,7 @@ getnext(void)
             }
         }
         break;
+
     case COLON:
         if (buffer[loc] == EQUALS_SIGN) {
             if (loc <= limit) {
@@ -2683,6 +2687,7 @@ getnext(void)
             }
         }
         break;
+
     case EQUALS_SIGN:
         if (buffer[loc] == EQUALS_SIGN) {
             if (loc <= limit) {
@@ -2691,6 +2696,7 @@ getnext(void)
             }
         }
         break;
+
     case GREATER_THAN_SIGN:
         if (buffer[loc] == EQUALS_SIGN) {
             if (loc <= limit) {
@@ -2699,6 +2705,7 @@ getnext(void)
             }
         }
         break;
+
     case LESS_THAN_SIGN:
         if (buffer[loc] == EQUALS_SIGN) {
             if (loc <= limit) {
@@ -2712,6 +2719,7 @@ getnext(void)
             }
         }
         break;
+
     case LEFT_PAREN:
         if (buffer[loc] == ASTERISK) {
             if (loc <= limit) {
@@ -2725,6 +2733,7 @@ getnext(void)
             }
         }
         break;
+
     case ASTERISK:
         if (buffer[loc] == RIGHT_PAREN) {
             if (loc <= limit) {
@@ -2733,35 +2742,33 @@ getnext(void)
             }
         }
         break;
+
     case SPACE:
     case TAB_MARK:
         goto restart;
         break;
+
     case LEFT_BRACE:
-        {
-            skipcomment();
-            goto restart;
-        }
+	skipcomment();
+	goto restart;
         break;
+
     case RIGHT_BRACE:
-        {
-            {
-                putc('\n', stdout);
-                Fputs(stdout, "! Extra }");
-                error();
-            }
-            goto restart;
-        }
+	putc('\n', stdout);
+	Fputs(stdout, "! Extra }");
+	error();
+	goto restart;
         break;
+
     default:
         if (c >= 128)
             goto restart;
-        else;
-        break;
     }
- found:Result = c;
-    return Result;
+
+found:
+    return c;
 }
+
 
 void scannumeric(namepointer p)
 {
@@ -2773,7 +2780,7 @@ void scannumeric(namepointer p)
     nextsign = 1;
     while (true) {
 
-        nextcontrol = getnext();
+        nextcontrol = get_next();
  reswitch:switch (nextcontrol) {
         case ASCII_0:
         case ASCII_1:
@@ -2789,7 +2796,7 @@ void scannumeric(namepointer p)
                 val = 0;
                 do {
                     val = 10 * val + nextcontrol - ASCII_0;
-                    nextcontrol = getnext();
+                    nextcontrol = get_next();
                 }
                 while (!((nextcontrol > ASCII_9)
                          || (nextcontrol < ASCII_0)));
@@ -2806,7 +2813,7 @@ void scannumeric(namepointer p)
                 nextcontrol = ASCII_0;
                 do {
                     val = 8 * val + nextcontrol - ASCII_0;
-                    nextcontrol = getnext();
+                    nextcontrol = get_next();
                 }
                 while (!((nextcontrol > ASCII_7)
                          || (nextcontrol < ASCII_0)));
@@ -2825,7 +2832,7 @@ void scannumeric(namepointer p)
                     if (nextcontrol >= ASCII_A)
                         nextcontrol = nextcontrol - 7;
                     val = 16 * val + nextcontrol - ASCII_0;
-                    nextcontrol = getnext();
+                    nextcontrol = get_next();
                 }
                 while (!((nextcontrol > ASCII_F) || (nextcontrol < ASCII_0)
                          || ((nextcontrol > ASCII_9)
@@ -2885,7 +2892,7 @@ void scannumeric(namepointer p)
                 while (!((nextcontrol >= FORMAT)));
                 if (nextcontrol == MODULE_NAME) {
                     loc = loc - 2;
-                    nextcontrol = getnext();
+                    nextcontrol = get_next();
                 }
                 accumulator = 0;
                 goto done;
@@ -2913,7 +2920,7 @@ void scanrepl(eightbits t)
     bal = 0;
     while (true) {
 
- continue_:a = getnext();
+ continue_:a = get_next();
         switch (a) {
         case LEFT_PAREN:
             bal = bal + 1;
@@ -3210,14 +3217,14 @@ void scanmodule(void)
 
             if (nextcontrol == MODULE_NAME) {
                 loc = loc - 2;
-                nextcontrol = getnext();
+                nextcontrol = get_next();
             }
         }
 
         if (nextcontrol != DEFINITION)
             goto done;
 
-        nextcontrol = getnext();
+        nextcontrol = get_next();
         if (nextcontrol != IDENTIFIER) {
 	    putc('\n', stdout);
 	    fprintf(stdout, "%s%s",
@@ -3227,7 +3234,7 @@ void scanmodule(void)
             goto continue_;
         }
 
-        nextcontrol = getnext();
+        nextcontrol = get_next();
 
         if (nextcontrol == EQUALS_SIGN) {
             scannumeric(id_lookup(1));
@@ -3236,11 +3243,11 @@ void scanmodule(void)
             definemacro(2);
             goto continue_;
         } else if (nextcontrol == LEFT_PAREN) {
-            nextcontrol = getnext();
+            nextcontrol = get_next();
             if (nextcontrol == OCTOTHORPE) {
-                nextcontrol = getnext();
+                nextcontrol = get_next();
                 if (nextcontrol == RIGHT_PAREN) {
-                    nextcontrol = getnext();
+                    nextcontrol = get_next();
                     if (nextcontrol == EQUALS_SIGN) {
                         {
                             putc('\n', stdout);
@@ -3271,7 +3278,7 @@ void scanmodule(void)
         {
             p = curmodule;
             do {
-                nextcontrol = getnext();
+                nextcontrol = get_next();
             }
             while (!(nextcontrol != PLUS_SIGN));
             if ((nextcontrol != EQUALS_SIGN) && (nextcontrol != EQUIVALENCE_SIGN)) {

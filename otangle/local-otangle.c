@@ -72,6 +72,8 @@ typedef struct {
 #define SINGLE_QUOTE 39
 #define LEFT_PAREN 40
 #define RIGHT_PAREN 41
+#define ASTERISK 42
+#define PLUS_SIGN 43
 
 #define JOIN 127
 
@@ -323,8 +325,8 @@ void initialize(void)
     xchr[SINGLE_QUOTE] = '\'';
     xchr[LEFT_PAREN] = '(';
     xchr[RIGHT_PAREN] = ')';
-    xchr[42] = '*';
-    xchr[43] = '+';
+    xchr[ASTERISK] = '*';
+    xchr[PLUS_SIGN] = '+';
     xchr[44] = ',';
     xchr[45] = '-';
     xchr[46] = '.';
@@ -1346,7 +1348,7 @@ void zsendout(eightbits t, sixteenbits v)
                          || ((outcontrib[1] == 109)
                              && (outcontrib[2] == 111)
                              && (outcontrib[3] == 100))))
-                    || ((t == 0) && ((v == 42) || (v == 47))))) {
+                    || ((t == 0) && ((v == ASTERISK) || (v == 47))))) {
                 if ((outval < 0)
                     || ((outval == 0) && (lastsign < 0))) {
                     outbuf[outptr] = 45;
@@ -1358,7 +1360,7 @@ void zsendout(eightbits t, sixteenbits v)
                 appval(abs(outval));
                 if (outptr > linelength)
                     flushbuffer();
-                outsign = 43;
+                outsign = PLUS_SIGN;
                 outval = outapp;
             } else
                 outval = outval + outapp;
@@ -1465,7 +1467,7 @@ void zsendval(integer v)
     case 0:
         {
             if ((outptr == breakptr + 1)
-                && ((outbuf[breakptr] == 42)
+                && ((outbuf[breakptr] == ASTERISK)
                     || (outbuf[breakptr] == 47)))
                 goto lab666;
             outsign = 0;
@@ -1477,7 +1479,7 @@ void zsendval(integer v)
         break;
     case 2:
         {
-            outsign = 43;
+            outsign = PLUS_SIGN;
             outstate = 3;
             outval = outapp * v;
         }
@@ -1681,7 +1683,7 @@ void sendtheoutput(void)
                 curchar = 48;
                 do {
                     curchar = curchar - 48;
-                    if (n >= 268435456L) {
+                    if (n >= 0x10000000) {
                         putc('\n', stdout);
                         Fputs(stdout, "! Constant too big");
                         error();
@@ -1703,7 +1705,7 @@ void sendtheoutput(void)
                         curchar = curchar - 55;
                     else
                         curchar = curchar - 48;
-                    if (n >= 134217728L) {
+                    if (n >= 0x8000000) {
                         putc('\n', stdout);
                         Fputs(stdout, "! Constant too big");
                         error();
@@ -1738,7 +1740,7 @@ void sendtheoutput(void)
                 }
             }
             break;
-        case 43:
+        case PLUS_SIGN:
         case 45:
             sendsign(44 - curchar);
             break;
@@ -1845,7 +1847,7 @@ void sendtheoutput(void)
         case AMPERSAND:
         case LEFT_PAREN:
         case RIGHT_PAREN:
-        case 42:
+        case ASTERISK:
         case 44:
         case 47:
         case 58:
@@ -1960,7 +1962,7 @@ void sendtheoutput(void)
             outcontrib[k] = curchar;
             curchar = getoutput();
             if ((outcontrib[k] == 69)
-                && ((curchar == 43) || (curchar == 45))) {
+                && ((curchar == PLUS_SIGN) || (curchar == 45))) {
                 if (k < linelength)
                     k = k + 1;
                 outcontrib[k] = curchar;
@@ -2222,7 +2224,7 @@ eightbits zcontrolcode(ASCIIcode c)
     case 9:
         Result = NEW_MODULE;
         break;
-    case 42:
+    case ASTERISK:
         {
             fprintf(stdout, "%c%ld", '*', (long)modulecount + 1);
             fflush(stdout);
@@ -2322,7 +2324,7 @@ void skipcomment(void)
         loc = loc + 1;
         if (c == 64) {
             c = buffer[loc];
-            if ((c != SPACE) && (c != 9) && (c != 42) && (c != 122)
+            if ((c != SPACE) && (c != 9) && (c != ASTERISK) && (c != 122)
                 && (c != 90))
                 loc = loc + 1;
             else {
@@ -2514,7 +2516,7 @@ eightbits getnext(void)
                             goto done;
                         }
                         if ((d == SPACE) || (d == 9)
-                            || (d == 42)) {
+                            || (d == ASTERISK)) {
                             {
                                 putc('\n', stdout);
                                 Fputs(stdout, "! Section name didn't end");
@@ -2630,7 +2632,7 @@ eightbits getnext(void)
         }
         break;
     case LEFT_PAREN:
-        if (buffer[loc] == 42) {
+        if (buffer[loc] == ASTERISK) {
             if (loc <= limit) {
                 c = 9;
                 loc = loc + 1;
@@ -2642,7 +2644,7 @@ eightbits getnext(void)
             }
         }
         break;
-    case 42:
+    case ASTERISK:
         if (buffer[loc] == RIGHT_PAREN) {
             if (loc <= limit) {
                 c = 10;
@@ -2758,7 +2760,7 @@ void zscannumeric(namepointer p)
             {
                 q = idlookup(0);
                 if (ilk[q] != 1) {
-                    nextcontrol = 42;
+                    nextcontrol = ASTERISK;
                     goto reswitch;
                 }
                 {
@@ -2768,7 +2770,7 @@ void zscannumeric(namepointer p)
                 }
             }
             break;
-        case 43:
+        case PLUS_SIGN:
             ;
             break;
         case 45:
@@ -3186,7 +3188,7 @@ void scanmodule(void)
             do {
                 nextcontrol = getnext();
             }
-            while (!(nextcontrol != 43));
+            while (!(nextcontrol != PLUS_SIGN));
             if ((nextcontrol != 61) && (nextcontrol != 30)) {
                 {
                     putc('\n', stdout);

@@ -158,6 +158,10 @@ typedef struct {
 #define RIGHT_BRACE 125
 #define TILDE 126
 
+#define PARAM 0 /* = NUL */
+#define VERBATIM 2 /* = alpha */
+#define BEGIN_COMMENT 9 /* = tab mark */
+#define END_COMMENT 10 /* = line feed */
 #define JOIN 127
 #define MODULE_NUMBER 129
 #define IDENTIFIER 130
@@ -437,7 +441,7 @@ void initialize(void)
     xchr[ASCII_B] = 'B';
     xchr[67] = 'C';
     xchr[ASCII_D] = 'D';
-    xchr[69] = 'E';
+    xchr[ASCII_E] = 'E';
     xchr[70] = 'F';
     xchr[71] = 'G';
     xchr[72] = 'H';
@@ -469,7 +473,7 @@ void initialize(void)
     xchr[98] = 'b';
     xchr[99] = 'c';
     xchr[ASCII_d] = 'd';
-    xchr[101] = 'e';
+    xchr[ASCII_e] = 'e';
     xchr[102] = 'f';
     xchr[103] = 'g';
     xchr[104] = 'h';
@@ -893,9 +897,9 @@ namepointer zmodlookup(sixteenbits l)
                 c = 2;
         }
         q = p;
-        if (c == 0)
+        if (c == PARAM)
             p = link[q];
-        else if (c == 2)
+        else if (c == VERBATIM)
             p = ilk[q];
         else
             goto found;
@@ -918,7 +922,7 @@ namepointer zmodlookup(sixteenbits l)
         uexit(1);
     }
     p = nameptr;
-    if (c == 0)
+    if (c == PARAM)
         link[q] = p;
     else
         ilk[q] = p;
@@ -991,9 +995,9 @@ namepointer zprefixlookup(sixteenbits l)
             else
                 c = 2;
         }
-        if (c == 0)
+        if (c == PARAM)
             p = link[p];
-        else if (c == 2)
+        else if (c == VERBATIM)
             p = ilk[p];
         else {
 
@@ -1656,7 +1660,7 @@ void sendtheoutput(void)
         case ASCII_B:
         case 67:
         case ASCII_D:
-        case 69:
+        case ASCII_E:
         case 70:
         case 71:
         case 72:
@@ -1682,7 +1686,7 @@ void sendtheoutput(void)
         case 98:
         case 99:
         case ASCII_d:
-        case 101:
+        case ASCII_e:
         case 102:
         case 103:
         case 104:
@@ -1751,9 +1755,9 @@ void sendtheoutput(void)
                 while (!((curchar > ASCII_9) || (curchar < ASCII_0)));
                 sendval(n);
                 k = 0;
-                if (curchar == 101)
-                    curchar = 69;
-                if (curchar == 69)
+                if (curchar == ASCII_e)
+                    curchar = ASCII_E;
+                if (curchar == ASCII_E)
                     goto lab2;
                 else
                     goto reswitch;
@@ -1952,7 +1956,7 @@ void sendtheoutput(void)
         case PIPE:
             sendout(0, curchar);
             break;
-        case TAB_MARK:
+        case BEGIN_COMMENT:
             {
                 if (bracelevel == 0)
                     sendout(0, LEFT_BRACE);
@@ -1961,7 +1965,7 @@ void sendtheoutput(void)
                 bracelevel = bracelevel + 1;
             }
             break;
-        case 10:
+        case END_COMMENT:
             if (bracelevel > 0) {
                 bracelevel = bracelevel - 1;
                 if (bracelevel == 0)
@@ -2046,16 +2050,16 @@ void sendtheoutput(void)
                 k = k + 1;
             outcontrib[k] = curchar;
             curchar = getoutput();
-            if ((outcontrib[k] == 69)
+            if ((outcontrib[k] == ASCII_E)
                 && ((curchar == PLUS_SIGN) || (curchar == MINUS_SIGN))) {
                 if (k < linelength)
                     k = k + 1;
                 outcontrib[k] = curchar;
                 curchar = getoutput();
-            } else if (curchar == 101)
-                curchar = 69;
+            } else if (curchar == ASCII_e)
+                curchar = ASCII_E;
         }
-        while (!((curchar != 69) && ((curchar < ASCII_0) || (curchar > ASCII_9))));
+        while (!((curchar != ASCII_E) && ((curchar < ASCII_0) || (curchar > ASCII_9))));
         if (k == linelength) {
             putc('\n', stdout);
             Fputs(stdout, "! Fraction too long");
@@ -2325,10 +2329,10 @@ eightbits zcontrolcode(ASCIIcode c)
         Result = FORMAT;
         break;
     case LEFT_BRACE:
-        Result = 9;
+        Result = BEGIN_COMMENT;
         break;
     case RIGHT_BRACE:
-        Result = 10;
+        Result = END_COMMENT;
         break;
     case 80:
     case 112:
@@ -2462,7 +2466,7 @@ eightbits getnext(void)
     case ASCII_B:
     case 67:
     case ASCII_D:
-    case 69:
+    case ASCII_E:
     case 70:
     case 71:
     case 72:
@@ -2488,7 +2492,7 @@ eightbits getnext(void)
     case 98:
     case 99:
     case ASCII_d:
-    case 101:
+    case ASCII_e:
     case 102:
     case 103:
     case 104:
@@ -2511,7 +2515,7 @@ eightbits getnext(void)
     case ASCII_y:
     case ASCII_z:
         {
-            if (((c == 101) || (c == 69)) && (loc > 1)) {
+            if (((c == ASCII_e) || (c == ASCII_E)) && (loc > 1)) {
 
                 if ((buffer[loc - 2] <= ASCII_9)
                     && (buffer[loc - 2] >= ASCII_0))
@@ -2532,7 +2536,7 @@ eightbits getnext(void)
                     idloc = loc;
                 }
             } else
-                c = 69;
+                c = ASCII_E;
         }
         break;
     case DOUBLEQUOTE:
@@ -2574,7 +2578,7 @@ eightbits getnext(void)
         {
             c = controlcode(buffer[loc]);
             loc = loc + 1;
-            if (c == 0)
+            if (c == PARAM)
                 goto restart;
             else if (c == 13)
                 scanninghex = true;
@@ -2719,7 +2723,7 @@ eightbits getnext(void)
     case LEFT_PAREN:
         if (buffer[loc] == ASTERISK) {
             if (loc <= limit) {
-                c = TAB_MARK;
+                c = BEGIN_COMMENT;
                 loc = loc + 1;
             }
         } else if (buffer[loc] == PERIOD) {
@@ -2732,7 +2736,7 @@ eightbits getnext(void)
     case ASTERISK:
         if (buffer[loc] == RIGHT_PAREN) {
             if (loc <= limit) {
-                c = 10;
+                c = END_COMMENT;
                 loc = loc + 1;
             }
         }

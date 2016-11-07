@@ -71,6 +71,7 @@ typedef struct {
 #define AMPERSAND 38
 #define SINGLE_QUOTE 39
 #define LEFT_PAREN 40
+#define RIGHT_PAREN 41
 
 #define JOIN 127
 
@@ -321,7 +322,7 @@ void initialize(void)
     xchr[AMPERSAND] = '&';
     xchr[SINGLE_QUOTE] = '\'';
     xchr[LEFT_PAREN] = '(';
-    xchr[41] = ')';
+    xchr[RIGHT_PAREN] = ')';
     xchr[42] = '*';
     xchr[43] = '+';
     xchr[44] = ',';
@@ -1027,7 +1028,7 @@ sixteenbits getoutput(void)
     }
     a = (a - 128) * 256 + tokmem[zo][curstate.bytefield];
     curstate.bytefield = curstate.bytefield + 1;
-    if (a < 10240) {
+    if (a < 024000) {
         switch (ilk[a]) {
         case 0:
             {
@@ -1096,7 +1097,7 @@ sixteenbits getoutput(void)
                             case LEFT_PAREN:
                                 bal = bal + 1;
                                 break;
-                            case 41:
+                            case RIGHT_PAREN:
                                 {
                                     bal = bal - 1;
                                     if (bal == 0)
@@ -1193,8 +1194,8 @@ sixteenbits getoutput(void)
         }
         goto found;
     }
-    if (a < 20480) {
-        a = a - 10240;
+    if (a < 050000) {
+        a = a - 024000;
         if (equiv[a] != 0)
             pushlevel(a);
         else if (a != 0) {
@@ -1208,7 +1209,7 @@ sixteenbits getoutput(void)
         }
         goto restart;
     }
-    curval = a - 20480;
+    curval = a - 050000;
     a = 129;
     curstate.modfield = curval;
  found:Result = a;
@@ -1540,7 +1541,7 @@ void zsendval(integer v)
         }
         appval(-(integer) v);
         {
-            outbuf[outptr] = 41;
+            outbuf[outptr] = RIGHT_PAREN;
             outptr = outptr + 1;
         }
         if (outptr > linelength)
@@ -1843,7 +1844,7 @@ void sendtheoutput(void)
         case PERCENT:
         case AMPERSAND:
         case LEFT_PAREN:
-        case 41:
+        case RIGHT_PAREN:
         case 42:
         case 44:
         case 47:
@@ -2584,7 +2585,7 @@ eightbits getnext(void)
                 c = SPACE;
                 loc = loc + 1;
             }
-        } else if (buffer[loc] == 41) {
+        } else if (buffer[loc] == RIGHT_PAREN) {
             if (loc <= limit) {
                 c = 93;
                 loc = loc + 1;
@@ -2642,7 +2643,7 @@ eightbits getnext(void)
         }
         break;
     case 42:
-        if (buffer[loc] == 41) {
+        if (buffer[loc] == RIGHT_PAREN) {
             if (loc <= limit) {
                 c = 10;
                 loc = loc + 1;
@@ -2834,7 +2835,7 @@ void zscanrepl(eightbits t)
         case LEFT_PAREN:
             bal = bal + 1;
             break;
-        case 41:
+        case RIGHT_PAREN:
             if (bal == 0) {
                 putc('\n', stdout);
                 Fputs(stdout, "! Extra )");
@@ -3081,7 +3082,7 @@ void zscanrepl(eightbits t)
                     history = FATAL_MESSAGE;
                     uexit(1);
                 }
-                tokmem[z][tokptr[z]] = 41;
+                tokmem[z][tokptr[z]] = RIGHT_PAREN;
                 tokptr[z] = tokptr[z] + 1;
             }
             bal = bal - 1;
@@ -3151,7 +3152,7 @@ void scanmodule(void)
             nextcontrol = getnext();
             if (nextcontrol == OCTOTHORPE) {
                 nextcontrol = getnext();
-                if (nextcontrol == 41) {
+                if (nextcontrol == RIGHT_PAREN) {
                     nextcontrol = getnext();
                     if (nextcontrol == 61) {
                         {

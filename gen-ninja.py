@@ -188,7 +188,7 @@ def inner (top, w):
 
     otangleprog = executable (
         output = builddir / 'otangle',
-        sources = (top / 'otangle').glob ('*.c'),
+        sources = [top / 'otangle' / 'local-otangle.c'],
         rule = 'cc',
         slibs = [libbase, libkps, libkpu],
         cflags = '-I. -Ilib -Ixetexdir %(base_cflags)s' % config,

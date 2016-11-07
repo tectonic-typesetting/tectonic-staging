@@ -1,17 +1,22 @@
 #define OTANGLE
+
+#include <w2c/config.h>
+#include "lib.h"
 #include "cpascal.h"
-#define bufsize ( 3000 )
-#define maxbytes ( 65535L )
-#define maxtoks ( 65535L )
-#define maxnames ( 10239 )
-#define maxtexts ( 10239 )
-#define hashsize ( 353 )
-#define longestname ( 400 )
-#define linelength ( 72 )
-#define outbufsize ( 144 )
-#define stacksize ( 100 )
-#define maxidlength ( 50 )
-#define unambiglength ( 25 )
+
+#define bufsize (3000)
+#define maxbytes (65535L)
+#define maxtoks (65535L)
+#define maxnames (10239)
+#define maxtexts (10239)
+#define hashsize (353)
+#define longestname (400)
+#define linelength (72)
+#define outbufsize (144)
+#define stacksize (100)
+#define maxidlength (50)
+#define unambiglength (25)
+
 typedef unsigned char ASCIIcode;
 typedef text /* of  ASCIIcode */ textfile;
 typedef unsigned char eightbits;
@@ -25,6 +30,7 @@ typedef struct {
     textpointer replfield;
     short modfield;
 } outputstate;
+
 unsigned char history;
 ASCIIcode xord[256];
 ASCIIcode xchr[256];
@@ -88,7 +94,57 @@ textpointer currepltext;
 short modulecount;
 constcstring webname, chgname, pascalname, poolname;
 
-#include "otangle.h"
+/* otangle.h */
+
+void error (void);
+void parsearguments (void);
+void initialize (void);
+void openinput (void);
+boolean zinputln (textfile f);
+#define inputln(f) zinputln((textfile) (f))
+void zprintid (namepointer p);
+#define printid(p) zprintid((namepointer) (p))
+namepointer zidlookup (eightbits t);
+#define idlookup(t) zidlookup((eightbits) (t))
+namepointer zmodlookup (sixteenbits l);
+#define modlookup(l) zmodlookup((sixteenbits) (l))
+namepointer zprefixlookup (sixteenbits l);
+#define prefixlookup(l) zprefixlookup((sixteenbits) (l))
+void zstoretwobytes (sixteenbits x);
+#define storetwobytes(x) zstoretwobytes((sixteenbits) (x))
+void zpushlevel (namepointer p);
+#define pushlevel(p) zpushlevel((namepointer) (p))
+void poplevel (void);
+sixteenbits getoutput (void);
+void flushbuffer (void);
+void zappval (integer v);
+#define appval(v) zappval((integer) (v))
+void zsendout (eightbits t,sixteenbits v);
+#define sendout(t, v) zsendout((eightbits) (t), (sixteenbits) (v))
+void zsendsign (integer v);
+#define sendsign(v) zsendsign((integer) (v))
+void zsendval (integer v);
+#define sendval(v) zsendval((integer) (v))
+void sendtheoutput (void);
+boolean linesdontmatch (void);
+void primethechangebuffer (void);
+void checkchange (void);
+void getline (void);
+eightbits zcontrolcode (ASCIIcode c);
+#define controlcode(c) zcontrolcode((ASCIIcode) (c))
+eightbits skipahead (void);
+void skipcomment (void);
+eightbits getnext (void);
+void zscannumeric (namepointer p);
+#define scannumeric(p) zscannumeric((namepointer) (p))
+void zscanrepl (eightbits t);
+#define scanrepl(t) zscanrepl((eightbits) (t))
+void zdefinemacro (eightbits t);
+#define definemacro(t) zdefinemacro((eightbits) (t))
+void scanmodule (void);
+
+/* back to otangle.c */
+
 void error(void)
 {
     integer j;
@@ -156,7 +212,7 @@ void error(void)
 void parsearguments(void)
 {
 
-#define noptions ( 3 )
+#define noptions (3)
     getoptstruct longoptions[noptions + 1];
     integer getoptreturnval;
     cinttype optionindex;
@@ -3274,4 +3330,45 @@ void mainbody(void)
         uexit(1);
     else
         uexit(0);
+}
+
+/* main.c */
+
+/* These variables are referenced from the change files.  */
+char **argv;
+int argc;
+
+/* The entry point for all the programs except TeX and Metafont, which
+   have more to do.  We just have to set up the command line.  web2c
+   transforms Pascal's main block into a procedure `main_body'.  */
+int
+main (int  ac,  string* av)
+{
+#ifdef __EMX__
+  _wildcard (&ac, &av);
+  _response (&ac, &av);
+#endif
+
+#ifdef WIN32
+  _setmaxstdio(2048);
+#endif
+
+  argc = ac;
+  argv = av;
+  mainbody ();
+  return EXIT_SUCCESS;
+}
+
+/* Return the Nth (counted as in C) argument from the command line.  */
+
+string
+cmdline (int n)
+{
+  if (n >= argc)
+    { /* This error message should never happen, because the callers
+         should always check they've got the arguments they expect.  */
+      fprintf (stderr, "%s: Oops; not enough arguments.\n", argv[0]);
+      uexit (1);
+    }
+  return argv[n];
 }

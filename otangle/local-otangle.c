@@ -153,6 +153,10 @@ typedef struct {
 #define ASCII_x 120
 #define ASCII_y 121
 #define ASCII_z 122
+#define LEFT_BRACE 123
+#define PIPE 124
+#define RIGHT_BRACE 125
+#define TILDE 126
 
 #define JOIN 127
 
@@ -439,9 +443,9 @@ void initialize(void)
     xchr[74] = 'J';
     xchr[75] = 'K';
     xchr[76] = 'L';
-    xchr[77] = 'M';
+    xchr[ASCII_M] = 'M';
     xchr[78] = 'N';
-    xchr[79] = 'O';
+    xchr[ASCII_O] = 'O';
     xchr[80] = 'P';
     xchr[81] = 'Q';
     xchr[82] = 'R';
@@ -467,28 +471,28 @@ void initialize(void)
     xchr[102] = 'f';
     xchr[103] = 'g';
     xchr[104] = 'h';
-    xchr[105] = 'i';
+    xchr[ASCII_i] = 'i';
     xchr[106] = 'j';
     xchr[107] = 'k';
     xchr[108] = 'l';
-    xchr[109] = 'm';
-    xchr[110] = 'n';
-    xchr[111] = 'o';
+    xchr[ASCII_m] = 'm';
+    xchr[ASCII_n] = 'n';
+    xchr[ASCII_o] = 'o';
     xchr[112] = 'p';
     xchr[113] = 'q';
     xchr[114] = 'r';
     xchr[115] = 's';
     xchr[116] = 't';
     xchr[117] = 'u';
-    xchr[118] = 'v';
+    xchr[ASCII_v] = 'v';
     xchr[119] = 'w';
     xchr[ASCII_x] = 'x';
     xchr[ASCII_y] = 'y';
     xchr[ASCII_z] = 'z';
-    xchr[123] = '{';
-    xchr[124] = '|';
-    xchr[125] = '}';
-    xchr[126] = '~';
+    xchr[LEFT_BRACE] = '{';
+    xchr[PIPE] = '|';
+    xchr[RIGHT_BRACE] = '}';
+    xchr[TILDE] = '~';
     xchr[0] = ' ';
     xchr[127] = ' ';
     {
@@ -1419,13 +1423,13 @@ void zsendout(eightbits t, sixteenbits v)
                           && (outcontrib[2] == ASCII_I)
                           && (outcontrib[3] == ASCII_V))
                          || ((outcontrib[1] == ASCII_d)
-                             && (outcontrib[2] == 105)
-                             && (outcontrib[3] == 118))
-                         || ((outcontrib[1] == 77)
-                             && (outcontrib[2] == 79)
+                             && (outcontrib[2] == ASCII_i)
+                             && (outcontrib[3] == ASCII_v))
+                         || ((outcontrib[1] == ASCII_M)
+                             && (outcontrib[2] == ASCII_O)
                              && (outcontrib[3] == ASCII_D))
-                         || ((outcontrib[1] == 109)
-                             && (outcontrib[2] == 111)
+                         || ((outcontrib[1] == ASCII_m)
+                             && (outcontrib[2] == ASCII_o)
                              && (outcontrib[3] == ASCII_d))))
                     || ((t == 0) && ((v == ASTERISK) || (v == FORWARD_SLASH))))) {
                 if ((outval < 0)
@@ -1472,7 +1476,7 @@ void zsendout(eightbits t, sixteenbits v)
     }
     if (outptr > linelength)
         flushbuffer();
-    if ((t == 0) && ((v == SEMICOLON) || (v == 125))) {
+    if ((t == 0) && ((v == SEMICOLON) || (v == RIGHT_BRACE))) {
         semiptr = outptr;
         breakptr = outptr;
     }
@@ -1526,13 +1530,13 @@ void zsendval(integer v)
                      && (outbuf[outptr - 2] == ASCII_I)
                      && (outbuf[outptr - 1] == ASCII_V))
                     || ((outbuf[outptr - 3] == ASCII_d)
-                        && (outbuf[outptr - 2] == 105)
-                        && (outbuf[outptr - 1] == 118))
-                    || ((outbuf[outptr - 3] == 77)
-                        && (outbuf[outptr - 2] == 79)
+                        && (outbuf[outptr - 2] == ASCII_i)
+                        && (outbuf[outptr - 1] == ASCII_v))
+                    || ((outbuf[outptr - 3] == ASCII_M)
+                        && (outbuf[outptr - 2] == ASCII_O)
                         && (outbuf[outptr - 1] == ASCII_D))
-                    || ((outbuf[outptr - 3] == 109)
-                        && (outbuf[outptr - 2] == 111)
+                    || ((outbuf[outptr - 3] == ASCII_m)
+                        && (outbuf[outptr - 2] == ASCII_o)
                         && (outbuf[outptr - 1] == ASCII_d)))
                     goto lab666;
             }
@@ -1658,9 +1662,9 @@ void sendtheoutput(void)
         case 74:
         case 75:
         case 76:
-        case 77:
+        case ASCII_M:
         case 78:
-        case 79:
+        case ASCII_O:
         case 80:
         case 81:
         case 82:
@@ -1680,20 +1684,20 @@ void sendtheoutput(void)
         case 102:
         case 103:
         case 104:
-        case 105:
+        case ASCII_i:
         case 106:
         case 107:
         case 108:
-        case 109:
-        case 110:
-        case 111:
+        case ASCII_m:
+        case ASCII_n:
+        case ASCII_o:
         case 112:
         case 113:
         case 114:
         case 115:
         case 116:
         case 117:
-        case 118:
+        case ASCII_v:
         case 119:
         case ASCII_x:
         case ASCII_y:
@@ -1753,7 +1757,7 @@ void sendtheoutput(void)
                     goto reswitch;
             }
             break;
-        case 125:
+        case RIGHT_BRACE:
             sendval(poolchecksum);
             break;
         case 12:
@@ -1826,29 +1830,29 @@ void sendtheoutput(void)
         case 4:
             {
                 outcontrib[1] = ASCII_a;
-                outcontrib[2] = 110;
+                outcontrib[2] = ASCII_n;
                 outcontrib[3] = ASCII_d;
                 sendout(2, 3);
             }
             break;
         case 5:
             {
-                outcontrib[1] = 110;
-                outcontrib[2] = 111;
+                outcontrib[1] = ASCII_n;
+                outcontrib[2] = ASCII_o;
                 outcontrib[3] = 116;
                 sendout(2, 3);
             }
             break;
         case 6:
             {
-                outcontrib[1] = 105;
-                outcontrib[2] = 110;
+                outcontrib[1] = ASCII_i;
+                outcontrib[2] = ASCII_n;
                 sendout(2, 2);
             }
             break;
         case 31:
             {
-                outcontrib[1] = 111;
+                outcontrib[1] = ASCII_o;
                 outcontrib[2] = 114;
                 sendout(2, 2);
             }
@@ -1942,14 +1946,14 @@ void sendtheoutput(void)
         case CARET:
         case UNDERSCORE:
         case BACKTICK:
-        case 123:
-        case 124:
+        case LEFT_BRACE:
+        case PIPE:
             sendout(0, curchar);
             break;
         case 9:
             {
                 if (bracelevel == 0)
-                    sendout(0, 123);
+                    sendout(0, LEFT_BRACE);
                 else
                     sendout(0, LEFT_BRACKET);
                 bracelevel = bracelevel + 1;
@@ -1959,7 +1963,7 @@ void sendtheoutput(void)
             if (bracelevel > 0) {
                 bracelevel = bracelevel - 1;
                 if (bracelevel == 0)
-                    sendout(0, 125);
+                    sendout(0, RIGHT_BRACE);
                 else
                     sendout(0, RIGHT_BRACKET);
             } else {
@@ -1972,7 +1976,7 @@ void sendtheoutput(void)
         case 129:
             {
                 if (bracelevel == 0)
-                    sendout(0, 123);
+                    sendout(0, LEFT_BRACE);
                 else
                     sendout(0, LEFT_BRACKET);
                 if (curval < 0) {
@@ -1984,7 +1988,7 @@ void sendtheoutput(void)
                     sendout(0, COLON);
                 }
                 if (bracelevel == 0)
-                    sendout(0, 125);
+                    sendout(0, RIGHT_BRACE);
                 else
                     sendout(0, RIGHT_BRACKET);
             }
@@ -2318,10 +2322,10 @@ eightbits zcontrolcode(ASCIIcode c)
     case 102:
         Result = FORMAT;
         break;
-    case 123:
+    case LEFT_BRACE:
         Result = 9;
         break;
-    case 125:
+    case RIGHT_BRACE:
         Result = 10;
         break;
     case 80:
@@ -2418,9 +2422,9 @@ void skipcomment(void)
             }
         } else if ((c == BACK_SLASH) && (buffer[loc] != AT_SIGN))
             loc = loc + 1;
-        else if (c == 123)
+        else if (c == LEFT_BRACE)
             bal = bal + 1;
-        else if (c == 125) {
+        else if (c == RIGHT_BRACE) {
             if (bal == 0)
                 goto exit;
             bal = bal - 1;
@@ -2464,9 +2468,9 @@ eightbits getnext(void)
     case 74:
     case 75:
     case 76:
-    case 77:
+    case ASCII_M:
     case 78:
-    case 79:
+    case ASCII_O:
     case 80:
     case 81:
     case 82:
@@ -2486,20 +2490,20 @@ eightbits getnext(void)
     case 102:
     case 103:
     case 104:
-    case 105:
+    case ASCII_i:
     case 106:
     case 107:
     case 108:
-    case 109:
-    case 110:
-    case 111:
+    case ASCII_m:
+    case ASCII_n:
+    case ASCII_o:
     case 112:
     case 113:
     case 114:
     case 115:
     case 116:
     case 117:
-    case 118:
+    case ASCII_v:
     case 119:
     case ASCII_x:
     case ASCII_y:
@@ -2735,13 +2739,13 @@ eightbits getnext(void)
     case 9:
         goto restart;
         break;
-    case 123:
+    case LEFT_BRACE:
         {
             skipcomment();
             goto restart;
         }
         break;
-    case 125:
+    case RIGHT_BRACE:
         {
             {
                 putc('\n', stdout);

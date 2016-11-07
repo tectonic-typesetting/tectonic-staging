@@ -32,6 +32,11 @@ typedef struct {
 } outputstate;
 
 unsigned char history;
+const int SPOTLESS = 0;
+const int HARMLESS_MESSAGE = 1;
+const int ERROR_MESSAGE = 2;
+const int FATAL_MESSAGE = 3;
+
 ASCIIcode xord[256];
 ASCIIcode xchr[256];
 textfile webfile;
@@ -206,7 +211,7 @@ void error(void)
         Fputs(stdout, "... ");
     }
     fflush(stdout);
-    history = 2;
+    history = ERROR_MESSAGE;
 }
 
 void parsearguments(void)
@@ -267,7 +272,7 @@ void initialize(void)
     integer h;
     kpse_set_program_name(argv[0], "otangle");
     parsearguments();
-    history = 0;
+    history = SPOTLESS;
     xchr[32] = ' ';
     xchr[33] = '!';
     xchr[34] = '"';
@@ -653,7 +658,7 @@ namepointer zidlookup(eightbits t)
                 fprintf(stderr, "%s%s%s", "! Sorry, ",
                         "byte memory", " capacity exceeded");
                 error();
-                history = 3;
+                history = FATAL_MESSAGE;
                 uexit(1);
             }
             if (nameptr > maxnames - 3) {
@@ -661,7 +666,7 @@ namepointer zidlookup(eightbits t)
                 fprintf(stderr, "%s%s%s", "! Sorry, ", "name",
                         " capacity exceeded");
                 error();
-                history = 3;
+                history = FATAL_MESSAGE;
                 uexit(1);
             }
             i = idfirst;
@@ -775,14 +780,14 @@ namepointer zmodlookup(sixteenbits l)
         fprintf(stderr, "%s%s%s", "! Sorry, ", "byte memory",
                 " capacity exceeded");
         error();
-        history = 3;
+        history = FATAL_MESSAGE;
         uexit(1);
     }
     if (nameptr > maxnames - 3) {
         putc('\n', stdout);
         fprintf(stderr, "%s%s%s", "! Sorry, ", "name", " capacity exceeded");
         error();
-        history = 3;
+        history = FATAL_MESSAGE;
         uexit(1);
     }
     p = nameptr;
@@ -898,7 +903,7 @@ void zstoretwobytes(sixteenbits x)
         putc('\n', stdout);
         fprintf(stderr, "%s%s%s", "! Sorry, ", "token", " capacity exceeded");
         error();
-        history = 3;
+        history = FATAL_MESSAGE;
         uexit(1);
     }
     tokmem[z][tokptr[z]] = x / 256;
@@ -912,7 +917,7 @@ void zpushlevel(namepointer p)
         putc('\n', stdout);
         fprintf(stderr, "%s%s%s", "! Sorry, ", "stack", " capacity exceeded");
         error();
-        history = 3;
+        history = FATAL_MESSAGE;
         uexit(1);
     } else {
 
@@ -1038,7 +1043,7 @@ sixteenbits getoutput(void)
                                          "! Sorry, ",
                                          "token", " capacity exceeded");
                                     error();
-                                    history = 3;
+                                    history = FATAL_MESSAGE;
                                     uexit(1);
                                 }
                                 tokmem[z][tokptr[z]] = b;
@@ -1070,7 +1075,7 @@ sixteenbits getoutput(void)
                                                  "! Sorry, ",
                                                  "token", " capacity exceeded");
                                             error();
-                                            history = 3;
+                                            history = FATAL_MESSAGE;
                                             uexit(1);
                                         }
                                         tokmem[z]
@@ -1097,7 +1102,7 @@ sixteenbits getoutput(void)
                                         "! Sorry, ",
                                         "token", " capacity exceeded");
                                 error();
-                                history = 3;
+                                history = FATAL_MESSAGE;
                                 uexit(1);
                             }
                             tokmem[z][tokptr[z]] = b;
@@ -1115,7 +1120,7 @@ sixteenbits getoutput(void)
                     fprintf(stderr, "%s%s%s", "! Sorry, ",
                             "name", " capacity exceeded");
                     error();
-                    history = 3;
+                    history = FATAL_MESSAGE;
                     uexit(1);
                 }
                 bytestart[nameptr + 3] = k;
@@ -1125,7 +1130,7 @@ sixteenbits getoutput(void)
                     fprintf(stderr, "%s%s%s", "! Sorry, ",
                             "text", " capacity exceeded");
                     error();
-                    history = 3;
+                    history = FATAL_MESSAGE;
                     uexit(1);
                 }
                 textlink[textptr] = 0;
@@ -1142,7 +1147,7 @@ sixteenbits getoutput(void)
                 fprintf(stderr, "%s%s%c",
                         "! This can't happen (", "output", ')');
                 error();
-                history = 3;
+                history = FATAL_MESSAGE;
                 uexit(1);
             }
             break;
@@ -2506,8 +2511,8 @@ eightbits getnext(void)
                             while (j++ < for_end);
                     }
                     Fputs(stdout, "...");
-                    if (history == 0)
-                        history = 1;
+                    if (history == SPOTLESS)
+                        history = HARMLESS_MESSAGE;
                 }
                 if ((modtext[k] == 32) && (k > 0))
                     k = k - 1;
@@ -2810,7 +2815,7 @@ void zscanrepl(eightbits t)
                                     "%s%s%s",
                                     "! Sorry, ", "token", " capacity exceeded");
                             error();
-                            history = 3;
+                            history = FATAL_MESSAGE;
                             uexit(1);
                         }
                         tokmem[z][tokptr[z]] = b;
@@ -2854,7 +2859,7 @@ void zscanrepl(eightbits t)
                                          "! Sorry, ",
                                          "token", " capacity exceeded");
                                     error();
-                                    history = 3;
+                                    history = FATAL_MESSAGE;
                                     uexit(1);
                                 }
                                 tokmem[z][tokptr[z]] = 39;
@@ -2879,7 +2884,7 @@ void zscanrepl(eightbits t)
                         fprintf(stderr, "%s%s%s",
                                 "! Sorry, ", "token", " capacity exceeded");
                         error();
-                        history = 3;
+                        history = FATAL_MESSAGE;
                         uexit(1);
                     }
                     tokmem[z][tokptr[z]] = (a / 256) + 128;
@@ -2899,7 +2904,7 @@ void zscanrepl(eightbits t)
                         fprintf(stderr, "%s%s%s",
                                 "! Sorry, ", "token", " capacity exceeded");
                         error();
-                        history = 3;
+                        history = FATAL_MESSAGE;
                         uexit(1);
                     }
                     tokmem[z][tokptr[z]] = (curmodule / 256) + 168;
@@ -2916,7 +2921,7 @@ void zscanrepl(eightbits t)
                         fprintf(stderr, "%s%s%s",
                                 "! Sorry, ", "token", " capacity exceeded");
                         error();
-                        history = 3;
+                        history = FATAL_MESSAGE;
                         uexit(1);
                     }
                     tokmem[z][tokptr[z]] = 2;
@@ -2936,7 +2941,7 @@ void zscanrepl(eightbits t)
                                          "! Sorry, ",
                                          "token", " capacity exceeded");
                                     error();
-                                    history = 3;
+                                    history = FATAL_MESSAGE;
                                     uexit(1);
                                 }
                                 tokmem[z][tokptr[z]] = 64;
@@ -2955,7 +2960,7 @@ void zscanrepl(eightbits t)
                                     "%s%s%s",
                                     "! Sorry, ", "token", " capacity exceeded");
                             error();
-                            history = 3;
+                            history = FATAL_MESSAGE;
                             uexit(1);
                         }
                         tokmem[z][tokptr[z]] = buffer[loc];
@@ -3007,7 +3012,7 @@ void zscanrepl(eightbits t)
                 fprintf(stderr, "%s%s%s", "! Sorry, ", "token",
                         " capacity exceeded");
                 error();
-                history = 3;
+                history = FATAL_MESSAGE;
                 uexit(1);
             }
             tokmem[z][tokptr[z]] = a;
@@ -3034,7 +3039,7 @@ void zscanrepl(eightbits t)
                     fprintf(stderr, "%s%s%s", "! Sorry, ",
                             "token", " capacity exceeded");
                     error();
-                    history = 3;
+                    history = FATAL_MESSAGE;
                     uexit(1);
                 }
                 tokmem[z][tokptr[z]] = 41;
@@ -3047,7 +3052,7 @@ void zscanrepl(eightbits t)
         putc('\n', stdout);
         fprintf(stderr, "%s%s%s", "! Sorry, ", "text", " capacity exceeded");
         error();
-        history = 3;
+        history = FATAL_MESSAGE;
         uexit(1);
     }
     currepltext = textptr;
@@ -3231,8 +3236,8 @@ void mainbody(void)
             putc('\n', stdout);
             Fputs(stdout, "! No output was specified.");
         }
-        if (history == 0)
-            history = 1;
+        if (history == SPOTLESS)
+            history = HARMLESS_MESSAGE;
     } else {
 
         {
@@ -3299,26 +3304,26 @@ void mainbody(void)
         putc('\n', pool);
     }
     switch (history) {
-    case 0:
+    case 0/*SPOTLESS*/:
         {
             putc('\n', stdout);
             Fputs(stdout, "(No errors were found.)");
         }
         break;
-    case 1:
+    case 1/*HARMLESS_MESSAGE*/:
         {
             putc('\n', stdout);
             Fputs(stdout, "(Did you see the warning message above?)");
         }
         break;
-    case 2:
+    case 2/*ERROR_MESSAGE*/:
         {
             putc('\n', stdout);
             Fputs(stdout,
                   "(Pardon me, but I think I spotted something wrong.)");
         }
         break;
-    case 3:
+    case 3/*FATAL_MESSAGE*/:
         {
             putc('\n', stdout);
             Fputs(stdout, "(That was a fatal error, my friend.)");
@@ -3326,7 +3331,7 @@ void mainbody(void)
         break;
     }
     putc('\n', stdout);
-    if ((history != 0) && (history != 1))
+    if ((history != SPOTLESS) && (history != HARMLESS_MESSAGE))
         uexit(1);
     else
         uexit(0);

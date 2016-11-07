@@ -94,7 +94,7 @@ def inner (top, w):
 
         return objs
 
-    def staticlib (sources=None, basename=None, rule=None, order_only=[], **kwargs):
+    def staticlib (sources=None, basename=None, rule=None, order_only=[], implicit=[], **kwargs):
         lib = builddir / ('lib' + basename + '.a')
         objs = compile (
             sources = sources,
@@ -104,6 +104,7 @@ def inner (top, w):
         w.build (str(lib), 'staticlib',
                  inputs = objs,
                  order_only = order_only,
+                 implicit = implicit,
         )
         return lib
 
@@ -254,7 +255,8 @@ def inner (top, w):
                  top / 'synctexdir' / 'synctex-xe-rec.ch3',
                  top / 'xetexdir' / 'tex-binpool.ch',
              ]),
-             order_only = [str(builddir), tieprog],
+             implicit = [tieprog],
+             order_only = [str(builddir)],
     )
 
     # "otangle"d Pascal source for XeTeX.
@@ -267,7 +269,8 @@ def inner (top, w):
                  top / 'xetexdir' / 'xetex.web',
                  xetex_ch,
              ]),
-             order_only = [str(builddir), otangleprog],
+             implicit = [otangleprog],
+             order_only = [str(builddir)],
              variables = {
                  'basename': 'xetex',
                  'outdir': str(builddir),
@@ -286,7 +289,8 @@ def inner (top, w):
 
     w.build (map (str, xetex_c), 'convert',
              inputs = map (str, [xetex_p, xetex_pool]),
-             order_only = [str(builddir), convert, web2cprog, splitupprog, fixwritesprog],
+             implicit = [convert, web2cprog, splitupprog, fixwritesprog],
+             order_only = [str(builddir)], 
              variables = {
                  'outdir': str(builddir),
                  'convert': convert,
@@ -300,7 +304,8 @@ def inner (top, w):
 
     w.build (str (xetex_cpool), 'makecpool',
              inputs = map (str, [xetex_p, xetex_pool]),
-             order_only = [str(builddir), makecpoolprog],
+             implicit = [makecpoolprog],
+             order_only = [str(builddir)],
              variables = {
                  'outdir': str(builddir),
                  'basename': str(builddir / 'xetex'),
@@ -316,7 +321,7 @@ def inner (top, w):
         cflags = ('-DHAVE_CONFIG_H -Ixetexdir -I. -I%(build_name)s -DU_STATIC_IMPLEMENTATION '
                   '-D__SyncTeX__ -DSYNCTEX_ENGINE_H=\\"synctexdir/synctex-xetex.h\\" '
                   '%(pkgconfig_cflags)s %(base_cflags)s' % config),
-        order_only = map (str, xetex_c),
+        implicit = map (str, xetex_c),
     )
 
     # xetex

@@ -162,6 +162,8 @@ typedef struct {
 #define VERBATIM 2 /* = alpha */
 #define BEGIN_COMMENT 9 /* = tab mark */
 #define END_COMMENT 10 /* = line feed */
+#define OCTAL 12 /* = form feed */
+#define HEX 13 /* = carriage return */
 #define JOIN 127
 #define MODULE_NUMBER 129
 #define IDENTIFIER 130
@@ -442,7 +444,7 @@ void initialize(void)
     xchr[67] = 'C';
     xchr[ASCII_D] = 'D';
     xchr[ASCII_E] = 'E';
-    xchr[70] = 'F';
+    xchr[ASCII_F] = 'F';
     xchr[71] = 'G';
     xchr[72] = 'H';
     xchr[ASCII_I] = 'I';
@@ -474,7 +476,7 @@ void initialize(void)
     xchr[99] = 'c';
     xchr[ASCII_d] = 'd';
     xchr[ASCII_e] = 'e';
-    xchr[102] = 'f';
+    xchr[ASCII_f] = 'f';
     xchr[103] = 'g';
     xchr[104] = 'h';
     xchr[ASCII_i] = 'i';
@@ -1661,7 +1663,7 @@ void sendtheoutput(void)
         case 67:
         case ASCII_D:
         case ASCII_E:
-        case 70:
+        case ASCII_F:
         case 71:
         case 72:
         case ASCII_I:
@@ -1687,7 +1689,7 @@ void sendtheoutput(void)
         case 99:
         case ASCII_d:
         case ASCII_e:
-        case 102:
+        case ASCII_f:
         case 103:
         case 104:
         case ASCII_i:
@@ -1766,7 +1768,7 @@ void sendtheoutput(void)
         case RIGHT_BRACE:
             sendval(poolchecksum);
             break;
-        case 12:
+        case OCTAL:
             {
                 n = 0;
                 curchar = ASCII_0;
@@ -1785,7 +1787,7 @@ void sendtheoutput(void)
                 goto reswitch;
             }
             break;
-        case 13:
+        case HEX:
             {
                 n = 0;
                 curchar = ASCII_0;
@@ -1802,7 +1804,7 @@ void sendtheoutput(void)
                         n = 16 * n + curchar;
                     curchar = getoutput();
                 }
-                while (!((curchar > 70) || (curchar < ASCII_0)
+                while (!((curchar > ASCII_F) || (curchar < ASCII_0)
                          || ((curchar > ASCII_9)
                              && (curchar < ASCII_A))));
                 sendval(n);
@@ -2301,10 +2303,10 @@ eightbits zcontrolcode(ASCIIcode c)
         Result = 64;
         break;
     case SINGLE_QUOTE:
-        Result = 12;
+        Result = OCTAL;
         break;
     case DOUBLEQUOTE:
-        Result = 13;
+        Result = HEX;
         break;
     case DOLLARSIGN:
         Result = 125;
@@ -2324,8 +2326,8 @@ eightbits zcontrolcode(ASCIIcode c)
     case ASCII_d:
         Result = DEFINITION;
         break;
-    case 70:
-    case 102:
+    case ASCII_F:
+    case ASCII_f:
         Result = FORMAT;
         break;
     case LEFT_BRACE:
@@ -2456,7 +2458,7 @@ eightbits getnext(void)
     loc = loc + 1;
     if (scanninghex) {
 
-        if (((c >= ASCII_0) && (c <= ASCII_9)) || ((c >= ASCII_A) && (c <= 70)))
+        if (((c >= ASCII_0) && (c <= ASCII_9)) || ((c >= ASCII_A) && (c <= ASCII_F)))
             goto found;
         else
             scanninghex = false;
@@ -2467,7 +2469,7 @@ eightbits getnext(void)
     case 67:
     case ASCII_D:
     case ASCII_E:
-    case 70:
+    case ASCII_F:
     case 71:
     case 72:
     case ASCII_I:
@@ -2493,7 +2495,7 @@ eightbits getnext(void)
     case 99:
     case ASCII_d:
     case ASCII_e:
-    case 102:
+    case ASCII_f:
     case 103:
     case 104:
     case ASCII_i:
@@ -2580,7 +2582,7 @@ eightbits getnext(void)
             loc = loc + 1;
             if (c == PARAM)
                 goto restart;
-            else if (c == 13)
+            else if (c == HEX)
                 scanninghex = true;
             else if (c == MODULE_NAME) {
                 k = 0;
@@ -2808,7 +2810,7 @@ void zscannumeric(namepointer p)
                 goto reswitch;
             }
             break;
-        case 12:
+        case OCTAL:
             {
                 val = 0;
                 nextcontrol = ASCII_0;
@@ -2825,7 +2827,7 @@ void zscannumeric(namepointer p)
                 goto reswitch;
             }
             break;
-        case 13:
+        case HEX:
             {
                 val = 0;
                 nextcontrol = ASCII_0;
@@ -2835,7 +2837,7 @@ void zscannumeric(namepointer p)
                     val = 16 * val + nextcontrol - ASCII_0;
                     nextcontrol = getnext();
                 }
-                while (!((nextcontrol > 70) || (nextcontrol < ASCII_0)
+                while (!((nextcontrol > ASCII_F) || (nextcontrol < ASCII_0)
                          || ((nextcontrol > ASCII_9)
                              && (nextcontrol < ASCII_A))));
                 {

@@ -151,7 +151,6 @@ typedef struct {
 #define RIGHT_BRACE 125
 #define TILDE 126
 
-
 #define PARAM 0 /* = NUL */
 #define IGNORE 0
 #define VERBATIM 2 /* = alpha */
@@ -255,47 +254,32 @@ void error (void);
 void parsearguments (void);
 void initialize (void);
 void openinput (void);
-boolean zinputln (textfile f);
-#define inputln(f) zinputln((textfile) (f))
-void zprintid (namepointer p);
-#define printid(p) zprintid((namepointer) (p))
-namepointer zidlookup (eightbits t);
-#define idlookup(t) zidlookup((eightbits) (t))
-namepointer zmodlookup (sixteenbits l);
-#define modlookup(l) zmodlookup((sixteenbits) (l))
-namepointer zprefixlookup (sixteenbits l);
-#define prefixlookup(l) zprefixlookup((sixteenbits) (l))
-void zstoretwobytes (sixteenbits x);
-#define storetwobytes(x) zstoretwobytes((sixteenbits) (x))
-void zpushlevel (namepointer p);
-#define pushlevel(p) zpushlevel((namepointer) (p))
+boolean input_ln (textfile f);
+void print_id (namepointer p);
+namepointer id_lookup (eightbits t);
+namepointer mod_lookup (sixteenbits l);
+namepointer prefix_lookup (sixteenbits l);
+void store_two_bytes (sixteenbits x);
+void push_level (namepointer p);
 void poplevel (void);
 sixteenbits getoutput (void);
 void flushbuffer (void);
-void zappval (integer v);
-#define appval(v) zappval((integer) (v))
-void zsendout (eightbits t,sixteenbits v);
-#define sendout(t, v) zsendout((eightbits) (t), (sixteenbits) (v))
-void zsendsign (integer v);
-#define sendsign(v) zsendsign((integer) (v))
-void zsendval (integer v);
-#define sendval(v) zsendval((integer) (v))
+void app_val (integer v);
+void send_out (eightbits t,sixteenbits v);
+void sendsign (integer v);
+void sendval (integer v);
 void sendtheoutput (void);
 boolean linesdontmatch (void);
 void primethechangebuffer (void);
 void checkchange (void);
 void getline (void);
-eightbits zcontrolcode (ASCIIcode c);
-#define controlcode(c) zcontrolcode((ASCIIcode) (c))
+eightbits controlcode (ASCIIcode c);
 eightbits skipahead (void);
 void skipcomment (void);
 eightbits getnext (void);
-void zscannumeric (namepointer p);
-#define scannumeric(p) zscannumeric((namepointer) (p))
-void zscanrepl (eightbits t);
-#define scanrepl(t) zscanrepl((eightbits) (t))
-void zdefinemacro (eightbits t);
-#define definemacro(t) zdefinemacro((eightbits) (t))
+void scannumeric (namepointer p);
+void scanrepl (eightbits t);
+void definemacro (eightbits t);
 void scanmodule (void);
 
 /* back to otangle.c */
@@ -612,7 +596,7 @@ void openinput(void)
         changefile = kpse_open_file(chgname, kpse_web_format);
 }
 
-boolean zinputln(textfile f)
+boolean input_ln(textfile f)
 {
     register boolean Result;
     integer finallimit;
@@ -649,7 +633,7 @@ boolean zinputln(textfile f)
     return Result;
 }
 
-void zprintid(namepointer p)
+void print_id(namepointer p)
 {
     integer k;
     unsigned char w;
@@ -670,7 +654,7 @@ void zprintid(namepointer p)
     }
 }
 
-namepointer zidlookup(eightbits t)
+namepointer id_lookup(eightbits t)
 {
     /* 31 32 */ register namepointer Result;
     eightbits c;
@@ -875,7 +859,7 @@ namepointer zidlookup(eightbits t)
     return Result;
 }
 
-namepointer zmodlookup(sixteenbits l)
+namepointer mod_lookup(sixteenbits l)
 {
     /* 31 */ register namepointer Result;
     unsigned char c;
@@ -971,7 +955,7 @@ namepointer zmodlookup(sixteenbits l)
     return Result;
 }
 
-namepointer zprefixlookup(sixteenbits l)
+namepointer prefix_lookup(sixteenbits l)
 {
     register namepointer Result;
     unsigned char c;
@@ -1045,7 +1029,7 @@ namepointer zprefixlookup(sixteenbits l)
     return Result;
 }
 
-void zstoretwobytes(sixteenbits x)
+void store_two_bytes(sixteenbits x)
 {
     if (tokptr[z] + 2 > maxtoks) {
         putc('\n', stdout);
@@ -1059,7 +1043,7 @@ void zstoretwobytes(sixteenbits x)
     tokptr[z] = tokptr[z] + 2;
 }
 
-void zpushlevel(namepointer p)
+void push_level(namepointer p)
 {
     if (stackptr == stacksize) {
         putc('\n', stdout);
@@ -1129,7 +1113,7 @@ sixteenbits getoutput(void)
     if (a < 128) {
 
         if (a == 0) {
-            pushlevel(nameptr - 1);
+            push_level(nameptr - 1);
             goto restart;
         } else
             goto found;
@@ -1152,7 +1136,7 @@ sixteenbits getoutput(void)
             break;
         case SIMPLE:
             {
-                pushlevel(a);
+                push_level(a);
                 goto restart;
             }
             break;
@@ -1167,7 +1151,7 @@ sixteenbits getoutput(void)
                         putc('\n', stdout);
                         Fputs(stdout, "! No parameter given for ");
                     }
-                    printid(a);
+                    print_id(a);
                     error();
                     goto restart;
                 }
@@ -1178,7 +1162,7 @@ sixteenbits getoutput(void)
                     b = tokmem[zo][curstate.bytefield];
                     curstate.bytefield = curstate.bytefield + 1;
                     if (b == 0)
-                        storetwobytes(nameptr + 32767);
+                        store_two_bytes(nameptr + 32767);
                     else {
 
                         if (b >= 128) {
@@ -1285,7 +1269,7 @@ sixteenbits getoutput(void)
                 tokstart[textptr + 4] = tokptr[z];
                 textptr = textptr + 1;
                 z = textptr % 4;
-                pushlevel(a);
+                push_level(a);
                 goto restart;
             }
             break;
@@ -1305,13 +1289,13 @@ sixteenbits getoutput(void)
     if (a < 050000) {
         a = a - 024000;
         if (equiv[a] != 0)
-            pushlevel(a);
+            push_level(a);
         else if (a != 0) {
             {
                 putc('\n', stdout);
                 Fputs(stdout, "! Not present: <");
             }
-            printid(a);
+            print_id(a);
             putc('>', stdout);
             error();
         }
@@ -1377,7 +1361,7 @@ void flushbuffer(void)
     }
 }
 
-void zappval(integer v)
+void app_val(integer v)
 {
     integer k;
     k = outbufsize;
@@ -1397,7 +1381,7 @@ void zappval(integer v)
     while (!(k == outbufsize));
 }
 
-void zsendout(eightbits t, sixteenbits v)
+void send_out(eightbits t, sixteenbits v)
 {
     /* 20 */ integer k;
  restart:switch (outstate) {
@@ -1431,7 +1415,7 @@ void zsendout(eightbits t, sixteenbits v)
                 outbuf[outptr] = outsign;
                 outptr = outptr + 1;
             }
-            appval(abs(outval));
+            app_val(abs(outval));
             if (outptr > linelength)
                 flushbuffer();
             outstate = outstate - 2;
@@ -1463,7 +1447,7 @@ void zsendout(eightbits t, sixteenbits v)
                     outbuf[outptr] = outsign;
                     outptr = outptr + 1;
                 }
-                appval(abs(outval));
+                app_val(abs(outval));
                 if (outptr > linelength)
                     flushbuffer();
                 outsign = PLUS_SIGN;
@@ -1509,7 +1493,7 @@ void zsendout(eightbits t, sixteenbits v)
         outstate = 0;
 }
 
-void zsendsign(integer v)
+void sendsign(integer v)
 {
     switch (outstate) {
     case 2:
@@ -1540,7 +1524,7 @@ void zsendsign(integer v)
     lastsign = outapp;
 }
 
-void zsendval(integer v)
+void sendval(integer v)
 {
     /* 666 10 */ switch (outstate) {
     case 1:
@@ -1633,7 +1617,7 @@ void zsendval(integer v)
                 outptr = outptr + 1;
             }
         }
-        appval(v);
+        app_val(v);
         if (outptr > linelength)
             flushbuffer();
         outstate = 1;
@@ -1647,7 +1631,7 @@ void zsendval(integer v)
             outbuf[outptr] = MINUS_SIGN;
             outptr = outptr + 1;
         }
-        appval(-(integer) v);
+        app_val(-(integer) v);
         {
             outbuf[outptr] = RIGHT_PAREN;
             outptr = outptr + 1;
@@ -1727,7 +1711,7 @@ void sendtheoutput(void)
         case ASCII_z:
             {
                 outcontrib[1] = curchar;
-                sendout(2, 1);
+                send_out(2, 1);
             }
             break;
         case IDENTIFIER:
@@ -1744,7 +1728,7 @@ void sendtheoutput(void)
                     if (outcontrib[k] == UNDERSCORE)
                         k = k - 1;
                 }
-                sendout(2, k);
+                send_out(2, k);
             }
             break;
         case ASCII_0:
@@ -1836,12 +1820,12 @@ void sendtheoutput(void)
                 curchar = getoutput();
                 if (curchar == PERIOD) {
                     outcontrib[2] = PERIOD;
-                    sendout(1, 2);
+                    send_out(1, 2);
                 } else if ((curchar >= ASCII_0) && (curchar <= ASCII_9))
                     goto lab2;
                 else {
 
-                    sendout(0, PERIOD);
+                    send_out(0, PERIOD);
                     goto reswitch;
                 }
             }
@@ -1855,7 +1839,7 @@ void sendtheoutput(void)
                 outcontrib[1] = ASCII_a;
                 outcontrib[2] = ASCII_n;
                 outcontrib[3] = ASCII_d;
-                sendout(2, 3);
+                send_out(2, 3);
             }
             break;
         case NOT_SIGN:
@@ -1863,63 +1847,63 @@ void sendtheoutput(void)
                 outcontrib[1] = ASCII_n;
                 outcontrib[2] = ASCII_o;
                 outcontrib[3] = ASCII_t;
-                sendout(2, 3);
+                send_out(2, 3);
             }
             break;
         case SET_ELEMENT_SIGN:
             {
                 outcontrib[1] = ASCII_i;
                 outcontrib[2] = ASCII_n;
-                sendout(2, 2);
+                send_out(2, 2);
             }
             break;
         case OR_SIGN:
             {
                 outcontrib[1] = ASCII_o;
                 outcontrib[2] = ASCII_r;
-                sendout(2, 2);
+                send_out(2, 2);
             }
             break;
         case LEFT_ARROW:
             {
                 outcontrib[1] = COLON;
                 outcontrib[2] = EQUALS_SIGN;
-                sendout(1, 2);
+                send_out(1, 2);
             }
             break;
         case NOT_EQUAL:
             {
                 outcontrib[1] = LESS_THAN_SIGN;
                 outcontrib[2] = GREATER_THAN_SIGN;
-                sendout(1, 2);
+                send_out(1, 2);
             }
             break;
         case LESS_OR_EQUAL:
             {
                 outcontrib[1] = LESS_THAN_SIGN;
                 outcontrib[2] = EQUALS_SIGN;
-                sendout(1, 2);
+                send_out(1, 2);
             }
             break;
         case GREATER_OR_EQUAL:
             {
                 outcontrib[1] = GREATER_THAN_SIGN;
                 outcontrib[2] = EQUALS_SIGN;
-                sendout(1, 2);
+                send_out(1, 2);
             }
             break;
         case EQUIVALENCE_SIGN:
             {
                 outcontrib[1] = EQUALS_SIGN;
                 outcontrib[2] = EQUALS_SIGN;
-                sendout(1, 2);
+                send_out(1, 2);
             }
             break;
         case DOUBLE_DOT:
             {
                 outcontrib[1] = PERIOD;
                 outcontrib[2] = PERIOD;
-                sendout(1, 2);
+                send_out(1, 2);
             }
             break;
         case SINGLE_QUOTE:
@@ -1938,7 +1922,7 @@ void sendtheoutput(void)
                     Fputs(stdout, "! String too long");
                     error();
                 }
-                sendout(1, k);
+                send_out(1, k);
                 curchar = getoutput();
                 if (curchar == SINGLE_QUOTE)
                     outstate = 6;
@@ -1971,14 +1955,14 @@ void sendtheoutput(void)
         case BACKTICK:
         case LEFT_BRACE:
         case PIPE:
-            sendout(0, curchar);
+            send_out(0, curchar);
             break;
         case BEGIN_COMMENT:
             {
                 if (bracelevel == 0)
-                    sendout(0, LEFT_BRACE);
+                    send_out(0, LEFT_BRACE);
                 else
-                    sendout(0, LEFT_BRACKET);
+                    send_out(0, LEFT_BRACKET);
                 bracelevel = bracelevel + 1;
             }
             break;
@@ -1986,9 +1970,9 @@ void sendtheoutput(void)
             if (bracelevel > 0) {
                 bracelevel = bracelevel - 1;
                 if (bracelevel == 0)
-                    sendout(0, RIGHT_BRACE);
+                    send_out(0, RIGHT_BRACE);
                 else
-                    sendout(0, RIGHT_BRACKET);
+                    send_out(0, RIGHT_BRACKET);
             } else {
 
                 putc('\n', stdout);
@@ -1999,26 +1983,26 @@ void sendtheoutput(void)
         case MODULE_NUMBER:
             {
                 if (bracelevel == 0)
-                    sendout(0, LEFT_BRACE);
+                    send_out(0, LEFT_BRACE);
                 else
-                    sendout(0, LEFT_BRACKET);
+                    send_out(0, LEFT_BRACKET);
                 if (curval < 0) {
-                    sendout(0, COLON);
+                    send_out(0, COLON);
                     sendval(-(integer) curval);
                 } else {
 
                     sendval(curval);
-                    sendout(0, COLON);
+                    send_out(0, COLON);
                 }
                 if (bracelevel == 0)
-                    sendout(0, RIGHT_BRACE);
+                    send_out(0, RIGHT_BRACE);
                 else
-                    sendout(0, RIGHT_BRACKET);
+                    send_out(0, RIGHT_BRACKET);
             }
             break;
         case JOIN:
             {
-                sendout(3, 0);
+                send_out(3, 0);
                 outstate = 6;
             }
             break;
@@ -2037,12 +2021,12 @@ void sendtheoutput(void)
                     Fputs(stdout, "! Verbatim string too long");
                     error();
                 }
-                sendout(1, k - 1);
+                send_out(1, k - 1);
             }
             break;
         case 3:
             {
-                sendout(1, 0);
+                send_out(1, 0);
                 while (outptr > 0) {
 
                     if (outptr <= linelength)
@@ -2082,7 +2066,7 @@ void sendtheoutput(void)
             Fputs(stdout, "! Fraction too long");
             error();
         }
-        sendout(3, k);
+        send_out(3, k);
         goto reswitch;
  continue_:;
     }
@@ -2117,7 +2101,7 @@ void primethechangebuffer(void)
     while (true) {
 
         line = line + 1;
-        if (!inputln(changefile))
+        if (!input_ln(changefile))
             goto exit;
         if (limit < 2)
             goto continue_;
@@ -2140,7 +2124,7 @@ void primethechangebuffer(void)
  done:;
     do {
         line = line + 1;
-        if (!inputln(changefile)) {
+        if (!input_ln(changefile)) {
             {
                 putc('\n', stdout);
                 Fputs(stdout, "! Change file ended after @x");
@@ -2179,7 +2163,7 @@ void checkchange(void)
         otherline = line;
         line = templine;
         line = line + 1;
-        if (!inputln(changefile)) {
+        if (!input_ln(changefile)) {
             {
                 putc('\n', stdout);
                 Fputs(stdout, "! Change file ended before @y");
@@ -2238,7 +2222,7 @@ void checkchange(void)
         otherline = line;
         line = templine;
         line = line + 1;
-        if (!inputln(webfile)) {
+        if (!input_ln(webfile)) {
             {
                 putc('\n', stdout);
                 Fputs(stdout, "! WEB file ended during a change");
@@ -2257,7 +2241,7 @@ void getline(void)
 {
  /* 20 */ restart:if (changing) {
         line = line + 1;
-        if (!inputln(changefile)) {
+        if (!input_ln(changefile)) {
             {
                 putc('\n', stdout);
                 Fputs(stdout, "! Change file ended without @z");
@@ -2292,7 +2276,7 @@ void getline(void)
     if (!changing) {
         {
             line = line + 1;
-            if (!inputln(webfile))
+            if (!input_ln(webfile))
                 inputhasended = true;
             else if (limit == changelimit) {
 
@@ -2310,7 +2294,7 @@ void getline(void)
     buffer[limit] = SPACE;
 }
 
-eightbits zcontrolcode(ASCIIcode c)
+eightbits controlcode(ASCIIcode c)
 {
     register eightbits Result;
     switch (c) {
@@ -2675,11 +2659,11 @@ getnext(void)
 		if ((modtext[k] == PERIOD)
 		    && (modtext[k - 1] == PERIOD)
 		    && (modtext[k - 2] == PERIOD))
-		    curmodule = prefixlookup(k - 3);
+		    curmodule = prefix_lookup(k - 3);
 		else
-		    curmodule = modlookup(k);
+		    curmodule = mod_lookup(k);
 	    } else
-		curmodule = modlookup(k);
+		curmodule = mod_lookup(k);
 	} else if (c == CONTROL_TEXT) {
 	    do {
 		c = skipahead();
@@ -2796,7 +2780,7 @@ getnext(void)
     return Result;
 }
 
-void zscannumeric(namepointer p)
+void scannumeric(namepointer p)
 {
     /* 21 30 */ integer accumulator;
     schar nextsign;
@@ -2872,7 +2856,7 @@ void zscannumeric(namepointer p)
             break;
         case IDENTIFIER:
             {
-                q = idlookup(0);
+                q = id_lookup(0);
                 if (ilk[q] != 1) {
                     nextcontrol = ASTERISK;
                     goto reswitch;
@@ -2938,7 +2922,7 @@ void zscannumeric(namepointer p)
     equiv[p] = accumulator + 0x40000000;
 }
 
-void zscanrepl(eightbits t)
+void scanrepl(eightbits t)
 {
     /* 22 30 31 21 */ sixteenbits a;
     ASCIIcode b;
@@ -3033,7 +3017,7 @@ void zscanrepl(eightbits t)
             break;
         case IDENTIFIER:
             {
-                a = idlookup(0);
+                a = id_lookup(0);
                 {
                     if (tokptr[z] == maxtoks) {
                         putc('\n', stdout);
@@ -3220,10 +3204,10 @@ void zscanrepl(eightbits t)
         z = z + 1;
 }
 
-void zdefinemacro(eightbits t)
+void definemacro(eightbits t)
 {
     namepointer p;
-    p = idlookup(t);
+    p = id_lookup(t);
     scanrepl(t);
     equiv[p] = currepltext;
     textlink[currepltext] = 0;
@@ -3263,7 +3247,7 @@ void scanmodule(void)
         nextcontrol = getnext();
 
         if (nextcontrol == EQUALS_SIGN) {
-            scannumeric(idlookup(1));
+            scannumeric(id_lookup(1));
             goto continue_;
         } else if (nextcontrol == EQUIVALENCE_SIGN) {
             definemacro(2);
@@ -3325,7 +3309,7 @@ void scanmodule(void)
         goto exit;
         break;
     }
-    storetwobytes(0xD000 + modulecount);
+    store_two_bytes(0xD000 + modulecount);
     scanrepl(MODULE_NAME);
     if (p == 0) {
         textlink[lastunnamed] = currepltext;

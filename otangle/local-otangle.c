@@ -2368,10 +2368,10 @@ eightbits zcontrolcode(ASCIIcode c)
 
 eightbits skipahead(void)
 {
-    /* 30 */ register eightbits Result;
+    eightbits Result;
     eightbits c;
-    while (true) {
 
+    while (true) {
         if (loc > limit) {
             getline();
             if (inputhasended) {
@@ -2379,17 +2379,22 @@ eightbits skipahead(void)
                 goto done;
             }
         }
+
         buffer[limit + 1] = AT_SIGN;
+
         while (buffer[loc] != AT_SIGN)
-            loc = loc + 1;
+            loc++;
+
         if (loc <= limit) {
-            loc = loc + 2;
+            loc += 2;
             c = controlcode(buffer[loc - 1]);
             if ((c != PARAM) || (buffer[loc - 1] == GREATER_THAN_SIGN))
                 goto done;
         }
     }
- done:Result = c;
+
+ done:
+    Result = c;
     return Result;
 }
 

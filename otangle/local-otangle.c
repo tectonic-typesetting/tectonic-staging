@@ -16,6 +16,7 @@
 #define stacksize (100)
 #define maxidlength (50)
 #define unambiglength (25)
+#define noptions (3)
 
 typedef unsigned char ASCIIcode;
 typedef text /* of  ASCIIcode */ textfile;
@@ -31,12 +32,20 @@ typedef struct {
     short modfield;
 } outputstate;
 
-unsigned char history;
-const int SPOTLESS = 0;
-const int HARMLESS_MESSAGE = 1;
-const int ERROR_MESSAGE = 2;
-const int FATAL_MESSAGE = 3;
+/* magic constants */
 
+#define SPOTLESS 0 /* for "history" variable */
+#define HARMLESS_MESSAGE 1
+#define ERROR_MESSAGE 2
+#define FATAL_MESSAGE 3
+
+#define NUMBER_CHARS 65536L
+
+#define SPACE 32
+
+/* end of magic constants */
+
+unsigned char history;
 ASCIIcode xord[256];
 ASCIIcode xchr[256];
 textfile webfile;
@@ -217,7 +226,6 @@ void error(void)
 void parsearguments(void)
 {
 
-#define noptions (3)
     getoptstruct longoptions[noptions + 1];
     integer getoptreturnval;
     cinttype optionindex;
@@ -273,7 +281,7 @@ void initialize(void)
     kpse_set_program_name(argv[0], "otangle");
     parsearguments();
     history = SPOTLESS;
-    xchr[32] = ' ';
+    xchr[SPACE] = ' ';
     xchr[33] = '!';
     xchr[34] = '"';
     xchr[35] = '#';
@@ -394,7 +402,7 @@ void initialize(void)
         for_end = 255;
         if (i <= for_end)
             do
-                xord[chr(i)] = 32;
+                xord[chr(i)] = SPACE;
             while (i++ < for_end);
     }
     {
@@ -406,7 +414,7 @@ void initialize(void)
                 xord[xchr[i]] = i;
             while (i++ < for_end);
     }
-    xord[' '] = 32;
+    xord[' '] = SPACE;
     rewrite(Pascalfile, pascalname);
     {
         register integer for_end;
@@ -421,7 +429,7 @@ void initialize(void)
     }
     bytestart[3] = 0;
     nameptr = 1;
-    stringptr = 65536L;
+    stringptr = NUMBER_CHARS;
     poolchecksum = 271828L;
     {
         register integer for_end;
@@ -453,7 +461,7 @@ void initialize(void)
     lastunnamed = 0;
     textlink[0] = 0;
     scanninghex = false;
-    modtext[0] = 32;
+    modtext[0] = SPACE;
 }
 
 void openinput(void)
@@ -477,7 +485,7 @@ boolean zinputln(textfile f)
 
             buffer[limit] = xord[getc(f)];
             limit = limit + 1;
-            if (buffer[limit - 1] != 32)
+            if (buffer[limit - 1] != SPACE)
                 finallimit = limit;
             if (limit == bufsize) {
                 while (!eoln(f))
@@ -688,7 +696,7 @@ namepointer zidlookup(eightbits t)
                     equiv[p] = buffer[idfirst + 1] + 1073741824L;
                 else {
 
-                    if (stringptr == 65536L) {
+                    if (stringptr == NUMBER_CHARS) {
                         poolname =
                             basenamechangesuffix(webname, ".web", ".pool");
                         rewrite(pool, poolname);
@@ -1201,7 +1209,7 @@ void flushbuffer(void)
         fflush(stdout);
     }
     if (breakptr < outptr) {
-        if (outbuf[breakptr] == 32) {
+        if (outbuf[breakptr] == SPACE) {
             breakptr = breakptr + 1;
             if (breakptr > b)
                 b = breakptr;
@@ -1257,7 +1265,7 @@ void zsendout(eightbits t, sixteenbits v)
         if (t != 3) {
             breakptr = outptr;
             if (t == 2) {
-                outbuf[outptr] = 32;
+                outbuf[outptr] = SPACE;
                 outptr = outptr + 1;
             }
         }
@@ -1399,7 +1407,7 @@ void zsendval(integer v)
         {
             if ((outptr == breakptr + 3)
                 || ((outptr == breakptr + 4)
-                    && (outbuf[breakptr] == 32))) {
+                    && (outbuf[breakptr] == SPACE))) {
 
                 if (((outbuf[outptr - 3] == 68)
                      && (outbuf[outptr - 2] == 73)
@@ -1415,7 +1423,7 @@ void zsendval(integer v)
                         && (outbuf[outptr - 1] == 100)))
                     goto lab666;
             }
-            outsign = 32;
+            outsign = SPACE;
             outstate = 3;
             outval = v;
             breakptr = outptr;
@@ -1481,7 +1489,7 @@ void zsendval(integer v)
         if (outstate == 1) {
             breakptr = outptr;
             {
-                outbuf[outptr] = 32;
+                outbuf[outptr] = SPACE;
                 outptr = outptr + 1;
             }
         }
@@ -1767,7 +1775,7 @@ void sendtheoutput(void)
                 sendout(1, 2);
             }
             break;
-        case 32:
+        case SPACE:
             {
                 outcontrib[1] = 46;
                 outcontrib[2] = 46;
@@ -1976,7 +1984,7 @@ void primethechangebuffer(void)
         if (buffer[0] != 64)
             goto continue_;
         if ((buffer[1] >= 88) && (buffer[1] <= 90))
-            buffer[1] = buffer[1] + 32;
+            buffer[1] = buffer[1] + 32; /*lowercasify*/
         if (buffer[1] == 120)
             goto done;
         if ((buffer[1] == 121) || (buffer[1] == 122)) {
@@ -2159,7 +2167,7 @@ void getline(void)
             goto restart;
     }
     loc = 0;
-    buffer[limit] = 32;
+    buffer[limit] = SPACE;
 }
 
 eightbits zcontrolcode(ASCIIcode c)
@@ -2178,7 +2186,7 @@ eightbits zcontrolcode(ASCIIcode c)
     case 36:
         Result = 125;
         break;
-    case 32:
+    case SPACE:
     case 9:
         Result = 136;
         break;
@@ -2282,7 +2290,7 @@ void skipcomment(void)
         loc = loc + 1;
         if (c == 64) {
             c = buffer[loc];
-            if ((c != 32) && (c != 9) && (c != 42) && (c != 122)
+            if ((c != SPACE) && (c != 9) && (c != 42) && (c != 122)
                 && (c != 90))
                 loc = loc + 1;
             else {
@@ -2473,7 +2481,7 @@ eightbits getnext(void)
                             loc = loc + 2;
                             goto done;
                         }
-                        if ((d == 32) || (d == 9)
+                        if ((d == SPACE) || (d == 9)
                             || (d == 42)) {
                             {
                                 putc('\n', stdout);
@@ -2489,9 +2497,9 @@ eightbits getnext(void)
                     loc = loc + 1;
                     if (k < longestname - 1)
                         k = k + 1;
-                    if ((d == 32) || (d == 9)) {
-                        d = 32;
-                        if (modtext[k - 1] == 32)
+                    if ((d == SPACE) || (d == 9)) {
+                        d = SPACE;
+                        if (modtext[k - 1] == SPACE)
                             k = k - 1;
                     }
                     modtext[k] = d;
@@ -2514,7 +2522,7 @@ eightbits getnext(void)
                     if (history == SPOTLESS)
                         history = HARMLESS_MESSAGE;
                 }
-                if ((modtext[k] == 32) && (k > 0))
+                if ((modtext[k] == SPACE) && (k > 0))
                     k = k - 1;
                 if (k > 3) {
                     if ((modtext[k] == 46)
@@ -2542,7 +2550,7 @@ eightbits getnext(void)
     case 46:
         if (buffer[loc] == 46) {
             if (loc <= limit) {
-                c = 32;
+                c = SPACE;
                 loc = loc + 1;
             }
         } else if (buffer[loc] == 41) {
@@ -2610,7 +2618,7 @@ eightbits getnext(void)
             }
         }
         break;
-    case 32:
+    case SPACE:
     case 9:
         goto restart;
         break;
@@ -3198,7 +3206,7 @@ void mainbody(void)
     line = templine;
     limit = 0;
     loc = 1;
-    buffer[0] = 32;
+    buffer[0] = SPACE;
     inputhasended = false;
     Fputs(stdout, "This is OTANGLE, Version 4.4");
     fprintf(stdout, "%s\n", versionstring);
@@ -3274,10 +3282,10 @@ void mainbody(void)
             Fputs(stdout, "Done.");
         }
     }
-    if (stringptr > 65536L) {
+    if (stringptr > NUMBER_CHARS) {
         {
             putc('\n', stdout);
-            fprintf(stdout, "%ld%s", (long)stringptr - 65536L,
+            fprintf(stdout, "%ld%s", (long)stringptr - NUMBER_CHARS,
                     " strings written to string pool file.");
         }
         putc('*', pool);
@@ -3304,26 +3312,26 @@ void mainbody(void)
         putc('\n', pool);
     }
     switch (history) {
-    case 0/*SPOTLESS*/:
+    case SPOTLESS:
         {
             putc('\n', stdout);
             Fputs(stdout, "(No errors were found.)");
         }
         break;
-    case 1/*HARMLESS_MESSAGE*/:
+    case HARMLESS_MESSAGE:
         {
             putc('\n', stdout);
             Fputs(stdout, "(Did you see the warning message above?)");
         }
         break;
-    case 2/*ERROR_MESSAGE*/:
+    case ERROR_MESSAGE:
         {
             putc('\n', stdout);
             Fputs(stdout,
                   "(Pardon me, but I think I spotted something wrong.)");
         }
         break;
-    case 3/*FATAL_MESSAGE*/:
+    case FATAL_MESSAGE:
         {
             putc('\n', stdout);
             Fputs(stdout, "(That was a fatal error, my friend.)");

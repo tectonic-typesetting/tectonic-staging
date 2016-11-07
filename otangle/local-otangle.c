@@ -95,6 +95,32 @@ typedef struct {
 #define GREATER_THAN_SIGN 62
 #define QUESTION_MARK 63
 #define AT_SIGN 64
+#define ASCII_A 65
+#define ASCII_B 66
+#define ASCII_C 67
+#define ASCII_D 68
+#define ASCII_E 69
+#define ASCII_F 70
+#define ASCII_G 71
+#define ASCII_H 72
+#define ASCII_I 73
+#define ASCII_J 74
+#define ASCII_K 75
+#define ASCII_L 76
+#define ASCII_M 77
+#define ASCII_N 78
+#define ASCII_O 79
+#define ASCII_P 80
+#define ASCII_Q 81
+#define ASCII_R 82
+#define ASCII_S 83
+#define ASCII_T 84
+#define ASCII_U 85
+#define ASCII_V 86
+#define ASCII_W 87
+#define ASCII_X 88
+#define ASCII_Y 89
+#define ASCII_Z 90
 
 #define JOIN 127
 
@@ -369,8 +395,8 @@ void initialize(void)
     xchr[GREATER_THAN_SIGN] = '>';
     xchr[QUESTION_MARK] = '?';
     xchr[AT_SIGN] = '@';
-    xchr[65] = 'A';
-    xchr[66] = 'B';
+    xchr[ASCII_A] = 'A';
+    xchr[ASCII_B] = 'B';
     xchr[67] = 'C';
     xchr[68] = 'D';
     xchr[69] = 'E';
@@ -392,9 +418,9 @@ void initialize(void)
     xchr[85] = 'U';
     xchr[86] = 'V';
     xchr[87] = 'W';
-    xchr[88] = 'X';
+    xchr[ASCII_X] = 'X';
     xchr[89] = 'Y';
-    xchr[90] = 'Z';
+    xchr[ASCII_Z] = 'Z';
     xchr[91] = '[';
     xchr[92] = '\\';
     xchr[93] = ']';
@@ -1588,8 +1614,8 @@ void sendtheoutput(void)
         case 0:
             ;
             break;
-        case 65:
-        case 66:
+        case ASCII_A:
+        case ASCII_B:
         case 67:
         case 68:
         case 69:
@@ -1611,9 +1637,9 @@ void sendtheoutput(void)
         case 85:
         case 86:
         case 87:
-        case 88:
+        case ASCII_X:
         case 89:
-        case 90:
+        case ASCII_Z:
         case 97:
         case 98:
         case 99:
@@ -1722,7 +1748,7 @@ void sendtheoutput(void)
                 n = 0;
                 curchar = ASCII_0;
                 do {
-                    if (curchar >= 65)
+                    if (curchar >= ASCII_A)
                         curchar = curchar - ASCII_7;
                     else
                         curchar = curchar - ASCII_0;
@@ -1736,7 +1762,7 @@ void sendtheoutput(void)
                 }
                 while (!((curchar > 70) || (curchar < ASCII_0)
                          || ((curchar > ASCII_9)
-                             && (curchar < 65))));
+                             && (curchar < ASCII_A))));
                 sendval(n);
                 goto reswitch;
             }
@@ -2038,7 +2064,7 @@ void primethechangebuffer(void)
             goto continue_;
         if (buffer[0] != AT_SIGN)
             goto continue_;
-        if ((buffer[1] >= 88) && (buffer[1] <= 90))
+        if ((buffer[1] >= ASCII_X) && (buffer[1] <= ASCII_Z))
             buffer[1] = buffer[1] + 32; /*lowercasify*/
         if (buffer[1] == 120)
             goto done;
@@ -2110,7 +2136,7 @@ void checkchange(void)
         if (limit > 1) {
 
             if (buffer[0] == AT_SIGN) {
-                if ((buffer[1] >= 88) && (buffer[1] <= 90))
+                if ((buffer[1] >= ASCII_X) && (buffer[1] <= ASCII_Z))
                     buffer[1] = buffer[1] + 32;
                 if ((buffer[1] == 120) || (buffer[1] == 122)) {
                     loc = 2;
@@ -2185,7 +2211,7 @@ void getline(void)
         if (limit > 1) {
 
             if (buffer[0] == AT_SIGN) {
-                if ((buffer[1] >= 88) && (buffer[1] <= 90))
+                if ((buffer[1] >= ASCII_X) && (buffer[1] <= ASCII_Z))
                     buffer[1] = buffer[1] + 32;
                 if ((buffer[1] == 120) || (buffer[1] == 121)) {
                     loc = 2;
@@ -2346,7 +2372,7 @@ void skipcomment(void)
         if (c == AT_SIGN) {
             c = buffer[loc];
             if ((c != SPACE) && (c != 9) && (c != ASTERISK) && (c != 122)
-                && (c != 90))
+                && (c != ASCII_Z))
                 loc = loc + 1;
             else {
 
@@ -2388,14 +2414,14 @@ eightbits getnext(void)
     loc = loc + 1;
     if (scanninghex) {
 
-        if (((c >= ASCII_0) && (c <= ASCII_9)) || ((c >= 65) && (c <= 70)))
+        if (((c >= ASCII_0) && (c <= ASCII_9)) || ((c >= ASCII_A) && (c <= 70)))
             goto found;
         else
             scanninghex = false;
     }
     switch (c) {
-    case 65:
-    case 66:
+    case ASCII_A:
+    case ASCII_B:
     case 67:
     case 68:
     case 69:
@@ -2417,9 +2443,9 @@ eightbits getnext(void)
     case 85:
     case 86:
     case 87:
-    case 88:
+    case ASCII_X:
     case 89:
-    case 90:
+    case ASCII_Z:
     case 97:
     case 98:
     case 99:
@@ -2460,8 +2486,8 @@ eightbits getnext(void)
                     loc = loc + 1;
                     d = buffer[loc];
                 }
-                while (!(((d < ASCII_0) || ((d > ASCII_9) && (d < 65))
-                          || ((d > 90) && (d < 97))
+                while (!(((d < ASCII_0) || ((d > ASCII_9) && (d < ASCII_A))
+                          || ((d > ASCII_Z) && (d < 97))
                           || (d > 122)) && (d != 95)));
                 if (loc > idfirst + 1) {
                     c = 130;
@@ -2762,14 +2788,14 @@ void zscannumeric(namepointer p)
                 val = 0;
                 nextcontrol = ASCII_0;
                 do {
-                    if (nextcontrol >= 65)
+                    if (nextcontrol >= ASCII_A)
                         nextcontrol = nextcontrol - 7;
                     val = 16 * val + nextcontrol - ASCII_0;
                     nextcontrol = getnext();
                 }
                 while (!((nextcontrol > 70) || (nextcontrol < ASCII_0)
                          || ((nextcontrol > ASCII_9)
-                             && (nextcontrol < 65))));
+                             && (nextcontrol < ASCII_A))));
                 {
                     accumulator = accumulator + nextsign * (val);
                     nextsign = 1;

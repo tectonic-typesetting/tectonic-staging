@@ -869,7 +869,7 @@ namepointer zmodlookup(sixteenbits l)
     unsigned char w;
     namepointer p;
     namepointer q;
-    c = 2;
+    c = VERBATIM;
     q = 0;
     p = ilk[0];
     while (p != 0) {
@@ -894,9 +894,9 @@ namepointer zmodlookup(sixteenbits l)
             } else if (j > l)
                 c = 3;
             else if (modtext[j] < bytemem[w][k])
-                c = 0;
+                c = PARAM;
             else
-                c = 2;
+                c = VERBATIM;
         }
         q = p;
         if (c == PARAM)
@@ -993,9 +993,9 @@ namepointer zprefixlookup(sixteenbits l)
             } else if (j > l)
                 c = 3;
             else if (modtext[j] < bytemem[w][k])
-                c = 0;
+                c = PARAM;
             else
-                c = 2;
+                c = VERBATIM;
         }
         if (c == PARAM)
             p = link[p];
@@ -1851,42 +1851,42 @@ void sendtheoutput(void)
                 sendout(2, 3);
             }
             break;
-        case 6:
+        case SET_ELEMENT_SIGN:
             {
                 outcontrib[1] = ASCII_i;
                 outcontrib[2] = ASCII_n;
                 sendout(2, 2);
             }
             break;
-        case 31:
+        case OR_SIGN:
             {
                 outcontrib[1] = ASCII_o;
                 outcontrib[2] = 114;
                 sendout(2, 2);
             }
             break;
-        case 24:
+        case LEFT_ARROW:
             {
                 outcontrib[1] = COLON;
                 outcontrib[2] = EQUALS_SIGN;
                 sendout(1, 2);
             }
             break;
-        case 26:
+        case NOT_EQUAL:
             {
                 outcontrib[1] = LESS_THAN_SIGN;
                 outcontrib[2] = GREATER_THAN_SIGN;
                 sendout(1, 2);
             }
             break;
-        case 28:
+        case LESS_OR_EQUAL:
             {
                 outcontrib[1] = LESS_THAN_SIGN;
                 outcontrib[2] = EQUALS_SIGN;
                 sendout(1, 2);
             }
             break;
-        case 29:
+        case GREATER_OR_EQUAL:
             {
                 outcontrib[1] = GREATER_THAN_SIGN;
                 outcontrib[2] = EQUALS_SIGN;
@@ -2385,7 +2385,7 @@ eightbits skipahead(void)
         if (loc <= limit) {
             loc = loc + 2;
             c = controlcode(buffer[loc - 1]);
-            if ((c != 0) || (buffer[loc - 1] == GREATER_THAN_SIGN))
+            if ((c != PARAM) || (buffer[loc - 1] == GREATER_THAN_SIGN))
                 goto done;
         }
     }
@@ -2521,9 +2521,9 @@ eightbits getnext(void)
 
                 if ((buffer[loc - 2] <= ASCII_9)
                     && (buffer[loc - 2] >= ASCII_0))
-                    c = 0;
+                    c = PARAM;
             }
-            if (c != 0) {
+            if (c != PARAM) {
                 loc = loc - 1;
                 idfirst = loc;
                 do {
@@ -2688,7 +2688,7 @@ eightbits getnext(void)
     case COLON:
         if (buffer[loc] == EQUALS_SIGN) {
             if (loc <= limit) {
-                c = 24;
+                c = LEFT_ARROW;
                 loc = loc + 1;
             }
         }
@@ -2704,7 +2704,7 @@ eightbits getnext(void)
     case GREATER_THAN_SIGN:
         if (buffer[loc] == EQUALS_SIGN) {
             if (loc <= limit) {
-                c = 29;
+                c = GREATER_OR_EQUAL;
                 loc = loc + 1;
             }
         }
@@ -2712,12 +2712,12 @@ eightbits getnext(void)
     case LESS_THAN_SIGN:
         if (buffer[loc] == EQUALS_SIGN) {
             if (loc <= limit) {
-                c = 28;
+                c = LESS_OR_EQUAL;
                 loc = loc + 1;
             }
         } else if (buffer[loc] == GREATER_THAN_SIGN) {
             if (loc <= limit) {
-                c = 26;
+                c = NOT_EQUAL;
                 loc = loc + 1;
             }
         }

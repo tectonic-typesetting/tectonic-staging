@@ -32,7 +32,8 @@ typedef struct {
     short modfield;
 } outputstate;
 
-/* magic constants */
+/* Magic constants. Unfortunately C does not let you use 'const ints' as items
+ * in case statements, so we reluctantly turn them into #define's. */
 
 #define SPOTLESS 0 /* for "history" variable */
 #define HARMLESS_MESSAGE 1
@@ -43,13 +44,33 @@ typedef struct {
 
 #define CONTROL_TEXT 131 /* control symbols */
 #define FORMAT 132
+#define DEFINITION 133
+#define BEGIN_PASCAL 134
+#define MODULE_NAME 135
 #define NEW_MODULE 136
 
+#define AND_SIGN 4 /* ASCII with extension */
+#define NOT_SIGN 5
+#define SET_ELEMENT_SIGN 6
+#define TAB_MARK 9
+#define LINE_FEED 10
+#define FORM_FEED 12
+#define CARRIAGE_RETURN 13
+#define LEFT_ARROW 24
+#define NOT_EQUAL 26
+#define LESS_OR_EQUAL 28
+#define GREATER_OR_EQUAL 29
+#define EQUIVALENCE_SIGN 30
+#define OR_SIGN 31
 #define SPACE 32
 #define EXCLAM 33
 #define DOUBLEQUOTE 34
 #define OCTOTHORPE 35
 #define DOLLARSIGN 36
+#define PERCENT 37
+#define AMPERSAND 38
+
+#define JOIN 127
 
 /* end of magic constants */
 
@@ -294,8 +315,8 @@ void initialize(void)
     xchr[DOUBLEQUOTE] = '"';
     xchr[OCTOTHORPE] = '#';
     xchr[DOLLARSIGN] = '$';
-    xchr[37] = '%';
-    xchr[38] = '&';
+    xchr[PERCENT] = '%';
+    xchr[AMPERSAND] = '&';
     xchr[39] = '\'';
     xchr[40] = '(';
     xchr[41] = ')';
@@ -701,7 +722,7 @@ namepointer zidlookup(eightbits t)
 
                 ilk[p] = 1;
                 if (l - doublechars == 2)
-                    equiv[p] = buffer[idfirst + 1] + 1073741824L;
+                    equiv[p] = buffer[idfirst + 1] + 0x40000000;
                 else {
 
                     if (stringptr == NUMBER_CHARS) {
@@ -709,7 +730,7 @@ namepointer zidlookup(eightbits t)
                             basenamechangesuffix(webname, ".web", ".pool");
                         rewrite(pool, poolname);
                     }
-                    equiv[p] = stringptr + 1073741824L;
+                    equiv[p] = stringptr + 0x40000000;
                     l = l - doublechars - 1;
                     if (l > 99) {
                         putc('\n', stdout);
@@ -1014,7 +1035,7 @@ sixteenbits getoutput(void)
             break;
         case 1:
             {
-                curval = equiv[a] - 1073741824L;
+                curval = equiv[a] - 0x40000000;
                 a = 128;
             }
             break;
@@ -1817,8 +1838,8 @@ void sendtheoutput(void)
         case DOUBLEQUOTE:
         case OCTOTHORPE:
         case DOLLARSIGN:
-        case 37:
-        case 38:
+        case PERCENT:
+        case AMPERSAND:
         case 40:
         case 41:
         case 42:
@@ -1884,7 +1905,7 @@ void sendtheoutput(void)
                     sendout(0, 93);
             }
             break;
-        case 127:
+        case JOIN:
             {
                 sendout(3, 0);
                 outstate = 6;
@@ -2207,7 +2228,7 @@ eightbits zcontrolcode(ASCIIcode c)
         break;
     case 68:
     case 100:
-        Result = 133;
+        Result = DEFINITION;
         break;
     case 70:
     case 102:
@@ -2221,7 +2242,7 @@ eightbits zcontrolcode(ASCIIcode c)
         break;
     case 80:
     case 112:
-        Result = 134;
+        Result = BEGIN_PASCAL;
         break;
     case 84:
     case 116:
@@ -2230,11 +2251,11 @@ eightbits zcontrolcode(ASCIIcode c)
     case 58:
         Result = CONTROL_TEXT;
         break;
-    case 38:
-        Result = 127;
+    case AMPERSAND:
+        Result = JOIN;
         break;
     case 60:
-        Result = 135;
+        Result = MODULE_NAME;
         break;
     case 61:
         Result = 2;
@@ -2467,7 +2488,7 @@ eightbits getnext(void)
                 goto restart;
             else if (c == 13)
                 scanninghex = true;
-            else if (c == 135) {
+            else if (c == MODULE_NAME) {
                 k = 0;
                 while (true) {
 
@@ -2739,7 +2760,7 @@ void zscannumeric(namepointer p)
                 }
                 {
                     accumulator =
-                        accumulator + nextsign * (equiv[q] - 1073741824L);
+                        accumulator + nextsign * (equiv[q] - 0x40000000);
                     nextsign = 1;
                 }
             }
@@ -2751,9 +2772,9 @@ void zscannumeric(namepointer p)
             nextsign = -(integer) nextsign;
             break;
         case FORMAT:
-        case 133:
-        case 135:
-        case 134:
+        case DEFINITION:
+        case MODULE_NAME:
+        case BEGIN_PASCAL:
         case NEW_MODULE:
             goto done;
             break;
@@ -2776,7 +2797,7 @@ void zscannumeric(namepointer p)
                     nextcontrol = skipahead();
                 }
                 while (!((nextcontrol >= FORMAT)));
-                if (nextcontrol == 135) {
+                if (nextcontrol == MODULE_NAME) {
                     loc = loc - 2;
                     nextcontrol = getnext();
                 }
@@ -2787,7 +2808,7 @@ void zscannumeric(namepointer p)
         }
     }
  done:;
-    if (abs(accumulator) >= 1073741824L) {
+    if (abs(accumulator) >= 0x40000000) {
         {
             putc('\n', stdout);
             fprintf(stdout, "%s%ld", "! Value too big: ", (long)accumulator);
@@ -2795,7 +2816,7 @@ void zscannumeric(namepointer p)
         }
         accumulator = 0;
     }
-    equiv[p] = accumulator + 1073741824L;
+    equiv[p] = accumulator + 0x40000000;
 }
 
 void zscanrepl(eightbits t)
@@ -2909,8 +2930,8 @@ void zscanrepl(eightbits t)
                 a = a % 256;
             }
             break;
-        case 135:
-            if (t != 135)
+        case MODULE_NAME:
+            if (t != MODULE_NAME)
                 goto done;
             else {
 
@@ -2998,10 +3019,10 @@ void zscanrepl(eightbits t)
                 loc = loc + 2;
             }
             break;
-        case 133:
+        case DEFINITION:
         case FORMAT:
-        case 134:
-            if (t != 135)
+        case BEGIN_PASCAL:
+            if (t != MODULE_NAME)
                 goto done;
             else {
 
@@ -3099,12 +3120,12 @@ void scanmodule(void)
  continue_:while (nextcontrol <= FORMAT) {
 
             nextcontrol = skipahead();
-            if (nextcontrol == 135) {
+            if (nextcontrol == MODULE_NAME) {
                 loc = loc - 2;
                 nextcontrol = getnext();
             }
         }
-        if (nextcontrol != 133)
+        if (nextcontrol != DEFINITION)
             goto done;
         nextcontrol = getnext();
         if (nextcontrol != 130) {
@@ -3153,10 +3174,10 @@ void scanmodule(void)
     }
  done:;
     switch (nextcontrol) {
-    case 134:
+    case BEGIN_PASCAL:
         p = 0;
         break;
-    case 135:
+    case MODULE_NAME:
         {
             p = curmodule;
             do {
@@ -3182,7 +3203,7 @@ void scanmodule(void)
         break;
     }
     storetwobytes(53248L + modulecount);
-    scanrepl(135);
+    scanrepl(MODULE_NAME);
     if (p == 0) {
         textlink[lastunnamed] = currepltext;
         lastunnamed = currepltext;

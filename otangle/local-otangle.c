@@ -127,6 +127,32 @@ typedef struct {
 #define CARET 94
 #define UNDERSCORE 95
 #define BACKTICK 96
+#define ASCII_a 97
+#define ASCII_b 98
+#define ASCII_c 99
+#define ASCII_d 100
+#define ASCII_e 101
+#define ASCII_f 102
+#define ASCII_g 103
+#define ASCII_h 104
+#define ASCII_i 105
+#define ASCII_j 106
+#define ASCII_k 107
+#define ASCII_l 108
+#define ASCII_m 109
+#define ASCII_n 110
+#define ASCII_o 111
+#define ASCII_p 112
+#define ASCII_q 113
+#define ASCII_r 114
+#define ASCII_s 115
+#define ASCII_t 116
+#define ASCII_u 117
+#define ASCII_v 118
+#define ASCII_w 119
+#define ASCII_x 120
+#define ASCII_y 121
+#define ASCII_z 122
 
 #define JOIN 127
 
@@ -404,12 +430,12 @@ void initialize(void)
     xchr[ASCII_A] = 'A';
     xchr[ASCII_B] = 'B';
     xchr[67] = 'C';
-    xchr[68] = 'D';
+    xchr[ASCII_D] = 'D';
     xchr[69] = 'E';
     xchr[70] = 'F';
     xchr[71] = 'G';
     xchr[72] = 'H';
-    xchr[73] = 'I';
+    xchr[ASCII_I] = 'I';
     xchr[74] = 'J';
     xchr[75] = 'K';
     xchr[76] = 'L';
@@ -422,7 +448,7 @@ void initialize(void)
     xchr[83] = 'S';
     xchr[84] = 'T';
     xchr[85] = 'U';
-    xchr[86] = 'V';
+    xchr[ASCII_V] = 'V';
     xchr[87] = 'W';
     xchr[ASCII_X] = 'X';
     xchr[89] = 'Y';
@@ -433,10 +459,10 @@ void initialize(void)
     xchr[CARET] = '^';
     xchr[UNDERSCORE] = '_';
     xchr[BACKTICK] = '`';
-    xchr[97] = 'a';
+    xchr[ASCII_a] = 'a';
     xchr[98] = 'b';
     xchr[99] = 'c';
-    xchr[100] = 'd';
+    xchr[ASCII_d] = 'd';
     xchr[101] = 'e';
     xchr[102] = 'f';
     xchr[103] = 'g';
@@ -456,9 +482,9 @@ void initialize(void)
     xchr[117] = 'u';
     xchr[118] = 'v';
     xchr[119] = 'w';
-    xchr[120] = 'x';
-    xchr[121] = 'y';
-    xchr[122] = 'z';
+    xchr[ASCII_x] = 'x';
+    xchr[ASCII_y] = 'y';
+    xchr[ASCII_z] = 'z';
     xchr[123] = '{';
     xchr[124] = '|';
     xchr[125] = '}';
@@ -1389,18 +1415,18 @@ void zsendout(eightbits t, sixteenbits v)
         {
             if ((t == 3)
                 || (((t == 2) && (v == 3)
-                     && (((outcontrib[1] == 68)
-                          && (outcontrib[2] == 73)
-                          && (outcontrib[3] == 86))
-                         || ((outcontrib[1] == 100)
+                     && (((outcontrib[1] == ASCII_D)
+                          && (outcontrib[2] == ASCII_I)
+                          && (outcontrib[3] == ASCII_V))
+                         || ((outcontrib[1] == ASCII_d)
                              && (outcontrib[2] == 105)
                              && (outcontrib[3] == 118))
                          || ((outcontrib[1] == 77)
                              && (outcontrib[2] == 79)
-                             && (outcontrib[3] == 68))
+                             && (outcontrib[3] == ASCII_D))
                          || ((outcontrib[1] == 109)
                              && (outcontrib[2] == 111)
-                             && (outcontrib[3] == 100))))
+                             && (outcontrib[3] == ASCII_d))))
                     || ((t == 0) && ((v == ASTERISK) || (v == FORWARD_SLASH))))) {
                 if ((outval < 0)
                     || ((outval == 0) && (lastsign < 0))) {
@@ -1496,18 +1522,18 @@ void zsendval(integer v)
                 || ((outptr == breakptr + 4)
                     && (outbuf[breakptr] == SPACE))) {
 
-                if (((outbuf[outptr - 3] == 68)
-                     && (outbuf[outptr - 2] == 73)
-                     && (outbuf[outptr - 1] == 86))
-                    || ((outbuf[outptr - 3] == 100)
+                if (((outbuf[outptr - 3] == ASCII_D)
+                     && (outbuf[outptr - 2] == ASCII_I)
+                     && (outbuf[outptr - 1] == ASCII_V))
+                    || ((outbuf[outptr - 3] == ASCII_d)
                         && (outbuf[outptr - 2] == 105)
                         && (outbuf[outptr - 1] == 118))
                     || ((outbuf[outptr - 3] == 77)
                         && (outbuf[outptr - 2] == 79)
-                        && (outbuf[outptr - 1] == 68))
+                        && (outbuf[outptr - 1] == ASCII_D))
                     || ((outbuf[outptr - 3] == 109)
                         && (outbuf[outptr - 2] == 111)
-                        && (outbuf[outptr - 1] == 100)))
+                        && (outbuf[outptr - 1] == ASCII_d)))
                     goto lab666;
             }
             outsign = SPACE;
@@ -1623,12 +1649,12 @@ void sendtheoutput(void)
         case ASCII_A:
         case ASCII_B:
         case 67:
-        case 68:
+        case ASCII_D:
         case 69:
         case 70:
         case 71:
         case 72:
-        case 73:
+        case ASCII_I:
         case 74:
         case 75:
         case 76:
@@ -1641,15 +1667,15 @@ void sendtheoutput(void)
         case 83:
         case 84:
         case 85:
-        case 86:
+        case ASCII_V:
         case 87:
         case ASCII_X:
         case 89:
         case ASCII_Z:
-        case 97:
+        case ASCII_a:
         case 98:
         case 99:
-        case 100:
+        case ASCII_d:
         case 101:
         case 102:
         case 103:
@@ -1669,9 +1695,9 @@ void sendtheoutput(void)
         case 117:
         case 118:
         case 119:
-        case 120:
-        case 121:
-        case 122:
+        case ASCII_x:
+        case ASCII_y:
+        case ASCII_z:
             {
                 outcontrib[1] = curchar;
                 sendout(2, 1);
@@ -1799,9 +1825,9 @@ void sendtheoutput(void)
             break;
         case 4:
             {
-                outcontrib[1] = 97;
+                outcontrib[1] = ASCII_a;
                 outcontrib[2] = 110;
-                outcontrib[3] = 100;
+                outcontrib[3] = ASCII_d;
                 sendout(2, 3);
             }
             break;
@@ -2072,9 +2098,9 @@ void primethechangebuffer(void)
             goto continue_;
         if ((buffer[1] >= ASCII_X) && (buffer[1] <= ASCII_Z))
             buffer[1] = buffer[1] + 32; /*lowercasify*/
-        if (buffer[1] == 120)
+        if (buffer[1] == ASCII_x)
             goto done;
-        if ((buffer[1] == 121) || (buffer[1] == 122)) {
+        if ((buffer[1] == ASCII_y) || (buffer[1] == ASCII_z)) {
             loc = 2;
             {
                 putc('\n', stdout);
@@ -2144,14 +2170,14 @@ void checkchange(void)
             if (buffer[0] == AT_SIGN) {
                 if ((buffer[1] >= ASCII_X) && (buffer[1] <= ASCII_Z))
                     buffer[1] = buffer[1] + 32;
-                if ((buffer[1] == 120) || (buffer[1] == 122)) {
+                if ((buffer[1] == ASCII_x) || (buffer[1] == ASCII_z)) {
                     loc = 2;
                     {
                         putc('\n', stdout);
                         Fputs(stdout, "! Where is the matching @y?");
                         error();
                     }
-                } else if (buffer[1] == 121) {
+                } else if (buffer[1] == ASCII_y) {
                     if (n > 0) {
                         loc = 2;
                         {
@@ -2211,7 +2237,7 @@ void getline(void)
                 error();
             }
             buffer[0] = AT_SIGN;
-            buffer[1] = 122;
+            buffer[1] = ASCII_z;
             limit = 2;
         }
         if (limit > 1) {
@@ -2219,14 +2245,14 @@ void getline(void)
             if (buffer[0] == AT_SIGN) {
                 if ((buffer[1] >= ASCII_X) && (buffer[1] <= ASCII_Z))
                     buffer[1] = buffer[1] + 32;
-                if ((buffer[1] == 120) || (buffer[1] == 121)) {
+                if ((buffer[1] == ASCII_x) || (buffer[1] == ASCII_y)) {
                     loc = 2;
                     {
                         putc('\n', stdout);
                         Fputs(stdout, "! Where is the matching @z?");
                         error();
                     }
-                } else if (buffer[1] == 122) {
+                } else if (buffer[1] == ASCII_z) {
                     primethechangebuffer();
                     changing = !changing;
                     templine = otherline;
@@ -2284,8 +2310,8 @@ eightbits zcontrolcode(ASCIIcode c)
             Result = NEW_MODULE;
         }
         break;
-    case 68:
-    case 100:
+    case ASCII_D:
+    case ASCII_d:
         Result = DEFINITION;
         break;
     case 70:
@@ -2377,7 +2403,7 @@ void skipcomment(void)
         loc = loc + 1;
         if (c == AT_SIGN) {
             c = buffer[loc];
-            if ((c != SPACE) && (c != 9) && (c != ASTERISK) && (c != 122)
+            if ((c != SPACE) && (c != 9) && (c != ASTERISK) && (c != ASCII_z)
                 && (c != ASCII_Z))
                 loc = loc + 1;
             else {
@@ -2429,12 +2455,12 @@ eightbits getnext(void)
     case ASCII_A:
     case ASCII_B:
     case 67:
-    case 68:
+    case ASCII_D:
     case 69:
     case 70:
     case 71:
     case 72:
-    case 73:
+    case ASCII_I:
     case 74:
     case 75:
     case 76:
@@ -2447,15 +2473,15 @@ eightbits getnext(void)
     case 83:
     case 84:
     case 85:
-    case 86:
+    case ASCII_V:
     case 87:
     case ASCII_X:
     case 89:
     case ASCII_Z:
-    case 97:
+    case ASCII_a:
     case 98:
     case 99:
-    case 100:
+    case ASCII_d:
     case 101:
     case 102:
     case 103:
@@ -2475,9 +2501,9 @@ eightbits getnext(void)
     case 117:
     case 118:
     case 119:
-    case 120:
-    case 121:
-    case 122:
+    case ASCII_x:
+    case ASCII_y:
+    case ASCII_z:
         {
             if (((c == 101) || (c == 69)) && (loc > 1)) {
 
@@ -2493,8 +2519,8 @@ eightbits getnext(void)
                     d = buffer[loc];
                 }
                 while (!(((d < ASCII_0) || ((d > ASCII_9) && (d < ASCII_A))
-                          || ((d > ASCII_Z) && (d < 97))
-                          || (d > 122)) && (d != UNDERSCORE)));
+                          || ((d > ASCII_Z) && (d < ASCII_a))
+                          || (d > ASCII_z)) && (d != UNDERSCORE)));
                 if (loc > idfirst + 1) {
                     c = 130;
                     idloc = loc;

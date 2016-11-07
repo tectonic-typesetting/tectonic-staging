@@ -42,13 +42,6 @@ typedef struct {
 
 #define NUMBER_CHARS 65536L
 
-#define CONTROL_TEXT 131 /* control symbols */
-#define FORMAT 132
-#define DEFINITION 133
-#define BEGIN_PASCAL 134
-#define MODULE_NAME 135
-#define NEW_MODULE 136
-
 #define AND_SIGN 4 /* ASCII with extension */
 #define NOT_SIGN 5
 #define SET_ELEMENT_SIGN 6
@@ -158,15 +151,25 @@ typedef struct {
 #define RIGHT_BRACE 125
 #define TILDE 126
 
+
 #define PARAM 0 /* = NUL */
+#define IGNORE 0
 #define VERBATIM 2 /* = alpha */
+#define FORCE_LINE 3
 #define BEGIN_COMMENT 9 /* = tab mark */
 #define END_COMMENT 10 /* = line feed */
 #define OCTAL 12 /* = form feed */
 #define HEX 13 /* = carriage return */
+#define CHECK_SUM 125 /* = right brace */
 #define JOIN 127
 #define MODULE_NUMBER 129
 #define IDENTIFIER 130
+#define CONTROL_TEXT 131
+#define FORMAT 132
+#define DEFINITION 133
+#define BEGIN_PASCAL 134
+#define MODULE_NAME 135
+#define NEW_MODULE 136
 
 /* end of magic constants */
 
@@ -454,11 +457,11 @@ void initialize(void)
     xchr[ASCII_M] = 'M';
     xchr[78] = 'N';
     xchr[ASCII_O] = 'O';
-    xchr[80] = 'P';
+    xchr[ASCII_P] = 'P';
     xchr[81] = 'Q';
     xchr[82] = 'R';
     xchr[83] = 'S';
-    xchr[84] = 'T';
+    xchr[ASCII_T] = 'T';
     xchr[85] = 'U';
     xchr[ASCII_V] = 'V';
     xchr[87] = 'W';
@@ -486,7 +489,7 @@ void initialize(void)
     xchr[ASCII_m] = 'm';
     xchr[ASCII_n] = 'n';
     xchr[ASCII_o] = 'o';
-    xchr[112] = 'p';
+    xchr[ASCII_p] = 'p';
     xchr[113] = 'q';
     xchr[ASCII_r] = 'r';
     xchr[115] = 's';
@@ -1673,11 +1676,11 @@ void sendtheoutput(void)
         case ASCII_M:
         case 78:
         case ASCII_O:
-        case 80:
+        case ASCII_P:
         case 81:
         case 82:
         case 83:
-        case 84:
+        case ASCII_T:
         case 85:
         case ASCII_V:
         case 87:
@@ -1699,7 +1702,7 @@ void sendtheoutput(void)
         case ASCII_m:
         case ASCII_n:
         case ASCII_o:
-        case 112:
+        case ASCII_p:
         case 113:
         case ASCII_r:
         case 115:
@@ -2300,7 +2303,7 @@ eightbits zcontrolcode(ASCIIcode c)
     register eightbits Result;
     switch (c) {
     case AT_SIGN:
-        Result = 64;
+        Result = AT_SIGN;
         break;
     case SINGLE_QUOTE:
         Result = OCTAL;
@@ -2309,18 +2312,16 @@ eightbits zcontrolcode(ASCIIcode c)
         Result = HEX;
         break;
     case DOLLARSIGN:
-        Result = 125;
+        Result = CHECK_SUM;
         break;
     case SPACE:
     case TAB_MARK:
         Result = NEW_MODULE;
         break;
     case ASTERISK:
-        {
-            fprintf(stdout, "%c%ld", '*', (long)modulecount + 1);
-            fflush(stdout);
-            Result = NEW_MODULE;
-        }
+	fprintf(stdout, "%c%ld", '*', (long)modulecount + 1);
+	fflush(stdout);
+	Result = NEW_MODULE;
         break;
     case ASCII_D:
     case ASCII_d:
@@ -2336,11 +2337,11 @@ eightbits zcontrolcode(ASCIIcode c)
     case RIGHT_BRACE:
         Result = END_COMMENT;
         break;
-    case 80:
-    case 112:
+    case ASCII_P:
+    case ASCII_p:
         Result = BEGIN_PASCAL;
         break;
-    case 84:
+    case ASCII_T:
     case ASCII_t:
     case CARET:
     case PERIOD:
@@ -2354,15 +2355,16 @@ eightbits zcontrolcode(ASCIIcode c)
         Result = MODULE_NAME;
         break;
     case EQUALS_SIGN:
-        Result = 2;
+        Result = VERBATIM;
         break;
     case BACK_SLASH:
-        Result = 3;
+        Result = FORCE_LINE;
         break;
     default:
-        Result = 0;
+        Result = IGNORE;
         break;
     }
+
     return Result;
 }
 
@@ -2446,28 +2448,33 @@ void skipcomment(void)
  exit:;
 }
 
-eightbits getnext(void)
+eightbits
+getnext(void)
 {
-    /* 20 30 31 */ register eightbits Result;
+    eightbits Result;
     eightbits c;
     eightbits d;
     integer j, k;
- restart:if (loc > limit) {
-        getline();
+
+ restart:
+
+    if (loc > limit) {
+        getline ();
         if (inputhasended) {
             c = NEW_MODULE;
             goto found;
         }
     }
+
     c = buffer[loc];
     loc = loc + 1;
     if (scanninghex) {
-
         if (((c >= ASCII_0) && (c <= ASCII_9)) || ((c >= ASCII_A) && (c <= ASCII_F)))
             goto found;
         else
             scanninghex = false;
     }
+
     switch (c) {
     case ASCII_A:
     case ASCII_B:
@@ -2484,11 +2491,11 @@ eightbits getnext(void)
     case ASCII_M:
     case 78:
     case ASCII_O:
-    case 80:
+    case ASCII_P:
     case 81:
     case 82:
     case 83:
-    case 84:
+    case ASCII_T:
     case 85:
     case ASCII_V:
     case 87:
@@ -2510,7 +2517,7 @@ eightbits getnext(void)
     case ASCII_m:
     case ASCII_n:
     case ASCII_o:
-    case 112:
+    case ASCII_p:
     case 113:
     case ASCII_r:
     case 115:
@@ -2521,30 +2528,29 @@ eightbits getnext(void)
     case ASCII_x:
     case ASCII_y:
     case ASCII_z:
-        {
-            if (((c == ASCII_e) || (c == ASCII_E)) && (loc > 1)) {
+	if (((c == ASCII_e) || (c == ASCII_E)) && (loc > 1)) {
+	    if ((buffer[loc - 2] <= ASCII_9) && (buffer[loc - 2] >= ASCII_0))
+		c = IGNORE;
+	}
 
-                if ((buffer[loc - 2] <= ASCII_9)
-                    && (buffer[loc - 2] >= ASCII_0))
-                    c = PARAM;
-            }
-            if (c != PARAM) {
-                loc = loc - 1;
-                idfirst = loc;
-                do {
-                    loc = loc + 1;
-                    d = buffer[loc];
-                }
-                while (!(((d < ASCII_0) || ((d > ASCII_9) && (d < ASCII_A))
-                          || ((d > ASCII_Z) && (d < ASCII_a))
-                          || (d > ASCII_z)) && (d != UNDERSCORE)));
-                if (loc > idfirst + 1) {
-                    c = IDENTIFIER;
-                    idloc = loc;
-                }
-            } else
-                c = ASCII_E;
-        }
+	if (c != IGNORE) {
+	    loc = loc - 1;
+	    idfirst = loc;
+	    
+	    do {
+		loc = loc + 1;
+		d = buffer[loc];
+	    } while (!(((d < ASCII_0) ||
+			((d > ASCII_9) && (d < ASCII_A)) ||
+			((d > ASCII_Z) && (d < ASCII_a)) ||
+			(d > ASCII_z)) && (d != UNDERSCORE)));
+	    
+	    if (loc > idfirst + 1) {
+		c = IDENTIFIER;
+		idloc = loc;
+	    }
+	} else
+	    c = ASCII_E;
         break;
     case DOUBLEQUOTE:
         {

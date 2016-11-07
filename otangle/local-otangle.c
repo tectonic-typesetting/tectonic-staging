@@ -160,8 +160,10 @@ typedef struct {
 #define END_COMMENT 10 /* = line feed */
 #define OCTAL 12 /* = form feed */
 #define HEX 13 /* = carriage return */
+#define DOUBLE_DOT 32 /* = space */
 #define CHECK_SUM 125 /* = right brace */
-#define JOIN 127
+#define JOIN 127 /* = DEL */
+#define NUMBER 128
 #define MODULE_NUMBER 129
 #define IDENTIFIER 130
 #define CONTROL_TEXT 131
@@ -170,6 +172,11 @@ typedef struct {
 #define BEGIN_PASCAL 134
 #define MODULE_NAME 135
 #define NEW_MODULE 136
+
+#define NORMAL 0 /* "ilk" types */
+#define NUMERIC 1
+#define SIMPLE 2
+#define PARAMETRIC 3
 
 /* end of magic constants */
 
@@ -573,7 +580,7 @@ void initialize(void)
     tokstart[4] = 0;
     textptr = 1;
     z = 1 % 4;
-    ilk[0] = 0;
+    ilk[0] = NORMAL;
     equiv[0] = 0;
     {
         register integer for_end;
@@ -698,7 +705,7 @@ namepointer zidlookup(eightbits t)
     hash[h] = p;
  found:;
     if ((p == nameptr) || (t != 0)) {
-        if (((p != nameptr) && (t != 0) && (ilk[p] == 0)) || ((p == nameptr)
+        if (((p != nameptr) && (t != 0) && (ilk[p] == NORMAL)) || ((p == nameptr)
                                                               && (t == 0)
                                                               &&
                                                               (buffer[idfirst]
@@ -718,7 +725,7 @@ namepointer zidlookup(eightbits t)
             choppedid[s] = 0;
         }
         if (p != nameptr) {
-            if (ilk[p] == 0) {
+            if (ilk[p] == NORMAL) {
                 if (t == 1) {
                     putc('\n', stdout);
                     Fputs(stdout, "! This identifier has already appeared");
@@ -818,8 +825,7 @@ namepointer zidlookup(eightbits t)
             if (buffer[idfirst] != DOUBLEQUOTE)
                 ilk[p] = t;
             else {
-
-                ilk[p] = 1;
+                ilk[p] = NUMERIC;
                 if (l - doublechars == 2)
                     equiv[p] = buffer[idfirst + 1] + 0x40000000;
                 else {
@@ -1126,25 +1132,25 @@ sixteenbits getoutput(void)
     curstate.bytefield = curstate.bytefield + 1;
     if (a < 024000) {
         switch (ilk[a]) {
-        case 0:
+        case NORMAL:
             {
                 curval = a;
                 a = IDENTIFIER;
             }
             break;
-        case 1:
+        case NUMERIC:
             {
                 curval = equiv[a] - 0x40000000;
-                a = 128;
+                a = NUMBER;
             }
             break;
-        case 2:
+        case SIMPLE:
             {
                 pushlevel(a);
                 goto restart;
             }
             break;
-        case 3:
+        case PARAMETRIC:
             {
                 while ((curstate.bytefield == curstate.endfield)
                        && (stackptr > 0))
@@ -1814,7 +1820,7 @@ void sendtheoutput(void)
                 goto reswitch;
             }
             break;
-        case 128:
+        case NUMBER:
             sendval(curval);
             break;
         case PERIOD:
@@ -1838,7 +1844,7 @@ void sendtheoutput(void)
         case MINUS_SIGN:
             sendsign(COMMA - curchar);
             break;
-        case 4:
+        case AND_SIGN:
             {
                 outcontrib[1] = ASCII_a;
                 outcontrib[2] = ASCII_n;
@@ -1846,7 +1852,7 @@ void sendtheoutput(void)
                 sendout(2, 3);
             }
             break;
-        case 5:
+        case NOT_SIGN:
             {
                 outcontrib[1] = ASCII_n;
                 outcontrib[2] = ASCII_o;
@@ -1903,7 +1909,7 @@ void sendtheoutput(void)
                 sendout(1, 2);
             }
             break;
-        case SPACE:
+        case DOUBLE_DOT:
             {
                 outcontrib[1] = PERIOD;
                 outcontrib[2] = PERIOD;
@@ -2682,10 +2688,11 @@ getnext(void)
 	    goto restart;
 	}
         break;
+
     case PERIOD:
         if (buffer[loc] == PERIOD) {
             if (loc <= limit) {
-                c = SPACE;
+                c = DOUBLE_DOT;
                 loc = loc + 1;
             }
         } else if (buffer[loc] == RIGHT_PAREN) {

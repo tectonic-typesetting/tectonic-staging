@@ -1133,7 +1133,7 @@ restart:
     curstate.bytefield = curstate.bytefield + 1;
 
     if (a < 128) {
-        if (a == 0) {
+        if (a == PARAM) {
             push_level(nameptr - 1);
             goto restart;
         } else
@@ -1158,142 +1158,117 @@ restart:
 	    goto restart;
             break;
         case PARAMETRIC:
-            {
-                while ((curstate.bytefield == curstate.endfield)
-                       && (stackptr > 0))
-                    pop_level();
-                if ((stackptr == 0)
-                    || (tokmem[zo][curstate.bytefield] != LEFT_PAREN)) {
-                    {
-                        putc('\n', stdout);
-                        Fputs(stdout, "! No parameter given for ");
-                    }
-                    print_id(a);
-                    error();
-                    goto restart;
-                }
-                bal = 1;
-                curstate.bytefield = curstate.bytefield + 1;
-                while (true) {
+	    while ((curstate.bytefield == curstate.endfield) && (stackptr > 0))
+		pop_level();
 
-                    b = tokmem[zo][curstate.bytefield];
-                    curstate.bytefield = curstate.bytefield + 1;
-                    if (b == 0)
-                        store_two_bytes(nameptr + 32767);
-                    else {
+	    if (stackptr == 0 || tokmem[zo][curstate.bytefield] != LEFT_PAREN) {
+		putc('\n', stdout);
+		Fputs(stdout, "! No parameter given for ");
+		print_id(a);
+		error();
+		goto restart;
+	    }
 
-                        if (b >= 128) {
-                            {
-                                if (tokptr[z] == maxtoks) {
-                                    putc('\n', stdout);
-                                    fprintf
-                                        (stderr,
-                                         "%s%s%s",
-                                         "! Sorry, ",
-                                         "token", " capacity exceeded");
-                                    error();
-                                    history = FATAL_MESSAGE;
-                                    uexit(1);
-                                }
-                                tokmem[z][tokptr[z]] = b;
-                                tokptr[z] = tokptr[z] + 1;
-                            }
-                            b = tokmem[zo]
-                                [curstate.bytefield];
-                            curstate.bytefield = curstate.bytefield + 1;
-                        } else
-                            switch (b) {
-                            case LEFT_PAREN:
-                                bal = bal + 1;
-                                break;
-                            case RIGHT_PAREN:
-                                {
-                                    bal = bal - 1;
-                                    if (bal == 0)
-                                        goto done;
-                                }
-                                break;
-                            case SINGLE_QUOTE:
-                                do {
-                                    {
-                                        if (tokptr[z] == maxtoks) {
-                                            putc('\n', stdout);
-                                            fprintf
-                                                (stderr,
-                                                 "%s%s%s",
-                                                 "! Sorry, ",
-                                                 "token", " capacity exceeded");
-                                            error();
-                                            history = FATAL_MESSAGE;
-                                            uexit(1);
-                                        }
-                                        tokmem[z]
-                                            [tokptr[z]]
-                                            = b;
-                                        tokptr[z]
-                                            = tokptr[z]
-                                            + 1;
-                                    }
-                                    b = tokmem[zo][curstate.bytefield];
-                                    curstate.bytefield = curstate.bytefield + 1;
-                                }
-                                while (!(b == SINGLE_QUOTE));
-                                break;
-                            default:
-                                ;
-                                break;
-                            }
-                        {
-                            if (tokptr[z] == maxtoks) {
-                                putc('\n', stdout);
-                                fprintf(stderr,
-                                        "%s%s%s",
-                                        "! Sorry, ",
-                                        "token", " capacity exceeded");
-                                error();
-                                history = FATAL_MESSAGE;
-                                uexit(1);
-                            }
-                            tokmem[z][tokptr[z]] = b;
-                            tokptr[z] = tokptr[z] + 1;
-                        }
-                    }
-                }
- done:        ;
-                equiv[nameptr] = textptr;
-                ilk[nameptr] = 2;
-                w = nameptr % 3;
-                k = byteptr[w];
-                if (nameptr > maxnames - 3) {
-                    putc('\n', stdout);
-                    fprintf(stderr, "%s%s%s", "! Sorry, ",
-                            "name", " capacity exceeded");
-                    error();
-                    history = FATAL_MESSAGE;
-                    uexit(1);
-                }
-                bytestart[nameptr + 3] = k;
-                nameptr = nameptr + 1;
-                if (textptr > maxtexts - 4) {
-                    putc('\n', stdout);
-                    fprintf(stderr, "%s%s%s", "! Sorry, ",
-                            "text", " capacity exceeded");
-                    error();
-                    history = FATAL_MESSAGE;
-                    uexit(1);
-                }
-                textlink[textptr] = 0;
-                tokstart[textptr + 4] = tokptr[z];
-                textptr = textptr + 1;
-                z = textptr % 4;
-                push_level(a);
-                goto restart;
-            }
-            break;
+	    bal = 1;
+	    curstate.bytefield = curstate.bytefield + 1;
+
+	    while (true) {
+		b = tokmem[zo][curstate.bytefield];
+		curstate.bytefield = curstate.bytefield + 1;
+
+		if (b == 0)
+		    store_two_bytes(nameptr + 32767);
+		else {
+		    if (b >= 128) {
+			if (tokptr[z] == maxtoks) {
+			    putc('\n', stdout);
+			    fprintf (stderr, "! Sorry, token capacity exceeded");
+			    error();
+			    history = FATAL_MESSAGE;
+			    uexit(1);
+			}
+
+			tokmem[z][tokptr[z]] = b;
+			tokptr[z] = tokptr[z] + 1;
+			b = tokmem[zo][curstate.bytefield];
+			curstate.bytefield = curstate.bytefield + 1;
+		    } else {
+			switch (b) {
+			case LEFT_PAREN:
+			    bal++;
+			    break;
+			case RIGHT_PAREN:
+			    bal--;
+			    if (bal == 0)
+				goto done;
+			    break;
+			case SINGLE_QUOTE:
+			    do {
+				if (tokptr[z] == maxtoks) {
+				    putc('\n', stdout);
+				    fprintf (stderr, "! Sorry, token capacity exceeded");
+				    error();
+				    history = FATAL_MESSAGE;
+				    uexit(1);
+				}
+				tokmem[z][tokptr[z]] = b;
+				tokptr[z]++;
+				b = tokmem[zo][curstate.bytefield];
+				curstate.bytefield = curstate.bytefield + 1;
+			    } while (b != SINGLE_QUOTE);
+			    break;
+			}
+		    }
+
+		    if (tokptr[z] == maxtoks) {
+			putc('\n', stdout);
+			fprintf(stderr, "! Sorry, token capacity exceeded");
+			error();
+			history = FATAL_MESSAGE;
+			uexit(1);
+		    }
+
+		    tokmem[z][tokptr[z]] = b;
+		    tokptr[z] = tokptr[z] + 1;
+		}
+	    }
+
+	done:
+	    equiv[nameptr] = textptr;
+	    ilk[nameptr] = SIMPLE;
+	    w = nameptr % 3;
+	    k = byteptr[w];
+
+	    if (nameptr > maxnames - 3) {
+		putc('\n', stdout);
+		fprintf(stderr, "! Sorry, name capacity exceeded");
+		error();
+		history = FATAL_MESSAGE;
+		uexit(1);
+	    }
+
+	    bytestart[nameptr + 3] = k;
+	    nameptr = nameptr + 1;
+
+	    if (textptr > maxtexts - 4) {
+		putc('\n', stdout);
+		fprintf(stderr, "! Sorry, text capacity exceeded");
+		error();
+		history = FATAL_MESSAGE;
+		uexit(1);
+	    }
+
+	    textlink[textptr] = 0;
+	    tokstart[textptr + 4] = tokptr[z];
+	    textptr = textptr + 1;
+	    z = textptr % 4;
+	    push_level(a);
+	    goto restart;
+	    break;
+
         default:
 	    putc('\n', stdout);
-	    fprintf(stderr, "%s%s%c",
-		    "! This can't happen (", "output", ')');
+	    fprintf(stderr, "! This can't happen (output)");
 	    error();
 	    history = FATAL_MESSAGE;
 	    uexit(1);

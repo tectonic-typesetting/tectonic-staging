@@ -69,6 +69,8 @@ typedef struct {
 #define DOLLARSIGN 36
 #define PERCENT 37
 #define AMPERSAND 38
+#define SINGLE_QUOTE 39
+#define LEFT_PAREN 40
 
 #define JOIN 127
 
@@ -317,8 +319,8 @@ void initialize(void)
     xchr[DOLLARSIGN] = '$';
     xchr[PERCENT] = '%';
     xchr[AMPERSAND] = '&';
-    xchr[39] = '\'';
-    xchr[40] = '(';
+    xchr[SINGLE_QUOTE] = '\'';
+    xchr[LEFT_PAREN] = '(';
     xchr[41] = ')';
     xchr[42] = '*';
     xchr[43] = '+';
@@ -740,15 +742,15 @@ namepointer zidlookup(eightbits t)
                     stringptr = stringptr + 1;
                     fprintf(pool, "%c%c", xchr[48 + l / 10], xchr[48 + l % 10]);
                     poolchecksum = poolchecksum + poolchecksum + l;
-                    while (poolchecksum > 536870839L)
-                        poolchecksum = poolchecksum - 536870839L;
+                    while (poolchecksum > 0x1FFFFFB7)
+                        poolchecksum = poolchecksum - 0x1FFFFFB7;
                     i = idfirst + 1;
                     while (i < idloc) {
 
                         putc(xchr[buffer[i]], pool);
                         poolchecksum = poolchecksum + poolchecksum + buffer[i];
-                        while (poolchecksum > 536870839L)
-                            poolchecksum = poolchecksum - 536870839L;
+                        while (poolchecksum > 0x1FFFFFB7)
+                            poolchecksum = poolchecksum - 0x1FFFFFB7;
                         if ((buffer[i] == DOUBLEQUOTE)
                             || (buffer[i] == 64))
                             i = i + 2;
@@ -1051,7 +1053,7 @@ sixteenbits getoutput(void)
                        && (stackptr > 0))
                     poplevel();
                 if ((stackptr == 0)
-                    || (tokmem[zo][curstate.bytefield] != 40)) {
+                    || (tokmem[zo][curstate.bytefield] != LEFT_PAREN)) {
                     {
                         putc('\n', stdout);
                         Fputs(stdout, "! No parameter given for ");
@@ -1091,7 +1093,7 @@ sixteenbits getoutput(void)
                             curstate.bytefield = curstate.bytefield + 1;
                         } else
                             switch (b) {
-                            case 40:
+                            case LEFT_PAREN:
                                 bal = bal + 1;
                                 break;
                             case 41:
@@ -1101,7 +1103,7 @@ sixteenbits getoutput(void)
                                         goto done;
                                 }
                                 break;
-                            case 39:
+                            case SINGLE_QUOTE:
                                 do {
                                     {
                                         if (tokptr[z] == maxtoks) {
@@ -1125,7 +1127,7 @@ sixteenbits getoutput(void)
                                     b = tokmem[zo][curstate.bytefield];
                                     curstate.bytefield = curstate.bytefield + 1;
                                 }
-                                while (!(b == 39));
+                                while (!(b == SINGLE_QUOTE));
                                 break;
                             default:
                                 ;
@@ -1529,7 +1531,7 @@ void zsendval(integer v)
     } else {
 
         {
-            outbuf[outptr] = 40;
+            outbuf[outptr] = LEFT_PAREN;
             outptr = outptr + 1;
         }
         {
@@ -1811,16 +1813,16 @@ void sendtheoutput(void)
                 sendout(1, 2);
             }
             break;
-        case 39:
+        case SINGLE_QUOTE:
             {
                 k = 1;
-                outcontrib[1] = 39;
+                outcontrib[1] = SINGLE_QUOTE;
                 do {
                     if (k < linelength)
                         k = k + 1;
                     outcontrib[k] = getoutput();
                 }
-                while (!((outcontrib[k] == 39)
+                while (!((outcontrib[k] == SINGLE_QUOTE)
                          || (stackptr == 0)));
                 if (k == linelength) {
                     putc('\n', stdout);
@@ -1829,7 +1831,7 @@ void sendtheoutput(void)
                 }
                 sendout(1, k);
                 curchar = getoutput();
-                if (curchar == 39)
+                if (curchar == SINGLE_QUOTE)
                     outstate = 6;
                 goto reswitch;
             }
@@ -1840,7 +1842,7 @@ void sendtheoutput(void)
         case DOLLARSIGN:
         case PERCENT:
         case AMPERSAND:
-        case 40:
+        case LEFT_PAREN:
         case 41:
         case 42:
         case 44:
@@ -2206,7 +2208,7 @@ eightbits zcontrolcode(ASCIIcode c)
     case 64:
         Result = 64;
         break;
-    case 39:
+    case SINGLE_QUOTE:
         Result = 12;
         break;
     case DOUBLEQUOTE:
@@ -2626,7 +2628,7 @@ eightbits getnext(void)
             }
         }
         break;
-    case 40:
+    case LEFT_PAREN:
         if (buffer[loc] == 42) {
             if (loc <= limit) {
                 c = 9;
@@ -2829,7 +2831,7 @@ void zscanrepl(eightbits t)
 
  continue_:a = getnext();
         switch (a) {
-        case 40:
+        case LEFT_PAREN:
             bal = bal + 1;
             break;
         case 41:
@@ -2840,9 +2842,9 @@ void zscanrepl(eightbits t)
             } else
                 bal = bal - 1;
             break;
-        case 39:
+        case SINGLE_QUOTE:
             {
-                b = 39;
+                b = SINGLE_QUOTE;
                 while (true) {
 
                     {
@@ -2876,13 +2878,13 @@ void zscanrepl(eightbits t)
                             Fputs(stdout, "! String didn't end");
                             error();
                         }
-                        buffer[loc] = 39;
+                        buffer[loc] = SINGLE_QUOTE;
                         buffer[loc + 1] = 0;
                     }
                     b = buffer[loc];
                     loc = loc + 1;
-                    if (b == 39) {
-                        if (buffer[loc] != 39)
+                    if (b == SINGLE_QUOTE) {
+                        if (buffer[loc] != SINGLE_QUOTE)
                             goto found;
                         else {
 
@@ -2899,7 +2901,7 @@ void zscanrepl(eightbits t)
                                     history = FATAL_MESSAGE;
                                     uexit(1);
                                 }
-                                tokmem[z][tokptr[z]] = 39;
+                                tokmem[z][tokptr[z]] = SINGLE_QUOTE;
                                 tokptr[z] = tokptr[z] + 1;
                             }
                         }
@@ -3145,7 +3147,7 @@ void scanmodule(void)
         } else if (nextcontrol == 30) {
             definemacro(2);
             goto continue_;
-        } else if (nextcontrol == 40) {
+        } else if (nextcontrol == LEFT_PAREN) {
             nextcontrol = getnext();
             if (nextcontrol == OCTOTHORPE) {
                 nextcontrol = getnext();

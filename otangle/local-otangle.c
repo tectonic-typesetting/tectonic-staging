@@ -2536,7 +2536,7 @@ getnext(void)
 	if (c != IGNORE) {
 	    loc = loc - 1;
 	    idfirst = loc;
-	    
+
 	    do {
 		loc = loc + 1;
 		d = buffer[loc];
@@ -2544,7 +2544,7 @@ getnext(void)
 			((d > ASCII_9) && (d < ASCII_A)) ||
 			((d > ASCII_Z) && (d < ASCII_a)) ||
 			(d > ASCII_z)) && (d != UNDERSCORE)));
-	    
+
 	    if (loc > idfirst + 1) {
 		c = IDENTIFIER;
 		idloc = loc;
@@ -2553,39 +2553,34 @@ getnext(void)
 	    c = ASCII_E;
         break;
     case DOUBLEQUOTE:
-        {
-            doublechars = 0;
-            idfirst = loc - 1;
-            do {
-                d = buffer[loc];
-                loc = loc + 1;
-                if ((d == DOUBLEQUOTE) || (d == AT_SIGN)) {
+	doublechars = 0;
+	idfirst = loc - 1;
 
-                    if (buffer[loc] == d) {
-                        loc = loc + 1;
-                        d = 0;
-                        doublechars = doublechars + 1;
-                    } else {
+	do {
+	    d = buffer[loc];
+	    loc = loc + 1;
+	    if ((d == DOUBLEQUOTE) || (d == AT_SIGN)) {
+		if (buffer[loc] == d) {
+		    loc = loc + 1;
+		    d = 0;
+		    doublechars = doublechars + 1;
+		} else {
+		    if (d == AT_SIGN) {
+			putc('\n', stdout);
+			Fputs(stdout, "! Double @ sign missing");
+			error();
+		    }
+		}
+	    } else if (loc > limit) {
+		putc('\n', stdout);
+		Fputs(stdout, "! String constant didn't end");
+		error();
+		d = DOUBLEQUOTE;
+	    }
+	} while (d != DOUBLEQUOTE);
 
-                        if (d == AT_SIGN) {
-                            putc('\n', stdout);
-                            Fputs(stdout, "! Double @ sign missing");
-                            error();
-                        }
-                    }
-                } else if (loc > limit) {
-                    {
-                        putc('\n', stdout);
-                        Fputs(stdout, "! String constant didn't end");
-                        error();
-                    }
-                    d = DOUBLEQUOTE;
-                }
-            }
-            while (!(d == DOUBLEQUOTE));
-            idloc = loc - 1;
-            c = IDENTIFIER;
-        }
+	idloc = loc - 1;
+	c = IDENTIFIER;
         break;
     case AT_SIGN:
         {

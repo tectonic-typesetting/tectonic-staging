@@ -262,7 +262,7 @@ namepointer prefix_lookup (sixteenbits l);
 void store_two_bytes (sixteenbits x);
 void push_level (namepointer p);
 void pop_level (void);
-sixteenbits getoutput (void);
+sixteenbits get_output (void);
 void flushbuffer (void);
 void app_val (integer v);
 void send_out (eightbits t,sixteenbits v);
@@ -1103,18 +1103,23 @@ exit:
 }
 
 
-sixteenbits getoutput(void)
+sixteenbits get_output(void)
 {
-    /* 20 30 31 */ register sixteenbits Result;
+    /* Get the next non-macro token of output. */
+
+    sixteenbits Result;
     sixteenbits a;
     eightbits b;
     sixteenbits bal;
     integer k;
     unsigned char w;
- restart:if (stackptr == 0) {
+
+restart:
+    if (stackptr == 0) {
         a = 0;
         goto found;
     }
+
     if (curstate.bytefield == curstate.endfield) {
         curval = -(integer) curstate.modfield;
         pop_level();
@@ -1123,37 +1128,34 @@ sixteenbits getoutput(void)
         a = MODULE_NUMBER;
         goto found;
     }
+
     a = tokmem[zo][curstate.bytefield];
     curstate.bytefield = curstate.bytefield + 1;
-    if (a < 128) {
 
+    if (a < 128) {
         if (a == 0) {
             push_level(nameptr - 1);
             goto restart;
         } else
             goto found;
     }
+
     a = (a - 128) * 256 + tokmem[zo][curstate.bytefield];
     curstate.bytefield = curstate.bytefield + 1;
+
     if (a < 024000) {
         switch (ilk[a]) {
         case NORMAL:
-            {
-                curval = a;
-                a = IDENTIFIER;
-            }
+	    curval = a;
+	    a = IDENTIFIER;
             break;
         case NUMERIC:
-            {
-                curval = equiv[a] - 0x40000000;
-                a = NUMBER;
-            }
+	    curval = equiv[a] - 0x40000000;
+	    a = NUMBER;
             break;
         case SIMPLE:
-            {
-                push_level(a);
-                goto restart;
-            }
+	    push_level(a);
+	    goto restart;
             break;
         case PARAMETRIC:
             {
@@ -1289,39 +1291,39 @@ sixteenbits getoutput(void)
             }
             break;
         default:
-            {
-                putc('\n', stdout);
-                fprintf(stderr, "%s%s%c",
-                        "! This can't happen (", "output", ')');
-                error();
-                history = FATAL_MESSAGE;
-                uexit(1);
-            }
+	    putc('\n', stdout);
+	    fprintf(stderr, "%s%s%c",
+		    "! This can't happen (", "output", ')');
+	    error();
+	    history = FATAL_MESSAGE;
+	    uexit(1);
             break;
         }
         goto found;
     }
+
     if (a < 050000) {
         a = a - 024000;
         if (equiv[a] != 0)
             push_level(a);
         else if (a != 0) {
-            {
-                putc('\n', stdout);
-                Fputs(stdout, "! Not present: <");
-            }
+	    putc('\n', stdout);
+	    Fputs(stdout, "! Not present: <");
             print_id(a);
             putc('>', stdout);
             error();
         }
         goto restart;
     }
+
     curval = a - 050000;
     a = MODULE_NUMBER;
     curstate.modfield = curval;
- found:Result = a;
-    return Result;
+
+found:
+    return a;
 }
+
 
 void flushbuffer(void)
 {
@@ -1667,7 +1669,7 @@ void sendtheoutput(void)
     integer n;
     while (stackptr > 0) {
 
-        curchar = getoutput();
+        curchar = get_output();
  reswitch:switch (curchar) {
         case 0:
             ;
@@ -1766,7 +1768,7 @@ void sendtheoutput(void)
                         error();
                     } else
                         n = 10 * n + curchar;
-                    curchar = getoutput();
+                    curchar = get_output();
                 }
                 while (!((curchar > ASCII_9) || (curchar < ASCII_0)));
                 sendval(n);
@@ -1794,7 +1796,7 @@ void sendtheoutput(void)
                         error();
                     } else
                         n = 8 * n + curchar;
-                    curchar = getoutput();
+                    curchar = get_output();
                 }
                 while (!((curchar > ASCII_7) || (curchar < ASCII_0)));
                 sendval(n);
@@ -1816,7 +1818,7 @@ void sendtheoutput(void)
                         error();
                     } else
                         n = 16 * n + curchar;
-                    curchar = getoutput();
+                    curchar = get_output();
                 }
                 while (!((curchar > ASCII_F) || (curchar < ASCII_0)
                          || ((curchar > ASCII_9)
@@ -1832,7 +1834,7 @@ void sendtheoutput(void)
             {
                 k = 1;
                 outcontrib[1] = PERIOD;
-                curchar = getoutput();
+                curchar = get_output();
                 if (curchar == PERIOD) {
                     outcontrib[2] = PERIOD;
                     send_out(1, 2);
@@ -1928,7 +1930,7 @@ void sendtheoutput(void)
                 do {
                     if (k < linelength)
                         k = k + 1;
-                    outcontrib[k] = getoutput();
+                    outcontrib[k] = get_output();
                 }
                 while (!((outcontrib[k] == SINGLE_QUOTE)
                          || (stackptr == 0)));
@@ -1938,7 +1940,7 @@ void sendtheoutput(void)
                     error();
                 }
                 send_out(1, k);
-                curchar = getoutput();
+                curchar = get_output();
                 if (curchar == SINGLE_QUOTE)
                     outstate = 6;
                 goto reswitch;
@@ -2027,7 +2029,7 @@ void sendtheoutput(void)
                 do {
                     if (k < linelength)
                         k = k + 1;
-                    outcontrib[k] = getoutput();
+                    outcontrib[k] = get_output();
                 }
                 while (!((outcontrib[k] == 2)
                          || (stackptr == 0)));
@@ -2065,13 +2067,13 @@ void sendtheoutput(void)
             if (k < linelength)
                 k = k + 1;
             outcontrib[k] = curchar;
-            curchar = getoutput();
+            curchar = get_output();
             if ((outcontrib[k] == ASCII_E)
                 && ((curchar == PLUS_SIGN) || (curchar == MINUS_SIGN))) {
                 if (k < linelength)
                     k = k + 1;
                 outcontrib[k] = curchar;
-                curchar = getoutput();
+                curchar = get_output();
             } else if (curchar == ASCII_e)
                 curchar = ASCII_E;
         }

@@ -488,9 +488,9 @@ void initialize(void)
     xchr[ASCII_o] = 'o';
     xchr[112] = 'p';
     xchr[113] = 'q';
-    xchr[114] = 'r';
+    xchr[ASCII_r] = 'r';
     xchr[115] = 's';
-    xchr[116] = 't';
+    xchr[ASCII_t] = 't';
     xchr[117] = 'u';
     xchr[ASCII_v] = 'v';
     xchr[119] = 'w';
@@ -1546,7 +1546,7 @@ void zsendval(integer v)
                     || ((outbuf[outptr - 3] == ASCII_m)
                         && (outbuf[outptr - 2] == ASCII_o)
                         && (outbuf[outptr - 1] == ASCII_d)))
-                    goto lab666;
+                    goto bad_case;
             }
             outsign = SPACE;
             outstate = 3;
@@ -1560,7 +1560,7 @@ void zsendval(integer v)
             if ((outptr == breakptr + 1)
                 && ((outbuf[breakptr] == ASTERISK)
                     || (outbuf[breakptr] == FORWARD_SLASH)))
-                goto lab666;
+                goto bad_case;
             outsign = 0;
             outstate = 3;
             outval = v;
@@ -1606,11 +1606,11 @@ void zsendval(integer v)
         }
         break;
     default:
-        goto lab666;
+        goto bad_case;
         break;
     }
     goto exit;
- lab666:if (v >= 0) {
+ bad_case:if (v >= 0) {
         if (outstate == 1) {
             breakptr = outptr;
             {
@@ -1701,9 +1701,9 @@ void sendtheoutput(void)
         case ASCII_o:
         case 112:
         case 113:
-        case 114:
+        case ASCII_r:
         case 115:
-        case 116:
+        case ASCII_t:
         case 117:
         case ASCII_v:
         case 119:
@@ -1847,7 +1847,7 @@ void sendtheoutput(void)
             {
                 outcontrib[1] = ASCII_n;
                 outcontrib[2] = ASCII_o;
-                outcontrib[3] = 116;
+                outcontrib[3] = ASCII_t;
                 sendout(2, 3);
             }
             break;
@@ -1861,7 +1861,7 @@ void sendtheoutput(void)
         case OR_SIGN:
             {
                 outcontrib[1] = ASCII_o;
-                outcontrib[2] = 114;
+                outcontrib[2] = ASCII_r;
                 sendout(2, 2);
             }
             break;
@@ -2341,7 +2341,7 @@ eightbits zcontrolcode(ASCIIcode c)
         Result = BEGIN_PASCAL;
         break;
     case 84:
-    case 116:
+    case ASCII_t:
     case CARET:
     case PERIOD:
     case COLON:
@@ -2507,9 +2507,9 @@ eightbits getnext(void)
     case ASCII_o:
     case 112:
     case 113:
-    case 114:
+    case ASCII_r:
     case 115:
-    case 116:
+    case ASCII_t:
     case 117:
     case ASCII_v:
     case 119:
@@ -3046,7 +3046,7 @@ void zscanrepl(eightbits t)
                 a = curmodule % 256;
             }
             break;
-        case 2:
+        case VERBATIM:
             {
                 {
                     if (tokptr[z] == maxtoks) {

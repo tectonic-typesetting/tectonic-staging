@@ -261,7 +261,7 @@ namepointer mod_lookup (sixteenbits l);
 namepointer prefix_lookup (sixteenbits l);
 void store_two_bytes (sixteenbits x);
 void push_level (namepointer p);
-void poplevel (void);
+void pop_level (void);
 sixteenbits getoutput (void);
 void flushbuffer (void);
 void app_val (integer v);
@@ -633,6 +633,8 @@ boolean input_ln(textfile f)
     return Result;
 }
 
+/* identifiers */
+
 void print_id(namepointer p)
 {
     integer k;
@@ -859,6 +861,8 @@ namepointer id_lookup(eightbits t)
     return Result;
 }
 
+/* modules */
+
 namepointer mod_lookup(sixteenbits l)
 {
     /* 31 */ register namepointer Result;
@@ -957,7 +961,7 @@ namepointer mod_lookup(sixteenbits l)
 
 namepointer prefix_lookup(sixteenbits l)
 {
-    register namepointer Result;
+    namepointer Result;
     unsigned char c;
     integer count;
     integer j;
@@ -966,16 +970,18 @@ namepointer prefix_lookup(sixteenbits l)
     namepointer p;
     namepointer q;
     namepointer r;
+
     q = 0;
     p = ilk[0];
     count = 0;
     r = 0;
+
     while (p != 0) {
 
         {
             k = bytestart[p];
             w = p % 3;
-            c = 1;
+            c = EQUAL;
             j = 1;
             while ((k < bytestart[p + 3]) && (j <= l)
                    && (modtext[j] == bytemem[w][k])) {
@@ -986,48 +992,50 @@ namepointer prefix_lookup(sixteenbits l)
             if (k == bytestart[p + 3]) {
 
                 if (j > l)
-                    c = 1;
+                    c = EQUAL;
                 else
-                    c = 4;
+                    c = EXTENSION;
             } else if (j > l)
-                c = 3;
+                c = PREFIX;
             else if (modtext[j] < bytemem[w][k])
-                c = PARAM;
+                c = LESS;
             else
-                c = VERBATIM;
+                c = GREATER;
         }
-        if (c == PARAM)
+
+        if (c == LESS)
             p = link[p];
-        else if (c == VERBATIM)
+        else if (c == GREATER)
             p = ilk[p];
         else {
-
             r = p;
             count = count + 1;
             q = ilk[p];
             p = link[p];
         }
+
         if (p == 0) {
             p = q;
             q = 0;
         }
     }
-    if (count != 1) {
 
+    if (count != 1) {
         if (count == 0) {
             putc('\n', stdout);
             Fputs(stdout, "! Name does not match");
             error();
         } else {
-
             putc('\n', stdout);
             Fputs(stdout, "! Ambiguous prefix");
             error();
         }
     }
-    Result = r;
-    return Result;
+
+    return r;
 }
+
+/* tokens */
 
 void store_two_bytes(sixteenbits x)
 {
@@ -1040,8 +1048,10 @@ void store_two_bytes(sixteenbits x)
     }
     tokmem[z][tokptr[z]] = x / 256;
     tokmem[z][tokptr[z] + 1] = x % 256;
-    tokptr[z] = tokptr[z] + 2;
+    tokptr[z] += 2;
 }
+
+/* stack */
 
 void push_level(namepointer p)
 {
@@ -1052,7 +1062,6 @@ void push_level(namepointer p)
         history = FATAL_MESSAGE;
         uexit(1);
     } else {
-
         stack[stackptr] = curstate;
         stackptr = stackptr + 1;
         curstate.namefield = p;
@@ -1064,9 +1073,10 @@ void push_level(namepointer p)
     }
 }
 
-void poplevel(void)
+
+void pop_level(void)
 {
-    /* 10 */ if (textlink[curstate.replfield] == 0) {
+    if (textlink[curstate.replfield] == 0) {
         if (ilk[curstate.namefield] == 3) {
             nameptr = nameptr - 1;
             textptr = textptr - 1;
@@ -1080,13 +1090,18 @@ void poplevel(void)
         curstate.endfield = tokstart[curstate.replfield + 4];
         goto exit;
     }
-    stackptr = stackptr - 1;
+
+    stackptr--;
+
     if (stackptr > 0) {
         curstate = stack[stackptr];
         zo = curstate.replfield % 4;
     }
- exit:;
+
+exit:
+    ;
 }
+
 
 sixteenbits getoutput(void)
 {
@@ -1102,7 +1117,7 @@ sixteenbits getoutput(void)
     }
     if (curstate.bytefield == curstate.endfield) {
         curval = -(integer) curstate.modfield;
-        poplevel();
+        pop_level();
         if (curval == 0)
             goto restart;
         a = MODULE_NUMBER;
@@ -1144,7 +1159,7 @@ sixteenbits getoutput(void)
             {
                 while ((curstate.bytefield == curstate.endfield)
                        && (stackptr > 0))
-                    poplevel();
+                    pop_level();
                 if ((stackptr == 0)
                     || (tokmem[zo][curstate.bytefield] != LEFT_PAREN)) {
                     {

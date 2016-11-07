@@ -159,6 +159,8 @@ typedef struct {
 #define TILDE 126
 
 #define JOIN 127
+#define MODULE_NUMBER 129
+#define IDENTIFIER 130
 
 /* end of magic constants */
 
@@ -296,7 +298,7 @@ void error(void)
             for_end = l;
             if (k <= for_end)
                 do
-                    if (buffer[k - 1] == 9)
+                    if (buffer[k - 1] == TAB_MARK)
                         putc(' ', stdout);
                     else
                         putc(xchr[buffer[k - 1]], stdout);
@@ -1098,7 +1100,7 @@ sixteenbits getoutput(void)
         poplevel();
         if (curval == 0)
             goto restart;
-        a = 129;
+        a = MODULE_NUMBER;
         goto found;
     }
     a = tokmem[zo][curstate.bytefield];
@@ -1118,7 +1120,7 @@ sixteenbits getoutput(void)
         case 0:
             {
                 curval = a;
-                a = 130;
+                a = IDENTIFIER;
             }
             break;
         case 1:
@@ -1295,7 +1297,7 @@ sixteenbits getoutput(void)
         goto restart;
     }
     curval = a - 050000;
-    a = 129;
+    a = MODULE_NUMBER;
     curstate.modfield = curval;
  found:Result = a;
     return Result;
@@ -1707,7 +1709,7 @@ void sendtheoutput(void)
                 sendout(2, 1);
             }
             break;
-        case 130:
+        case IDENTIFIER:
             {
                 k = 0;
                 j = bytestart[curval];
@@ -1885,7 +1887,7 @@ void sendtheoutput(void)
                 sendout(1, 2);
             }
             break;
-        case 30:
+        case EQUIVALENCE_SIGN:
             {
                 outcontrib[1] = EQUALS_SIGN;
                 outcontrib[2] = EQUALS_SIGN;
@@ -1950,7 +1952,7 @@ void sendtheoutput(void)
         case PIPE:
             sendout(0, curchar);
             break;
-        case 9:
+        case TAB_MARK:
             {
                 if (bracelevel == 0)
                     sendout(0, LEFT_BRACE);
@@ -1973,7 +1975,7 @@ void sendtheoutput(void)
                 error();
             }
             break;
-        case 129:
+        case MODULE_NUMBER:
             {
                 if (bracelevel == 0)
                     sendout(0, LEFT_BRACE);
@@ -2304,7 +2306,7 @@ eightbits zcontrolcode(ASCIIcode c)
         Result = 125;
         break;
     case SPACE:
-    case 9:
+    case TAB_MARK:
         Result = NEW_MODULE;
         break;
     case ASTERISK:
@@ -2407,7 +2409,7 @@ void skipcomment(void)
         loc = loc + 1;
         if (c == AT_SIGN) {
             c = buffer[loc];
-            if ((c != SPACE) && (c != 9) && (c != ASTERISK) && (c != ASCII_z)
+            if ((c != SPACE) && (c != TAB_MARK) && (c != ASTERISK) && (c != ASCII_z)
                 && (c != ASCII_Z))
                 loc = loc + 1;
             else {
@@ -2526,7 +2528,7 @@ eightbits getnext(void)
                           || ((d > ASCII_Z) && (d < ASCII_a))
                           || (d > ASCII_z)) && (d != UNDERSCORE)));
                 if (loc > idfirst + 1) {
-                    c = 130;
+                    c = IDENTIFIER;
                     idloc = loc;
                 }
             } else
@@ -2565,7 +2567,7 @@ eightbits getnext(void)
             }
             while (!(d == DOUBLEQUOTE));
             idloc = loc - 1;
-            c = 130;
+            c = IDENTIFIER;
         }
         break;
     case AT_SIGN:
@@ -2598,7 +2600,7 @@ eightbits getnext(void)
                             loc = loc + 2;
                             goto done;
                         }
-                        if ((d == SPACE) || (d == 9)
+                        if ((d == SPACE) || (d == TAB_MARK)
                             || (d == ASTERISK)) {
                             {
                                 putc('\n', stdout);
@@ -2614,7 +2616,7 @@ eightbits getnext(void)
                     loc = loc + 1;
                     if (k < longestname - 1)
                         k = k + 1;
-                    if ((d == SPACE) || (d == 9)) {
+                    if ((d == SPACE) || (d == TAB_MARK)) {
                         d = SPACE;
                         if (modtext[k - 1] == SPACE)
                             k = k - 1;
@@ -2688,7 +2690,7 @@ eightbits getnext(void)
     case EQUALS_SIGN:
         if (buffer[loc] == EQUALS_SIGN) {
             if (loc <= limit) {
-                c = 30;
+                c = EQUIVALENCE_SIGN;
                 loc = loc + 1;
             }
         }
@@ -2717,7 +2719,7 @@ eightbits getnext(void)
     case LEFT_PAREN:
         if (buffer[loc] == ASTERISK) {
             if (loc <= limit) {
-                c = 9;
+                c = TAB_MARK;
                 loc = loc + 1;
             }
         } else if (buffer[loc] == PERIOD) {
@@ -2736,7 +2738,7 @@ eightbits getnext(void)
         }
         break;
     case SPACE:
-    case 9:
+    case TAB_MARK:
         goto restart;
         break;
     case LEFT_BRACE:
@@ -2839,7 +2841,7 @@ void zscannumeric(namepointer p)
                 goto reswitch;
             }
             break;
-        case 130:
+        case IDENTIFIER:
             {
                 q = idlookup(0);
                 if (ilk[q] != 1) {
@@ -3000,7 +3002,7 @@ void zscanrepl(eightbits t)
             if (t == 3)
                 a = 0;
             break;
-        case 130:
+        case IDENTIFIER:
             {
                 a = idlookup(0);
                 {
@@ -3200,37 +3202,41 @@ void zdefinemacro(eightbits t)
 
 void scanmodule(void)
 {
-    /* 22 30 10 */ namepointer p;
+    namepointer p;
+
     modulecount = modulecount + 1;
     nextcontrol = 0;
+
     while (true) {
-
- continue_:while (nextcontrol <= FORMAT) {
-
+    continue_:
+	while (nextcontrol <= FORMAT) {
             nextcontrol = skipahead();
+
             if (nextcontrol == MODULE_NAME) {
                 loc = loc - 2;
                 nextcontrol = getnext();
             }
         }
+
         if (nextcontrol != DEFINITION)
             goto done;
+
         nextcontrol = getnext();
-        if (nextcontrol != 130) {
-            {
-                putc('\n', stdout);
-                fprintf(stdout, "%s%s",
-                        "! Definition flushed, must start with ",
-                        "identifier of length > 1");
-                error();
-            }
+        if (nextcontrol != IDENTIFIER) {
+	    putc('\n', stdout);
+	    fprintf(stdout, "%s%s",
+		    "! Definition flushed, must start with ",
+		    "identifier of length > 1");
+	    error();
             goto continue_;
         }
+
         nextcontrol = getnext();
+
         if (nextcontrol == EQUALS_SIGN) {
             scannumeric(idlookup(1));
             goto continue_;
-        } else if (nextcontrol == 30) {
+        } else if (nextcontrol == EQUIVALENCE_SIGN) {
             definemacro(2);
             goto continue_;
         } else if (nextcontrol == LEFT_PAREN) {
@@ -3245,9 +3251,9 @@ void scanmodule(void)
                             Fputs(stdout, "! Use == for macros");
                             error();
                         }
-                        nextcontrol = 30;
+                        nextcontrol = EQUIVALENCE_SIGN;
                     }
-                    if (nextcontrol == 30) {
+                    if (nextcontrol == EQUIVALENCE_SIGN) {
                         definemacro(3);
                         goto continue_;
                     }
@@ -3272,7 +3278,7 @@ void scanmodule(void)
                 nextcontrol = getnext();
             }
             while (!(nextcontrol != PLUS_SIGN));
-            if ((nextcontrol != EQUALS_SIGN) && (nextcontrol != 30)) {
+            if ((nextcontrol != EQUALS_SIGN) && (nextcontrol != EQUIVALENCE_SIGN)) {
                 {
                     putc('\n', stdout);
                     Fputs(stdout, "! Pascal text flushed, = sign is missing");

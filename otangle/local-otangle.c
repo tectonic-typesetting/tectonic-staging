@@ -280,7 +280,7 @@ void app_val (integer v);
 void send_out (eightbits t,sixteenbits v);
 void send_sign (integer v);
 void sendval (integer v);
-void sendtheoutput (void);
+void send_the_output (void);
 boolean linesdontmatch (void);
 void primethechangebuffer (void);
 void checkchange (void);
@@ -1639,20 +1639,22 @@ void sendval(integer v)
  exit:;
 }
 
-void sendtheoutput(void)
+void send_the_output(void)
 {
-    /* 2 21 22 */ eightbits curchar;
+    eightbits curchar;
     integer k;
     integer j;
     unsigned char w;
     integer n;
-    while (stackptr > 0) {
 
+    while (stackptr > 0) {
         curchar = get_output();
- reswitch:switch (curchar) {
+
+    reswitch:
+	switch (curchar) {
         case 0:
-            ;
             break;
+
         case ASCII_A:
         case ASCII_B:
         case 67:
@@ -1705,28 +1707,24 @@ void sendtheoutput(void)
         case ASCII_x:
         case ASCII_y:
         case ASCII_z:
-            {
-                outcontrib[1] = curchar;
-                send_out(IDENT, 1);
-            }
+	    outcontrib[1] = curchar;
+	    send_out(IDENT, 1);
             break;
-        case IDENTIFIER:
-            {
-                k = 0;
-                j = bytestart[curval];
-                w = curval % 3;
-                while ((k < maxidlength)
-                       && (j < bytestart[curval + 3])) {
 
-                    k = k + 1;
-                    outcontrib[k] = bytemem[w][j];
-                    j = j + 1;
-                    if (outcontrib[k] == UNDERSCORE)
-                        k = k - 1;
-                }
-                send_out(IDENT, k);
-            }
+        case IDENTIFIER:
+	    k = 0;
+	    j = bytestart[curval];
+	    w = curval % 3;
+	    while (k < maxidlength && j < bytestart[curval + 3]) {
+		k = k + 1;
+		outcontrib[k] = bytemem[w][j];
+		j = j + 1;
+		if (outcontrib[k] == UNDERSCORE)
+		    k = k - 1;
+	    }
+	    send_out(IDENT, k);
             break;
+
         case ASCII_0:
         case ASCII_1:
         case ASCII_2:
@@ -1737,194 +1735,183 @@ void sendtheoutput(void)
         case ASCII_7:
         case ASCII_8:
         case ASCII_9:
-            {
-                n = 0;
-                do {
-                    curchar = curchar - ASCII_0;
-                    if (n >= 0xCCCCCCC) {
-                        putc('\n', stdout);
-                        Fputs(stdout, "! Constant too big");
-                        error();
-                    } else
-                        n = 10 * n + curchar;
-                    curchar = get_output();
-                }
-                while (!((curchar > ASCII_9) || (curchar < ASCII_0)));
-                sendval(n);
-                k = 0;
-                if (curchar == ASCII_e)
-                    curchar = ASCII_E;
-                if (curchar == ASCII_E)
-                    goto lab2;
-                else
-                    goto reswitch;
-            }
+	    n = 0;
+	    do {
+		curchar = curchar - ASCII_0;
+
+		if (n >= 0xCCCCCCC) {
+		    putc('\n', stdout);
+		    Fputs(stdout, "! Constant too big");
+		    error();
+		} else
+		    n = 10 * n + curchar;
+
+		curchar = get_output();
+	    } while (!((curchar > ASCII_9) || (curchar < ASCII_0)));
+
+	    sendval(n);
+	    k = 0;
+
+	    if (curchar == ASCII_e)
+		curchar = ASCII_E;
+
+	    if (curchar == ASCII_E)
+		goto get_fraction;
+	    else
+		goto reswitch;
             break;
+
         case RIGHT_BRACE:
             sendval(poolchecksum);
             break;
+
         case OCTAL:
-            {
-                n = 0;
-                curchar = ASCII_0;
-                do {
-                    curchar = curchar - ASCII_0;
-                    if (n >= 0x10000000) {
-                        putc('\n', stdout);
-                        Fputs(stdout, "! Constant too big");
-                        error();
-                    } else
-                        n = 8 * n + curchar;
-                    curchar = get_output();
-                }
-                while (!((curchar > ASCII_7) || (curchar < ASCII_0)));
-                sendval(n);
-                goto reswitch;
-            }
+	    n = 0;
+	    curchar = ASCII_0;
+	    do {
+		curchar = curchar - ASCII_0;
+		if (n >= 0x10000000) {
+		    putc('\n', stdout);
+		    Fputs(stdout, "! Constant too big");
+		    error();
+		} else
+		    n = 8 * n + curchar;
+		curchar = get_output();
+	    } while (!((curchar > ASCII_7) || (curchar < ASCII_0)));
+	    sendval(n);
+	    goto reswitch;
             break;
+
         case HEX:
-            {
-                n = 0;
-                curchar = ASCII_0;
-                do {
-                    if (curchar >= ASCII_A)
-                        curchar = curchar - ASCII_7;
-                    else
-                        curchar = curchar - ASCII_0;
-                    if (n >= 0x8000000) {
-                        putc('\n', stdout);
-                        Fputs(stdout, "! Constant too big");
-                        error();
-                    } else
-                        n = 16 * n + curchar;
-                    curchar = get_output();
-                }
-                while (!((curchar > ASCII_F) || (curchar < ASCII_0)
-                         || ((curchar > ASCII_9)
-                             && (curchar < ASCII_A))));
-                sendval(n);
-                goto reswitch;
-            }
+	    n = 0;
+	    curchar = ASCII_0;
+	    do {
+		if (curchar >= ASCII_A)
+		    curchar = curchar - ASCII_7;
+		else
+		    curchar = curchar - ASCII_0;
+		if (n >= 0x8000000) {
+		    putc('\n', stdout);
+		    Fputs(stdout, "! Constant too big");
+		    error();
+		} else
+		    n = 16 * n + curchar;
+		curchar = get_output();
+	    } while (!((curchar > ASCII_F) || (curchar < ASCII_0)
+		     || ((curchar > ASCII_9) && (curchar < ASCII_A))));
+	    sendval(n);
+	    goto reswitch;
             break;
+
         case NUMBER:
             sendval(curval);
             break;
-        case PERIOD:
-            {
-                k = 1;
-                outcontrib[1] = PERIOD;
-                curchar = get_output();
-                if (curchar == PERIOD) {
-                    outcontrib[2] = PERIOD;
-                    send_out(STR, 2);
-                } else if ((curchar >= ASCII_0) && (curchar <= ASCII_9))
-                    goto lab2;
-                else {
 
-                    send_out(MISC, PERIOD);
-                    goto reswitch;
-                }
-            }
+        case PERIOD:
+	    k = 1;
+	    outcontrib[1] = PERIOD;
+	    curchar = get_output();
+
+	    if (curchar == PERIOD) {
+		outcontrib[2] = PERIOD;
+		send_out(STR, 2);
+	    } else if ((curchar >= ASCII_0) && (curchar <= ASCII_9)) {
+		goto get_fraction;
+	    } else {
+		send_out(MISC, PERIOD);
+		goto reswitch;
+	    }
             break;
+
         case PLUS_SIGN:
         case MINUS_SIGN:
             send_sign(COMMA - curchar);
             break;
+
         case AND_SIGN:
-            {
-                outcontrib[1] = ASCII_a;
-                outcontrib[2] = ASCII_n;
-                outcontrib[3] = ASCII_d;
-                send_out(IDENT, 3);
-            }
+	    outcontrib[1] = ASCII_a;
+	    outcontrib[2] = ASCII_n;
+	    outcontrib[3] = ASCII_d;
+	    send_out(IDENT, 3);
             break;
+
         case NOT_SIGN:
-            {
-                outcontrib[1] = ASCII_n;
-                outcontrib[2] = ASCII_o;
-                outcontrib[3] = ASCII_t;
-                send_out(IDENT, 3);
-            }
+	    outcontrib[1] = ASCII_n;
+	    outcontrib[2] = ASCII_o;
+	    outcontrib[3] = ASCII_t;
+	    send_out(IDENT, 3);
             break;
+
         case SET_ELEMENT_SIGN:
-            {
-                outcontrib[1] = ASCII_i;
-                outcontrib[2] = ASCII_n;
-                send_out(IDENT, 2);
-            }
+	    outcontrib[1] = ASCII_i;
+	    outcontrib[2] = ASCII_n;
+	    send_out(IDENT, 2);
             break;
+
         case OR_SIGN:
-            {
-                outcontrib[1] = ASCII_o;
-                outcontrib[2] = ASCII_r;
-                send_out(IDENT, 2);
-            }
+	    outcontrib[1] = ASCII_o;
+	    outcontrib[2] = ASCII_r;
+	    send_out(IDENT, 2);
             break;
+
         case LEFT_ARROW:
-            {
-                outcontrib[1] = COLON;
-                outcontrib[2] = EQUALS_SIGN;
-                send_out(STR, 2);
-            }
+	    outcontrib[1] = COLON;
+	    outcontrib[2] = EQUALS_SIGN;
+	    send_out(STR, 2);
             break;
+
         case NOT_EQUAL:
-            {
-                outcontrib[1] = LESS_THAN_SIGN;
-                outcontrib[2] = GREATER_THAN_SIGN;
-                send_out(STR, 2);
-            }
+	    outcontrib[1] = LESS_THAN_SIGN;
+	    outcontrib[2] = GREATER_THAN_SIGN;
+	    send_out(STR, 2);
             break;
+
         case LESS_OR_EQUAL:
-            {
-                outcontrib[1] = LESS_THAN_SIGN;
-                outcontrib[2] = EQUALS_SIGN;
-                send_out(STR, 2);
-            }
+	    outcontrib[1] = LESS_THAN_SIGN;
+	    outcontrib[2] = EQUALS_SIGN;
+	    send_out(STR, 2);
             break;
+
         case GREATER_OR_EQUAL:
-            {
-                outcontrib[1] = GREATER_THAN_SIGN;
-                outcontrib[2] = EQUALS_SIGN;
-                send_out(STR, 2);
-            }
+	    outcontrib[1] = GREATER_THAN_SIGN;
+	    outcontrib[2] = EQUALS_SIGN;
+	    send_out(STR, 2);
             break;
+
         case EQUIVALENCE_SIGN:
-            {
-                outcontrib[1] = EQUALS_SIGN;
-                outcontrib[2] = EQUALS_SIGN;
-                send_out(STR, 2);
-            }
+	    outcontrib[1] = EQUALS_SIGN;
+	    outcontrib[2] = EQUALS_SIGN;
+	    send_out(STR, 2);
             break;
+
         case DOUBLE_DOT:
-            {
-                outcontrib[1] = PERIOD;
-                outcontrib[2] = PERIOD;
-                send_out(STR, 2);
-            }
+	    outcontrib[1] = PERIOD;
+	    outcontrib[2] = PERIOD;
+	    send_out(STR, 2);
             break;
+
         case SINGLE_QUOTE:
-            {
-                k = 1;
-                outcontrib[1] = SINGLE_QUOTE;
-                do {
-                    if (k < linelength)
-                        k = k + 1;
-                    outcontrib[k] = get_output();
-                }
-                while (!((outcontrib[k] == SINGLE_QUOTE)
-                         || (stackptr == 0)));
-                if (k == linelength) {
-                    putc('\n', stdout);
-                    Fputs(stdout, "! String too long");
-                    error();
-                }
-                send_out(STR, k);
-                curchar = get_output();
-                if (curchar == SINGLE_QUOTE)
-                    outstate = UNBREAKABLE;
-                goto reswitch;
-            }
+	    k = 1;
+	    outcontrib[1] = SINGLE_QUOTE;
+	    do {
+		if (k < linelength)
+		    k = k + 1;
+		outcontrib[k] = get_output();
+	    } while (!((outcontrib[k] == SINGLE_QUOTE) || (stackptr == 0)));
+
+	    if (k == linelength) {
+		putc('\n', stdout);
+		Fputs(stdout, "! String too long");
+		error();
+	    }
+
+	    send_out(STR, k);
+	    curchar = get_output();
+	    if (curchar == SINGLE_QUOTE)
+		outstate = UNBREAKABLE;
+	    goto reswitch;
             break;
+
         case EXCLAM:
         case DOUBLEQUOTE:
         case OCTOTHORPE:
@@ -1953,15 +1940,15 @@ void sendtheoutput(void)
         case PIPE:
             send_out(MISC, curchar);
             break;
+
         case BEGIN_COMMENT:
-            {
-                if (bracelevel == 0)
-                    send_out(MISC, LEFT_BRACE);
-                else
-                    send_out(MISC, LEFT_BRACKET);
-                bracelevel = bracelevel + 1;
-            }
+	    if (bracelevel == 0)
+		send_out(MISC, LEFT_BRACE);
+	    else
+		send_out(MISC, LEFT_BRACKET);
+	    bracelevel = bracelevel + 1;
             break;
+
         case END_COMMENT:
             if (bracelevel > 0) {
                 bracelevel = bracelevel - 1;
@@ -1970,101 +1957,101 @@ void sendtheoutput(void)
                 else
                     send_out(MISC, RIGHT_BRACKET);
             } else {
-
                 putc('\n', stdout);
                 Fputs(stdout, "! Extra @}");
                 error();
             }
             break;
+
         case MODULE_NUMBER:
-            {
-                if (bracelevel == 0)
-                    send_out(MISC, LEFT_BRACE);
-                else
-                    send_out(MISC, LEFT_BRACKET);
-                if (curval < 0) {
-                    send_out(MISC, COLON);
-                    sendval(-(integer) curval);
-                } else {
+	    if (bracelevel == 0)
+		send_out(MISC, LEFT_BRACE);
+	    else
+		send_out(MISC, LEFT_BRACKET);
 
-                    sendval(curval);
-                    send_out(MISC, COLON);
-                }
-                if (bracelevel == 0)
-                    send_out(MISC, RIGHT_BRACE);
-                else
-                    send_out(MISC, RIGHT_BRACKET);
-            }
+	    if (curval < 0) {
+		send_out(MISC, COLON);
+		sendval(-(integer) curval);
+	    } else {
+		sendval(curval);
+		send_out(MISC, COLON);
+	    }
+
+	    if (bracelevel == 0)
+		send_out(MISC, RIGHT_BRACE);
+	    else
+		send_out(MISC, RIGHT_BRACKET);
             break;
+
         case JOIN:
-            {
-                send_out(FRAC, 0);
-                outstate = UNBREAKABLE;
-            }
+	    send_out(FRAC, 0);
+	    outstate = UNBREAKABLE;
             break;
-        case 2:
-            {
-                k = 0;
-                do {
-                    if (k < linelength)
-                        k = k + 1;
-                    outcontrib[k] = get_output();
-                }
-                while (!((outcontrib[k] == 2)
-                         || (stackptr == 0)));
-                if (k == linelength) {
-                    putc('\n', stdout);
-                    Fputs(stdout, "! Verbatim string too long");
-                    error();
-                }
-                send_out(STR, k - 1);
-            }
-            break;
-        case 3:
-            {
-                send_out(STR, 0);
-                while (outptr > 0) {
 
-                    if (outptr <= linelength)
-                        breakptr = outptr;
-                    flushbuffer();
-                }
-                outstate = MISC;
-            }
+        case VERBATIM:
+	    k = 0;
+	    do {
+		if (k < linelength)
+		    k = k + 1;
+		outcontrib[k] = get_output();
+	    } while (!((outcontrib[k] == 2) || (stackptr == 0)));
+
+	    if (k == linelength) {
+		putc('\n', stdout);
+		Fputs(stdout, "! Verbatim string too long");
+		error();
+	    }
+	    send_out(STR, k - 1);
             break;
+
+        case FORCE_LINE:
+	    send_out(STR, 0);
+
+	    while (outptr > 0) {
+		if (outptr <= linelength)
+		    breakptr = outptr;
+		flushbuffer();
+	    }
+	    outstate = MISC;
+            break;
+
         default:
-            {
-                putc('\n', stdout);
-                fprintf(stdout, "%s%ld",
-                        "! Can't output ASCII code ", (long)curchar);
-                error();
-            }
+	    putc('\n', stdout);
+	    fprintf(stdout, "! Can't output ASCII code %ld", (long)curchar);
+	    error();
             break;
         }
+
         goto continue_;
- lab2: do {
+
+    get_fraction:
+	do {
             if (k < linelength)
                 k = k + 1;
             outcontrib[k] = curchar;
             curchar = get_output();
-            if ((outcontrib[k] == ASCII_E)
-                && ((curchar == PLUS_SIGN) || (curchar == MINUS_SIGN))) {
+
+            if ((outcontrib[k] == ASCII_E) && ((curchar == PLUS_SIGN) || (curchar == MINUS_SIGN))) {
                 if (k < linelength)
                     k = k + 1;
                 outcontrib[k] = curchar;
                 curchar = get_output();
-            } else if (curchar == ASCII_e)
+            } else if (curchar == ASCII_e) {
                 curchar = ASCII_E;
-        }
-        while (!((curchar != ASCII_E) && ((curchar < ASCII_0) || (curchar > ASCII_9))));
+	    }
+        } while (!((curchar != ASCII_E) && ((curchar < ASCII_0) || (curchar > ASCII_9))));
+
         if (k == linelength) {
             putc('\n', stdout);
             Fputs(stdout, "! Fraction too long");
             error();
         }
+
         send_out(FRAC, k);
         goto reswitch;
- continue_:;
+
+    continue_:
+	;
     }
 }
 
@@ -3401,7 +3388,7 @@ void mainbody(void)
         semiptr = 0;
         outbuf[0] = 0;
         line = 1;
-        sendtheoutput ();
+        send_the_output ();
 
         breakptr = outptr;
         semiptr = 0;

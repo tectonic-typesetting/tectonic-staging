@@ -41,7 +41,15 @@ typedef struct {
 
 #define NUMBER_CHARS 65536L
 
+#define CONTROL_TEXT 131 /* control symbols */
+#define FORMAT 132
+#define NEW_MODULE 136
+
 #define SPACE 32
+#define EXCLAM 33
+#define DOUBLEQUOTE 34
+#define OCTOTHORPE 35
+#define DOLLARSIGN 36
 
 /* end of magic constants */
 
@@ -225,11 +233,11 @@ void error(void)
 
 void parsearguments(void)
 {
-
     getoptstruct longoptions[noptions + 1];
     integer getoptreturnval;
     cinttype optionindex;
     integer currentoption;
+
     currentoption = 0;
     longoptions[currentoption].name = "help";
     longoptions[currentoption].hasarg = 0;
@@ -282,10 +290,10 @@ void initialize(void)
     parsearguments();
     history = SPOTLESS;
     xchr[SPACE] = ' ';
-    xchr[33] = '!';
-    xchr[34] = '"';
-    xchr[35] = '#';
-    xchr[36] = '$';
+    xchr[EXCLAM] = '!';
+    xchr[DOUBLEQUOTE] = '"';
+    xchr[OCTOTHORPE] = '#';
+    xchr[DOLLARSIGN] = '$';
     xchr[37] = '%';
     xchr[38] = '&';
     xchr[39] = '\'';
@@ -574,7 +582,7 @@ namepointer zidlookup(eightbits t)
                                                               && (t == 0)
                                                               &&
                                                               (buffer[idfirst]
-                                                               != 34))) {
+                                                               != DOUBLEQUOTE))) {
             i = idfirst;
             s = 0;
             h = 0;
@@ -614,7 +622,7 @@ namepointer zidlookup(eightbits t)
             ilk[p] = t;
         } else {
 
-            if ((t == 0) && (buffer[idfirst] != 34)) {
+            if ((t == 0) && (buffer[idfirst] != DOUBLEQUOTE)) {
                 q = chophash[h];
                 while (q != 0) {
 
@@ -687,7 +695,7 @@ namepointer zidlookup(eightbits t)
             byteptr[w] = k;
             bytestart[nameptr + 3] = k;
             nameptr = nameptr + 1;
-            if (buffer[idfirst] != 34)
+            if (buffer[idfirst] != DOUBLEQUOTE)
                 ilk[p] = t;
             else {
 
@@ -720,7 +728,7 @@ namepointer zidlookup(eightbits t)
                         poolchecksum = poolchecksum + poolchecksum + buffer[i];
                         while (poolchecksum > 536870839L)
                             poolchecksum = poolchecksum - 536870839L;
-                        if ((buffer[i] == 34)
+                        if ((buffer[i] == DOUBLEQUOTE)
                             || (buffer[i] == 64))
                             i = i + 2;
                         else
@@ -1805,10 +1813,10 @@ void sendtheoutput(void)
                 goto reswitch;
             }
             break;
-        case 33:
-        case 34:
-        case 35:
-        case 36:
+        case EXCLAM:
+        case DOUBLEQUOTE:
+        case OCTOTHORPE:
+        case DOLLARSIGN:
         case 37:
         case 38:
         case 40:
@@ -2180,21 +2188,21 @@ eightbits zcontrolcode(ASCIIcode c)
     case 39:
         Result = 12;
         break;
-    case 34:
+    case DOUBLEQUOTE:
         Result = 13;
         break;
-    case 36:
+    case DOLLARSIGN:
         Result = 125;
         break;
     case SPACE:
     case 9:
-        Result = 136;
+        Result = NEW_MODULE;
         break;
     case 42:
         {
             fprintf(stdout, "%c%ld", '*', (long)modulecount + 1);
             fflush(stdout);
-            Result = 136;
+            Result = NEW_MODULE;
         }
         break;
     case 68:
@@ -2203,7 +2211,7 @@ eightbits zcontrolcode(ASCIIcode c)
         break;
     case 70:
     case 102:
-        Result = 132;
+        Result = FORMAT;
         break;
     case 123:
         Result = 9;
@@ -2220,7 +2228,7 @@ eightbits zcontrolcode(ASCIIcode c)
     case 94:
     case 46:
     case 58:
-        Result = 131;
+        Result = CONTROL_TEXT;
         break;
     case 38:
         Result = 127;
@@ -2250,7 +2258,7 @@ eightbits skipahead(void)
         if (loc > limit) {
             getline();
             if (inputhasended) {
-                c = 136;
+                c = NEW_MODULE;
                 goto done;
             }
         }
@@ -2325,7 +2333,7 @@ eightbits getnext(void)
  restart:if (loc > limit) {
         getline();
         if (inputhasended) {
-            c = 136;
+            c = NEW_MODULE;
             goto found;
         }
     }
@@ -2416,14 +2424,14 @@ eightbits getnext(void)
                 c = 69;
         }
         break;
-    case 34:
+    case DOUBLEQUOTE:
         {
             doublechars = 0;
             idfirst = loc - 1;
             do {
                 d = buffer[loc];
                 loc = loc + 1;
-                if ((d == 34) || (d == 64)) {
+                if ((d == DOUBLEQUOTE) || (d == 64)) {
 
                     if (buffer[loc] == d) {
                         loc = loc + 1;
@@ -2443,10 +2451,10 @@ eightbits getnext(void)
                         Fputs(stdout, "! String constant didn't end");
                         error();
                     }
-                    d = 34;
+                    d = DOUBLEQUOTE;
                 }
             }
-            while (!(d == 34));
+            while (!(d == DOUBLEQUOTE));
             idloc = loc - 1;
             c = 130;
         }
@@ -2533,7 +2541,7 @@ eightbits getnext(void)
                         curmodule = modlookup(k);
                 } else
                     curmodule = modlookup(k);
-            } else if (c == 131) {
+            } else if (c == CONTROL_TEXT) {
                 do {
                     c = skipahead();
                 }
@@ -2742,11 +2750,11 @@ void zscannumeric(namepointer p)
         case 45:
             nextsign = -(integer) nextsign;
             break;
-        case 132:
+        case FORMAT:
         case 133:
         case 135:
         case 134:
-        case 136:
+        case NEW_MODULE:
             goto done;
             break;
         case 59:
@@ -2767,7 +2775,7 @@ void zscannumeric(namepointer p)
                 do {
                     nextcontrol = skipahead();
                 }
-                while (!((nextcontrol >= 132)));
+                while (!((nextcontrol >= FORMAT)));
                 if (nextcontrol == 135) {
                     loc = loc - 2;
                     nextcontrol = getnext();
@@ -2879,7 +2887,7 @@ void zscanrepl(eightbits t)
  found:        ;
             }
             break;
-        case 35:
+        case OCTOTHORPE:
             if (t == 3)
                 a = 0;
             break;
@@ -2991,7 +2999,7 @@ void zscanrepl(eightbits t)
             }
             break;
         case 133:
-        case 132:
+        case FORMAT:
         case 134:
             if (t != 135)
                 goto done;
@@ -3007,7 +3015,7 @@ void zscanrepl(eightbits t)
                 goto continue_;
             }
             break;
-        case 136:
+        case NEW_MODULE:
             goto done;
             break;
         default:
@@ -3088,7 +3096,7 @@ void scanmodule(void)
     nextcontrol = 0;
     while (true) {
 
- continue_:while (nextcontrol <= 132) {
+ continue_:while (nextcontrol <= FORMAT) {
 
             nextcontrol = skipahead();
             if (nextcontrol == 135) {
@@ -3118,7 +3126,7 @@ void scanmodule(void)
             goto continue_;
         } else if (nextcontrol == 40) {
             nextcontrol = getnext();
-            if (nextcontrol == 35) {
+            if (nextcontrol == OCTOTHORPE) {
                 nextcontrol = getnext();
                 if (nextcontrol == 41) {
                     nextcontrol = getnext();
@@ -3164,7 +3172,7 @@ void scanmodule(void)
                 do {
                     nextcontrol = skipahead();
                 }
-                while (!(nextcontrol == 136));
+                while (!(nextcontrol == NEW_MODULE));
                 goto exit;
             }
         }
@@ -3215,7 +3223,7 @@ void mainbody(void)
     do {
         nextcontrol = skipahead();
     }
-    while (!(nextcontrol == 136));
+    while (!(nextcontrol == NEW_MODULE));
     while (!inputhasended)
         scanmodule();
     if (changelimit != 0) {

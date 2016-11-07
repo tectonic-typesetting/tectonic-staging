@@ -74,6 +74,10 @@ typedef struct {
 #define RIGHT_PAREN 41
 #define ASTERISK 42
 #define PLUS_SIGN 43
+#define COMMA 44
+#define MINUS_SIGN 45
+#define PERIOD 46
+#define FORWARD_SLASH 47
 
 #define JOIN 127
 
@@ -327,10 +331,10 @@ void initialize(void)
     xchr[RIGHT_PAREN] = ')';
     xchr[ASTERISK] = '*';
     xchr[PLUS_SIGN] = '+';
-    xchr[44] = ',';
-    xchr[45] = '-';
-    xchr[46] = '.';
-    xchr[47] = '/';
+    xchr[COMMA] = ',';
+    xchr[MINUS_SIGN] = '-';
+    xchr[PERIOD] = '.';
+    xchr[FORWARD_SLASH] = '/';
     xchr[48] = '0';
     xchr[49] = '1';
     xchr[50] = '2';
@@ -1307,7 +1311,7 @@ void zsendout(eightbits t, sixteenbits v)
     case 2:
         {
             {
-                outbuf[outptr] = 44 - outapp;
+                outbuf[outptr] = COMMA - outapp;
                 outptr = outptr + 1;
             }
             if (outptr > linelength)
@@ -1319,7 +1323,7 @@ void zsendout(eightbits t, sixteenbits v)
     case 4:
         {
             if ((outval < 0) || ((outval == 0) && (lastsign < 0))) {
-                outbuf[outptr] = 45;
+                outbuf[outptr] = MINUS_SIGN;
                 outptr = outptr + 1;
             } else if (outsign > 0) {
                 outbuf[outptr] = outsign;
@@ -1348,10 +1352,10 @@ void zsendout(eightbits t, sixteenbits v)
                          || ((outcontrib[1] == 109)
                              && (outcontrib[2] == 111)
                              && (outcontrib[3] == 100))))
-                    || ((t == 0) && ((v == ASTERISK) || (v == 47))))) {
+                    || ((t == 0) && ((v == ASTERISK) || (v == FORWARD_SLASH))))) {
                 if ((outval < 0)
                     || ((outval == 0) && (lastsign < 0))) {
-                    outbuf[outptr] = 45;
+                    outbuf[outptr] = MINUS_SIGN;
                     outptr = outptr + 1;
                 } else if (outsign > 0) {
                     outbuf[outptr] = outsign;
@@ -1468,7 +1472,7 @@ void zsendval(integer v)
         {
             if ((outptr == breakptr + 1)
                 && ((outbuf[breakptr] == ASTERISK)
-                    || (outbuf[breakptr] == 47)))
+                    || (outbuf[breakptr] == FORWARD_SLASH)))
                 goto lab666;
             outsign = 0;
             outstate = 3;
@@ -1538,7 +1542,7 @@ void zsendval(integer v)
             outptr = outptr + 1;
         }
         {
-            outbuf[outptr] = 45;
+            outbuf[outptr] = MINUS_SIGN;
             outptr = outptr + 1;
         }
         appval(-(integer) v);
@@ -1655,7 +1659,7 @@ void sendtheoutput(void)
                 n = 0;
                 do {
                     curchar = curchar - 48;
-                    if (n >= 214748364L) {
+                    if (n >= 0xCCCCCCC) {
                         putc('\n', stdout);
                         Fputs(stdout, "! Constant too big");
                         error();
@@ -1723,26 +1727,26 @@ void sendtheoutput(void)
         case 128:
             sendval(curval);
             break;
-        case 46:
+        case PERIOD:
             {
                 k = 1;
-                outcontrib[1] = 46;
+                outcontrib[1] = PERIOD;
                 curchar = getoutput();
-                if (curchar == 46) {
-                    outcontrib[2] = 46;
+                if (curchar == PERIOD) {
+                    outcontrib[2] = PERIOD;
                     sendout(1, 2);
                 } else if ((curchar >= 48) && (curchar <= 57))
                     goto lab2;
                 else {
 
-                    sendout(0, 46);
+                    sendout(0, PERIOD);
                     goto reswitch;
                 }
             }
             break;
         case PLUS_SIGN:
-        case 45:
-            sendsign(44 - curchar);
+        case MINUS_SIGN:
+            sendsign(COMMA - curchar);
             break;
         case 4:
             {
@@ -1811,8 +1815,8 @@ void sendtheoutput(void)
             break;
         case SPACE:
             {
-                outcontrib[1] = 46;
-                outcontrib[2] = 46;
+                outcontrib[1] = PERIOD;
+                outcontrib[2] = PERIOD;
                 sendout(1, 2);
             }
             break;
@@ -1848,8 +1852,8 @@ void sendtheoutput(void)
         case LEFT_PAREN:
         case RIGHT_PAREN:
         case ASTERISK:
-        case 44:
-        case 47:
+        case COMMA:
+        case FORWARD_SLASH:
         case 58:
         case 59:
         case 60:
@@ -1962,7 +1966,7 @@ void sendtheoutput(void)
             outcontrib[k] = curchar;
             curchar = getoutput();
             if ((outcontrib[k] == 69)
-                && ((curchar == PLUS_SIGN) || (curchar == 45))) {
+                && ((curchar == PLUS_SIGN) || (curchar == MINUS_SIGN))) {
                 if (k < linelength)
                     k = k + 1;
                 outcontrib[k] = curchar;
@@ -2252,7 +2256,7 @@ eightbits zcontrolcode(ASCIIcode c)
     case 84:
     case 116:
     case 94:
-    case 46:
+    case PERIOD:
     case 58:
         Result = CONTROL_TEXT;
         break;
@@ -2559,9 +2563,9 @@ eightbits getnext(void)
                 if ((modtext[k] == SPACE) && (k > 0))
                     k = k - 1;
                 if (k > 3) {
-                    if ((modtext[k] == 46)
-                        && (modtext[k - 1] == 46)
-                        && (modtext[k - 2] == 46))
+                    if ((modtext[k] == PERIOD)
+                        && (modtext[k - 1] == PERIOD)
+                        && (modtext[k - 2] == PERIOD))
                         curmodule = prefixlookup(k - 3);
                     else
                         curmodule = modlookup(k);
@@ -2581,8 +2585,8 @@ eightbits getnext(void)
             }
         }
         break;
-    case 46:
-        if (buffer[loc] == 46) {
+    case PERIOD:
+        if (buffer[loc] == PERIOD) {
             if (loc <= limit) {
                 c = SPACE;
                 loc = loc + 1;
@@ -2637,7 +2641,7 @@ eightbits getnext(void)
                 c = 9;
                 loc = loc + 1;
             }
-        } else if (buffer[loc] == 46) {
+        } else if (buffer[loc] == PERIOD) {
             if (loc <= limit) {
                 c = 91;
                 loc = loc + 1;
@@ -2773,7 +2777,7 @@ void zscannumeric(namepointer p)
         case PLUS_SIGN:
             ;
             break;
-        case 45:
+        case MINUS_SIGN:
             nextsign = -(integer) nextsign;
             break;
         case FORMAT:

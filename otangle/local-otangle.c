@@ -1387,8 +1387,10 @@ void app_val(integer v)
 
 void send_out(eightbits t, sixteenbits v)
 {
-    /* 20 */ integer k;
- restart:switch (outstate) {
+    integer k;
+
+restart:
+    switch (outstate) {
     case NUM_OR_ID:
         if (t != FRAC) {
             breakptr = outptr;
@@ -1399,68 +1401,63 @@ void send_out(eightbits t, sixteenbits v)
         }
         break;
     case SIGN:
-        {
-            {
-                outbuf[outptr] = COMMA - outapp;
-                outptr = outptr + 1;
-            }
-            if (outptr > linelength)
-                flushbuffer();
-            breakptr = outptr;
-        }
+	outbuf[outptr] = COMMA - outapp;
+	outptr = outptr + 1;
+	if (outptr > linelength)
+	    flushbuffer();
+	breakptr = outptr;
         break;
     case SIGN_VAL:
     case SIGN_VAL_SIGN:
-        {
-            if ((outval < 0) || ((outval == 0) && (lastsign < 0))) {
-                outbuf[outptr] = MINUS_SIGN;
-                outptr = outptr + 1;
-            } else if (outsign > 0) {
-                outbuf[outptr] = outsign;
-                outptr = outptr + 1;
-            }
-            app_val(abs(outval));
-            if (outptr > linelength)
-                flushbuffer();
-            outstate = outstate - 2;
-            goto restart;
-        }
+	if ((outval < 0) || ((outval == 0) && (lastsign < 0))) {
+	    outbuf[outptr] = MINUS_SIGN;
+	    outptr = outptr + 1;
+	} else if (outsign > 0) {
+	    outbuf[outptr] = outsign;
+	    outptr = outptr + 1;
+	}
+
+	app_val(abs(outval));
+	if (outptr > linelength)
+	    flushbuffer();
+	outstate = outstate - 2;
+	goto restart;
         break;
     case SIGN_VAL_VAL:
-        {
-            if ((t == 3)
-                || (((t == 2) && (v == 3)
-                     && (((outcontrib[1] == ASCII_D)
-                          && (outcontrib[2] == ASCII_I)
-                          && (outcontrib[3] == ASCII_V))
-                         || ((outcontrib[1] == ASCII_d)
-                             && (outcontrib[2] == ASCII_i)
-                             && (outcontrib[3] == ASCII_v))
-                         || ((outcontrib[1] == ASCII_M)
-                             && (outcontrib[2] == ASCII_O)
-                             && (outcontrib[3] == ASCII_D))
-                         || ((outcontrib[1] == ASCII_m)
-                             && (outcontrib[2] == ASCII_o)
-                             && (outcontrib[3] == ASCII_d))))
-                    || ((t == 0) && ((v == ASTERISK) || (v == FORWARD_SLASH))))) {
-                if ((outval < 0)
-                    || ((outval == 0) && (lastsign < 0))) {
-                    outbuf[outptr] = MINUS_SIGN;
-                    outptr = outptr + 1;
-                } else if (outsign > 0) {
-                    outbuf[outptr] = outsign;
-                    outptr = outptr + 1;
-                }
-                app_val(abs(outval));
-                if (outptr > linelength)
-                    flushbuffer();
-                outsign = PLUS_SIGN;
-                outval = outapp;
-            } else
-                outval = outval + outapp;
-            outstate = SIGN_VAL;
-            goto restart;
-        }
+	if (t == FRAC ||
+	    ((t == IDENT && v == 3 && (
+		  (outcontrib[1] == ASCII_D
+		   && outcontrib[2] == ASCII_I
+		   && outcontrib[3] == ASCII_V) ||
+		  (outcontrib[1] == ASCII_d
+		   && outcontrib[2] == ASCII_i
+		   && outcontrib[3] == ASCII_v) ||
+		  (outcontrib[1] == ASCII_M
+		   && outcontrib[2] == ASCII_O
+		   && outcontrib[3] == ASCII_D) ||
+		  (outcontrib[1] == ASCII_m
+		   && outcontrib[2] == ASCII_o
+		   && outcontrib[3] == ASCII_d)
+		  )) ||
+	     (t == MISC && (v == ASTERISK || v == FORWARD_SLASH)))) {
+	    if (outval < 0 || (outval == 0 && lastsign < 0)) {
+		outbuf[outptr] = MINUS_SIGN;
+		outptr = outptr + 1;
+	    } else if (outsign > 0) {
+		outbuf[outptr] = outsign;
+		outptr = outptr + 1;
+	    }
+
+	    app_val(abs(outval));
+	    if (outptr > linelength)
+		flushbuffer();
+	    outsign = PLUS_SIGN;
+	    outval = outapp;
+	} else
+	    outval = outval + outapp;
+
+	outstate = SIGN_VAL;
+	goto restart;
         break;
     case MISC:
         if (t != FRAC)
@@ -1482,6 +1479,7 @@ void send_out(eightbits t, sixteenbits v)
         outbuf[outptr] = v;
         outptr = outptr + 1;
     }
+
     if (outptr > linelength)
         flushbuffer();
 

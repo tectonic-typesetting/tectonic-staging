@@ -88,6 +88,13 @@ typedef struct {
 #define ASCII_7 55
 #define ASCII_8 56
 #define ASCII_9 57
+#define COLON 58
+#define SEMICOLON 59
+#define LESS_THAN_SIGN 60
+#define EQUALS_SIGN 61
+#define GREATER_THAN_SIGN 62
+#define QUESTION_MARK 63
+#define AT_SIGN 64
 
 #define JOIN 127
 
@@ -298,7 +305,7 @@ void parsearguments(void)
                                          addressof(optionindex));
         if (getoptreturnval == -1) {
             ;
-        } else if (getoptreturnval == 63) {
+        } else if (getoptreturnval == QUESTION_MARK) {
             usage("otangle");
         } else if ((strcmp(longoptions[optionindex].name, "help") == 0)) {
             usagehelp(OTANGLEHELP, nil);
@@ -355,13 +362,13 @@ void initialize(void)
     xchr[ASCII_7] = '7';
     xchr[ASCII_8] = '8';
     xchr[ASCII_9] = '9';
-    xchr[58] = ':';
-    xchr[59] = ';';
-    xchr[60] = '<';
-    xchr[61] = '=';
-    xchr[62] = '>';
-    xchr[63] = '?';
-    xchr[64] = '@';
+    xchr[COLON] = ':';
+    xchr[SEMICOLON] = ';';
+    xchr[LESS_THAN_SIGN] = '<';
+    xchr[EQUALS_SIGN] = '=';
+    xchr[GREATER_THAN_SIGN] = '>';
+    xchr[QUESTION_MARK] = '?';
+    xchr[AT_SIGN] = '@';
     xchr[65] = 'A';
     xchr[66] = 'B';
     xchr[67] = 'C';
@@ -769,7 +776,7 @@ namepointer zidlookup(eightbits t)
                         while (poolchecksum > 0x1FFFFFB7)
                             poolchecksum = poolchecksum - 0x1FFFFFB7;
                         if ((buffer[i] == DOUBLEQUOTE)
-                            || (buffer[i] == 64))
+                            || (buffer[i] == AT_SIGN))
                             i = i + 2;
                         else
                             i = i + 1;
@@ -1407,7 +1414,7 @@ void zsendout(eightbits t, sixteenbits v)
     }
     if (outptr > linelength)
         flushbuffer();
-    if ((t == 0) && ((v == 59) || (v == 125))) {
+    if ((t == 0) && ((v == SEMICOLON) || (v == 125))) {
         semiptr = outptr;
         breakptr = outptr;
     }
@@ -1790,36 +1797,36 @@ void sendtheoutput(void)
             break;
         case 24:
             {
-                outcontrib[1] = 58;
-                outcontrib[2] = 61;
+                outcontrib[1] = COLON;
+                outcontrib[2] = EQUALS_SIGN;
                 sendout(1, 2);
             }
             break;
         case 26:
             {
-                outcontrib[1] = 60;
-                outcontrib[2] = 62;
+                outcontrib[1] = LESS_THAN_SIGN;
+                outcontrib[2] = GREATER_THAN_SIGN;
                 sendout(1, 2);
             }
             break;
         case 28:
             {
-                outcontrib[1] = 60;
-                outcontrib[2] = 61;
+                outcontrib[1] = LESS_THAN_SIGN;
+                outcontrib[2] = EQUALS_SIGN;
                 sendout(1, 2);
             }
             break;
         case 29:
             {
-                outcontrib[1] = 62;
-                outcontrib[2] = 61;
+                outcontrib[1] = GREATER_THAN_SIGN;
+                outcontrib[2] = EQUALS_SIGN;
                 sendout(1, 2);
             }
             break;
         case 30:
             {
-                outcontrib[1] = 61;
-                outcontrib[2] = 61;
+                outcontrib[1] = EQUALS_SIGN;
+                outcontrib[2] = EQUALS_SIGN;
                 sendout(1, 2);
             }
             break;
@@ -1864,13 +1871,13 @@ void sendtheoutput(void)
         case ASTERISK:
         case COMMA:
         case FORWARD_SLASH:
-        case 58:
-        case 59:
-        case 60:
-        case 61:
-        case 62:
-        case 63:
-        case 64:
+        case COLON:
+        case SEMICOLON:
+        case LESS_THAN_SIGN:
+        case EQUALS_SIGN:
+        case GREATER_THAN_SIGN:
+        case QUESTION_MARK:
+        case AT_SIGN:
         case 91:
         case 92:
         case 93:
@@ -1911,12 +1918,12 @@ void sendtheoutput(void)
                 else
                     sendout(0, 91);
                 if (curval < 0) {
-                    sendout(0, 58);
+                    sendout(0, COLON);
                     sendval(-(integer) curval);
                 } else {
 
                     sendval(curval);
-                    sendout(0, 58);
+                    sendout(0, COLON);
                 }
                 if (bracelevel == 0)
                     sendout(0, 125);
@@ -2029,7 +2036,7 @@ void primethechangebuffer(void)
             goto exit;
         if (limit < 2)
             goto continue_;
-        if (buffer[0] != 64)
+        if (buffer[0] != AT_SIGN)
             goto continue_;
         if ((buffer[1] >= 88) && (buffer[1] <= 90))
             buffer[1] = buffer[1] + 32; /*lowercasify*/
@@ -2102,7 +2109,7 @@ void checkchange(void)
         }
         if (limit > 1) {
 
-            if (buffer[0] == 64) {
+            if (buffer[0] == AT_SIGN) {
                 if ((buffer[1] >= 88) && (buffer[1] <= 90))
                     buffer[1] = buffer[1] + 32;
                 if ((buffer[1] == 120) || (buffer[1] == 122)) {
@@ -2171,13 +2178,13 @@ void getline(void)
                 Fputs(stdout, "! Change file ended without @z");
                 error();
             }
-            buffer[0] = 64;
+            buffer[0] = AT_SIGN;
             buffer[1] = 122;
             limit = 2;
         }
         if (limit > 1) {
 
-            if (buffer[0] == 64) {
+            if (buffer[0] == AT_SIGN) {
                 if ((buffer[1] >= 88) && (buffer[1] <= 90))
                     buffer[1] = buffer[1] + 32;
                 if ((buffer[1] == 120) || (buffer[1] == 121)) {
@@ -2222,7 +2229,7 @@ eightbits zcontrolcode(ASCIIcode c)
 {
     register eightbits Result;
     switch (c) {
-    case 64:
+    case AT_SIGN:
         Result = 64;
         break;
     case SINGLE_QUOTE:
@@ -2267,16 +2274,16 @@ eightbits zcontrolcode(ASCIIcode c)
     case 116:
     case 94:
     case PERIOD:
-    case 58:
+    case COLON:
         Result = CONTROL_TEXT;
         break;
     case AMPERSAND:
         Result = JOIN;
         break;
-    case 60:
+    case LESS_THAN_SIGN:
         Result = MODULE_NAME;
         break;
-    case 61:
+    case EQUALS_SIGN:
         Result = 2;
         break;
     case 92:
@@ -2302,13 +2309,13 @@ eightbits skipahead(void)
                 goto done;
             }
         }
-        buffer[limit + 1] = 64;
-        while (buffer[loc] != 64)
+        buffer[limit + 1] = AT_SIGN;
+        while (buffer[loc] != AT_SIGN)
             loc = loc + 1;
         if (loc <= limit) {
             loc = loc + 2;
             c = controlcode(buffer[loc - 1]);
-            if ((c != 0) || (buffer[loc - 1] == 62))
+            if ((c != 0) || (buffer[loc - 1] == GREATER_THAN_SIGN))
                 goto done;
         }
     }
@@ -2336,7 +2343,7 @@ void skipcomment(void)
         }
         c = buffer[loc];
         loc = loc + 1;
-        if (c == 64) {
+        if (c == AT_SIGN) {
             c = buffer[loc];
             if ((c != SPACE) && (c != 9) && (c != ASTERISK) && (c != 122)
                 && (c != 90))
@@ -2351,7 +2358,7 @@ void skipcomment(void)
                 loc = loc - 1;
                 goto exit;
             }
-        } else if ((c == 92) && (buffer[loc] != 64))
+        } else if ((c == 92) && (buffer[loc] != AT_SIGN))
             loc = loc + 1;
         else if (c == 123)
             bal = bal + 1;
@@ -2471,7 +2478,7 @@ eightbits getnext(void)
             do {
                 d = buffer[loc];
                 loc = loc + 1;
-                if ((d == DOUBLEQUOTE) || (d == 64)) {
+                if ((d == DOUBLEQUOTE) || (d == AT_SIGN)) {
 
                     if (buffer[loc] == d) {
                         loc = loc + 1;
@@ -2479,7 +2486,7 @@ eightbits getnext(void)
                         doublechars = doublechars + 1;
                     } else {
 
-                        if (d == 64) {
+                        if (d == AT_SIGN) {
                             putc('\n', stdout);
                             Fputs(stdout, "! Double @ sign missing");
                             error();
@@ -2499,7 +2506,7 @@ eightbits getnext(void)
             c = 130;
         }
         break;
-    case 64:
+    case AT_SIGN:
         {
             c = controlcode(buffer[loc]);
             loc = loc + 1;
@@ -2523,9 +2530,9 @@ eightbits getnext(void)
                         }
                     }
                     d = buffer[loc];
-                    if (d == 64) {
+                    if (d == AT_SIGN) {
                         d = buffer[loc + 1];
-                        if (d == 62) {
+                        if (d == GREATER_THAN_SIGN) {
                             loc = loc + 2;
                             goto done;
                         }
@@ -2539,7 +2546,7 @@ eightbits getnext(void)
                             goto done;
                         }
                         k = k + 1;
-                        modtext[k] = 64;
+                        modtext[k] = AT_SIGN;
                         loc = loc + 1;
                     }
                     loc = loc + 1;
@@ -2585,8 +2592,8 @@ eightbits getnext(void)
                 do {
                     c = skipahead();
                 }
-                while (!(c != 64));
-                if (buffer[loc - 1] != 62) {
+                while (!(c != AT_SIGN));
+                if (buffer[loc - 1] != GREATER_THAN_SIGN) {
                     putc('\n', stdout);
                     Fputs(stdout, "! Improper @ within control text");
                     error();
@@ -2608,37 +2615,37 @@ eightbits getnext(void)
             }
         }
         break;
-    case 58:
-        if (buffer[loc] == 61) {
+    case COLON:
+        if (buffer[loc] == EQUALS_SIGN) {
             if (loc <= limit) {
                 c = 24;
                 loc = loc + 1;
             }
         }
         break;
-    case 61:
-        if (buffer[loc] == 61) {
+    case EQUALS_SIGN:
+        if (buffer[loc] == EQUALS_SIGN) {
             if (loc <= limit) {
                 c = 30;
                 loc = loc + 1;
             }
         }
         break;
-    case 62:
-        if (buffer[loc] == 61) {
+    case GREATER_THAN_SIGN:
+        if (buffer[loc] == EQUALS_SIGN) {
             if (loc <= limit) {
                 c = 29;
                 loc = loc + 1;
             }
         }
         break;
-    case 60:
-        if (buffer[loc] == 61) {
+    case LESS_THAN_SIGN:
+        if (buffer[loc] == EQUALS_SIGN) {
             if (loc <= limit) {
                 c = 28;
                 loc = loc + 1;
             }
-        } else if (buffer[loc] == 62) {
+        } else if (buffer[loc] == GREATER_THAN_SIGN) {
             if (loc <= limit) {
                 c = 26;
                 loc = loc + 1;
@@ -2797,7 +2804,7 @@ void zscannumeric(namepointer p)
         case NEW_MODULE:
             goto done;
             break;
-        case 59:
+        case SEMICOLON:
             {
                 putc('\n', stdout);
                 Fputs(stdout, "! Omit semicolon in numeric definition");
@@ -2877,9 +2884,9 @@ void zscanrepl(eightbits t)
                         tokmem[z][tokptr[z]] = b;
                         tokptr[z] = tokptr[z] + 1;
                     }
-                    if (b == 64) {
+                    if (b == AT_SIGN) {
 
-                        if (buffer[loc] == 64)
+                        if (buffer[loc] == AT_SIGN)
                             loc = loc + 1;
                         else {
 
@@ -2983,11 +2990,11 @@ void zscanrepl(eightbits t)
                     tokmem[z][tokptr[z]] = 2;
                     tokptr[z] = tokptr[z] + 1;
                 }
-                buffer[limit + 1] = 64;
- reswitch:        if (buffer[loc] == 64) {
+                buffer[limit + 1] = AT_SIGN;
+ reswitch:        if (buffer[loc] == AT_SIGN) {
                     if (loc < limit) {
 
-                        if (buffer[loc + 1] == 64) {
+                        if (buffer[loc + 1] == AT_SIGN) {
                             {
                                 if (tokptr[z] == maxtoks) {
                                     putc('\n', stdout);
@@ -3000,7 +3007,7 @@ void zscanrepl(eightbits t)
                                     history = FATAL_MESSAGE;
                                     uexit(1);
                                 }
-                                tokmem[z][tokptr[z]] = 64;
+                                tokmem[z][tokptr[z]] = AT_SIGN;
                                 tokptr[z] = tokptr[z] + 1;
                             }
                             loc = loc + 2;
@@ -3029,7 +3036,7 @@ void zscanrepl(eightbits t)
                     putc('\n', stdout);
                     Fputs(stdout, "! Verbatim string didn't end");
                     error();
-                } else if (buffer[loc + 1] != 62) {
+                } else if (buffer[loc + 1] != GREATER_THAN_SIGN) {
                     putc('\n', stdout);
                     Fputs(stdout,
                           "! You should double @ signs in verbatim strings");
@@ -3158,7 +3165,7 @@ void scanmodule(void)
             goto continue_;
         }
         nextcontrol = getnext();
-        if (nextcontrol == 61) {
+        if (nextcontrol == EQUALS_SIGN) {
             scannumeric(idlookup(1));
             goto continue_;
         } else if (nextcontrol == 30) {
@@ -3170,7 +3177,7 @@ void scanmodule(void)
                 nextcontrol = getnext();
                 if (nextcontrol == RIGHT_PAREN) {
                     nextcontrol = getnext();
-                    if (nextcontrol == 61) {
+                    if (nextcontrol == EQUALS_SIGN) {
                         {
                             putc('\n', stdout);
                             Fputs(stdout, "! Use == for macros");
@@ -3203,7 +3210,7 @@ void scanmodule(void)
                 nextcontrol = getnext();
             }
             while (!(nextcontrol != PLUS_SIGN));
-            if ((nextcontrol != 61) && (nextcontrol != 30)) {
+            if ((nextcontrol != EQUALS_SIGN) && (nextcontrol != 30)) {
                 {
                     putc('\n', stdout);
                     Fputs(stdout, "! Pascal text flushed, = sign is missing");

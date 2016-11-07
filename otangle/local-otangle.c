@@ -78,6 +78,16 @@ typedef struct {
 #define MINUS_SIGN 45
 #define PERIOD 46
 #define FORWARD_SLASH 47
+#define ASCII_0 48
+#define ASCII_1 49
+#define ASCII_2 50
+#define ASCII_3 51
+#define ASCII_4 52
+#define ASCII_5 53
+#define ASCII_6 54
+#define ASCII_7 55
+#define ASCII_8 56
+#define ASCII_9 57
 
 #define JOIN 127
 
@@ -335,16 +345,16 @@ void initialize(void)
     xchr[MINUS_SIGN] = '-';
     xchr[PERIOD] = '.';
     xchr[FORWARD_SLASH] = '/';
-    xchr[48] = '0';
-    xchr[49] = '1';
-    xchr[50] = '2';
-    xchr[51] = '3';
-    xchr[52] = '4';
-    xchr[53] = '5';
-    xchr[54] = '6';
-    xchr[55] = '7';
-    xchr[56] = '8';
-    xchr[57] = '9';
+    xchr[ASCII_0] = '0';
+    xchr[ASCII_1] = '1';
+    xchr[ASCII_2] = '2';
+    xchr[ASCII_3] = '3';
+    xchr[ASCII_4] = '4';
+    xchr[ASCII_5] = '5';
+    xchr[ASCII_6] = '6';
+    xchr[ASCII_7] = '7';
+    xchr[ASCII_8] = '8';
+    xchr[ASCII_9] = '9';
     xchr[58] = ':';
     xchr[59] = ';';
     xchr[60] = '<';
@@ -747,7 +757,7 @@ namepointer zidlookup(eightbits t)
                         error();
                     }
                     stringptr = stringptr + 1;
-                    fprintf(pool, "%c%c", xchr[48 + l / 10], xchr[48 + l % 10]);
+                    fprintf(pool, "%c%c", xchr[ASCII_0 + l / 10], xchr[ASCII_0 + l % 10]);
                     poolchecksum = poolchecksum + poolchecksum + l;
                     while (poolchecksum > 0x1FFFFFB7)
                         poolchecksum = poolchecksum - 0x1FFFFFB7;
@@ -1288,7 +1298,7 @@ void zappval(integer v)
     do {
         k = k + 1;
         {
-            outbuf[outptr] = outbuf[k] + 48;
+            outbuf[outptr] = outbuf[k] + ASCII_0;
             outptr = outptr + 1;
         }
     }
@@ -1645,20 +1655,20 @@ void sendtheoutput(void)
                 sendout(2, k);
             }
             break;
-        case 48:
-        case 49:
-        case 50:
-        case 51:
-        case 52:
-        case 53:
-        case 54:
-        case 55:
-        case 56:
-        case 57:
+        case ASCII_0:
+        case ASCII_1:
+        case ASCII_2:
+        case ASCII_3:
+        case ASCII_4:
+        case ASCII_5:
+        case ASCII_6:
+        case ASCII_7:
+        case ASCII_8:
+        case ASCII_9:
             {
                 n = 0;
                 do {
-                    curchar = curchar - 48;
+                    curchar = curchar - ASCII_0;
                     if (n >= 0xCCCCCCC) {
                         putc('\n', stdout);
                         Fputs(stdout, "! Constant too big");
@@ -1667,7 +1677,7 @@ void sendtheoutput(void)
                         n = 10 * n + curchar;
                     curchar = getoutput();
                 }
-                while (!((curchar > 57) || (curchar < 48)));
+                while (!((curchar > ASCII_9) || (curchar < ASCII_0)));
                 sendval(n);
                 k = 0;
                 if (curchar == 101)
@@ -1684,9 +1694,9 @@ void sendtheoutput(void)
         case 12:
             {
                 n = 0;
-                curchar = 48;
+                curchar = ASCII_0;
                 do {
-                    curchar = curchar - 48;
+                    curchar = curchar - ASCII_0;
                     if (n >= 0x10000000) {
                         putc('\n', stdout);
                         Fputs(stdout, "! Constant too big");
@@ -1695,7 +1705,7 @@ void sendtheoutput(void)
                         n = 8 * n + curchar;
                     curchar = getoutput();
                 }
-                while (!((curchar > 55) || (curchar < 48)));
+                while (!((curchar > ASCII_7) || (curchar < ASCII_0)));
                 sendval(n);
                 goto reswitch;
             }
@@ -1703,12 +1713,12 @@ void sendtheoutput(void)
         case 13:
             {
                 n = 0;
-                curchar = 48;
+                curchar = ASCII_0;
                 do {
                     if (curchar >= 65)
-                        curchar = curchar - 55;
+                        curchar = curchar - ASCII_7;
                     else
-                        curchar = curchar - 48;
+                        curchar = curchar - ASCII_0;
                     if (n >= 0x8000000) {
                         putc('\n', stdout);
                         Fputs(stdout, "! Constant too big");
@@ -1717,8 +1727,8 @@ void sendtheoutput(void)
                         n = 16 * n + curchar;
                     curchar = getoutput();
                 }
-                while (!((curchar > 70) || (curchar < 48)
-                         || ((curchar > 57)
+                while (!((curchar > 70) || (curchar < ASCII_0)
+                         || ((curchar > ASCII_9)
                              && (curchar < 65))));
                 sendval(n);
                 goto reswitch;
@@ -1735,7 +1745,7 @@ void sendtheoutput(void)
                 if (curchar == PERIOD) {
                     outcontrib[2] = PERIOD;
                     sendout(1, 2);
-                } else if ((curchar >= 48) && (curchar <= 57))
+                } else if ((curchar >= ASCII_0) && (curchar <= ASCII_9))
                     goto lab2;
                 else {
 
@@ -1974,7 +1984,7 @@ void sendtheoutput(void)
             } else if (curchar == 101)
                 curchar = 69;
         }
-        while (!((curchar != 69) && ((curchar < 48) || (curchar > 57))));
+        while (!((curchar != 69) && ((curchar < ASCII_0) || (curchar > ASCII_9))));
         if (k == linelength) {
             putc('\n', stdout);
             Fputs(stdout, "! Fraction too long");
@@ -2371,7 +2381,7 @@ eightbits getnext(void)
     loc = loc + 1;
     if (scanninghex) {
 
-        if (((c >= 48) && (c <= 57)) || ((c >= 65) && (c <= 70)))
+        if (((c >= ASCII_0) && (c <= ASCII_9)) || ((c >= 65) && (c <= 70)))
             goto found;
         else
             scanninghex = false;
@@ -2432,8 +2442,8 @@ eightbits getnext(void)
         {
             if (((c == 101) || (c == 69)) && (loc > 1)) {
 
-                if ((buffer[loc - 2] <= 57)
-                    && (buffer[loc - 2] >= 48))
+                if ((buffer[loc - 2] <= ASCII_9)
+                    && (buffer[loc - 2] >= ASCII_0))
                     c = 0;
             }
             if (c != 0) {
@@ -2443,7 +2453,7 @@ eightbits getnext(void)
                     loc = loc + 1;
                     d = buffer[loc];
                 }
-                while (!(((d < 48) || ((d > 57) && (d < 65))
+                while (!(((d < ASCII_0) || ((d > ASCII_9) && (d < 65))
                           || ((d > 90) && (d < 97))
                           || (d > 122)) && (d != 95)));
                 if (loc > idfirst + 1) {
@@ -2698,24 +2708,24 @@ void zscannumeric(namepointer p)
 
         nextcontrol = getnext();
  reswitch:switch (nextcontrol) {
-        case 48:
-        case 49:
-        case 50:
-        case 51:
-        case 52:
-        case 53:
-        case 54:
-        case 55:
-        case 56:
-        case 57:
+        case ASCII_0:
+        case ASCII_1:
+        case ASCII_2:
+        case ASCII_3:
+        case ASCII_4:
+        case ASCII_5:
+        case ASCII_6:
+        case ASCII_7:
+        case ASCII_8:
+        case ASCII_9:
             {
                 val = 0;
                 do {
-                    val = 10 * val + nextcontrol - 48;
+                    val = 10 * val + nextcontrol - ASCII_0;
                     nextcontrol = getnext();
                 }
-                while (!((nextcontrol > 57)
-                         || (nextcontrol < 48)));
+                while (!((nextcontrol > ASCII_9)
+                         || (nextcontrol < ASCII_0)));
                 {
                     accumulator = accumulator + nextsign * (val);
                     nextsign = 1;
@@ -2726,13 +2736,13 @@ void zscannumeric(namepointer p)
         case 12:
             {
                 val = 0;
-                nextcontrol = 48;
+                nextcontrol = ASCII_0;
                 do {
-                    val = 8 * val + nextcontrol - 48;
+                    val = 8 * val + nextcontrol - ASCII_0;
                     nextcontrol = getnext();
                 }
-                while (!((nextcontrol > 55)
-                         || (nextcontrol < 48)));
+                while (!((nextcontrol > ASCII_7)
+                         || (nextcontrol < ASCII_0)));
                 {
                     accumulator = accumulator + nextsign * (val);
                     nextsign = 1;
@@ -2743,15 +2753,15 @@ void zscannumeric(namepointer p)
         case 13:
             {
                 val = 0;
-                nextcontrol = 48;
+                nextcontrol = ASCII_0;
                 do {
                     if (nextcontrol >= 65)
                         nextcontrol = nextcontrol - 7;
-                    val = 16 * val + nextcontrol - 48;
+                    val = 16 * val + nextcontrol - ASCII_0;
                     nextcontrol = getnext();
                 }
-                while (!((nextcontrol > 70) || (nextcontrol < 48)
-                         || ((nextcontrol > 57)
+                while (!((nextcontrol > 70) || (nextcontrol < ASCII_0)
+                         || ((nextcontrol > ASCII_9)
                              && (nextcontrol < 65))));
                 {
                     accumulator = accumulator + nextsign * (val);
@@ -3211,7 +3221,7 @@ void scanmodule(void)
         goto exit;
         break;
     }
-    storetwobytes(53248L + modulecount);
+    storetwobytes(0xD000 + modulecount);
     scanrepl(MODULE_NAME);
     if (p == 0) {
         textlink[lastunnamed] = currepltext;
@@ -3344,7 +3354,7 @@ void mainbody(void)
             for_end = 1;
             if (ii >= for_end)
                 do
-                    putc(xchr[48 + outbuf[ii]], pool);
+                    putc(xchr[ASCII_0 + outbuf[ii]], pool);
                 while (ii-- > for_end);
         }
         putc('\n', pool);

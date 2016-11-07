@@ -2583,100 +2583,104 @@ getnext(void)
 	c = IDENTIFIER;
         break;
     case AT_SIGN:
-        {
-            c = controlcode(buffer[loc]);
-            loc = loc + 1;
-            if (c == PARAM)
-                goto restart;
-            else if (c == HEX)
-                scanninghex = true;
-            else if (c == MODULE_NAME) {
-                k = 0;
-                while (true) {
+	c = controlcode(buffer[loc]);
+	loc = loc + 1;
+	if (c == PARAM)
+	    goto restart;
+	else if (c == HEX)
+	    scanninghex = true;
+	else if (c == MODULE_NAME) {
+	    k = 0;
 
-                    if (loc > limit) {
-                        getline();
-                        if (inputhasended) {
-                            {
-                                putc('\n', stdout);
-                                Fputs(stdout, "! Input ended in section name");
-                                error();
-                            }
-                            goto done;
-                        }
-                    }
-                    d = buffer[loc];
-                    if (d == AT_SIGN) {
-                        d = buffer[loc + 1];
-                        if (d == GREATER_THAN_SIGN) {
-                            loc = loc + 2;
-                            goto done;
-                        }
-                        if ((d == SPACE) || (d == TAB_MARK)
-                            || (d == ASTERISK)) {
-                            {
-                                putc('\n', stdout);
-                                Fputs(stdout, "! Section name didn't end");
-                                error();
-                            }
-                            goto done;
-                        }
-                        k = k + 1;
-                        modtext[k] = AT_SIGN;
-                        loc = loc + 1;
-                    }
-                    loc = loc + 1;
-                    if (k < longestname - 1)
-                        k = k + 1;
-                    if ((d == SPACE) || (d == TAB_MARK)) {
-                        d = SPACE;
-                        if (modtext[k - 1] == SPACE)
-                            k = k - 1;
-                    }
-                    modtext[k] = d;
-                }
- done:        if (k >= longestname - 2) {
-                    {
-                        putc('\n', stdout);
-                        Fputs(stdout, "! Section name too long: ");
-                    }
-                    {
-                        register integer for_end;
-                        j = 1;
-                        for_end = 25;
-                        if (j <= for_end)
-                            do
-                                putc(xchr[modtext[j]], stdout);
-                            while (j++ < for_end);
-                    }
-                    Fputs(stdout, "...");
-                    if (history == SPOTLESS)
-                        history = HARMLESS_MESSAGE;
-                }
-                if ((modtext[k] == SPACE) && (k > 0))
-                    k = k - 1;
-                if (k > 3) {
-                    if ((modtext[k] == PERIOD)
-                        && (modtext[k - 1] == PERIOD)
-                        && (modtext[k - 2] == PERIOD))
-                        curmodule = prefixlookup(k - 3);
-                    else
-                        curmodule = modlookup(k);
-                } else
-                    curmodule = modlookup(k);
-            } else if (c == CONTROL_TEXT) {
-                do {
-                    c = skipahead();
-                }
-                while (!(c != AT_SIGN));
-                if (buffer[loc - 1] != GREATER_THAN_SIGN) {
-                    putc('\n', stdout);
-                    Fputs(stdout, "! Improper @ within control text");
-                    error();
-                }
-                goto restart;
-            }
-        }
+	    while (true) {
+		if (loc > limit) {
+		    getline();
+		    if (inputhasended) {
+			putc('\n', stdout);
+			Fputs(stdout, "! Input ended in section name");
+			error();
+			goto done;
+		    }
+		}
+
+		d = buffer[loc];
+
+		if (d == AT_SIGN) {
+		    d = buffer[loc + 1];
+		    if (d == GREATER_THAN_SIGN) {
+			loc = loc + 2;
+			goto done;
+		    }
+
+		    if ((d == SPACE) || (d == TAB_MARK) || (d == ASTERISK)) {
+			putc('\n', stdout);
+			Fputs(stdout, "! Section name didn't end");
+			error();
+			goto done;
+		    }
+
+		    k = k + 1;
+		    modtext[k] = AT_SIGN;
+		    loc = loc + 1;
+		}
+
+		loc = loc + 1;
+
+		if (k < longestname - 1)
+		    k = k + 1;
+
+		if ((d == SPACE) || (d == TAB_MARK)) {
+		    d = SPACE;
+		    if (modtext[k - 1] == SPACE)
+			k = k - 1;
+		}
+		modtext[k] = d;
+	    }
+	done:
+	    if (k >= longestname - 2) {
+		putc('\n', stdout);
+		Fputs(stdout, "! Section name too long: ");
+
+		{
+		    register integer for_end;
+		    j = 1;
+		    for_end = 25;
+		    if (j <= for_end)
+			do
+			    putc(xchr[modtext[j]], stdout);
+			while (j++ < for_end);
+		}
+
+		Fputs(stdout, "...");
+		if (history == SPOTLESS)
+		    history = HARMLESS_MESSAGE;
+	    }
+
+	    if ((modtext[k] == SPACE) && (k > 0))
+		k = k - 1;
+
+	    if (k > 3) {
+		if ((modtext[k] == PERIOD)
+		    && (modtext[k - 1] == PERIOD)
+		    && (modtext[k - 2] == PERIOD))
+		    curmodule = prefixlookup(k - 3);
+		else
+		    curmodule = modlookup(k);
+	    } else
+		curmodule = modlookup(k);
+	} else if (c == CONTROL_TEXT) {
+	    do {
+		c = skipahead();
+	    } while (!(c != AT_SIGN));
+
+	    if (buffer[loc - 1] != GREATER_THAN_SIGN) {
+		putc('\n', stdout);
+		Fputs(stdout, "! Improper @ within control text");
+		error();
+	    }
+
+	    goto restart;
+	}
         break;
     case PERIOD:
         if (buffer[loc] == PERIOD) {

@@ -3310,9 +3310,9 @@ void scanmodule(void)
 
 void mainbody(void)
 {
-
     initialize();
     openinput();
+
     line = 0;
     otherline = 0;
     changing = true;
@@ -3327,14 +3327,17 @@ void mainbody(void)
     inputhasended = false;
     Fputs(stdout, "This is OTANGLE, Version 4.4");
     fprintf(stdout, "%s\n", versionstring);
+
     phaseone = true;
     modulecount = 0;
+
     do {
         nextcontrol = skipahead();
-    }
-    while (!(nextcontrol == NEW_MODULE));
+    } while (nextcontrol != NEW_MODULE);
+
     while (!inputhasended)
-        scanmodule();
+        scanmodule ();
+
     if (changelimit != 0) {
         {
             register integer for_end;
@@ -3355,20 +3358,19 @@ void mainbody(void)
             error();
         }
     }
+
     phaseone = false;
+
     if (textlink[0] == 0) {
-        {
-            putc('\n', stdout);
-            Fputs(stdout, "! No output was specified.");
-        }
+	putc('\n', stdout);
+	Fputs(stdout, "! No output was specified.");
+
         if (history == SPOTLESS)
             history = HARMLESS_MESSAGE;
     } else {
+	putc('\n', stdout);
+	Fputs(stdout, "Writing the output file");
 
-        {
-            putc('\n', stdout);
-            Fputs(stdout, "Writing the output file");
-        }
         fflush(stdout);
         stackptr = 1;
         bracelevel = 0;
@@ -3384,27 +3386,28 @@ void mainbody(void)
         semiptr = 0;
         outbuf[0] = 0;
         line = 1;
-        sendtheoutput();
+        sendtheoutput ();
+
         breakptr = outptr;
         semiptr = 0;
-        flushbuffer();
+        flushbuffer ();
+
         if (bracelevel != 0) {
             putc('\n', stdout);
             fprintf(stdout, "%s%ld",
                     "! Program ended at brace level ", (long)bracelevel);
             error();
         }
-        {
-            putc('\n', stdout);
-            Fputs(stdout, "Done.");
-        }
+
+	putc('\n', stdout);
+	Fputs(stdout, "Done.");
     }
+
     if (stringptr > NUMBER_CHARS) {
-        {
-            putc('\n', stdout);
-            fprintf(stdout, "%ld%s", (long)stringptr - NUMBER_CHARS,
-                    " strings written to string pool file.");
-        }
+	putc('\n', stdout);
+	fprintf(stdout, "%ld%s", (long)stringptr - NUMBER_CHARS,
+		" strings written to string pool file.");
+
         putc('*', pool);
         {
             register integer for_end;
@@ -3428,33 +3431,27 @@ void mainbody(void)
         }
         putc('\n', pool);
     }
+
     switch (history) {
     case SPOTLESS:
-        {
-            putc('\n', stdout);
-            Fputs(stdout, "(No errors were found.)");
-        }
+	putc('\n', stdout);
+	Fputs(stdout, "(No errors were found.)");
         break;
     case HARMLESS_MESSAGE:
-        {
-            putc('\n', stdout);
-            Fputs(stdout, "(Did you see the warning message above?)");
-        }
+	putc('\n', stdout);
+	Fputs(stdout, "(Did you see the warning message above?)");
         break;
     case ERROR_MESSAGE:
-        {
-            putc('\n', stdout);
-            Fputs(stdout,
-                  "(Pardon me, but I think I spotted something wrong.)");
-        }
+	putc('\n', stdout);
+	Fputs(stdout,
+	      "(Pardon me, but I think I spotted something wrong.)");
         break;
     case FATAL_MESSAGE:
-        {
-            putc('\n', stdout);
-            Fputs(stdout, "(That was a fatal error, my friend.)");
-        }
+	putc('\n', stdout);
+	Fputs(stdout, "(That was a fatal error, my friend.)");
         break;
     }
+
     putc('\n', stdout);
     if ((history != SPOTLESS) && (history != HARMLESS_MESSAGE))
         uexit(1);

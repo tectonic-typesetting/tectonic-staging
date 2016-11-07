@@ -183,6 +183,18 @@ typedef struct {
 #define PREFIX 3
 #define EXTENSION 4
 
+#define MISC 0 /* send_out "t" codes */
+#define STR 1
+#define IDENT 2
+#define FRAC 3
+
+#define NUM_OR_ID 1 /* out_state codes; MISC is also relevant */
+#define SIGN 2
+#define SIGN_VAL 3
+#define SIGN_VAL_SIGN 4
+#define SIGN_VAL_VAL 5
+#define UNBREAKABLE 6
+
 /* end of magic constants */
 
 unsigned char history;
@@ -1077,7 +1089,7 @@ void push_level(namepointer p)
 void pop_level(void)
 {
     if (textlink[curstate.replfield] == 0) {
-        if (ilk[curstate.namefield] == 3) {
+        if (ilk[curstate.namefield] == PARAMETRIC) {
             nameptr = nameptr - 1;
             textptr = textptr - 1;
             z = textptr % 4;
@@ -1377,16 +1389,16 @@ void send_out(eightbits t, sixteenbits v)
 {
     /* 20 */ integer k;
  restart:switch (outstate) {
-    case 1:
-        if (t != 3) {
+    case NUM_OR_ID:
+        if (t != FRAC) {
             breakptr = outptr;
-            if (t == 2) {
+            if (t == IDENT) {
                 outbuf[outptr] = SPACE;
                 outptr = outptr + 1;
             }
         }
         break;
-    case 2:
+    case SIGN:
         {
             {
                 outbuf[outptr] = COMMA - outapp;
@@ -1397,8 +1409,8 @@ void send_out(eightbits t, sixteenbits v)
             breakptr = outptr;
         }
         break;
-    case 3:
-    case 4:
+    case SIGN_VAL:
+    case SIGN_VAL_SIGN:
         {
             if ((outval < 0) || ((outval == 0) && (lastsign < 0))) {
                 outbuf[outptr] = MINUS_SIGN;
@@ -1414,7 +1426,7 @@ void send_out(eightbits t, sixteenbits v)
             goto restart;
         }
         break;
-    case 5:
+    case SIGN_VAL_VAL:
         {
             if ((t == 3)
                 || (((t == 2) && (v == 3)
@@ -1446,19 +1458,17 @@ void send_out(eightbits t, sixteenbits v)
                 outval = outapp;
             } else
                 outval = outval + outapp;
-            outstate = 3;
+            outstate = SIGN_VAL;
             goto restart;
         }
         break;
-    case 0:
-        if (t != 3)
+    case MISC:
+        if (t != FRAC)
             breakptr = outptr;
         break;
-    default:
-        ;
-        break;
     }
-    if (t != 0) {
+
+    if (t != MISC) {
         register integer for_end;
         k = 1;
         for_end = v;
@@ -1469,47 +1479,48 @@ void send_out(eightbits t, sixteenbits v)
             }
             while (k++ < for_end);
     } else {
-
         outbuf[outptr] = v;
         outptr = outptr + 1;
     }
     if (outptr > linelength)
         flushbuffer();
-    if ((t == 0) && ((v == SEMICOLON) || (v == RIGHT_BRACE))) {
+
+    if ((t == MISC) && ((v == SEMICOLON) || (v == RIGHT_BRACE))) {
         semiptr = outptr;
         breakptr = outptr;
     }
-    if (t >= 2)
-        outstate = 1;
+
+    if (t >= IDENT)
+        outstate = NUM_OR_ID;
     else
-        outstate = 0;
+        outstate = MISC;
 }
 
 void sendsign(integer v)
 {
     switch (outstate) {
-    case 2:
-    case 4:
+    case SIGN:
+    case SIGN_VAL_SIGN:
         outapp = outapp * v;
         break;
-    case 3:
+    case SIGN_VAL:
         {
             outapp = v;
-            outstate = 4;
+            outstate = SIGN_VAL_SIGN;
         }
         break;
-    case 5:
+    case SIGN_VAL_VAL:
         {
             outval = outval + outapp;
             outapp = v;
-            outstate = 4;
+            outstate = SIGN_VAL_SIGN;
         }
         break;
     default:
         {
             breakptr = outptr;
             outapp = v;
-            outstate = 2;
+            outstate = SIGN;
         }
         break;
     }
@@ -1519,7 +1530,7 @@ void sendsign(integer v)
 void sendval(integer v)
 {
     /* 666 10 */ switch (outstate) {
-    case 1:
+    case NUM_OR_ID:
         {
             if ((outptr == breakptr + 3)
                 || ((outptr == breakptr + 4)
@@ -1540,35 +1551,35 @@ void sendval(integer v)
                     goto bad_case;
             }
             outsign = SPACE;
-            outstate = 3;
+            outstate = SIGN_VAL;
             outval = v;
             breakptr = outptr;
             lastsign = 1;
         }
         break;
-    case 0:
+    case MISC:
         {
             if ((outptr == breakptr + 1)
                 && ((outbuf[breakptr] == ASTERISK)
                     || (outbuf[breakptr] == FORWARD_SLASH)))
                 goto bad_case;
             outsign = 0;
-            outstate = 3;
+            outstate = SIGN_VAL;
             outval = v;
             breakptr = outptr;
             lastsign = 1;
         }
         break;
-    case 2:
+    case SIGN:
         {
             outsign = PLUS_SIGN;
-            outstate = 3;
+            outstate = SIGN_VAL;
             outval = outapp * v;
         }
         break;
-    case 3:
+    case SIGN_VAL:
         {
-            outstate = 5;
+            outstate = SIGN_VAL_VAL;
             outapp = v;
             {
                 putc('\n', stdout);
@@ -1578,13 +1589,13 @@ void sendval(integer v)
             }
         }
         break;
-    case 4:
+    case SIGN_VAL_SIGN:
         {
-            outstate = 5;
+            outstate = SIGN_VAL_VAL;
             outapp = outapp * v;
         }
         break;
-    case 5:
+    case SIGN_VAL_VAL:
         {
             outval = outval + outapp;
             outapp = v;
@@ -1602,7 +1613,7 @@ void sendval(integer v)
     }
     goto exit;
  bad_case:if (v >= 0) {
-        if (outstate == 1) {
+        if (outstate == NUM_OR_ID) {
             breakptr = outptr;
             {
                 outbuf[outptr] = SPACE;
@@ -1612,7 +1623,7 @@ void sendval(integer v)
         app_val(v);
         if (outptr > linelength)
             flushbuffer();
-        outstate = 1;
+        outstate = NUM_OR_ID;
     } else {
 
         {
@@ -1630,7 +1641,7 @@ void sendval(integer v)
         }
         if (outptr > linelength)
             flushbuffer();
-        outstate = 0;
+        outstate = MISC;
     }
  exit:;
 }
@@ -1917,7 +1928,7 @@ void sendtheoutput(void)
                 send_out(1, k);
                 curchar = get_output();
                 if (curchar == SINGLE_QUOTE)
-                    outstate = 6;
+                    outstate = UNBREAKABLE;
                 goto reswitch;
             }
             break;
@@ -1995,7 +2006,7 @@ void sendtheoutput(void)
         case JOIN:
             {
                 send_out(3, 0);
-                outstate = 6;
+                outstate = UNBREAKABLE;
             }
             break;
         case 2:
@@ -2025,7 +2036,7 @@ void sendtheoutput(void)
                         breakptr = outptr;
                     flushbuffer();
                 }
-                outstate = 0;
+                outstate = MISC;
             }
             break;
         default:
@@ -2849,7 +2860,7 @@ void scannumeric(namepointer p)
         case IDENTIFIER:
             {
                 q = id_lookup(0);
-                if (ilk[q] != 1) {
+                if (ilk[q] != NUMERIC) {
                     nextcontrol = ASTERISK;
                     goto reswitch;
                 }
@@ -3391,7 +3402,7 @@ void mainbody(void)
         curstate.bytefield = tokstart[curstate.replfield];
         curstate.endfield = tokstart[curstate.replfield + 4];
         curstate.modfield = 0;
-        outstate = 0;
+        outstate = MISC;
         outptr = 0;
         breakptr = 0;
         semiptr = 0;

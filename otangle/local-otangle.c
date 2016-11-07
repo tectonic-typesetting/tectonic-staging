@@ -121,6 +121,12 @@ typedef struct {
 #define ASCII_X 88
 #define ASCII_Y 89
 #define ASCII_Z 90
+#define LEFT_BRACKET 91
+#define BACK_SLASH 92
+#define RIGHT_BRACKET 93
+#define CARET 94
+#define UNDERSCORE 95
+#define BACKTICK 96
 
 #define JOIN 127
 
@@ -421,12 +427,12 @@ void initialize(void)
     xchr[ASCII_X] = 'X';
     xchr[89] = 'Y';
     xchr[ASCII_Z] = 'Z';
-    xchr[91] = '[';
-    xchr[92] = '\\';
-    xchr[93] = ']';
-    xchr[94] = '^';
-    xchr[95] = '_';
-    xchr[96] = '`';
+    xchr[LEFT_BRACKET] = '[';
+    xchr[BACK_SLASH] = '\\';
+    xchr[RIGHT_BRACKET] = ']';
+    xchr[CARET] = '^';
+    xchr[UNDERSCORE] = '_';
+    xchr[BACKTICK] = '`';
     xchr[97] = 'a';
     xchr[98] = 'b';
     xchr[99] = 'c';
@@ -661,7 +667,7 @@ namepointer zidlookup(eightbits t)
             h = 0;
             while ((i < idloc) && (s < unambiglength)) {
 
-                if (buffer[i] != 95) {
+                if (buffer[i] != UNDERSCORE) {
                     choppedid[s] = buffer[i];
                     h = (h + h + choppedid[s]) % hashsize;
                     s = s + 1;
@@ -707,7 +713,7 @@ namepointer zidlookup(eightbits t)
                                && (s < unambiglength)) {
 
                             c = bytemem[w][k];
-                            if (c != 95) {
+                            if (c != UNDERSCORE) {
                                 if (choppedid[s]
                                     != c)
                                     goto notfound;
@@ -1682,7 +1688,7 @@ void sendtheoutput(void)
                     k = k + 1;
                     outcontrib[k] = bytemem[w][j];
                     j = j + 1;
-                    if (outcontrib[k] == 95)
+                    if (outcontrib[k] == UNDERSCORE)
                         k = k - 1;
                 }
                 sendout(2, k);
@@ -1904,12 +1910,12 @@ void sendtheoutput(void)
         case GREATER_THAN_SIGN:
         case QUESTION_MARK:
         case AT_SIGN:
-        case 91:
-        case 92:
-        case 93:
-        case 94:
-        case 95:
-        case 96:
+        case LEFT_BRACKET:
+        case BACK_SLASH:
+        case RIGHT_BRACKET:
+        case CARET:
+        case UNDERSCORE:
+        case BACKTICK:
         case 123:
         case 124:
             sendout(0, curchar);
@@ -1919,7 +1925,7 @@ void sendtheoutput(void)
                 if (bracelevel == 0)
                     sendout(0, 123);
                 else
-                    sendout(0, 91);
+                    sendout(0, LEFT_BRACKET);
                 bracelevel = bracelevel + 1;
             }
             break;
@@ -1929,7 +1935,7 @@ void sendtheoutput(void)
                 if (bracelevel == 0)
                     sendout(0, 125);
                 else
-                    sendout(0, 93);
+                    sendout(0, RIGHT_BRACKET);
             } else {
 
                 putc('\n', stdout);
@@ -1942,7 +1948,7 @@ void sendtheoutput(void)
                 if (bracelevel == 0)
                     sendout(0, 123);
                 else
-                    sendout(0, 91);
+                    sendout(0, LEFT_BRACKET);
                 if (curval < 0) {
                     sendout(0, COLON);
                     sendval(-(integer) curval);
@@ -1954,7 +1960,7 @@ void sendtheoutput(void)
                 if (bracelevel == 0)
                     sendout(0, 125);
                 else
-                    sendout(0, 93);
+                    sendout(0, RIGHT_BRACKET);
             }
             break;
         case JOIN:
@@ -2298,7 +2304,7 @@ eightbits zcontrolcode(ASCIIcode c)
         break;
     case 84:
     case 116:
-    case 94:
+    case CARET:
     case PERIOD:
     case COLON:
         Result = CONTROL_TEXT;
@@ -2312,7 +2318,7 @@ eightbits zcontrolcode(ASCIIcode c)
     case EQUALS_SIGN:
         Result = 2;
         break;
-    case 92:
+    case BACK_SLASH:
         Result = 3;
         break;
     default:
@@ -2384,7 +2390,7 @@ void skipcomment(void)
                 loc = loc - 1;
                 goto exit;
             }
-        } else if ((c == 92) && (buffer[loc] != AT_SIGN))
+        } else if ((c == BACK_SLASH) && (buffer[loc] != AT_SIGN))
             loc = loc + 1;
         else if (c == 123)
             bal = bal + 1;
@@ -2488,7 +2494,7 @@ eightbits getnext(void)
                 }
                 while (!(((d < ASCII_0) || ((d > ASCII_9) && (d < ASCII_A))
                           || ((d > ASCII_Z) && (d < 97))
-                          || (d > 122)) && (d != 95)));
+                          || (d > 122)) && (d != UNDERSCORE)));
                 if (loc > idfirst + 1) {
                     c = 130;
                     idloc = loc;
@@ -2636,7 +2642,7 @@ eightbits getnext(void)
             }
         } else if (buffer[loc] == RIGHT_PAREN) {
             if (loc <= limit) {
-                c = 93;
+                c = RIGHT_BRACKET;
                 loc = loc + 1;
             }
         }
@@ -2686,7 +2692,7 @@ eightbits getnext(void)
             }
         } else if (buffer[loc] == PERIOD) {
             if (loc <= limit) {
-                c = 91;
+                c = LEFT_BRACKET;
                 loc = loc + 1;
             }
         }

@@ -278,7 +278,7 @@ sixteenbits get_output (void);
 void flushbuffer (void);
 void app_val (integer v);
 void send_out (eightbits t,sixteenbits v);
-void sendsign (integer v);
+void send_sign (integer v);
 void sendval (integer v);
 void sendtheoutput (void);
 boolean linesdontmatch (void);
@@ -1494,7 +1494,7 @@ restart:
         outstate = MISC;
 }
 
-void sendsign(integer v)
+void send_sign(integer v)
 {
     switch (outstate) {
     case SIGN:
@@ -1502,26 +1502,21 @@ void sendsign(integer v)
         outapp = outapp * v;
         break;
     case SIGN_VAL:
-        {
-            outapp = v;
-            outstate = SIGN_VAL_SIGN;
-        }
+	outapp = v;
+	outstate = SIGN_VAL_SIGN;
         break;
     case SIGN_VAL_VAL:
-        {
-            outval = outval + outapp;
-            outapp = v;
-            outstate = SIGN_VAL_SIGN;
-        }
+	outval = outval + outapp;
+	outapp = v;
+	outstate = SIGN_VAL_SIGN;
         break;
     default:
-        {
-            breakptr = outptr;
-            outapp = v;
-            outstate = SIGN;
-        }
+	breakptr = outptr;
+	outapp = v;
+	outstate = SIGN;
         break;
     }
+
     lastsign = outapp;
 }
 
@@ -1833,7 +1828,7 @@ void sendtheoutput(void)
             break;
         case PLUS_SIGN:
         case MINUS_SIGN:
-            sendsign(COMMA - curchar);
+            send_sign(COMMA - curchar);
             break;
         case AND_SIGN:
             {

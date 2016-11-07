@@ -178,6 +178,12 @@ typedef struct {
 #define SIMPLE 2
 #define PARAMETRIC 3
 
+#define LESS 0 /* mod_lookup results */
+#define EQUAL 1
+#define GREATER 2
+#define PREFIX 3
+#define EXTENSION 4
+
 /* end of magic constants */
 
 unsigned char history;
@@ -878,7 +884,7 @@ namepointer zmodlookup(sixteenbits l)
     unsigned char w;
     namepointer p;
     namepointer q;
-    c = VERBATIM;
+    c = GREATER;
     q = 0;
     p = ilk[0];
     while (p != 0) {
@@ -886,7 +892,7 @@ namepointer zmodlookup(sixteenbits l)
         {
             k = bytestart[p];
             w = p % 3;
-            c = 1;
+            c = EQUAL;
             j = 1;
             while ((k < bytestart[p + 3]) && (j <= l)
                    && (modtext[j] == bytemem[w][k])) {
@@ -897,20 +903,20 @@ namepointer zmodlookup(sixteenbits l)
             if (k == bytestart[p + 3]) {
 
                 if (j > l)
-                    c = 1;
+                    c = EQUAL;
                 else
-                    c = 4;
+                    c = EXTENSION;
             } else if (j > l)
-                c = 3;
+                c = PREFIX;
             else if (modtext[j] < bytemem[w][k])
-                c = PARAM;
+                c = LESS;
             else
-                c = VERBATIM;
+                c = GREATER;
         }
         q = p;
-        if (c == PARAM)
+        if (c == LESS)
             p = link[q];
-        else if (c == VERBATIM)
+        else if (c == GREATER)
             p = ilk[q];
         else
             goto found;
@@ -933,13 +939,13 @@ namepointer zmodlookup(sixteenbits l)
         uexit(1);
     }
     p = nameptr;
-    if (c == PARAM)
+    if (c == LESS)
         link[q] = p;
     else
         ilk[q] = p;
     link[p] = 0;
     ilk[p] = 0;
-    c = 1;
+    c = EQUAL;
     equiv[p] = 0;
     {
         register integer for_end;
@@ -953,7 +959,7 @@ namepointer zmodlookup(sixteenbits l)
     byteptr[w] = k + l;
     bytestart[nameptr + 3] = k + l;
     nameptr = nameptr + 1;
- found:if (c != 1) {
+ found:if (c != EQUAL) {
         {
             putc('\n', stdout);
             Fputs(stdout, "! Incompatible section names");

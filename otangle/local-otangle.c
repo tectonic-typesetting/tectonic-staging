@@ -268,6 +268,27 @@ static sixteenbits pkgw_numeric_constant_id = 0;
 static namepointer pkgw_constant_ids[pkgw_max_constants];
 static integer pkgw_constant_values[pkgw_max_constants];
 static integer pkgw_n_constants = 0;
+
+#define pkgw_max_val_stack 32
+
+typedef enum _pkgw_val_stack_type {
+    PVST_NAMED_CONSTANT,
+    PVST_NUMBER,
+} pkgw_val_stack_type;
+
+typedef struct _pkgw_val_stack_info {
+    pkgw_val_stack_type type;
+    integer sign;
+    union {
+	namepointer named;
+	integer number; /* always >= 0 */
+    } v;
+} pkgw_val_stack_info;
+
+static pkgw_val_stack_info pkgw_value_stack[pkgw_max_val_stack];
+static integer pkgw_value_stack_size = 0;
+static pkgw_val_stack_info pkgw_app_value_info;
+
 #endif
 
 /* otangle.h */
@@ -289,7 +310,11 @@ void flushbuffer (void);
 void app_val (integer v);
 void send_out (eightbits t,sixteenbits v);
 void send_sign (integer v);
-void send_val (integer v);
+#ifdef PKGW
+void send_val(integer v, pkgw_val_stack_type pkgwtype, namepointer pkgwpnt);
+#else
+void send_val(integer v);
+#endif
 void send_the_output (void);
 boolean linesdontmatch (void);
 void primethechangebuffer (void);
@@ -1231,10 +1256,11 @@ restart:
 
 		if (c == DOUBLEQUOTE) {
 		    /* This is a string constant. Nothing special. */
+		    pkgw_outputting_named_numeric_constant = false;
+		    pkgw_numeric_constant_id = 0;
 		} else {
 		    pkgw_outputting_named_numeric_constant = true;
 		    pkgw_numeric_constant_id = a;
-
 		}
 	    }
 #endif
@@ -1444,29 +1470,6 @@ void flushbuffer(void)
     }
 }
 
-#ifdef PKGW
-#define pkgw_max_val_stack 32
-
-typedef enum _pkgw_val_stack_type {
-    PVST_NAMED_CONSTANT,
-    PVST_NUMBER,
-    PVST_PLUS,
-    PVST_MINUS,
-} pkgw_val_stack_type;
-
-typedef struct _pkgw_val_stack_info {
-    pkgw_val_stack_type type;
-    union {
-	namepointer named;
-	integer number;
-    } v;
-} pkgw_val_stack_info;
-
-static pkgw_val_stack_info pkgw_value_stack[pkgw_max_val_stack];
-static integer pkgw_value_stack_size = 0;
-static boolean pkgw_value_stack_has_constant = false;
-#endif
-
 void app_val(integer v)
 {
     integer k;
@@ -1487,48 +1490,98 @@ void app_val(integer v)
     while (!(k == outbufsize));
 
 #ifdef PKGW
-    if (pkgw_value_stack_has_constant) {
+    if (pkgw_value_stack_size) {
 	int i;
-
-	outbuf[outptr] = LEFT_BRACE;
-	outptr++;
+	boolean any_constants = false;
+	integer k;
+	unsigned char w;
+	integer for_end;
+	integer p;
 
 	for (i = 0; i < pkgw_value_stack_size; i++) {
-	    switch (pkgw_value_stack[i].type) {
-	    case PVST_NAMED_CONSTANT:
-		outbuf[outptr] = ASCII_c; /*XXX*/
-		outptr++;
-		break;
-	    case PVST_NUMBER:
-		k = outbufsize;
-		v = pkgw_value_stack[i].v.number;
-		do {
-		    outbuf[k] = v % 10;
-		    v = v / 10;
-		    k = k - 1;
-		} while (v != 0);
-		do {
-		    k = k + 1;
-		    outbuf[outptr] = outbuf[k] + ASCII_0;
-		    outptr = outptr + 1;
-		} while (k != outbufsize);
-		break;
-	    case PVST_PLUS:
-		outbuf[outptr] = PLUS_SIGN;
-		outptr++;
-		break;
-	    case PVST_MINUS:
-		outbuf[outptr] = MINUS_SIGN;
-		outptr++;
+	    if (pkgw_value_stack[i].type == PVST_NAMED_CONSTANT) {
+		any_constants = true;
 		break;
 	    }
 	}
 
-	outbuf[outptr] = RIGHT_BRACE;
-	outptr++;
+	if (any_constants) {
+#if 0
+	    /* print to stderr */
+	    fprintf (stderr, "PKGWXXX");
+	    for (i = 0; i < pkgw_value_stack_size; i++) {
+
+		putc(' ', stderr);
+		putc ((pkgw_value_stack[i].sign > 0) ? ' ' : '-', stderr);
+
+		switch (pkgw_value_stack[i].type) {
+		case PVST_NAMED_CONSTANT:
+		    p = pkgw_value_stack[i].v.named;
+		    w = p % 3;
+		    k = bytestart[p];
+		    for_end = bytestart[p + 3] - 1;
+		    if (k <= for_end) {
+			do
+			    putc(xchr[bytemem[w][k]], stderr);
+			while (k++ < for_end);
+		    }
+		    break;
+		case PVST_NUMBER:
+		    fprintf (stderr, "%d", pkgw_value_stack[i].v.number);
+		    break;
+		}
+	    }
+	    fprintf (stderr, "\n");
+#endif
+#if 1
+	    /* embed as a Pascal comment XXX totally ignoring buffer overflows! */
+	    outbuf[outptr] = LEFT_BRACE;
+	    outptr++;
+
+	    for (i = 0; i < pkgw_value_stack_size; i++) {
+		if (pkgw_value_stack[i].sign < 0) {
+		    outbuf[outptr] = MINUS_SIGN;
+		    outptr++;
+		}
+
+		switch (pkgw_value_stack[i].type) {
+		case PVST_NAMED_CONSTANT:
+		    p = pkgw_value_stack[i].v.named;
+		    w = p % 3;
+		    k = bytestart[p];
+		    for_end = bytestart[p + 3] - 1;
+		    if (k <= for_end) {
+		    	do {
+		    	    outbuf[outptr] = xchr[bytemem[w][k]];
+		    	    outptr++;
+		    	} while (k++ < for_end);
+		    }
+		    break;
+
+		case PVST_NUMBER:
+		    k = outbufsize;
+		    v = pkgw_value_stack[i].v.number;
+		    do {
+			outbuf[k] = v % 10;
+			v = v / 10;
+			k = k - 1;
+		    } while (v != 0);
+		    do {
+			k = k + 1;
+			outbuf[outptr] = outbuf[k] + ASCII_0;
+			outptr = outptr + 1;
+		    } while (k != outbufsize);
+		    break;
+		}
+	    }
+
+	    outbuf[outptr] = RIGHT_BRACE;
+	    outptr++;
+#endif
+	}
+
+	pkgw_value_stack_size = 0;
     }
-    pkgw_value_stack_size = 0;
-    pkgw_value_stack_has_constant = false;
 #endif
 }
 
@@ -1600,8 +1653,17 @@ restart:
 		flushbuffer();
 	    outsign = PLUS_SIGN;
 	    outval = outapp;
-	} else
+#ifdef PKGW
+	    pkgw_value_stack[0] = pkgw_app_value_info;
+	    pkgw_value_stack_size = 1;
+#endif
+	} else {
 	    outval = outval + outapp;
+#ifdef PKGW
+	    pkgw_value_stack[pkgw_value_stack_size] = pkgw_app_value_info;
+	    pkgw_value_stack_size++;
+#endif
+	}
 
 	outstate = SIGN_VAL;
 	goto restart;
@@ -1643,38 +1705,68 @@ restart:
 
 void send_sign(integer v)
 {
-#ifdef PKGW
-    if (v > 0)
-	pkgw_value_stack[pkgw_value_stack_size].type = PVST_PLUS;
-    else
-	pkgw_value_stack[pkgw_value_stack_size].type = PVST_MINUS;
-    pkgw_value_stack_size++;
-#endif
     switch (outstate) {
     case SIGN:
     case SIGN_VAL_SIGN:
-        outapp = outapp * v;
+        outapp = outapp * v; /* already trailing sign: just possibly change its meaning */
+#ifdef PKGW
+	pkgw_app_value_info.sign *= v;
+#endif
         break;
     case SIGN_VAL:
 	outapp = v;
-	outstate = SIGN_VAL_SIGN;
+	outstate = SIGN_VAL_SIGN; /* trailing single value: just append this sign */
+#ifdef PKGW
+	{
+	    int sgn = (v >= 0) ? 1 : -1;
+	    pkgw_app_value_info.type = PVST_NUMBER;
+	    pkgw_app_value_info.sign = sgn;
+	    pkgw_app_value_info.v.named = sgn * v;
+	}
+#endif
         break;
     case SIGN_VAL_VAL:
+	/* we effectively have (sign1) (val1) (sign2) (val2) and want to append (sign3).
+	 * We do this by collapsing (val1) (sign2) (val2) into (val*) to yield
+	 * (sign1) (val*) (sign3) */
 	outval = outval + outapp;
 	outapp = v;
 	outstate = SIGN_VAL_SIGN;
+#ifdef PKGW
+	pkgw_value_stack[pkgw_value_stack_size] = pkgw_app_value_info;
+	pkgw_value_stack_size++;
+
+	{
+	    int sgn = (v >= 0) ? 1 : -1;
+	    pkgw_app_value_info.type = PVST_NUMBER;
+	    pkgw_app_value_info.sign = sgn;
+	    pkgw_app_value_info.v.named = sgn * v;
+	}
+#endif
         break;
     default:
 	breakptr = outptr;
 	outapp = v;
-	outstate = SIGN;
+	outstate = SIGN; /* nothing: go into trailing-sign mode */
+#ifdef PKGW
+	{
+	    int sgn = (v >= 0) ? 1 : -1;
+	    pkgw_app_value_info.type = PVST_NUMBER;
+	    pkgw_app_value_info.sign = sgn;
+	    pkgw_app_value_info.v.named = sgn * v;
+	}
+#endif
         break;
     }
 
     lastsign = outapp;
 }
 
+#ifdef PKGW
+void send_val(integer v, pkgw_val_stack_type pkgwtype, namepointer pkgwpnt)
+#else
 void send_val(integer v)
+#endif
 {
     switch (outstate) {
     case NUM_OR_ID:
@@ -1696,6 +1788,18 @@ void send_val(integer v)
 	outsign = SPACE;
 	outstate = SIGN_VAL;
 	outval = v;
+#ifdef PKGW
+	pkgw_value_stack[0].type = pkgwtype;
+	if (pkgwtype == PVST_NAMED_CONSTANT) {
+	    pkgw_value_stack[0].sign = 1;
+	    pkgw_value_stack[0].v.named = pkgwpnt;
+	} else {
+	    int sgn = (v >= 0) ? 1 : -1;
+	    pkgw_value_stack[0].sign = sgn;
+	    pkgw_value_stack[0].v.named = sgn * v;
+	}
+	pkgw_value_stack_size = 1;
+#endif
 	breakptr = outptr;
 	lastsign = 1;
         break;
@@ -1706,6 +1810,18 @@ void send_val(integer v)
 	outsign = 0;
 	outstate = SIGN_VAL;
 	outval = v;
+#ifdef PKGW
+	pkgw_value_stack[0].type = pkgwtype;
+	if (pkgwtype == PVST_NAMED_CONSTANT) {
+	    pkgw_value_stack[0].sign = 1;
+	    pkgw_value_stack[0].v.named = pkgwpnt;
+	} else {
+	    int sgn = (v >= 0) ? 1 : -1;
+	    pkgw_value_stack[0].sign = sgn;
+	    pkgw_value_stack[0].v.named = sgn * v;
+	}
+	pkgw_value_stack_size = 1;
+#endif
 	breakptr = outptr;
 	lastsign = 1;
         break;
@@ -1714,11 +1830,27 @@ void send_val(integer v)
 	outsign = PLUS_SIGN;
 	outstate = SIGN_VAL;
 	outval = outapp * v;
+#ifdef PKGW
+	pkgw_value_stack[0] = pkgw_app_value_info;
+	pkgw_value_stack[0].sign *= v;
+	pkgw_value_stack_size = 1;
+#endif
         break;
 
     case SIGN_VAL:
 	outstate = SIGN_VAL_VAL;
 	outapp = v;
+#ifdef PKGW
+	pkgw_app_value_info.type = pkgwtype;
+	if (pkgwtype == PVST_NAMED_CONSTANT) {
+	    pkgw_app_value_info.sign = 1;
+	    pkgw_app_value_info.v.named = pkgwpnt;
+	} else {
+	    int sgn = (v >= 0) ? 1 : -1;
+	    pkgw_app_value_info.sign = sgn;
+	    pkgw_app_value_info.v.named = sgn * v;
+	}
+#endif
 	putc('\n', stdout);
 	Fputs(stdout, "! Two numbers occurred without a sign between them");
 	error();
@@ -1727,11 +1859,28 @@ void send_val(integer v)
     case SIGN_VAL_SIGN:
 	outstate = SIGN_VAL_VAL;
 	outapp = outapp * v;
+#ifdef PKGW
+	pkgw_app_value_info.sign *= v;
+#endif
         break;
 
     case SIGN_VAL_VAL:
 	outval = outval + outapp;
 	outapp = v;
+#ifdef PKGW
+	pkgw_value_stack[pkgw_value_stack_size] = pkgw_app_value_info;
+	pkgw_value_stack_size++;
+
+	pkgw_app_value_info.type = pkgwtype;
+	if (pkgwtype == PVST_NAMED_CONSTANT) {
+	    pkgw_app_value_info.sign = 1;
+	    pkgw_app_value_info.v.named = pkgwpnt;
+	} else {
+	    int sgn = (v >= 0) ? 1 : -1;
+	    pkgw_app_value_info.sign = sgn;
+	    pkgw_app_value_info.v.named = sgn * v;
+	}
+#endif
 	putc('\n', stdout);
 	Fputs(stdout, "! Two numbers occurred without a sign between them");
 	error();
@@ -1745,6 +1894,16 @@ void send_val(integer v)
     return;
 
 bad_case:
+#ifdef PKGW
+    /* NOTE: if v < 0 we do not need a negation operation or anything; and if
+     * it's a scalar integer, don't bother with anything */
+    if (pkgwtype == PVST_NAMED_CONSTANT) {
+	pkgw_value_stack[0].type = pkgwtype;
+	pkgw_value_stack[0].sign = 1;
+	pkgw_value_stack[0].v.named = pkgwpnt;
+	pkgw_value_stack_size = 1;
+    }
+#endif
     if (v >= 0) {
         if (outstate == NUM_OR_ID) {
             breakptr = outptr;
@@ -1880,11 +2039,10 @@ void send_the_output(void)
 	    } while (!((curchar > ASCII_9) || (curchar < ASCII_0)));
 
 #ifdef PKGW
-	    pkgw_value_stack[pkgw_value_stack_size].type = PVST_NUMBER;
-	    pkgw_value_stack[pkgw_value_stack_size].v.number = n;
-	    pkgw_value_stack_size++;
-#endif
+	    send_val(n, PVST_NUMBER, 0);
+#else
 	    send_val(n);
+#endif
 	    k = 0;
 
 	    if (curchar == ASCII_e)
@@ -1897,7 +2055,11 @@ void send_the_output(void)
             break;
 
         case RIGHT_BRACE:
-            send_val(poolchecksum);
+#ifdef PKGW
+	    send_val(poolchecksum, PVST_NUMBER, 0);
+#else
+	    send_val(poolchecksum);
+#endif
             break;
 
         case OCTAL:
@@ -1913,13 +2075,12 @@ void send_the_output(void)
 		    n = 8 * n + curchar;
 		curchar = get_output();
 	    } while (!((curchar > ASCII_7) || (curchar < ASCII_0)));
+
 #ifdef PKGW
-	    /* TODO: annotate as octal */
-	    pkgw_value_stack[pkgw_value_stack_size].type = PVST_NUMBER;
-	    pkgw_value_stack[pkgw_value_stack_size].v.number = n;
-	    pkgw_value_stack_size++;
-#endif
+	    send_val(n, PVST_NUMBER, 0);
+#else
 	    send_val(n);
+#endif
 	    goto reswitch;
             break;
 
@@ -1941,30 +2102,28 @@ void send_the_output(void)
 	    } while (!((curchar > ASCII_F) || (curchar < ASCII_0)
 		     || ((curchar > ASCII_9) && (curchar < ASCII_A))));
 #ifdef PKGW
-	    /* TODO: annotate as hex */
-	    pkgw_value_stack[pkgw_value_stack_size].type = PVST_NUMBER;
-	    pkgw_value_stack[pkgw_value_stack_size].v.number = n;
-	    pkgw_value_stack_size++;
-#endif
+	    send_val(n, PVST_NUMBER, 0);
+#else
 	    send_val(n);
+#endif
 	    goto reswitch;
             break;
 
         case NUMBER:
 #ifdef PKGW
 	    if (pkgw_outputting_named_numeric_constant) {
-		pkgw_value_stack[pkgw_value_stack_size].type = PVST_NAMED_CONSTANT;
-		pkgw_value_stack[pkgw_value_stack_size].v.named = pkgw_numeric_constant_id;
-		pkgw_value_stack_has_constant = true;
+		namepointer tmp = pkgw_numeric_constant_id;
+		pkgw_outputting_named_numeric_constant = false;
+		pkgw_numeric_constant_id = 0;
+		send_val(curval, PVST_NAMED_CONSTANT, tmp);
 	    } else {
 		pkgw_value_stack[pkgw_value_stack_size].type = PVST_NUMBER;
 		pkgw_value_stack[pkgw_value_stack_size].v.number = curval;
+		send_val(curval, PVST_NUMBER, 0);
 	    }
-	    pkgw_value_stack_size++;
-	    pkgw_outputting_named_numeric_constant = false;
-	    pkgw_numeric_constant_id = 0;
-#endif
+#else
 	    send_val(curval);
+#endif
             break;
 
         case PERIOD:
@@ -2131,9 +2290,17 @@ void send_the_output(void)
 
 	    if (curval < 0) {
 		send_out(MISC, COLON);
+#ifdef PKGW
+		send_val(-(integer) curval, PVST_NUMBER, 0);
+#else
 		send_val(-(integer) curval);
+#endif
 	    } else {
+#ifdef PKGW
+		send_val(curval, PVST_NUMBER, 0);
+#else
 		send_val(curval);
+#endif
 		send_out(MISC, COLON);
 	    }
 

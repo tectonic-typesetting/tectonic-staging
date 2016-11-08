@@ -172,7 +172,7 @@ typedef struct {
 #define MODULE_NAME 135
 #define NEW_MODULE 136
 
-#define NORMAL 0 /* "ilk" types */
+#define NORMAL 0 /* "ilk" / id_lookup types */
 #define NUMERIC 1
 #define SIMPLE 2
 #define PARAMETRIC 3
@@ -670,7 +670,6 @@ void print_id(namepointer p)
 
 namepointer id_lookup(eightbits t)
 {
-    /* 31 32 */ register namepointer Result;
     eightbits c;
     integer i;
     integer h;
@@ -679,198 +678,213 @@ namepointer id_lookup(eightbits t)
     integer l;
     namepointer p, q;
     integer s;
+
     l = idloc - idfirst;
     h = buffer[idfirst];
     i = idfirst + 1;
-    while (i < idloc) {
 
+    while (i < idloc) {
         h = (h + h + buffer[i]) % hashsize;
         i = i + 1;
     }
-    p = hash[h];
-    while (p != 0) {
 
+    p = hash[h];
+
+    while (p != 0) {
         if (bytestart[p + 3] - bytestart[p] == l) {
             i = idfirst;
             k = bytestart[p];
             w = p % 3;
             while ((i < idloc) && (buffer[i] == bytemem[w][k])) {
-
                 i = i + 1;
                 k = k + 1;
             }
+
             if (i == idloc)
                 goto found;
         }
         p = link[p];
     }
+
     p = nameptr;
     link[p] = hash[h];
     hash[h] = p;
- found:;
-    if ((p == nameptr) || (t != 0)) {
-        if (((p != nameptr) && (t != 0) && (ilk[p] == NORMAL)) || ((p == nameptr)
-                                                              && (t == 0)
-                                                              &&
-                                                              (buffer[idfirst]
-                                                               != DOUBLEQUOTE))) {
+
+found:
+
+    if (p == nameptr || t != NORMAL) {
+        if ((p != nameptr && t != NORMAL && ilk[p] == NORMAL) ||
+	    (p == nameptr && t == NORMAL && buffer[idfirst] != DOUBLEQUOTE)) {
             i = idfirst;
             s = 0;
             h = 0;
-            while ((i < idloc) && (s < unambiglength)) {
 
+            while ((i < idloc) && (s < unambiglength)) {
                 if (buffer[i] != UNDERSCORE) {
                     choppedid[s] = buffer[i];
                     h = (h + h + choppedid[s]) % hashsize;
                     s = s + 1;
                 }
+
                 i = i + 1;
             }
             choppedid[s] = 0;
         }
+
         if (p != nameptr) {
             if (ilk[p] == NORMAL) {
-                if (t == 1) {
+                if (t == NUMERIC) {
                     putc('\n', stdout);
                     Fputs(stdout, "! This identifier has already appeared");
                     error();
                 }
-                q = chophash[h];
-                if (q == p)
-                    chophash[h] = equiv[p];
-                else {
 
+                q = chophash[h];
+
+                if (q == p) {
+                    chophash[h] = equiv[p];
+                } else {
                     while (equiv[q] != p)
                         q = equiv[q];
                     equiv[q] = equiv[p];
                 }
             } else {
-
                 putc('\n', stdout);
                 Fputs(stdout, "! This identifier was defined before");
                 error();
             }
+
             ilk[p] = t;
         } else {
-
-            if ((t == 0) && (buffer[idfirst] != DOUBLEQUOTE)) {
+            if (t == NORMAL && buffer[idfirst] != DOUBLEQUOTE) {
                 q = chophash[h];
+
                 while (q != 0) {
+		    k = bytestart[q];
+		    s = 0;
+		    w = q % 3;
 
-                    {
-                        k = bytestart[q];
-                        s = 0;
-                        w = q % 3;
-                        while ((k < bytestart[q + 3])
-                               && (s < unambiglength)) {
+		    while (k < bytestart[q + 3] && s < unambiglength) {
+			c = bytemem[w][k];
 
-                            c = bytemem[w][k];
-                            if (c != UNDERSCORE) {
-                                if (choppedid[s]
-                                    != c)
-                                    goto notfound;
-                                s = s + 1;
-                            }
-                            k = k + 1;
-                        }
-                        if ((k == bytestart[q + 3])
-                            && (choppedid[s] != 0))
-                            goto notfound;
-                        {
-                            putc('\n', stdout);
-                            Fputs(stdout, "! Identifier conflict with ");
-                        }
-                        {
-                            register integer for_end;
-                            k = bytestart[q];
-                            for_end = bytestart[q + 3] - 1;
-                            if (k <= for_end)
-                                do
-                                    putc(xchr[bytemem[w][k]], stdout);
-                                while (k++ < for_end);
-                        }
-                        error();
-                        q = 0;
- notfound:                ;
-                    }
+			if (c != UNDERSCORE) {
+			    if (choppedid[s] != c)
+				goto notfound;
+			    s = s + 1;
+			}
+			k = k + 1;
+		    }
+
+		    if ((k == bytestart[q + 3]) && (choppedid[s] != 0))
+			goto notfound;
+
+		    putc('\n', stdout);
+		    Fputs(stdout, "! Identifier conflict with ");
+
+		    {
+			register integer for_end;
+			k = bytestart[q];
+			for_end = bytestart[q + 3] - 1;
+			if (k <= for_end) {
+			    do
+				putc(xchr[bytemem[w][k]], stdout);
+			    while (k++ < for_end);
+			}
+		    }
+
+		    error();
+		    q = 0;
+
+		notfound:
                     q = equiv[q];
                 }
+
                 equiv[p] = chophash[h];
                 chophash[h] = p;
             }
+
             w = nameptr % 3;
             k = byteptr[w];
+
             if (k + l > maxbytes) {
                 putc('\n', stdout);
-                fprintf(stderr, "%s%s%s", "! Sorry, ",
-                        "byte memory", " capacity exceeded");
+                fprintf(stderr, "! Sorry, byte memory capacity exceeded");
                 error();
                 history = FATAL_MESSAGE;
                 uexit(1);
             }
+
             if (nameptr > maxnames - 3) {
                 putc('\n', stdout);
-                fprintf(stderr, "%s%s%s", "! Sorry, ", "name",
-                        " capacity exceeded");
+                fprintf(stderr, "! Sorry, name capacity exceeded");
                 error();
                 history = FATAL_MESSAGE;
                 uexit(1);
             }
-            i = idfirst;
-            while (i < idloc) {
 
+            i = idfirst;
+
+            while (i < idloc) {
                 bytemem[w][k] = buffer[i];
                 k = k + 1;
                 i = i + 1;
             }
+
             byteptr[w] = k;
             bytestart[nameptr + 3] = k;
             nameptr = nameptr + 1;
-            if (buffer[idfirst] != DOUBLEQUOTE)
-                ilk[p] = t;
-            else {
-                ilk[p] = NUMERIC;
-                if (l - doublechars == 2)
-                    equiv[p] = buffer[idfirst + 1] + 0x40000000;
-                else {
 
+            if (buffer[idfirst] != DOUBLEQUOTE) {
+                ilk[p] = t;
+            } else {
+                ilk[p] = NUMERIC; /* "strings are like numeric macros" */
+
+                if (l - doublechars == 2) {
+                    equiv[p] = buffer[idfirst + 1] + 0x40000000;
+                } else {
                     if (stringptr == NUMBER_CHARS) {
-                        poolname =
-                            basenamechangesuffix(webname, ".web", ".pool");
+                        poolname = basenamechangesuffix(webname, ".web", ".pool");
                         rewrite(pool, poolname);
                     }
+
                     equiv[p] = stringptr + 0x40000000;
                     l = l - doublechars - 1;
+
                     if (l > 99) {
                         putc('\n', stdout);
                         Fputs(stdout, "! Preprocessed string is too long");
                         error();
                     }
+
                     stringptr = stringptr + 1;
                     fprintf(pool, "%c%c", xchr[ASCII_0 + l / 10], xchr[ASCII_0 + l % 10]);
+
                     poolchecksum = poolchecksum + poolchecksum + l;
                     while (poolchecksum > 0x1FFFFFB7)
                         poolchecksum = poolchecksum - 0x1FFFFFB7;
-                    i = idfirst + 1;
-                    while (i < idloc) {
 
+                    i = idfirst + 1;
+
+                    while (i < idloc) {
                         putc(xchr[buffer[i]], pool);
                         poolchecksum = poolchecksum + poolchecksum + buffer[i];
+
                         while (poolchecksum > 0x1FFFFFB7)
                             poolchecksum = poolchecksum - 0x1FFFFFB7;
-                        if ((buffer[i] == DOUBLEQUOTE)
-                            || (buffer[i] == AT_SIGN))
+
+                        if (buffer[i] == DOUBLEQUOTE || buffer[i] == AT_SIGN)
                             i = i + 2;
                         else
                             i = i + 1;
                     }
+
                     putc('\n', pool);
                 }
             }
         }
     }
-    Result = p;
-    return Result;
+
+    return p;
 }
 
 /* modules */
@@ -2838,7 +2852,7 @@ void scan_numeric(namepointer p)
             break;
 
         case IDENTIFIER:
-	    q = id_lookup(0);
+	    q = id_lookup(NORMAL);
 	    if (ilk[q] != NUMERIC) {
 		nextcontrol = ASTERISK;
 		goto reswitch;
@@ -2994,7 +3008,7 @@ void scanrepl(eightbits t)
             break;
         case IDENTIFIER:
             {
-                a = id_lookup(0);
+                a = id_lookup(NORMAL);
                 {
                     if (tokptr[z] == maxtoks) {
                         putc('\n', stdout);
@@ -3224,7 +3238,7 @@ void scanmodule(void)
         nextcontrol = get_next();
 
         if (nextcontrol == EQUALS_SIGN) {
-            scan_numeric(id_lookup(1)); /* PKGW this is where we start losing magic numbers I think! */
+            scan_numeric(id_lookup(NUMERIC)); /* PKGW this is where we start losing magic numbers I think! */
             goto continue_;
         } else if (nextcontrol == EQUIVALENCE_SIGN) {
             definemacro(2);

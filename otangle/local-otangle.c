@@ -289,7 +289,7 @@ eightbits controlcode (ASCIIcode c);
 eightbits skipahead (void);
 void skipcomment (void);
 eightbits get_next (void);
-void scannumeric (namepointer p);
+void scan_numeric (namepointer p);
 void scanrepl (eightbits t);
 void definemacro (eightbits t);
 void scanmodule (void);
@@ -1804,6 +1804,8 @@ void send_the_output(void)
             break;
 
         case NUMBER:
+	    /* PKGW here I think we want to write a symbolic constant. But we
+	     * don't have access to its symbolic name. */
             sendval(curval);
             break;
 
@@ -2770,18 +2772,18 @@ found:
 }
 
 
-void scannumeric(namepointer p)
+void scan_numeric(namepointer p)
 {
-    /* 21 30 */ integer accumulator;
-    schar nextsign;
+    integer accumulator = 0;
+    schar nextsign = 1;
     namepointer q;
     integer val;
-    accumulator = 0;
-    nextsign = 1;
-    while (true) {
 
+    while (true) {
         nextcontrol = get_next();
- reswitch:switch (nextcontrol) {
+
+    reswitch:
+	switch (nextcontrol) {
         case ASCII_0:
         case ASCII_1:
         case ASCII_2:
@@ -2792,78 +2794,67 @@ void scannumeric(namepointer p)
         case ASCII_7:
         case ASCII_8:
         case ASCII_9:
-            {
-                val = 0;
-                do {
-                    val = 10 * val + nextcontrol - ASCII_0;
-                    nextcontrol = get_next();
-                }
-                while (!((nextcontrol > ASCII_9)
-                         || (nextcontrol < ASCII_0)));
-                {
-                    accumulator = accumulator + nextsign * (val);
-                    nextsign = 1;
-                }
-                goto reswitch;
-            }
+	    val = 0;
+
+	    do {
+		val = 10 * val + nextcontrol - ASCII_0;
+		nextcontrol = get_next();
+	    } while (!((nextcontrol > ASCII_9) || (nextcontrol < ASCII_0)));
+
+	    accumulator = accumulator + nextsign * (val);
+	    nextsign = 1;
+	    goto reswitch;
             break;
+
         case OCTAL:
-            {
-                val = 0;
-                nextcontrol = ASCII_0;
-                do {
-                    val = 8 * val + nextcontrol - ASCII_0;
-                    nextcontrol = get_next();
-                }
-                while (!((nextcontrol > ASCII_7)
-                         || (nextcontrol < ASCII_0)));
-                {
-                    accumulator = accumulator + nextsign * (val);
-                    nextsign = 1;
-                }
-                goto reswitch;
-            }
+	    val = 0;
+	    nextcontrol = ASCII_0;
+
+	    do {
+		val = 8 * val + nextcontrol - ASCII_0;
+		nextcontrol = get_next();
+	    } while (!((nextcontrol > ASCII_7) || (nextcontrol < ASCII_0)));
+
+	    accumulator = accumulator + nextsign * (val);
+	    nextsign = 1;
+	    goto reswitch;
             break;
+
         case HEX:
-            {
-                val = 0;
-                nextcontrol = ASCII_0;
-                do {
-                    if (nextcontrol >= ASCII_A)
-                        nextcontrol = nextcontrol - 7;
-                    val = 16 * val + nextcontrol - ASCII_0;
-                    nextcontrol = get_next();
-                }
-                while (!((nextcontrol > ASCII_F) || (nextcontrol < ASCII_0)
-                         || ((nextcontrol > ASCII_9)
-                             && (nextcontrol < ASCII_A))));
-                {
-                    accumulator = accumulator + nextsign * (val);
-                    nextsign = 1;
-                }
-                goto reswitch;
-            }
+	    val = 0;
+	    nextcontrol = ASCII_0;
+
+	    do {
+		if (nextcontrol >= ASCII_A)
+		    nextcontrol = nextcontrol - 7;
+		val = 16 * val + nextcontrol - ASCII_0;
+		nextcontrol = get_next();
+	    } while (!((nextcontrol > ASCII_F) || (nextcontrol < ASCII_0)
+		       || ((nextcontrol > ASCII_9) && (nextcontrol < ASCII_A))));
+
+	    accumulator = accumulator + nextsign * (val);
+	    nextsign = 1;
+	    goto reswitch;
             break;
+
         case IDENTIFIER:
-            {
-                q = id_lookup(0);
-                if (ilk[q] != NUMERIC) {
-                    nextcontrol = ASTERISK;
-                    goto reswitch;
-                }
-                {
-                    accumulator =
-                        accumulator + nextsign * (equiv[q] - 0x40000000);
-                    nextsign = 1;
-                }
-            }
+	    q = id_lookup(0);
+	    if (ilk[q] != NUMERIC) {
+		nextcontrol = ASTERISK;
+		goto reswitch;
+	    }
+
+	    accumulator += nextsign * (equiv[q] - 0x40000000);
+	    nextsign = 1;
             break;
+
         case PLUS_SIGN:
-            ;
             break;
+
         case MINUS_SIGN:
-            nextsign = -(integer) nextsign;
+            nextsign = -nextsign;
             break;
+
         case FORMAT:
         case DEFINITION:
         case MODULE_NAME:
@@ -2871,44 +2862,40 @@ void scannumeric(namepointer p)
         case NEW_MODULE:
             goto done;
             break;
+
         case SEMICOLON:
-            {
-                putc('\n', stdout);
-                Fputs(stdout, "! Omit semicolon in numeric definition");
-                error();
-            }
+	    putc('\n', stdout);
+	    Fputs(stdout, "! Omit semicolon in numeric definition");
+	    error();
             break;
+
         default:
-            {
-                {
-                    putc('\n', stdout);
-                    Fputs(stdout,
-                          "! Improper numeric definition will be flushed");
-                    error();
-                }
-                do {
-                    nextcontrol = skipahead();
-                }
-                while (!((nextcontrol >= FORMAT)));
-                if (nextcontrol == MODULE_NAME) {
-                    loc = loc - 2;
-                    nextcontrol = get_next();
-                }
-                accumulator = 0;
-                goto done;
-            }
+	    putc('\n', stdout);
+	    Fputs(stdout, "! Improper numeric definition will be flushed");
+	    error();
+	    do {
+		nextcontrol = skipahead();
+	    } while (!((nextcontrol >= FORMAT)));
+
+	    if (nextcontrol == MODULE_NAME) {
+		loc = loc - 2;
+		nextcontrol = get_next();
+	    }
+
+	    accumulator = 0;
+	    goto done;
             break;
         }
     }
- done:;
+
+done:
     if (abs(accumulator) >= 0x40000000) {
-        {
-            putc('\n', stdout);
-            fprintf(stdout, "%s%ld", "! Value too big: ", (long)accumulator);
-            error();
-        }
+	putc('\n', stdout);
+	fprintf(stdout, "%s%ld", "! Value too big: ", (long)accumulator);
+	error();
         accumulator = 0;
     }
+
     equiv[p] = accumulator + 0x40000000;
 }
 
@@ -3237,7 +3224,7 @@ void scanmodule(void)
         nextcontrol = get_next();
 
         if (nextcontrol == EQUALS_SIGN) {
-            scannumeric(id_lookup(1));
+            scan_numeric(id_lookup(1)); /* PKGW this is where we start losing magic numbers I think! */
             goto continue_;
         } else if (nextcontrol == EQUIVALENCE_SIGN) {
             definemacro(2);

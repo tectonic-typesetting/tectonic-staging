@@ -289,7 +289,7 @@ void flushbuffer (void);
 void app_val (integer v);
 void send_out (eightbits t,sixteenbits v);
 void send_sign (integer v);
-void sendval (integer v);
+void send_val (integer v);
 void send_the_output (void);
 boolean linesdontmatch (void);
 void primethechangebuffer (void);
@@ -1599,123 +1599,99 @@ void send_sign(integer v)
     lastsign = outapp;
 }
 
-void sendval(integer v)
+void send_val(integer v)
 {
-    /* 666 10 */ switch (outstate) {
+    switch (outstate) {
     case NUM_OR_ID:
-        {
-            if ((outptr == breakptr + 3)
-                || ((outptr == breakptr + 4)
-                    && (outbuf[breakptr] == SPACE))) {
+	if (outptr == breakptr + 3 || (outptr == breakptr + 4 && outbuf[breakptr] == SPACE)) {
+	    if (((outbuf[outptr - 3] == ASCII_D)
+		 && (outbuf[outptr - 2] == ASCII_I)
+		 && (outbuf[outptr - 1] == ASCII_V))
+		|| ((outbuf[outptr - 3] == ASCII_d)
+		    && (outbuf[outptr - 2] == ASCII_i)
+		    && (outbuf[outptr - 1] == ASCII_v))
+		|| ((outbuf[outptr - 3] == ASCII_M)
+		    && (outbuf[outptr - 2] == ASCII_O)
+		    && (outbuf[outptr - 1] == ASCII_D))
+		|| ((outbuf[outptr - 3] == ASCII_m)
+		    && (outbuf[outptr - 2] == ASCII_o)
+		    && (outbuf[outptr - 1] == ASCII_d)))
+		goto bad_case;
+	}
+	outsign = SPACE;
+	outstate = SIGN_VAL;
+	outval = v;
+	breakptr = outptr;
+	lastsign = 1;
+        break;
 
-                if (((outbuf[outptr - 3] == ASCII_D)
-                     && (outbuf[outptr - 2] == ASCII_I)
-                     && (outbuf[outptr - 1] == ASCII_V))
-                    || ((outbuf[outptr - 3] == ASCII_d)
-                        && (outbuf[outptr - 2] == ASCII_i)
-                        && (outbuf[outptr - 1] == ASCII_v))
-                    || ((outbuf[outptr - 3] == ASCII_M)
-                        && (outbuf[outptr - 2] == ASCII_O)
-                        && (outbuf[outptr - 1] == ASCII_D))
-                    || ((outbuf[outptr - 3] == ASCII_m)
-                        && (outbuf[outptr - 2] == ASCII_o)
-                        && (outbuf[outptr - 1] == ASCII_d)))
-                    goto bad_case;
-            }
-            outsign = SPACE;
-            outstate = SIGN_VAL;
-            outval = v;
-            breakptr = outptr;
-            lastsign = 1;
-        }
-        break;
     case MISC:
-        {
-            if ((outptr == breakptr + 1)
-                && ((outbuf[breakptr] == ASTERISK)
-                    || (outbuf[breakptr] == FORWARD_SLASH)))
-                goto bad_case;
-            outsign = 0;
-            outstate = SIGN_VAL;
-            outval = v;
-            breakptr = outptr;
-            lastsign = 1;
-        }
+	if (outptr == breakptr + 1 && (outbuf[breakptr] == ASTERISK || outbuf[breakptr] == FORWARD_SLASH))
+	    goto bad_case;
+	outsign = 0;
+	outstate = SIGN_VAL;
+	outval = v;
+	breakptr = outptr;
+	lastsign = 1;
         break;
+
     case SIGN:
-        {
-            outsign = PLUS_SIGN;
-            outstate = SIGN_VAL;
-            outval = outapp * v;
-        }
+	outsign = PLUS_SIGN;
+	outstate = SIGN_VAL;
+	outval = outapp * v;
         break;
+
     case SIGN_VAL:
-        {
-            outstate = SIGN_VAL_VAL;
-            outapp = v;
-            {
-                putc('\n', stdout);
-                Fputs(stdout,
-                      "! Two numbers occurred without a sign between them");
-                error();
-            }
-        }
+	outstate = SIGN_VAL_VAL;
+	outapp = v;
+	putc('\n', stdout);
+	Fputs(stdout, "! Two numbers occurred without a sign between them");
+	error();
         break;
+
     case SIGN_VAL_SIGN:
-        {
-            outstate = SIGN_VAL_VAL;
-            outapp = outapp * v;
-        }
+	outstate = SIGN_VAL_VAL;
+	outapp = outapp * v;
         break;
+
     case SIGN_VAL_VAL:
-        {
-            outval = outval + outapp;
-            outapp = v;
-            {
-                putc('\n', stdout);
-                Fputs(stdout,
-                      "! Two numbers occurred without a sign between them");
-                error();
-            }
-        }
+	outval = outval + outapp;
+	outapp = v;
+	putc('\n', stdout);
+	Fputs(stdout, "! Two numbers occurred without a sign between them");
+	error();
         break;
+
     default:
         goto bad_case;
         break;
     }
-    goto exit;
- bad_case:if (v >= 0) {
+
+    return;
+
+bad_case:
+    if (v >= 0) {
         if (outstate == NUM_OR_ID) {
             breakptr = outptr;
-            {
-                outbuf[outptr] = SPACE;
-                outptr = outptr + 1;
-            }
+	    outbuf[outptr] = SPACE;
+	    outptr = outptr + 1;
         }
         app_val(v);
         if (outptr > linelength)
             flushbuffer();
         outstate = NUM_OR_ID;
     } else {
-
-        {
-            outbuf[outptr] = LEFT_PAREN;
-            outptr = outptr + 1;
-        }
-        {
-            outbuf[outptr] = MINUS_SIGN;
-            outptr = outptr + 1;
-        }
+	outbuf[outptr] = LEFT_PAREN;
+	outptr = outptr + 1;
+	outbuf[outptr] = MINUS_SIGN;
+	outptr = outptr + 1;
         app_val(-(integer) v);
-        {
-            outbuf[outptr] = RIGHT_PAREN;
-            outptr = outptr + 1;
-        }
+	outbuf[outptr] = RIGHT_PAREN;
+	outptr = outptr + 1;
         if (outptr > linelength)
             flushbuffer();
         outstate = MISC;
     }
- exit:;
 }
 
 void send_the_output(void)
@@ -1828,7 +1804,7 @@ void send_the_output(void)
 		curchar = get_output();
 	    } while (!((curchar > ASCII_9) || (curchar < ASCII_0)));
 
-	    sendval(n);
+	    send_val(n);
 	    k = 0;
 
 	    if (curchar == ASCII_e)
@@ -1841,7 +1817,7 @@ void send_the_output(void)
             break;
 
         case RIGHT_BRACE:
-            sendval(poolchecksum);
+            send_val(poolchecksum);
             break;
 
         case OCTAL:
@@ -1857,7 +1833,7 @@ void send_the_output(void)
 		    n = 8 * n + curchar;
 		curchar = get_output();
 	    } while (!((curchar > ASCII_7) || (curchar < ASCII_0)));
-	    sendval(n);
+	    send_val(n);
 	    goto reswitch;
             break;
 
@@ -1878,12 +1854,12 @@ void send_the_output(void)
 		curchar = get_output();
 	    } while (!((curchar > ASCII_F) || (curchar < ASCII_0)
 		     || ((curchar > ASCII_9) && (curchar < ASCII_A))));
-	    sendval(n);
+	    send_val(n);
 	    goto reswitch;
             break;
 
         case NUMBER:
-	    sendval(curval);
+	    send_val(curval);
 
 #ifdef PKGW
 	    if (pkgw_outputting_named_numeric_constant) {
@@ -2084,9 +2060,9 @@ void send_the_output(void)
 
 	    if (curval < 0) {
 		send_out(MISC, COLON);
-		sendval(-(integer) curval);
+		send_val(-(integer) curval);
 	    } else {
-		sendval(curval);
+		send_val(curval);
 		send_out(MISC, COLON);
 	    }
 

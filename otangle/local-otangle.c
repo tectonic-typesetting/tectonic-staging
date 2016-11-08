@@ -1,4 +1,5 @@
 #define OTANGLE
+//#define PKGW
 
 #include <w2c/config.h>
 #include "lib.h"
@@ -259,6 +260,15 @@ eightbits nextcontrol;
 textpointer currepltext;
 short modulecount;
 constcstring webname, chgname, pascalname, poolname;
+
+#ifdef PKGW
+static boolean pkgw_outputting_named_numeric_constant = false;
+static sixteenbits pkgw_numeric_constant_id = 0;
+#define pkgw_max_constants 8192
+static namepointer pkgw_constant_ids[pkgw_max_constants];
+static integer pkgw_constant_values[pkgw_max_constants];
+static integer pkgw_n_constants = 0;
+#endif
 
 /* otangle.h */
 
@@ -1128,6 +1138,11 @@ exit:
     ;
 }
 
+#ifdef PKGW
+static int pkgw_n_modules_output = 0;
+#define pkgw_magic_insertion_point 3
+static int pkgw_insertion_state = 0;
+#endif
 
 sixteenbits get_output(void)
 {
@@ -1139,6 +1154,37 @@ sixteenbits get_output(void)
     sixteenbits bal;
     integer k;
     unsigned char w;
+
+#ifdef PKGW
+    if (pkgw_n_modules_output == pkgw_magic_insertion_point && pkgw_n_constants > 0) {
+	switch (pkgw_insertion_state) {
+	case 0: /* VERBATIM to manually prefix a letter to avoid keyword clashes */
+	    pkgw_insertion_state = 1;
+	    return VERBATIM;
+	case 1: /* "X" prefix */
+	    pkgw_insertion_state = 2;
+	    return ASCII_X;
+	case 2: /* end-of-VERBATIM marker */
+	    pkgw_insertion_state = 3;
+	    return VERBATIM;
+	case 3: /* IDENTIFIER of the constant */
+	    curval = pkgw_constant_ids[pkgw_n_constants-1];
+	    pkgw_insertion_state = 4;
+	    return IDENTIFIER;
+	case 4: /* equals sign */
+	    pkgw_insertion_state = 5;
+	    return EQUALS_SIGN;
+	case 5: /* the actual value of the constant */
+	    curval = pkgw_constant_values[pkgw_n_constants-1];
+	    pkgw_insertion_state = 6;
+	    return NUMBER;
+	case 6: /* semicolon */
+	    pkgw_n_constants--; /* this one is done */
+	    pkgw_insertion_state = 0;
+	    return SEMICOLON;
+	}
+    }
+#endif
 
 restart:
     if (stackptr == 0) {
@@ -1177,6 +1223,21 @@ restart:
             break;
         case NUMERIC:
 	    curval = equiv[a] - 0x40000000;
+#ifdef PKGW
+	    {
+		unsigned char w = a % 3;
+		integer k = bytestart[a];
+		char c = xchr[bytemem[w][k]];
+
+		if (c == DOUBLEQUOTE) {
+		    /* This is a string constant. Nothing special. */
+		} else {
+		    pkgw_outputting_named_numeric_constant = true;
+		    pkgw_numeric_constant_id = a;
+
+		}
+	    }
+#endif
 	    a = NUMBER;
             break;
         case SIMPLE:
@@ -1320,6 +1381,10 @@ restart:
     curval = a - 050000;
     a = MODULE_NUMBER;
     curstate.modfield = curval;
+
+#ifdef PKGW
+    pkgw_n_modules_output++;
+#endif
 
 found:
     return a;
@@ -1818,9 +1883,41 @@ void send_the_output(void)
             break;
 
         case NUMBER:
-	    /* PKGW here I think we want to write a symbolic constant. But we
-	     * don't have access to its symbolic name. */
-            sendval(curval);
+	    sendval(curval);
+
+#ifdef PKGW
+	    if (pkgw_outputting_named_numeric_constant) {
+		//printf("PKGW: ID(%d) ", pkgw_numeric_constant_id);
+		//print_id (pkgw_numeric_constant_id);
+		//printf(" = %d\n", curval);
+
+		if (bracelevel == 0)
+		    send_out(MISC, LEFT_BRACE);
+		else
+		    send_out(MISC, LEFT_BRACKET);
+
+		/* This is a copy-paste of the IDENTIFIER case above */
+		k = 0;
+		j = bytestart[pkgw_numeric_constant_id];
+		w = pkgw_numeric_constant_id % 3;
+		while (k < maxidlength && j < bytestart[pkgw_numeric_constant_id + 3]) {
+		    k = k + 1;
+		    outcontrib[k] = bytemem[w][j];
+		    j = j + 1;
+		    if (outcontrib[k] == UNDERSCORE)
+			k = k - 1;
+		}
+		send_out(IDENT, k);
+
+		if (bracelevel == 0)
+		    send_out(MISC, RIGHT_BRACE);
+		else
+		    send_out(MISC, RIGHT_BRACKET);
+
+		pkgw_outputting_named_numeric_constant = false;
+		pkgw_numeric_constant_id = 0;
+	    }
+#endif
             break;
 
         case PERIOD:
@@ -2010,7 +2107,7 @@ void send_the_output(void)
 		if (k < linelength)
 		    k = k + 1;
 		outcontrib[k] = get_output();
-	    } while (!((outcontrib[k] == 2) || (stackptr == 0)));
+	    } while (!((outcontrib[k] == VERBATIM) || (stackptr == 0)));
 
 	    if (k == linelength) {
 		putc('\n', stdout);
@@ -3238,7 +3335,17 @@ void scanmodule(void)
         nextcontrol = get_next();
 
         if (nextcontrol == EQUALS_SIGN) {
-            scan_numeric(id_lookup(NUMERIC)); /* PKGW this is where we start losing magic numbers I think! */
+	    namepointer tempid = id_lookup(NUMERIC);
+            scan_numeric(tempid);
+#ifdef PKGW
+	    if (pkgw_n_constants == pkgw_max_constants) {
+		fprintf (stderr, "seriously, too many constants?\n");
+		error ();
+	    }
+	    pkgw_constant_ids[pkgw_n_constants] = tempid;
+	    pkgw_constant_values[pkgw_n_constants] = equiv[tempid] - 0x40000000;
+	    pkgw_n_constants++;
+#endif
             goto continue_;
         } else if (nextcontrol == EQUIVALENCE_SIGN) {
             definemacro(2);

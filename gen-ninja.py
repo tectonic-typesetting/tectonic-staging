@@ -60,8 +60,13 @@ def inner (top, w):
             description='TIE $out')
 
     w.rule ('otangle',
-            command='WEBINPUTS=. BUILD/otangle $in && mv $basename.p $basename.pool $outdir', # TODO: config
+            command=('WEBINPUTS=. BUILD/otangle $in && mv $basename.p $outdir/$basename.NM.p '
+                     '&& mv $basename.pool $outdir'), # TODO: config
             description='OTANGLE $out')
+
+    w.rule ('munge',
+            command='otangle/local-munge-pascal.py $in >$out.new && mv $out.new $out',
+            description='MUNGE $out')
 
     w.rule ('convert',
             command='$convert . $outdir $basename && mv $basename*.c $basename*.h $outdir',
@@ -259,12 +264,12 @@ def inner (top, w):
              order_only = [str(builddir)],
     )
 
-    # "otangle"d Pascal source for XeTeX.
+    # "otangle"d Pascal source for XeTeX, not-munged
 
-    xetex_p = builddir / 'xetex.p'
+    xetex_nm_p = builddir / 'xetex.NM.p'
     xetex_pool = builddir / 'xetex.pool'
 
-    w.build ([str(xetex_p), str(xetex_pool)], 'otangle',
+    w.build ([str(xetex_nm_p), str(xetex_pool)], 'otangle',
              inputs = map (str, [
                  top / 'xetexdir' / 'xetex.web',
                  xetex_ch,
@@ -275,6 +280,16 @@ def inner (top, w):
                  'basename': 'xetex',
                  'outdir': str(builddir),
              },
+    )
+
+    # munged Pascal source
+
+    xetex_p = builddir / 'xetex.p'
+
+    w.build (str(xetex_p), 'munge',
+             inputs = [str(xetex_nm_p)],
+             implicit = [str(top / 'otangle' / 'local-munge-pascal.py')],
+             order_only = [str(builddir)],
     )
 
     # "convert"ed Pascal code into C code

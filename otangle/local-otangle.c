@@ -1180,7 +1180,7 @@ sixteenbits get_output(void)
     integer k;
     unsigned char w;
 
-#ifdef PKGW
+#if 0
     /* Here we insert the values of symbolic constants very close to the top
      * of the output file. */
 
@@ -1482,6 +1482,32 @@ void flushbuffer(void)
 void app_val(integer v)
 {
     integer k;
+
+#ifdef PKGW
+    boolean any_constants = false;
+
+    if (pkgw_value_stack_size) {
+	int i;
+
+	for (i = 0; i < pkgw_value_stack_size; i++) {
+	    if (pkgw_value_stack[i].type == PVST_NAMED_CONSTANT) {
+		any_constants = true;
+		break;
+	    }
+	}
+    }
+
+    if (any_constants) {
+	/* pre-number delimiter */
+	outbuf[outptr] = LEFT_BRACE;
+	outptr++;
+	outbuf[outptr] = LESS_THAN_SIGN;
+	outptr++;
+	outbuf[outptr] = RIGHT_BRACE;
+	outptr++;
+    }
+#endif
+
     k = outbufsize;
     do {
         outbuf[k] = v % 10;
@@ -1499,98 +1525,91 @@ void app_val(integer v)
     while (!(k == outbufsize));
 
 #ifdef PKGW
-    if (pkgw_value_stack_size) {
+    if (any_constants) {
 	int i;
-	boolean any_constants = false;
 	integer k;
 	unsigned char w;
 	integer for_end;
 	integer p;
+#if 0
+	/* print to stderr */
+	fprintf (stderr, "PKGWXXX");
+	for (i = 0; i < pkgw_value_stack_size; i++) {
+	    putc(' ', stderr);
+	    putc ((pkgw_value_stack[i].sign > 0) ? ' ' : '-', stderr);
+
+	    switch (pkgw_value_stack[i].type) {
+	    case PVST_NAMED_CONSTANT:
+		p = pkgw_value_stack[i].v.named;
+		w = p % 3;
+		k = bytestart[p];
+		for_end = bytestart[p + 3] - 1;
+		if (k <= for_end) {
+		    do
+			putc(xchr[bytemem[w][k]], stderr);
+		    while (k++ < for_end);
+		}
+		break;
+	    case PVST_NUMBER:
+		fprintf (stderr, "%d", pkgw_value_stack[i].v.number);
+		break;
+	    }
+	}
+	fprintf (stderr, "\n");
+#endif
+#if 1
+	/* embed as a Pascal comment XXX totally ignoring buffer overflows! */
+	outbuf[outptr] = LEFT_BRACE;
+	outptr++;
 
 	for (i = 0; i < pkgw_value_stack_size; i++) {
-	    if (pkgw_value_stack[i].type == PVST_NAMED_CONSTANT) {
-		any_constants = true;
+	    if (i > 0) {
+		outbuf[outptr] = SPACE;
+		outptr++;
+	    }
+
+	    if (pkgw_value_stack[i].sign < 0) {
+		outbuf[outptr] = MINUS_SIGN;
+		outptr++;
+	    }
+
+	    switch (pkgw_value_stack[i].type) {
+	    case PVST_NAMED_CONSTANT:
+		p = pkgw_value_stack[i].v.named;
+		w = p % 3;
+		k = bytestart[p];
+		for_end = bytestart[p + 3] - 1;
+		if (k <= for_end) {
+		    do {
+			outbuf[outptr] = xchr[bytemem[w][k]];
+			outptr++;
+		    } while (k++ < for_end);
+		}
+		break;
+
+	    case PVST_NUMBER:
+		k = outbufsize;
+		v = pkgw_value_stack[i].v.number;
+		do {
+		    outbuf[k] = v % 10;
+		    v = v / 10;
+		    k = k - 1;
+		} while (v != 0);
+		do {
+		    k = k + 1;
+		    outbuf[outptr] = outbuf[k] + ASCII_0;
+		    outptr = outptr + 1;
+		} while (k != outbufsize);
 		break;
 	    }
 	}
 
-	if (any_constants) {
-#if 1
-	    /* print to stderr */
-	    fprintf (stderr, "PKGWXXX");
-	    for (i = 0; i < pkgw_value_stack_size; i++) {
-
-		putc(' ', stderr);
-		putc ((pkgw_value_stack[i].sign > 0) ? ' ' : '-', stderr);
-
-		switch (pkgw_value_stack[i].type) {
-		case PVST_NAMED_CONSTANT:
-		    p = pkgw_value_stack[i].v.named;
-		    w = p % 3;
-		    k = bytestart[p];
-		    for_end = bytestart[p + 3] - 1;
-		    if (k <= for_end) {
-			do
-			    putc(xchr[bytemem[w][k]], stderr);
-			while (k++ < for_end);
-		    }
-		    break;
-		case PVST_NUMBER:
-		    fprintf (stderr, "%d", pkgw_value_stack[i].v.number);
-		    break;
-		}
-	    }
-	    fprintf (stderr, "\n");
+	outbuf[outptr] = RIGHT_BRACE;
+	outptr++;
 #endif
-#if 1
-	    /* embed as a Pascal comment XXX totally ignoring buffer overflows! */
-	    outbuf[outptr] = LEFT_BRACE;
-	    outptr++;
-
-	    for (i = 0; i < pkgw_value_stack_size; i++) {
-		if (pkgw_value_stack[i].sign < 0) {
-		    outbuf[outptr] = MINUS_SIGN;
-		    outptr++;
-		}
-
-		switch (pkgw_value_stack[i].type) {
-		case PVST_NAMED_CONSTANT:
-		    p = pkgw_value_stack[i].v.named;
-		    w = p % 3;
-		    k = bytestart[p];
-		    for_end = bytestart[p + 3] - 1;
-		    if (k <= for_end) {
-		    	do {
-		    	    outbuf[outptr] = xchr[bytemem[w][k]];
-		    	    outptr++;
-		    	} while (k++ < for_end);
-		    }
-		    break;
-
-		case PVST_NUMBER:
-		    k = outbufsize;
-		    v = pkgw_value_stack[i].v.number;
-		    do {
-			outbuf[k] = v % 10;
-			v = v / 10;
-			k = k - 1;
-		    } while (v != 0);
-		    do {
-			k = k + 1;
-			outbuf[outptr] = outbuf[k] + ASCII_0;
-			outptr = outptr + 1;
-		    } while (k != outbufsize);
-		    break;
-		}
-	    }
-
-	    outbuf[outptr] = RIGHT_BRACE;
-	    outptr++;
-#endif
-	}
-
-	pkgw_value_stack_size = 0;
     }
+
+    pkgw_value_stack_size = 0;
 #endif
 }
 

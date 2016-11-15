@@ -98,3 +98,6 @@ cp $src/texk/web2c/web2c/*.sed web2c/
 cp $src/texk/web2c/web2c/*.defines web2c/
 cp $src/texk/web2c/web2c/*.c web2c/
 cp $src/texk/web2c/web2c/*.h web2c/
+cp $src/texk/web2c/web2c/*.l web2c/
+cp $src/texk/web2c/web2c/*.y web2c/
+rm web2c/web2c-lexer.c web2c/web2c-parser.c web2c/web2c-parser.h

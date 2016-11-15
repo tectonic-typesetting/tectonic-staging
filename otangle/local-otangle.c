@@ -1181,6 +1181,9 @@ sixteenbits get_output(void)
     unsigned char w;
 
 #ifdef PKGW
+    /* Here we insert the values of symbolic constants very close to the top
+     * of the output file. */
+
     if (pkgw_n_modules_output == pkgw_magic_insertion_point && pkgw_n_constants > 0) {
 	switch (pkgw_insertion_state) {
 	case 0: /* VERBATIM to manually prefix a letter to avoid keyword clashes */
@@ -1249,6 +1252,12 @@ restart:
         case NUMERIC:
 	    curval = equiv[a] - 0x40000000;
 #ifdef PKGW
+	    /* If we're yielding a numeric value that's obtained from a named
+	     * constant. set some magic variables so that callers can be aware
+	     * of that fact and take steps to preserve the name of the
+	     * originating constant. Whenever this code path is invoked, the
+	     * return value will eventually be handled by the NUMBER case of
+	     * the main switch in `send_the_output()`. */
 	    {
 		unsigned char w = a % 3;
 		integer k = bytestart[a];
@@ -1506,7 +1515,7 @@ void app_val(integer v)
 	}
 
 	if (any_constants) {
-#if 0
+#if 1
 	    /* print to stderr */
 	    fprintf (stderr, "PKGWXXX");
 	    for (i = 0; i < pkgw_value_stack_size; i++) {
@@ -1660,6 +1669,8 @@ restart:
 	} else {
 	    outval = outval + outapp;
 #ifdef PKGW
+	    /* Web collapses the values, but we want to record how they were
+	     * derived, so we append to the stack. */
 	    pkgw_value_stack[pkgw_value_stack_size] = pkgw_app_value_info;
 	    pkgw_value_stack_size++;
 #endif
@@ -1721,7 +1732,7 @@ void send_sign(integer v)
 	    int sgn = (v >= 0) ? 1 : -1;
 	    pkgw_app_value_info.type = PVST_NUMBER;
 	    pkgw_app_value_info.sign = sgn;
-	    pkgw_app_value_info.v.named = sgn * v;
+	    pkgw_app_value_info.v.number = sgn * v;
 	}
 #endif
         break;
@@ -1740,7 +1751,7 @@ void send_sign(integer v)
 	    int sgn = (v >= 0) ? 1 : -1;
 	    pkgw_app_value_info.type = PVST_NUMBER;
 	    pkgw_app_value_info.sign = sgn;
-	    pkgw_app_value_info.v.named = sgn * v;
+	    pkgw_app_value_info.v.number = sgn * v;
 	}
 #endif
         break;
@@ -1753,7 +1764,7 @@ void send_sign(integer v)
 	    int sgn = (v >= 0) ? 1 : -1;
 	    pkgw_app_value_info.type = PVST_NUMBER;
 	    pkgw_app_value_info.sign = sgn;
-	    pkgw_app_value_info.v.named = sgn * v;
+	    pkgw_app_value_info.v.number = sgn * v;
 	}
 #endif
         break;
@@ -1785,6 +1796,10 @@ void send_val(integer v)
 		    && (outbuf[outptr - 1] == ASCII_d)))
 		goto bad_case;
 	}
+	/* The most recent thing in the buffer was a number-type thing, and we
+	 * just got another number type thing. Web treats this as "math" on
+	 * two values that are combined with a space rather than a plus sign.
+	 * For constant-name tracking, we reset the buffer. */
 	outsign = SPACE;
 	outstate = SIGN_VAL;
 	outval = v;
@@ -1796,7 +1811,7 @@ void send_val(integer v)
 	} else {
 	    int sgn = (v >= 0) ? 1 : -1;
 	    pkgw_value_stack[0].sign = sgn;
-	    pkgw_value_stack[0].v.named = sgn * v;
+	    pkgw_value_stack[0].v.number = sgn * v;
 	}
 	pkgw_value_stack_size = 1;
 #endif
@@ -1807,6 +1822,8 @@ void send_val(integer v)
     case MISC:
 	if (outptr == breakptr + 1 && (outbuf[breakptr] == ASTERISK || outbuf[breakptr] == FORWARD_SLASH))
 	    goto bad_case;
+	/* This is a number following nothing special. For constant-tracking,
+	 * we have to initialize the buffer. */
 	outsign = 0;
 	outstate = SIGN_VAL;
 	outval = v;
@@ -1818,7 +1835,7 @@ void send_val(integer v)
 	} else {
 	    int sgn = (v >= 0) ? 1 : -1;
 	    pkgw_value_stack[0].sign = sgn;
-	    pkgw_value_stack[0].v.named = sgn * v;
+	    pkgw_value_stack[0].v.number = sgn * v;
 	}
 	pkgw_value_stack_size = 1;
 #endif
@@ -1827,17 +1844,29 @@ void send_val(integer v)
         break;
 
     case SIGN:
+	/* There's a value and then a plus or minus sign, whose polarity is
+	 * stored in out_app. We just got a new value. The output code merges
+	 * them, but for tracking purposes we want to record that we just
+	 * combined two different values. */
 	outsign = PLUS_SIGN;
 	outstate = SIGN_VAL;
 	outval = outapp * v;
 #ifdef PKGW
-	pkgw_value_stack[0] = pkgw_app_value_info;
-	pkgw_value_stack[0].sign *= v;
-	pkgw_value_stack_size = 1;
+	pkgw_app_value_info.v.number *= v;
+	if (pkgw_app_value_info.v.number < 0) {
+	    pkgw_app_value_info.v.number *= -1;
+	    pkgw_app_value_info.sign *= -1;
+	}
+
+	pkgw_value_stack[pkgw_value_stack_size] = pkgw_app_value_info;
+	pkgw_value_stack_size++;
 #endif
         break;
 
     case SIGN_VAL:
+	/* Theres a number, a sign, another number, and now apparently yet
+	 * another number. As noted below: there's no way this can be
+	 * valid. */
 	outstate = SIGN_VAL_VAL;
 	outapp = v;
 #ifdef PKGW
@@ -1848,7 +1877,7 @@ void send_val(integer v)
 	} else {
 	    int sgn = (v >= 0) ? 1 : -1;
 	    pkgw_app_value_info.sign = sgn;
-	    pkgw_app_value_info.v.named = sgn * v;
+	    pkgw_app_value_info.v.number = sgn * v;
 	}
 #endif
 	putc('\n', stdout);
@@ -1857,14 +1886,22 @@ void send_val(integer v)
         break;
 
     case SIGN_VAL_SIGN:
+	/* There's a sign, a number, another sign, and now another number.
+	 * We can collapse this into the SIGN_VAL_VAL state. */
 	outstate = SIGN_VAL_VAL;
 	outapp = outapp * v;
 #ifdef PKGW
-	pkgw_app_value_info.sign *= v;
+	pkgw_app_value_info.v.number *= v;
+	if (pkgw_app_value_info.v.number < 0) {
+	    pkgw_app_value_info.v.number *= -1;
+	    pkgw_app_value_info.sign = -1;
+	}
 #endif
         break;
 
     case SIGN_VAL_VAL:
+	/* There's a sign, a number, another sign, another number, and now yet
+	 * another number. As above, this is definitely not valid. */
 	outval = outval + outapp;
 	outapp = v;
 #ifdef PKGW
@@ -1878,7 +1915,7 @@ void send_val(integer v)
 	} else {
 	    int sgn = (v >= 0) ? 1 : -1;
 	    pkgw_app_value_info.sign = sgn;
-	    pkgw_app_value_info.v.named = sgn * v;
+	    pkgw_app_value_info.v.number = sgn * v;
 	}
 #endif
 	putc('\n', stdout);
@@ -2117,8 +2154,6 @@ void send_the_output(void)
 		pkgw_numeric_constant_id = 0;
 		send_val(curval, PVST_NAMED_CONSTANT, tmp);
 	    } else {
-		pkgw_value_stack[pkgw_value_stack_size].type = PVST_NUMBER;
-		pkgw_value_stack[pkgw_value_stack_size].v.number = curval;
 		send_val(curval, PVST_NUMBER, 0);
 	    }
 #else

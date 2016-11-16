@@ -1496,16 +1496,6 @@ void app_val(integer v)
 	    }
 	}
     }
-
-    if (any_constants) {
-	/* pre-number delimiter */
-	outbuf[outptr] = LEFT_BRACE;
-	outptr++;
-	outbuf[outptr] = LESS_THAN_SIGN;
-	outptr++;
-	outbuf[outptr] = RIGHT_BRACE;
-	outptr++;
-    }
 #endif
 
     k = outbufsize;

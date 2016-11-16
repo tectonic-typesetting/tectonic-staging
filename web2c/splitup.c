@@ -163,13 +163,6 @@ main (int argc, string *argv)
       if (strncmp (&buffer[10], coerce, coerce_len) == 0)
 	break;
 
-      if (buffer[0] == '#' || buffer[0] == '\n' || buffer[0] == '}'
-	  || buffer[0] == '/' || buffer[0] == ' '
-	  || strncmp (buffer, "typedef", 7) == 0)
-	/*nothing */ ;
-      else
-	fputs ("EXTERN ", out);
-
       fputs (buffer, out);
     }
 

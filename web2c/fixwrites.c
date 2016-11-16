@@ -221,12 +221,33 @@ main (int argc,  string *argv)
 	  while (*--cp == ' ') ;
 	}
 
-      for (cp = buf, indent = 0; *cp == ' ' || *cp == '\t'; ++cp)
+      /* PKGW hack: skip line-leading comments */
+      for (cp = buf, indent = 0; ; ++cp)
 	{
 	  if (*cp == ' ')
 	    indent++;
-	  else
+	  else if (*cp == '\t')
 	    indent += 8;
+	  else if (*cp == '/' && *(cp+1) == '*') {
+	      char *save_cp = cp;
+	      int save_indent = indent;
+	      cp += 2;
+	      indent += 2;
+	      while ((*cp != '*' || *(cp+1) != '/') && *(cp+1)) {
+		  cp++;
+		  indent++;
+	      }
+	      if (*(cp+1) == 0) {
+		  /* Multi-line comment; skip */
+		  cp = save_cp;
+		  indent = save_indent;
+		  break;
+	      }
+	      cp += 1; /* cp will be incremented once more by the for loop */
+	      indent += 2;
+	  } else {
+	      break;
+	  }
 	}
 
       if (!*cp)

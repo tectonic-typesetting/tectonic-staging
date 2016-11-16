@@ -205,9 +205,7 @@ BLOCK:
 
 LABEL_DEC_PART:		/* empty */
         |	label_tok
-                        { my_output("/*"); }
                 LABEL_LIST ';'
-                        { my_output("*/"); }
         ;
 
 LABEL_LIST:		LABEL
@@ -215,7 +213,7 @@ LABEL_LIST:		LABEL
         ;
 
 LABEL:
-	i_num_tok { my_output(temp); }
+	i_num_tok
 	;
 
 CONST_DEC_PART:

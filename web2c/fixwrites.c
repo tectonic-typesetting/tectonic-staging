@@ -17,7 +17,7 @@ remove_newline (string s)
   char *temp = strrchr (s, '\n');
   if (temp == NULL)
     {
-      fprintf (stderr, "Lost newline somehow.\n");
+      fprintf (stderr, "Lost newline somehow in \"%s\".\n", s);
       /* This is so the convert script can delete the output file on error.  */
       puts ("@error@");
       exit (1);

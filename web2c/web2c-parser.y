@@ -64,7 +64,7 @@ PROGRAM:
 	DEFS
         PROGRAM_HEAD
 	  {
-	    printf ("#define %s\n", uppercasify (program_name));
+	    printf ("\n#define %s\n", uppercasify (program_name));
             block_level++;
 	    printf ("#include \"%s\"\n", std_header);
 	  }

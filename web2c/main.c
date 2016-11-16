@@ -265,6 +265,7 @@ main (int argc, string *argv)
 
   initialize ();
   yyparse ();
+  line_pos = 1; /* force final newline */
   new_line ();
 
   xfclose (coerce, coerce_name);

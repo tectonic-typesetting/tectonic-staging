@@ -59,6 +59,15 @@ def inner (top, w):
             command='WEBINPUTS=. BUILD/tie -c $out $in', # TODO: config
             description='TIE $out')
 
+    w.rule ('lex',
+            command='lex $in && mv lex.yy.c $out',
+            description='FLEX $out')
+
+    w.rule ('yacc',
+            command=('bison -y -d -v $in && mv y.tab.c $outbase.c && mv y.tab.h $outbase.h '
+                     '&& rm -f y.output'),
+            description='YACC $out')
+
     w.rule ('otangle',
             command=('WEBINPUTS=. BUILD/otangle $in && mv $basename.p $outdir/$basename.NM.p '
                      '&& mv $basename.pool $outdir'), # TODO: config
@@ -202,17 +211,29 @@ def inner (top, w):
 
     # web2c programs
 
-    def web2c_c_sources ():
-        for src in (top / 'web2c').glob ('web2c*.c'):
-            yield src
-        yield top / 'web2c' / 'main.c'
+    web2c_lexer = builddir / 'web2c-lexer.c'
+    w.build (str (web2c_lexer), 'lex',
+             inputs = [str(top / 'web2c' / 'web2c-lexer.l')])
+
+    web2c_parser_c = builddir / 'web2c-parser.c'
+    web2c_parser_h = builddir / 'web2c-parser.h'
+    w.build (map (str, [web2c_parser_c, web2c_parser_h]), 'yacc',
+             inputs = [str(top / 'web2c' / 'web2c-parser.y')],
+             variables = {
+                 'outbase': str(builddir / 'web2c-parser'),
+             }
+    )
 
     web2cprog = executable (
         output = w2cbdir / 'web2c',
-        sources = web2c_c_sources (),
+        sources = [
+            top / 'web2c' / 'main.c',
+            web2c_lexer,
+            web2c_parser_c,
+        ],
         rule = 'cc',
         slibs = [libbase, libkps, libkpu],
-        cflags = '-I. %(base_cflags)s' % config,
+        cflags = '-Iweb2c -I%(build_name)s -I. %(base_cflags)s' % config,
     )
 
     splitupprog = executable (

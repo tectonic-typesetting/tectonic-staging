@@ -50,7 +50,7 @@ my_fmin(double x, double y)
 }
 
 int
-pdf_get_rect(char* filename, int page_num, int pdf_box, realrect* box)
+pdf_get_rect(char* filename, int page_num, int pdf_box, real_rect* box)
 	/* return the box converted to TeX points */
 {
 	GooString*	name = new GooString(filename);

@@ -32,7 +32,7 @@ authorization from the copyright holders.
 
 #include "trans.h"
 
-void makeidentity(transform* t)
+void make_identity(transform* t)
 {
 	t->a = 1.0;
 	t->b = 0.0;
@@ -42,7 +42,7 @@ void makeidentity(transform* t)
 	t->y = 0.0;
 }
 
-void makescale(transform* t, double xscale, double yscale)
+void make_scale(transform* t, double xscale, double yscale)
 {
 	t->a = xscale;
 	t->b = 0.0;
@@ -52,7 +52,7 @@ void makescale(transform* t, double xscale, double yscale)
 	t->y = 0.0;
 }
 
-void maketranslation(transform* t, double dx, double dy)
+void make_translation(transform* t, double dx, double dy)
 {
 	t->a = 1.0;
 	t->b = 0.0;
@@ -62,7 +62,7 @@ void maketranslation(transform* t, double dx, double dy)
 	t->y = dy;
 }
 #include <stdio.h>
-void makerotation(transform* t, double a)
+void make_rotation(transform* t, double a)
 {
 	t->a = cos(a);
 	t->b = sin(a);
@@ -72,15 +72,15 @@ void makerotation(transform* t, double a)
 	t->y = 0.0;
 }
 
-void transformpoint(realpoint* p, const transform* t)
+void transform_point(real_point* p, const transform* t)
 {
-	realpoint	r;
+	real_point	r;
 	r.x = t->a * p->x + t->c * p->y + t->x;
 	r.y = t->b * p->x + t->d * p->y + t->y;
 	*p = r;
 }
 
-void transformconcat(transform* t1, const transform* t2)
+void transform_concat(transform* t1, const transform* t2)
 {
 	transform	r;
 	r.a = t1->a * t2->a + t1->b * t2->c + 0.0 * t2->x;

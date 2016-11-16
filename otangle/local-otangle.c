@@ -3694,7 +3694,7 @@ void mainbody(void)
     buffer[0] = SPACE;
     inputhasended = false;
     Fputs(stdout, "This is OTANGLE, Version 4.4");
-    fprintf(stdout, "%s\n", versionstring);
+    fprintf(stdout, "%s\n", version_string);
 
     phaseone = true;
     modulecount = 0;

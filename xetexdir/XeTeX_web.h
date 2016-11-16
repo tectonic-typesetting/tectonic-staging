@@ -44,18 +44,18 @@ extern "C" {
 
 // declarations from the Pascal/WEB side used in C++ code
 
-extern void zprintnl(int s);
-extern void zprintchar(int c);
-extern void begindiagnostic(void);
-extern void zenddiagnostic(int nl);
-extern int gettracingfontsstate(void);
+extern void zprint_nl(int s);
+extern void zprint_char(int c);
+extern void begin_diagnostic(void);
+extern void zend_diagnostic(int nl);
+extern int get_tracing_fonts_state(void);
 extern void set_cp_code(int, unsigned int, int, int);
 extern int get_cp_code(int, unsigned int, int);
 
-extern Fixed loadedfontdesignsize;
-extern void **fontlayoutengine;
-extern integer *fontarea;
-extern integer *fontsize;
+extern Fixed loaded_font_design_size;
+extern void **font_layout_engine;
+extern integer *font_area;
+extern integer *font_size;
 
 #ifdef __cplusplus
 };

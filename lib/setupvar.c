@@ -11,7 +11,7 @@
    DFLT to *VAR.  */
 
 void
-setupboundvariable (integer *var, const_string var_name, integer dflt)
+setup_bound_variable (integer *var, const_string var_name, integer dflt)
 {
   string expansion = kpse_var_value (var_name);
   *var = dflt;

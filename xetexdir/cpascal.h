@@ -112,9 +112,9 @@ typedef FILE *text;
 #define printreal(r,n,m) fprintreal (stdout, r, n, m)
 
 /* Write the byte X to the file F.  */
-#define putbyte(x,f) \
+#define put_byte(x,f) \
  do { if (putc ((char) (x) & 255, f) == EOF) \
-        FATAL1 ("putbyte(%ld) failed", (long) x); } while (0)
+        FATAL1 ("put_byte(%ld) failed", (long) x); } while (0)
 
 /* To work around casting problems.  */
 #define ucharcast(x) ((unsigned char) (x))
@@ -132,9 +132,9 @@ typedef FILE *text;
 
 /* `aopenin' is used for all kinds of input text files, so it
    needs to know what path to use.  Used by BibTeX, MF, TeX.  */
-#define aopenin(f,p) open_input (&(f), p, FOPEN_RBIN_MODE)
-#define aopenout(f)  open_output (&(f), FOPEN_W_MODE)
-#define aclose close_file
+#define a_open_in(f,p) open_input (&(f), p, FOPEN_RBIN_MODE)
+#define a_open_out(f)  open_output (&(f), FOPEN_W_MODE)
+#define a_close close_file
 
 /* How to output to the GF or DVI file.  */
 #define WRITE_OUT(a, b)							\
@@ -158,11 +158,11 @@ typedef FILE *text;
 /* Allocate an array of a given type. Add 1 to size to account for the
    fact that Pascal arrays are used from [1..size], unlike C arrays which
    use [0..size). */
-#define xmallocarray(type,size) ((type*)xmalloc((size+1)*sizeof(type)))
+#define xmalloc_array(type,size) ((type*)xmalloc((size+1)*sizeof(type)))
 /* Same for reallocating an array. */
-#define xreallocarray(ptr,type,size) ((type*)xrealloc(ptr,(size+1)*sizeof(type)))
+#define xrealloc_array(ptr,type,size) ((type*)xrealloc(ptr,(size+1)*sizeof(type)))
 /* Allocate and clear an array of a given type. Add 1 to nmemb and size. */
-#define xcallocarray(type,nmemb,size) ((type*)xcalloc(nmemb+1,(size+1)*sizeof(type)))
+#define xcalloc_array(type,nmemb,size) ((type*)xcalloc(nmemb+1,(size+1)*sizeof(type)))
 
 /* BibTeX needs this to dynamically reallocate arrays.  Too bad we can't
    rely on stringification, or we could avoid the ARRAY_NAME arg.
@@ -192,6 +192,7 @@ typedef FILE *text;
 #define cstring string
 
 #define constcstring const_string
+#define const_cstring const_string
 
 /* For strings of unsigned chars, used as array indices.  */
 #define constw2custring const_w2custring
@@ -203,7 +204,7 @@ typedef const unsigned char *const_w2custring;
 #define fabs(x) ((x) >= 0.0 ? (x) : -(x))
 
 /* TeX et al. have a variable free, but we also need the C routine.  */
-#define libcfree free
+#define libc_free free
 
 /* We have a system-dependent prompt in tex.ch.  We don't want it in the
    string pool, since (now that the pools are compiled into the
@@ -214,18 +215,18 @@ typedef const unsigned char *const_w2custring;
    not going to try to extract the actual value from a terminal struct.
    Anyone who is savvy enough to change it will not be confused.  */
 #ifdef WIN32
-#define promptfilenamehelpmsg "(Press Enter to retry, or Control-Z to exit"
+#define prompt_file_name_help_msg "(Press Enter to retry, or Control-Z to exit"
 #else
-#define promptfilenamehelpmsg "(Press Enter to retry, or Control-D to exit"
+#define prompt_file_name_help_msg "(Press Enter to retry, or Control-D to exit"
 #endif
 
 /* We use this rather than a simple fputs so that the string will end up
    in the .log file, too.  */
-#define printcstring(STR)        \
+#define print_c_string(STR)        \
   do {                           \
     const_string ch_ptr = (STR); \
     while (*ch_ptr)              \
-      printchar(*(ch_ptr++));    \
+      print_char(*(ch_ptr++));    \
   } while (0)
 
 

@@ -91,8 +91,8 @@ get_ot_math_constant(int f, int n)
 {
     int rval = 0;
 
-    if (fontarea[f] == OTGR_FONT_FLAG) {
-        XeTeXFontInst*  font = (XeTeXFontInst*)getFont((XeTeXLayoutEngine)fontlayoutengine[f]);
+    if (font_area[f] == OTGR_FONT_FLAG) {
+        XeTeXFontInst*  font = (XeTeXFontInst*)getFont((XeTeXLayoutEngine)font_layout_engine[f]);
         rval = getMathConstant(font, (mathConstantIndex)n);
         /* scale according to font size, except the ones that are percentages */
         if (n > scriptScriptPercentScaleDown && n < radicalDegreeBottomRaisePercent)
@@ -152,11 +152,11 @@ get_native_mathsy_param(int f, int n)
     int rval = 0;
 
     if (n == math_quad) {
-        rval = fontsize[f];
+        rval = font_size[f];
     }
     else if (n == delim2) { // XXX not sure what OT parameter we should use here;
                             // for now we use 1.5em, clamped to delim1 height
-        rval = std::min<int>(1.5 * fontsize[f], get_native_mathsy_param(f, delim1));
+        rval = std::min<int>(1.5 * font_size[f], get_native_mathsy_param(f, delim1));
     }
     else {
         if (n < sizeof(TeX_sym_to_OT_map) / sizeof(mathConstantIndex)) {
@@ -201,7 +201,7 @@ get_native_mathex_param(int f, int n)
     int rval = 0;
 
     if (n == math_quad)
-        rval = fontsize[f];
+        rval = font_size[f];
     else {
         if (n < sizeof(TeX_ext_to_OT_map) / sizeof(mathConstantIndex)) {
             mathConstantIndex ot_index = TeX_ext_to_OT_map[n];
@@ -220,8 +220,8 @@ get_ot_math_variant(int f, int g, int v, integer* adv, int horiz)
     int rval = g;
     *adv = -1;
 
-    if (fontarea[f] == OTGR_FONT_FLAG) {
-        XeTeXFontInst*  font = (XeTeXFontInst*)getFont((XeTeXLayoutEngine)fontlayoutengine[f]);
+    if (font_area[f] == OTGR_FONT_FLAG) {
+        XeTeXFontInst*  font = (XeTeXFontInst*)getFont((XeTeXLayoutEngine)font_layout_engine[f]);
 
         const char* table = font->getMathTable();
         if (table == NULL)
@@ -258,8 +258,8 @@ get_ot_assembly_ptr(int f, int g, int horiz)
 {
     void*   rval = NULL;
 
-    if (fontarea[f] == OTGR_FONT_FLAG) {
-        XeTeXFontInst*  font = (XeTeXFontInst*)getFont((XeTeXLayoutEngine)fontlayoutengine[f]);
+    if (font_area[f] == OTGR_FONT_FLAG) {
+        XeTeXFontInst*  font = (XeTeXFontInst*)getFont((XeTeXLayoutEngine)font_layout_engine[f]);
 
         const char* table = font->getMathTable();
         if (table == NULL)
@@ -295,8 +295,8 @@ get_ot_math_ital_corr(int f, int g)
 {
     int rval = 0;
 
-    if (fontarea[f] == OTGR_FONT_FLAG) {
-        XeTeXFontInst*  font = (XeTeXFontInst*)getFont((XeTeXLayoutEngine)fontlayoutengine[f]);
+    if (font_area[f] == OTGR_FONT_FLAG) {
+        XeTeXFontInst*  font = (XeTeXFontInst*)getFont((XeTeXLayoutEngine)font_layout_engine[f]);
 
         const char* table = font->getMathTable();
         if (table == NULL)
@@ -330,8 +330,8 @@ get_ot_math_accent_pos(int f, int g)
 {
     int rval = 0x7fffffffUL;
 
-    if (fontarea[f] == OTGR_FONT_FLAG) {
-        XeTeXFontInst*  font = (XeTeXFontInst*)getFont((XeTeXLayoutEngine)fontlayoutengine[f]);
+    if (font_area[f] == OTGR_FONT_FLAG) {
+        XeTeXFontInst*  font = (XeTeXFontInst*)getFont((XeTeXLayoutEngine)font_layout_engine[f]);
 
         const char* table = font->getMathTable();
         if (table == NULL)
@@ -367,8 +367,8 @@ ot_min_connector_overlap(int f)
 {
     int rval = 0;
 
-    if (fontarea[f] == OTGR_FONT_FLAG) {
-        XeTeXFontInst*  font = (XeTeXFontInst*)getFont((XeTeXLayoutEngine)fontlayoutengine[f]);
+    if (font_area[f] == OTGR_FONT_FLAG) {
+        XeTeXFontInst*  font = (XeTeXFontInst*)getFont((XeTeXLayoutEngine)font_layout_engine[f]);
 
         const char* table = font->getMathTable();
         if (table == NULL)
@@ -396,8 +396,8 @@ static int
 getMathKernAt(int f, int g, MathKernSide side, int height)
 {
     int rval = 0;
-    if (fontarea[f] == OTGR_FONT_FLAG) {
-        XeTeXFontInst* font = (XeTeXFontInst*)getFont((XeTeXLayoutEngine)fontlayoutengine[f]);
+    if (font_area[f] == OTGR_FONT_FLAG) {
+        XeTeXFontInst* font = (XeTeXFontInst*)getFont((XeTeXLayoutEngine)font_layout_engine[f]);
 
         const char* table = font->getMathTable();
         if (table == NULL)
@@ -466,8 +466,8 @@ glyph_height(int f, int g)
 {
     float rval = 0.0;
 
-    if (fontarea[f] == OTGR_FONT_FLAG) {
-        XeTeXLayoutEngine engine = (XeTeXLayoutEngine)fontlayoutengine[f];
+    if (font_area[f] == OTGR_FONT_FLAG) {
+        XeTeXLayoutEngine engine = (XeTeXLayoutEngine)font_layout_engine[f];
         getGlyphHeightDepth(engine, g, &rval, NULL);
     }
 
@@ -479,8 +479,8 @@ glyph_depth(int f, int g)
 {
     float rval = 0.0;
 
-    if (fontarea[f] == OTGR_FONT_FLAG) {
-        XeTeXLayoutEngine engine = (XeTeXLayoutEngine)fontlayoutengine[f];
+    if (font_area[f] == OTGR_FONT_FLAG) {
+        XeTeXLayoutEngine engine = (XeTeXLayoutEngine)font_layout_engine[f];
         getGlyphHeightDepth(engine, g, NULL, &rval);
     }
 
@@ -496,8 +496,8 @@ get_ot_math_kern(int f, int g, int sf, int sg, int cmd, int shift)
 {
     int rval = 0;
 
-    if (fontarea[f] == OTGR_FONT_FLAG) {
-        XeTeXFontInst* font = (XeTeXFontInst*)getFont((XeTeXLayoutEngine)fontlayoutengine[f]);
+    if (font_area[f] == OTGR_FONT_FLAG) {
+        XeTeXFontInst* font = (XeTeXFontInst*)getFont((XeTeXLayoutEngine)font_layout_engine[f]);
         int kern = 0, skern = 0;
         float corr_height_top = 0.0, corr_height_bot = 0.0;
 
@@ -560,8 +560,8 @@ ot_part_start_connector(int f, const GlyphAssembly* a, int i)
 {
     int rval = 0;
 
-    if (fontarea[f] == OTGR_FONT_FLAG) {
-        XeTeXFontInst*  font = (XeTeXFontInst*)getFont((XeTeXLayoutEngine)fontlayoutengine[f]);
+    if (font_area[f] == OTGR_FONT_FLAG) {
+        XeTeXFontInst*  font = (XeTeXFontInst*)getFont((XeTeXLayoutEngine)font_layout_engine[f]);
         rval = D2Fix(font->unitsToPoints(SWAP(a->partRecords[i].startConnectorLength)));
     }
 
@@ -573,8 +573,8 @@ ot_part_end_connector(int f, const GlyphAssembly* a, int i)
 {
     int rval = 0;
 
-    if (fontarea[f] == OTGR_FONT_FLAG) {
-        XeTeXFontInst*  font = (XeTeXFontInst*)getFont((XeTeXLayoutEngine)fontlayoutengine[f]);
+    if (font_area[f] == OTGR_FONT_FLAG) {
+        XeTeXFontInst*  font = (XeTeXFontInst*)getFont((XeTeXLayoutEngine)font_layout_engine[f]);
         rval = D2Fix(font->unitsToPoints(SWAP(a->partRecords[i].endConnectorLength)));
     }
 
@@ -586,8 +586,8 @@ ot_part_full_advance(int f, const GlyphAssembly* a, int i)
 {
     int rval = 0;
 
-    if (fontarea[f] == OTGR_FONT_FLAG) {
-        XeTeXFontInst*  font = (XeTeXFontInst*)getFont((XeTeXLayoutEngine)fontlayoutengine[f]);
+    if (font_area[f] == OTGR_FONT_FLAG) {
+        XeTeXFontInst*  font = (XeTeXFontInst*)getFont((XeTeXLayoutEngine)font_layout_engine[f]);
         rval = D2Fix(font->unitsToPoints(SWAP(a->partRecords[i].fullAdvance)));
     }
 

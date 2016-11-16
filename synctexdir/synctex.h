@@ -46,68 +46,68 @@ Latest Revision: Wed Jul  1 08:17:50 UTC 2009
 #include "synctex-common.h"
 
 /*  Free all memory used, close and remove the file if any. */
-void synctexabort(boolean log_opened);
+void synctex_abort(boolean log_opened);
 
 /*  Send this message when starting a new input.  */
-extern void synctexstartinput(void);
+extern void synctex_start_input(void);
 
 /*  Recording the "{..." line.  In *tex.web, use synctex_sheet(pdf_output) at
  *  the very beginning of the ship_out procedure.
 */
-extern void synctexsheet(integer mag);
+extern void synctex_sheet(integer mag);
 
 /*  Recording the "}..." line.  In *tex.web, use synctex_teehs at
  *  the very end of the ship_out procedure.
 */
-extern void synctexteehs(void);
+extern void synctex_teehs(void);
 
 /*  This message is sent when a vlist will be shipped out, more precisely at
  *  the beginning of the vlist_out procedure in *TeX.web.  It will be balanced
  *  by a synctex_tsilv, sent at the end of the vlist_out procedure.  p is the
  *  address of the vlist We assume that p is really a vlist node! */
-extern void synctexvlist(halfword this_box);
+extern void synctex_vlist(halfword this_box);
 
 /*  Recording a "}" line ending a vbox: this message is sent whenever a vlist
  *  has been shipped out. It is used to close the vlist nesting level. It is
  *  sent at the end of each vlist_out procedure in *TeX.web to balance a former
  *  synctex_vlist sent at the beginning of that procedure.    */
-extern void synctextsilv(halfword this_box);
+extern void synctex_tsilv(halfword this_box);
 
 /*  This message is sent when a void vlist will be shipped out.
  *  There is no need to balance a void vlist.  */
-extern void synctexvoidvlist(halfword p, halfword this_box);
+extern void synctex_void_vlist(halfword p, halfword this_box);
 
 /*  Send this message when an hlist will be shipped out, more precisely at
  *  the beginning of the hlist_out procedure in *TeX.web.  It must be balanced
  *  by a synctex_tsilh, sent at the end of the hlist_out procedure.  p is the
  *  address of the hlist. */
-extern void synctexhlist(halfword this_box);
+extern void synctex_hlist(halfword this_box);
 
 /*  Send this message at the end of the various hlist_out procedure in *TeX.web
  *  to balance a former synctex_hlist.    */
-extern void synctextsilh(halfword this_box);
+extern void synctex_tsilh(halfword this_box);
 
 /*  This message is sent when a void hlist will be shipped out.
  *  There is no need to balance a void hlist.  */
-extern void synctexvoidhlist(halfword p, halfword this_box);
+extern void synctex_void_hlist(halfword p, halfword this_box);
 
 /*  Send this message whenever an inline math node will ship out. */
-extern void synctexmath(halfword p, halfword this_box);
+extern void synctex_math(halfword p, halfword this_box);
 
 /*  Send this message whenever an horizontal rule or glue node will ship out. */
-extern void synctexhorizontalruleorglue(halfword p, halfword this_box);
+extern void synctex_horizontal_rule_or_glue(halfword p, halfword this_box);
 
 /*  Send this message whenever a kern node will ship out. */
-extern void synctexkern(halfword p, halfword this_box);
+extern void synctex_kern(halfword p, halfword this_box);
 
 /*  this message is sent whenever a char node ships out    */
-extern void synctexchar(halfword p, halfword this_box);
+extern void synctex_char(halfword p, halfword this_box);
 
 /*  this message should be sent to record information
          for a node of an unknown type    */
-extern void synctexnode(halfword p, halfword this_box);
+extern void synctex_node(halfword p, halfword this_box);
 
 /*  For debugging purpose only    */
-extern void synctexcurrent(void);
+extern void synctex_current(void);
 
 #  endif

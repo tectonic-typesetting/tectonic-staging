@@ -35,55 +35,55 @@ authorization from the copyright holders.
 #define native_node_size                        6
 #define native_node_text(p)                     ((unsigned short*)(&(mem[(p) + native_node_size])))
 
-#define getnativechar(p,i)                      native_node_text(p)[i]
-#define setnativechar(p,i,v)                    native_node_text(p)[i] = v
+#define get_native_char(p,i)                      native_node_text(p)[i]
+#define set_native_char(p,i,v)                    native_node_text(p)[i] = v
 
-#define getnativeusv(p,i) \
+#define get_native_usv(p,i) \
   ((native_node_text(p)[i] >= 0xd800 && native_node_text(p)[i] < 0xdc00) ? \
     0x10000 + (native_node_text(p)[i] - 0xd800) * 0x400 + native_node_text(p)[(i)+1] - 0xdc00 : \
     native_node_text(p)[i])
 
 /* p is native_word node; g is XeTeX_use_glyph_metrics flag */
-#define setnativemetrics(p,g)                   measure_native_node(&(mem[p]), g)
+#define set_native_metrics(p,g)                   measure_native_node(&(mem[p]), g)
 
-#define setnativeglyphmetrics(p,g)              measure_native_glyph(&(mem[p]), g)
+#define set_native_glyph_metrics(p,g)              measure_native_glyph(&(mem[p]), g)
 
-#define setjustifiednativeglyphs(p)             store_justified_native_glyphs(&(mem[p]))
+#define set_justified_native_glyphs(p)             store_justified_native_glyphs(&(mem[p]))
 
-#define getnativeitaliccorrection(p)            get_native_italic_correction(&(mem[p]))
-#define getnativeglyphitaliccorrection(p)       get_native_glyph_italic_correction(&(mem[p]))
+#define get_native_italic_correction(p)            real_get_native_italic_correction(&(mem[p]))
+#define get_native_glyph_italic_correction(p)       real_get_native_glyph_italic_correction(&(mem[p]))
 
-#define getnativeglyph(p,i)                     get_native_glyph(&(mem[p]), i)
+#define get_native_glyph(p,i)                     real_get_native_glyph(&(mem[p]), i)
 
-#define makexdvglypharraydata(p)                makeXDVGlyphArrayData(&(mem[p]))
-#define xdvbufferbyte(i)                        xdvbuffer[i]
+#define make_xdv_glyph_array_data(p)                makeXDVGlyphArrayData(&(mem[p]))
+#define xdv_buffer_byte(i)                        xdv_buffer[i]
 
 #define getcpcode       get_cp_code
 #define setcpcode       set_cp_code
-#define getnativewordcp(p,s)                    get_native_word_cp(&(mem[p]), s)
+#define get_native_word_cp(p,s)                    real_get_native_word_cp(&(mem[p]), s)
 
 #define pic_node_size                           9
 
 #define deref(p)                                (*(p))
 
-#define findpicfile(a,b,c,d)                    find_pic_file(a, b, c, d)
+#define find_pic_file(a,b,c,d)                    find_pic_file(a, b, c, d)
 
-#define picpathbyte(p,i)                        ((unsigned char*)&(mem[p+pic_node_size]))[i]
+#define pic_path_byte(p,i)                        ((unsigned char*)&(mem[p+pic_node_size]))[i]
 
-#define dviopenout(f)                           open_dvi_output(&(f))
+#define dvi_open_out(f)                           open_dvi_output(&(f))
 
-#define nullptr                                 (NULL)
-#define glyphinfobyte(p,k)                      ((unsigned char*)p)[k]
-#define casttoushort(x)                         (unsigned short)(x)
+#define null_ptr                                 (NULL)
+#define glyph_info_byte(p,k)                      ((unsigned char*)p)[k]
+#define cast_to_ushort(x)                         (unsigned short)(x)
 
 /* easier to do the bit-twiddling here than in Pascal */
 /* read fields from a 32-bit math code */
-#define mathfamfield(x)                         (((unsigned)(x) >> 24) & 0xFF)
-#define mathclassfield(x)                       (((unsigned)(x) >> 21) & 0x07)
-#define mathcharfield(x)                        ((unsigned)(x) & 0x1FFFFF)
+#define math_fam_field(x)                         (((unsigned)(x) >> 24) & 0xFF)
+#define math_class_field(x)                       (((unsigned)(x) >> 21) & 0x07)
+#define math_char_field(x)                        ((unsigned)(x) & 0x1FFFFF)
 /* calculate pieces to assign to a math code */
-#define setfamilyfield(x)                       (((unsigned)(x) & 0xFF) << 24)
-#define setclassfield(x)                        (((unsigned)(x) & 0x07) << 21)
+#define set_family_field(x)                       (((unsigned)(x) & 0xFF) << 24)
+#define set_class_field(x)                        (((unsigned)(x) & 0x07) << 21)
 
 /* aliases */
 #define getnativemathsyparam                    get_native_mathsy_param

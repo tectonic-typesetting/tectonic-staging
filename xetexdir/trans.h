@@ -51,14 +51,14 @@ typedef struct {
 typedef struct {
 	float	x;
 	float	y;
-} realpoint;
+} real_point;
 
 typedef struct {
 	float	x;
 	float	y;
 	float	wd;
 	float	ht;
-} realrect;
+} real_rect;
 
 #define xCoord(p)				(p).x
 #define yCoord(p)				(p).y
@@ -78,12 +78,12 @@ typedef struct {
 #ifdef __cplusplus
 extern "C" {
 #endif
-void makeidentity(transform* t);
-void makescale(transform* t, double xscale, double yscale);
-void maketranslation(transform* t, double dx, double dy);
-void makerotation(transform* t, double a);
-void transformpoint(realpoint* p, const transform* t);
-void transformconcat(transform* t1, const transform* t2);
+void make_identity(transform* t);
+void make_scale(transform* t, double xscale, double yscale);
+void make_translation(transform* t, double dx, double dy);
+void make_rotation(transform* t, double a);
+void transform_point(real_point* p, const transform* t);
+void transform_concat(transform* t1, const transform* t2);
 #ifdef __cplusplus
 };
 #endif

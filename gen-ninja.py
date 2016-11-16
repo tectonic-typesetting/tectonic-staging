@@ -310,7 +310,13 @@ def inner (top, w):
 
     w.build (map (str, xetex_c), 'convert',
              inputs = map (str, [xetex_p, xetex_pool]),
-             implicit = [convert, web2cprog, splitupprog, fixwritesprog],
+             implicit = [
+                 convert,
+                 web2cprog,
+                 splitupprog,
+                 fixwritesprog,
+                 str(top / 'web2c' / 'coerce.h'),
+             ],
              order_only = [str(builddir)], 
              variables = {
                  'outdir': str(builddir),

@@ -48,7 +48,7 @@ authorization from the copyright holders.
   do {                           \
     const char* ch_ptr = (STR);  \
     while (*ch_ptr)              \
-      zprintchar(*(ch_ptr++));    \
+      zprint_char(*(ch_ptr++));    \
   } while (0)
 
 XeTeXFontMgr* XeTeXFontMgr::sFontManager = NULL;
@@ -96,7 +96,7 @@ XeTeXFontMgr::findFont(const char* name, char* variant, double ptSize)
     std::string nameStr(name);
     Font* font = NULL;
     int dsize = 100;
-    loadedfontdesignsize = 655360L;
+    loaded_font_design_size = 655360L;
 
     for (int pass = 0; pass < 2; ++pass) {
         // try full name as given
@@ -384,14 +384,14 @@ XeTeXFontMgr::findFont(const char* name, char* variant, double ptSize)
     }
 
     if (font != NULL && font->opSizeInfo.designSize != 0)
-        loadedfontdesignsize = (font->opSizeInfo.designSize << 16L) / 10;
+        loaded_font_design_size = (font->opSizeInfo.designSize << 16L) / 10;
 
-    if (gettracingfontsstate() > 0) {
-        begindiagnostic();
-        zprintnl(' ');
+    if (get_tracing_fonts_state() > 0) {
+        begin_diagnostic();
+        zprint_nl(' ');
         printcstring("-> ");
         printcstring(getPlatformFontDesc(font->fontRef).c_str());
-        zenddiagnostic(0);
+        zend_diagnostic(0);
     }
 
     return font->fontRef;

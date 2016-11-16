@@ -12,4 +12,4 @@ s/lab32://
 s/hack0 () ;/if(setjmp(jmp9998)==1) goto lab9998;/
 s/hack1 () ;/if(setjmp(jmp32)==0)for(;;)/
 s/hack2 ()/break/
-/^void mainbody/,$s/while ( true/while (lab31==0/
+/^void main_body/,$s/while ( true/while (lab31==0/

@@ -92,6 +92,8 @@ typedef union
   } u;
 } twohalves;
 
+typedef twohalves two_halves;
+
 typedef struct
 {
   struct
@@ -103,6 +105,8 @@ typedef struct
 #endif
   } u;
 } fourquarters;
+
+typedef fourquarters four_quarters;
 
 typedef union
 {
@@ -139,6 +143,8 @@ typedef union
 #endif /* not WORDS_BIGENDIAN */
 } memoryword;
 
+typedef memoryword memory_word;
+
 
 /* fmemory_word for font_list; needs to be only four bytes.  This saves
    significant space in the .fmt files. (Not true in XeTeX, actually!) */
@@ -162,6 +168,8 @@ typedef union
   } v;
 #endif /* not WORDS_BIGENDIAN */
 } fmemoryword;
+
+typedef fmemoryword fmemory_word;
 
 /* To keep the original structure accesses working, we must go through
    the extra names C forced us to introduce.  */

@@ -5,3 +5,5 @@ typedef union {
    scaled sc;
    fourquarters qqqq;
 } memoryword;
+
+typedef memoryword memory_word;

@@ -99,7 +99,7 @@ cacheGlyphBBox(uint16_t fontID, uint16_t glyphID, const GlyphBBox* bbox)
 /*******************************************************************/
 
 void
-terminatefontmanager()
+terminate_font_manager()
 {
     XeTeXFontMgr::Terminate();
 }

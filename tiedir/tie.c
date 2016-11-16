@@ -611,7 +611,7 @@ for(i= 1;i<=126;i++)xord[xchr[i]]= i;
 #line 149 "../../../repo/Build/source/texk/web2c/tiedir/tie-w2c.ch"
 kpse_set_program_name(argv[0],"tie");
 print(banner);
-print_ln(versionstring);
+print_ln(version_string);
 print_ln(copyright);
 #line 1243 "../../../repo/Build/source/texk/web2c/tiedir/tie.w"
 actual_input= 0;

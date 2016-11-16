@@ -42,9 +42,9 @@ printversionandexit (const_string banner,
   /* The Web2c version string starts with a space.  */
 #ifdef PTEX
   printf ("%s %s (%s)%s\n", prog_name, prog_version, get_enc_string(),
-          versionstring);
+          version_string);
 #else
-  printf ("%s %s%s\n", prog_name, prog_version, versionstring);
+  printf ("%s %s%s\n", prog_name, prog_version, version_string);
 #endif
   puts (kpathsea_version_string);
 #ifdef PTEX

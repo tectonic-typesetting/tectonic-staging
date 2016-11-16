@@ -51,11 +51,11 @@ XeTeX_pic.c
 
 
 int
-countpdffilepages(void)
+count_pdf_file_pages(void)
 {
 	int	rval = 0;
 
-    char*		pic_path = kpse_find_file((char*)nameoffile + 1, kpse_pict_format, 1);
+    char*		pic_path = kpse_find_file((char*)name_of_file + 1, kpse_pict_format, 1);
 	if (pic_path) {
 		rval = pdf_count_pages(pic_path);
 		free(pic_path);
@@ -74,11 +74,11 @@ countpdffilepages(void)
 	return bounds (tex points) in *bounds
 */
 int
-find_pic_file(char** path, realrect* bounds, int pdfBoxType, int page)
+find_pic_file(char** path, real_rect* bounds, int pdfBoxType, int page)
 {
 	int		err = -1;
 	FILE*	fp = NULL;
-    char*	pic_path = kpse_find_file((char*)nameoffile + 1, kpse_pict_format, 1);
+    char*	pic_path = kpse_find_file((char*)name_of_file + 1, kpse_pict_format, 1);
 
 	*path = NULL;
 	bounds->x = bounds->y = bounds->wd = bounds->ht = 0.0;

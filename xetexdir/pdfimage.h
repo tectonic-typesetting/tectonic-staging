@@ -39,7 +39,7 @@ authorization from the copyright holders.
 extern "C" {
 #endif
 
-extern int pdf_get_rect(char* filename, int page_num, int pdf_box, realrect* box);
+extern int pdf_get_rect(char* filename, int page_num, int pdf_box, real_rect* box);
 
 extern int pdf_count_pages(char* filename);
 

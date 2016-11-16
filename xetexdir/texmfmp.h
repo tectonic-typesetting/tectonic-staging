@@ -23,8 +23,10 @@ typedef struct {
   void *conversionData;
 } UFILE;
 typedef UFILE* unicodefile;
+typedef unicodefile unicode_file;
 
 typedef void* voidpointer;
+typedef voidpointer void_pointer;
 #endif
 
 /* If we have these macros, use them, as they provide a better guide to
@@ -50,49 +52,49 @@ typedef void* voidpointer;
 /* Some things are the same except for the name.  */
 #ifdef TeX
 #if defined (pdfTeX)
-#define TEXMFPOOLNAME "pdftex.pool"
-#define TEXMFENGINENAME "pdftex"
+#define TEXMF_POOL_NAME "pdftex.pool"
+#define TEXMF_ENGINE_NAME "pdftex"
 #elif defined (eTeX)
-#define TEXMFPOOLNAME "etex.pool"
-#define TEXMFENGINENAME "etex"
+#define TEXMF_POOL_NAME "etex.pool"
+#define TEXMF_ENGINE_NAME "etex"
 #elif defined (XeTeX)
-#define TEXMFPOOLNAME "xetex.pool"
-#define TEXMFENGINENAME "xetex"
+#define TEXMF_POOL_NAME "xetex.pool"
+#define TEXMF_ENGINE_NAME "xetex"
 #elif defined (Aleph)
-#define TEXMFPOOLNAME "aleph.pool"
-#define TEXMFENGINENAME "aleph"
+#define TEXMF_POOL_NAME "aleph.pool"
+#define TEXMF_ENGINE_NAME "aleph"
 #elif defined (pTeX)
-#define TEXMFPOOLNAME "ptex.pool"
-#define TEXMFENGINENAME "ptex"
+#define TEXMF_POOL_NAME "ptex.pool"
+#define TEXMF_ENGINE_NAME "ptex"
 #include "ptexdir/kanji.h"
 #elif defined (epTeX)
-#define TEXMFPOOLNAME "eptex.pool"
-#define TEXMFENGINENAME "eptex"
+#define TEXMF_POOL_NAME "eptex.pool"
+#define TEXMF_ENGINE_NAME "eptex"
 #include "ptexdir/kanji.h"
 #elif defined (upTeX)
-#define TEXMFPOOLNAME "uptex.pool"
-#define TEXMFENGINENAME "uptex"
+#define TEXMF_POOL_NAME "uptex.pool"
+#define TEXMF_ENGINE_NAME "uptex"
 #include "uptexdir/kanji.h"
 #elif defined (eupTeX)
-#define TEXMFPOOLNAME "euptex.pool"
-#define TEXMFENGINENAME "euptex"
+#define TEXMF_POOL_NAME "euptex.pool"
+#define TEXMF_ENGINE_NAME "euptex"
 #include "uptexdir/kanji.h"
 #else
-#define TEXMFPOOLNAME "tex.pool"
-#define TEXMFENGINENAME "tex"
+#define TEXMF_POOL_NAME "tex.pool"
+#define TEXMF_ENGINE_NAME "tex"
 #endif
-#define DUMP_FILE fmtfile
-#define writedvi WRITE_OUT
-#define flushdvi flush_out
-#define OUT_FILE dvifile
-#define OUT_BUF dvibuf
+#define DUMP_FILE fmt_file
+#define write_dvi WRITE_OUT
+#define flush_dvi flush_out
+#define OUT_FILE dvi_file
+#define OUT_BUF dvi_buf
 #endif /* TeX */
 
 /* Restore underscores.  */
 #define dumpname dump_name
 
 /* Hacks for TeX that are better not to #ifdef, see lib/openclose.c.  */
-extern int tfmtemp, texinputtype;
+extern int tfm_temp, tex_input_type;
 
 /* pdfTeX routines also used for e-pTeX, e-upTeX, and XeTeX */
 #if defined (pdfTeX) || defined (epTeX) || defined (eupTeX) || defined(XeTeX)
@@ -175,16 +177,16 @@ extern void ipcpage (int);
 
 /* Used to write to a TFM file.  */
 #define put2bytes(f, h) do { \
-    integer v = (integer) (h); putbyte (v >> 8, f);  putbyte (v & 0xff, f); \
+    integer v = (integer) (h); put_byte (v >> 8, f);  put_byte (v & 0xff, f); \
   } while (0)
 #define put4bytes(f, w) do { \
     integer v = (integer) (w); \
-    putbyte (v >> 24, f); putbyte (v >> 16, f); \
-    putbyte (v >> 8, f);  putbyte (v & 0xff, f); \
+    put_byte (v >> 24, f); put_byte (v >> 16, f); \
+    put_byte (v >> 8, f);  put_byte (v & 0xff, f); \
   } while (0)
 
 /* Read a line of input as quickly as possible.  */
-#define	inputln(stream, flag) input_line (stream)
+#define	input_ln(stream, flag) input_line (stream)
 #ifdef XeTeX
 extern boolean input_line (UFILE *);
 #else
@@ -192,7 +194,7 @@ extern boolean input_line (FILE *);
 #endif
 
 /* This routine has to return four values.  */
-#define	dateandtime(i,j,k,l) get_date_and_time (&(i), &(j), &(k), &(l))
+#define	date_and_time(i,j,k,l) get_date_and_time (&(i), &(j), &(k), &(l))
 extern void get_date_and_time (integer *, integer *, integer *, integer *);
 
 #if defined(pdfTeX)
@@ -202,7 +204,7 @@ extern void get_seconds_and_micros (integer *, integer *);
 #endif
 
 /* Copy command-line arguments into the buffer, despite the name.  */
-extern void topenin (void);
+extern void t_open_in (void);
 
 /* Can't prototype this since it uses poolpointer and ASCIIcode, which
    are defined later in mfd.h, and mfd.h uses stuff from here.  */
@@ -214,44 +216,44 @@ extern void topenin (void);
    functions in texmfmp.c*/
 
 #if ENABLE_PIPES
-#undef aopenin
-#undef aopenout
-#undef aclose
-#define aopenin(f,p)  open_in_or_pipe(&(f),p,FOPEN_RBIN_MODE)
-#define aopenout(f)   open_out_or_pipe(&(f),FOPEN_W_MODE)
-#define aclose(f)     close_file_or_pipe(f)
+#undef a_open_in
+#undef a_open_out
+#undef a_close
+#define a_open_in(f,p)  open_in_or_pipe(&(f),p,FOPEN_RBIN_MODE)
+#define a_open_out(f)   open_out_or_pipe(&(f),FOPEN_W_MODE)
+#define a_close(f)     close_file_or_pipe(f)
 #endif
 
 /* `bopenin' (and out) is used only for reading (and writing) .tfm
    files; `wopenin' (and out) only for dump files.  The filenames are
    passed in as a global variable, `nameoffile'.  */
-#define bopenin(f)	open_input (&(f), kpse_tfm_format, FOPEN_RBIN_MODE)
-#define ocpopenin(f)	open_input (&(f), kpse_ocp_format, FOPEN_RBIN_MODE)
-#define ofmopenin(f)	open_input (&(f), kpse_ofm_format, FOPEN_RBIN_MODE)
+#define b_open_in(f)	open_input (&(f), kpse_tfm_format, FOPEN_RBIN_MODE)
+#define ocp_open_in(f)	open_input (&(f), kpse_ocp_format, FOPEN_RBIN_MODE)
+#define ofm_open_in(f)	open_input (&(f), kpse_ofm_format, FOPEN_RBIN_MODE)
 
-#define bopenout(f)	open_output (&(f), FOPEN_WBIN_MODE)
-#define bclose		aclose
+#define b_open_out(f)	open_output (&(f), FOPEN_WBIN_MODE)
+#define b_close		a_close
 #ifdef XeTeX
 /* f is declared as gzFile, but we temporarily use it for a FILE *
    so that we can use the standard open calls */
-#define wopenin(f)	(open_input ((FILE**)&(f), kpse_fmt_format, FOPEN_RBIN_MODE) \
+#define w_open_in(f)	(open_input ((FILE**)&(f), kpse_fmt_format, FOPEN_RBIN_MODE) \
 						&& (f = gzdopen(fileno((FILE*)f), FOPEN_RBIN_MODE)))
-#define wopenout(f)	(open_output ((FILE**)&(f), FOPEN_WBIN_MODE) \
+#define w_open_out(f)	(open_output ((FILE**)&(f), FOPEN_WBIN_MODE) \
 						&& (f = gzdopen(fileno((FILE*)f), FOPEN_WBIN_MODE)) \
 						&& (gzsetparams(f, 1, Z_DEFAULT_STRATEGY) == Z_OK))
-#define wclose(f)	gzclose(f)
+#define w_close(f)	gzclose(f)
 #else
-#define wopenin(f)	open_input (&(f), kpse_fmt_format, FOPEN_RBIN_MODE)
-#define wopenout	bopenout
-#define wclose		aclose
+#define w_open_in(f)	open_input (&(f), kpse_fmt_format, FOPEN_RBIN_MODE)
+#define w_open_out	b_open_out
+#define w_close		a_close
 #endif
 
 #ifdef XeTeX
 #if ENABLE_PIPES
 extern boolean u_open_in_or_pipe(unicodefile* f, integer filefmt, const_string fopen_mode, integer mode, integer encodingData);
-#define uopenin(f,p,m,d) u_open_in_or_pipe(&(f), p, FOPEN_RBIN_MODE, m, d)
+#define u_open_in(f,p,m,d) u_open_in_or_pipe(&(f), p, FOPEN_RBIN_MODE, m, d)
 #else
-#define uopenin(f,p,m,d) u_open_in(&(f), p, FOPEN_RBIN_MODE, m, d)
+#define u_open_in(f,p,m,d) real_u_open_in(&(f), p, FOPEN_RBIN_MODE, m, d)
 #endif
 #endif
 
@@ -274,9 +276,9 @@ extern void paintrow (/*screenrow, pixelcolor, transspec, screencol*/);
 
 
 /* (Un)dumping.  These are called from the change file.  */
-#define	dumpthings(base, len) \
+#define	dump_things(base, len) \
   do_dump ((char *) &(base), sizeof (base), (int) (len), DUMP_FILE)
-#define	undumpthings(base, len) \
+#define	undump_things(base, len) \
   do_undump ((char *) &(base), sizeof (base), (int) (len), DUMP_FILE)
 
 #ifndef PRIdPTR
@@ -291,10 +293,10 @@ extern void paintrow (/*screenrow, pixelcolor, transspec, screencol*/);
    detecting incompatible format files.  In fact, Knuth himself noted
    this problem with Web2c some years ago, so it seems worth fixing.  We
    can't make this a subroutine because then we lose the type of BASE.  */
-#define undumpcheckedthings(low, high, base, len)			\
+#define undump_checked_things(low, high, base, len)			\
   do {                                                                  \
     unsigned i;                                                         \
-    undumpthings (base, len);                                           \
+    undump_things (base, len);                                           \
     for (i = 0; i < (len); i++) {                                       \
       if ((&(base))[i] < (low) || (&(base))[i] > (high)) {              \
         FATAL5 ("Item %u (=%" PRIdPTR ") of .fmt array at %" PRIxPTR    \
@@ -308,10 +310,10 @@ extern void paintrow (/*screenrow, pixelcolor, transspec, screencol*/);
 /* Like undump_checked_things, but only check the upper value. We use
    this when the base type is unsigned, and thus all the values will be
    greater than zero by definition.  */
-#define undumpuppercheckthings(high, base, len)				\
+#define undump_upper_check_things(high, base, len)				\
   do {                                                                  \
     unsigned i;                                                         \
-    undumpthings (base, len);                                           \
+    undump_things (base, len);                                           \
     for (i = 0; i < (len); i++) {                                       \
       if ((&(base))[i] > (high)) {              			\
         FATAL4 ("Item %u (=%" PRIdPTR ") of .fmt array at %" PRIxPTR    \
@@ -333,19 +335,19 @@ extern void do_undump (char *, int, int, FILE *);
 #endif
 
 /* Use the above for all the other dumping and undumping.  */
-#define generic_dump(x) dumpthings (x, 1)
-#define generic_undump(x) undumpthings (x, 1)
+#define generic_dump(x) dump_things (x, 1)
+#define generic_undump(x) undump_things (x, 1)
 
-#define dumpwd   generic_dump
-#define dumphh   generic_dump
-#define dumpqqqq generic_dump
-#define undumpwd   generic_undump
-#define undumphh   generic_undump
-#define	undumpqqqq generic_undump
+#define dump_wd   generic_dump
+#define dump_hh   generic_dump
+#define dump_qqqq generic_dump
+#define undump_wd   generic_undump
+#define undump_hh   generic_undump
+#define	undump_qqqq generic_undump
 
 /* `dump_int' is called with constant integers, so we put them into a
    variable first.  */
-#define	dumpint(x)							\
+#define	dump_int(x)							\
   do									\
     {									\
       integer x_val = (x);						\
@@ -357,7 +359,7 @@ extern void do_undump (char *, int, int, FILE *);
    registers.  Some compilers aren't willing to take addresses of such
    variables.  So we must kludge.  */
 #if defined(REGFIX) || defined(WIN32)
-#define undumpint(x)							\
+#define undump_int(x)							\
   do									\
     {									\
       integer x_val;							\
@@ -366,7 +368,7 @@ extern void do_undump (char *, int, int, FILE *);
     }									\
   while (0)
 #else
-#define	undumpint generic_undump
+#define	undump_int generic_undump
 #endif
 
 /* Handle SyncTeX, if requested */

@@ -301,19 +301,19 @@ static int fsyscp_remove(char *name);
 
 /*  This macro layer was added to take luatex into account as suggested by T. Hoekwater. */
 #   if !defined(SYNCTEX_GET_JOB_NAME)
-#       define SYNCTEX_GET_JOB_NAME() (gettexstring(jobname))
+#       define SYNCTEX_GET_JOB_NAME() (gettexstring(job_name))
 #   endif
 #   if !defined(SYNCTEX_GET_LOG_NAME)
-#       define SYNCTEX_GET_LOG_NAME() (gettexstring(texmflogname))
+#       define SYNCTEX_GET_LOG_NAME() (gettexstring(texmf_log_name))
 #   endif
 #   if !defined(SYNCTEX_CURRENT_TAG)
-#       define SYNCTEX_CURRENT_TAG (curinput.synctextagfield)
+#       define SYNCTEX_CURRENT_TAG (cur_input.synctex_tag_field)
 #   endif
 #   if !defined(SYNCTEX_GET_CURRENT_NAME)
 #       define SYNCTEX_GET_CURRENT_NAME() generic_synctex_get_current_name()
 #   endif
 #   if !defined(SYNCTEX_GET_TOTAL_PAGES)
-#       define SYNCTEX_GET_TOTAL_PAGES() (totalpages)
+#       define SYNCTEX_GET_TOTAL_PAGES() (total_pages)
 #   endif
 #   if !defined(SYNCTEX_CURH)
 #       define SYNCTEX_CURH curh
@@ -322,13 +322,13 @@ static int fsyscp_remove(char *name);
 #       define SYNCTEX_CURV curv
 #   endif
 #   if !defined(SYNCTEX_RULE_WD)
-#       define SYNCTEX_RULE_WD rulewd
+#       define SYNCTEX_RULE_WD rule_wd
 #   endif
 #   if !defined(SYNCTEX_RULE_HT)
-#       define SYNCTEX_RULE_HT ruleht
+#       define SYNCTEX_RULE_HT rule_ht
 #   endif
 #   if !defined(SYNCTEX_RULE_DP)
-#       define SYNCTEX_RULE_DP ruledp
+#       define SYNCTEX_RULE_DP rule_dp
 #   endif
 
 /*  For non-GCC compilation.  */
@@ -418,7 +418,7 @@ static struct {
 /*  Initialize the options, synchronize the variables.
  *  This is sent by *tex.web before any TeX macro is used.
  *  */
-void synctexinitcommand(void)
+void synctex_init_command(void)
 {
     /*  This is a one shot function, any subsequent call is void */
     if (synctex_ctxt.flags.option_read) {
@@ -696,7 +696,7 @@ static void *synctex_dot_open(void)
  *  treats the same way .tex, .aux, .sty ... files, even if many of them do not
  *  contain any material meant to be typeset.
  */
-void synctexstartinput(void)
+void synctex_start_input(void)
 {
     static unsigned int synctex_tag_counter = 0;
     
@@ -786,7 +786,7 @@ static inline int synctex_record_postamble(void);
  *  However, it does not mean that it will be in sync with the pdf, especially
  *  when the output is dvi or xdv and the dvi (or xdv) to pdf driver has not been applied.
  */
-void synctexterminate(boolean log_opened)
+void synctex_terminate(boolean log_opened)
 {
     char *tmp = NULL;
     char *the_real_syncname = NULL;
@@ -940,7 +940,7 @@ static inline int synctex_record_sheet(integer sheet);
 /*  Recording the "{..." line.  In *tex.web, use synctex_sheet(pdf_output) at
  *  the very beginning of the ship_out procedure.
  */
-void synctexsheet(integer mag)
+void synctex_sheet(integer mag)
 {
     SYNCTEX_RETURN_IF_DISABLED;
 #   if SYNCTEX_DEBUG
@@ -984,7 +984,7 @@ static inline int synctex_record_teehs(integer sheet);
 /*  Recording the "}..." line.  In *tex.web, use synctex_teehs at
  *  the very end of the ship_out procedure.
  */
-void synctexteehs(void)
+void synctex_teehs(void)
 {
     SYNCTEX_RETURN_IF_DISABLED;
 #   if SYNCTEX_DEBUG
@@ -1020,7 +1020,7 @@ static inline void synctex_record_vlist(halfword p);
  *  the beginning of the vlist_out procedure in *TeX.web.  It will be balanced
  *  by a synctex_tsilv, sent at the end of the vlist_out procedure.  p is the
  *  address of the vlist We assume that p is really a vlist node! */
-void synctexvlist(halfword this_box)
+void synctex_vlist(halfword this_box)
 {
     SYNCTEX_RETURN_IF_DISABLED;
 #   if SYNCTEX_DEBUG
@@ -1044,7 +1044,7 @@ static inline void synctex_record_tsilv(halfword p);
  *  has been shipped out. It is used to close the vlist nesting level. It is
  *  sent at the end of the vlist_out procedure in *TeX.web to balance a former
  *  synctex_vlist sent at the beginning of that procedure.    */
-void synctextsilv(halfword this_box)
+void synctex_tsilv(halfword this_box)
 {
     SYNCTEX_RETURN_IF_DISABLED;
 #   if SYNCTEX_DEBUG
@@ -1067,7 +1067,7 @@ static inline void synctex_record_void_vlist(halfword p);
 
 /*  This message is sent when a void vlist will be shipped out.
  *  There is no need to balance a void vlist.  */
-void synctexvoidvlist(halfword p, halfword this_box __attribute__ ((unused)))
+void synctex_void_vlist(halfword p, halfword this_box __attribute__ ((unused)))
 {
     SYNCTEX_RETURN_IF_DISABLED;
 #   if SYNCTEX_DEBUG
@@ -1091,7 +1091,7 @@ static inline void synctex_record_hlist(halfword p);
  *  the beginning of the hlist_out procedure in *TeX.web.  It will be balanced
  *  by a synctex_tsilh, sent at the end of the hlist_out procedure.  p is the
  *  address of the hlist We assume that p is really an hlist node! */
-void synctexhlist(halfword this_box)
+void synctex_hlist(halfword this_box)
 {
     SYNCTEX_RETURN_IF_DISABLED;
 #   if SYNCTEX_DEBUG
@@ -1115,7 +1115,7 @@ static inline void synctex_record_tsilh(halfword p);
  *  has been shipped out it is used to close the hlist nesting level. It is
  *  sent at the end of the hlist_out procedure in *TeX.web to balance a former
  *  synctex_hlist sent at the beginning of that procedure.    */
-void synctextsilh(halfword this_box)
+void synctex_tsilh(halfword this_box)
 {
     SYNCTEX_RETURN_IF_DISABLED;
 #   if SYNCTEX_DEBUG
@@ -1138,7 +1138,7 @@ static inline void synctex_record_void_hlist(halfword p);
 
 /*  This message is sent when a void hlist will be shipped out.
  *  There is no need to balance a void hlist.  */
-void synctexvoidhlist(halfword p, halfword this_box __attribute__ ((unused)))
+void synctex_void_hlist(halfword p, halfword this_box __attribute__ ((unused)))
 {
     SYNCTEX_RETURN_IF_DISABLED;
 #   if SYNCTEX_DEBUG
@@ -1177,7 +1177,7 @@ void synctex_math_recorder(halfword p);
 
 /*  glue code, this message is sent whenever an inline math node will ship out
  See: @ @<Output the non-|char_node| |p| for...  */
-void synctexmath(halfword p, halfword this_box __attribute__ ((unused)))
+void synctex_math(halfword p, halfword this_box __attribute__ ((unused)))
 {
     SYNCTEX_RETURN_IF_DISABLED;
 #   if SYNCTEX_DEBUG
@@ -1209,7 +1209,7 @@ static inline void synctex_record_rule(halfword p);
 #   define SYNCTEX_IGNORE(NODE,TYPE) SYNCTEX_IS_OFF || !SYNCTEX_VALUE \
 || (0 >= SYNCTEX_TAG_MODEL(NODE,TYPE)) \
 || (0 >= SYNCTEX_LINE_MODEL(NODE,TYPE))
-void synctexhorizontalruleorglue(halfword p, halfword this_box
+void synctex_horizontal_rule_or_glue(halfword p, halfword this_box
                                  __attribute__ ((unused)))
 {
     SYNCTEX_RETURN_IF_DISABLED;
@@ -1264,7 +1264,7 @@ void synctex_kern_recorder(halfword p);
 
 /*  this message is sent whenever a kern node ships out
  See: @ @<Output the non-|char_node| |p| for...    */
-void synctexkern(halfword p, halfword this_box)
+void synctex_kern(halfword p, halfword this_box)
 {
     SYNCTEX_RETURN_IF_DISABLED;
 #   if SYNCTEX_DEBUG
@@ -1312,7 +1312,7 @@ void synctexkern(halfword p, halfword this_box)
 void synctex_char_recorder(halfword p);
 
 /*  this message is sent whenever a char node ships out    */
-void synctexchar(halfword p, halfword this_box __attribute__ ((unused)))
+void synctex_char(halfword p, halfword this_box __attribute__ ((unused)))
 {
     SYNCTEX_RETURN_IF_DISABLED;
 #   if SYNCTEX_DEBUG
@@ -1340,7 +1340,7 @@ void synctex_node_recorder(halfword p);
 
 /*  this message should be sent to record information
  for a node of an unknown type    */
-void synctexnode(halfword p, halfword this_box __attribute__ ((unused)))
+void synctex_node(halfword p, halfword this_box __attribute__ ((unused)))
 {
     SYNCTEX_RETURN_IF_DISABLED;
 #   if SYNCTEX_DEBUG
@@ -1355,7 +1355,7 @@ void synctexnode(halfword p, halfword this_box __attribute__ ((unused)))
 
 /*  this message should be sent to record information
  synchronously for the current location    */
-void synctexcurrent(void)
+void synctex_current(void)
 {
     SYNCTEX_RETURN_IF_DISABLED;
 #   if SYNCTEX_DEBUG

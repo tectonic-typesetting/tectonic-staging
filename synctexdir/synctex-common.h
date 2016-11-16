@@ -43,9 +43,9 @@ Latest Revision: Wed Jul  1 08:07:50 UTC 2009
 
 /*  Send this message to init the synctex command value to the command line option.
  *  Sending this message too early will cause a bus error.  */
-extern void synctexinitcommand(void);
+extern void synctex_init_command(void);
 
 /*  Send this message to clean memory, and close the file.  */
-extern void synctexterminate(int log_opened);
+extern void synctex_terminate(int log_opened);
 
 #  endif

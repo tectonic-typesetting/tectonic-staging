@@ -195,21 +195,21 @@ extern "C" {
 #endif
     void initversionstring(char **versions);
 
-    void setinputfileencoding(unicodefile f, integer mode, integer encodingData);
-    void uclose(unicodefile f);
-    void linebreakstart(int f, integer localeStrNum, uint16_t* text, integer textLength);
-    int linebreaknext(void);
-    int getencodingmodeandinfo(integer* info);
-    void printutf8str(const unsigned char* str, int len);
-    void printchars(const unsigned short* str, int len);
-    void* findnativefont(unsigned char* name, integer scaled_size);
-    void releasefontengine(void* engine, int type_flag);
+    void set_input_file_encoding(unicodefile f, integer mode, integer encodingData);
+    void u_close(unicodefile f);
+    void linebreak_start(int f, integer localeStrNum, uint16_t* text, integer textLength);
+    int linebreak_next(void);
+    int get_encoding_mode_and_info(integer* info);
+    void print_utf8_str(const unsigned char* str, int len);
+    void print_chars(const unsigned short* str, int len);
+    void* find_native_font(unsigned char* name, integer scaled_size);
+    void release_font_engine(void* engine, int type_flag);
     int readCommonFeatures(const char* feat, const char* end, float* extend, float* slant, float* embolden, float* letterspace, uint32_t* rgbValue);
 
     /* the metrics params here are really TeX 'scaled' values, but that typedef isn't available every place this is included */
-    void otgetfontmetrics(void* engine, integer* ascent, integer* descent, integer* xheight, integer* capheight, integer* slant);
-    void getnativecharheightdepth(integer font, integer ch, integer* height, integer* depth);
-    void getnativecharsidebearings(integer font, integer ch, integer* lsb, integer* rsb);
+    void ot_get_font_metrics(void* engine, integer* ascent, integer* descent, integer* xheight, integer* capheight, integer* slant);
+    void get_native_char_height_depth(integer font, integer ch, integer* height, integer* depth);
+    void get_native_char_sidebearings(integer font, integer ch, integer* lsb, integer* rsb);
 
     /* single-purpose metrics accessors */
     integer getnativecharwd(integer font, integer ch);
@@ -217,62 +217,62 @@ extern "C" {
     integer getnativechardp(integer font, integer ch);
     integer getnativecharic(integer font, integer ch);
 
-    integer getglyphbounds(integer font, integer edge, integer gid);
+    integer get_glyph_bounds(integer font, integer edge, integer gid);
 
-    integer otfontget(integer what, void* engine);
-    integer otfontget1(integer what, void* engine, integer param);
-    integer otfontget2(integer what, void* engine, integer param1, integer param2);
-    integer otfontget3(integer what, void* engine, integer param1, integer param2, integer param3);
+    integer ot_font_get(integer what, void* engine);
+    integer ot_font_get_1(integer what, void* engine, integer param);
+    integer ot_font_get_2(integer what, void* engine, integer param1, integer param2);
+    integer ot_font_get_3(integer what, void* engine, integer param1, integer param2, integer param3);
     int makeXDVGlyphArrayData(void* p);
-    int makefontdef(integer f);
-    int applymapping(void* cnv, uint16_t* txtPtr, int txtLen);
+    int make_font_def(integer f);
+    int apply_mapping(void* cnv, uint16_t* txtPtr, int txtLen);
     void store_justified_native_glyphs(void* node);
     void measure_native_node(void* node, int use_glyph_metrics);
-    Fixed get_native_italic_correction(void* node);
-    Fixed get_native_glyph_italic_correction(void* node);
-    integer get_native_word_cp(void* node, int side);
+    Fixed real_get_native_italic_correction(void* node);
+    Fixed real_get_native_glyph_italic_correction(void* node);
+    integer real_get_native_word_cp(void* node, int side);
     void measure_native_glyph(void* node, int use_glyph_metrics);
-    integer mapchartoglyph(integer font, integer ch);
-    integer mapglyphtoindex(integer font);
-    integer getfontcharrange(integer font, int first);
-    void printglyphname(integer font, integer gid);
-    uint16_t get_native_glyph(void* pNode, unsigned index);
+    integer map_char_to_glyph(integer font, integer ch);
+    integer map_glyph_to_index(integer font);
+    integer get_font_char_range(integer font, int first);
+    void print_glyph_name(integer font, integer gid);
+    uint16_t real_get_native_glyph(void* pNode, unsigned index);
 
-    void grprintfontname(integer what, void* pEngine, integer param1, integer param2);
-    integer grfontgetnamed(integer what, void* pEngine);
-    integer grfontgetnamed1(integer what, void* pEngine, integer param);
+    void gr_print_font_name(integer what, void* pEngine, integer param1, integer param2);
+    integer gr_font_get_named(integer what, void* pEngine);
+    integer gr_font_get_named_1(integer what, void* pEngine, integer param);
 
     double read_double(const char** s);
     unsigned int read_rgb_a(const char** cp);
 
-    int countpdffilepages(void);
-    int find_pic_file(char** path, realrect* bounds, int pdfBoxType, int page);
-    int u_open_in(unicodefile* f, integer filefmt, const char* fopen_mode, integer mode, integer encodingData);
+    int count_pdf_file_pages(void);
+    int find_pic_file(char** path, real_rect* bounds, int pdfBoxType, int page);
+    int real_u_open_in(unicodefile* f, integer filefmt, const char* fopen_mode, integer mode, integer encodingData);
     int open_dvi_output(FILE** fptr);
-    int dviclose(FILE* fptr);
+    int dvi_close(FILE* fptr);
     int get_uni_c(UFILE* f);
     int input_line(UFILE* f);
-    void makeutf16name(void);
+    void make_utf16_name(void);
 
-    void terminatefontmanager(void);
+    void terminate_font_manager(void);
     int maketexstring(const char* s);
 
-    void checkfortfmfontmapping(void);
-    void* loadtfmfontmapping(void);
-    int applytfmfontmapping(void* mapping, int c);
+    void check_for_tfm_font_mapping(void);
+    void* load_tfm_font_mapping(void);
+    int apply_tfm_font_mapping(void* mapping, int c);
 
 #ifndef XETEX_MAC
 typedef void* CFDictionaryRef; /* dummy declaration just so the stubs can compile */
 #endif
 
-    int aatfontget(int what, CFDictionaryRef attrs);
-    int aatfontget1(int what, CFDictionaryRef attrs, int param);
-    int aatfontget2(int what, CFDictionaryRef attrs, int param1, int param2);
-    int aatfontgetnamed(int what, CFDictionaryRef attrs);
-    int aatfontgetnamed1(int what, CFDictionaryRef attrs, int param);
-    void aatprintfontname(int what, CFDictionaryRef attrs, int param1, int param2);
+    int aat_font_get(int what, CFDictionaryRef attrs);
+    int aat_font_get_1(int what, CFDictionaryRef attrs, int param);
+    int aat_font_get_2(int what, CFDictionaryRef attrs, int param1, int param2);
+    int aat_font_get_named(int what, CFDictionaryRef attrs);
+    int aat_font_get_named_1(int what, CFDictionaryRef attrs, int param);
+    void aat_print_font_name(int what, CFDictionaryRef attrs, int param1, int param2);
     /* the metrics params here are really TeX 'scaled' (or MacOS 'Fixed') values, but that typedef isn't available every place this is included */
-    void aatgetfontmetrics(CFDictionaryRef attrs, integer* ascent, integer* descent, integer* xheight, integer* capheight, integer* slant);
+    void aat_get_font_metrics(CFDictionaryRef attrs, integer* ascent, integer* descent, integer* xheight, integer* capheight, integer* slant);
 
     void set_cp_code(int fontNum, unsigned int code, int side, int value);
     int get_cp_code(int fontNum, unsigned int code, int side);

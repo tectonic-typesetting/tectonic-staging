@@ -25,13 +25,13 @@
 /* And we use the opportunity to declare a few functions that could not be
    declared in texmfmp.h, because they need typedefs not yet known at that
    point.  */
-extern strnumber getjobname (strnumber);
+extern str_number get_job_name (str_number);
 
 #ifdef XeTeX
 /* XeTeX redefines "ASCII" types.... */
-typedef packedUTF16code packedASCIIcode;
+typedef packed_UTF16_code packedASCIIcode;
 #endif
-extern void calledit (packedASCIIcode *, poolpointer, integer, integer);
+extern void call_edit (packedASCIIcode *, pool_pointer, integer, integer);
 
 #ifdef MF
 extern void blankrectangle (screencol, screencol, screenrow, screenrow);
@@ -41,14 +41,14 @@ extern void paintrow (screenrow, pixelcolor, transspec, screencol);
 #endif
 #endif
 
-extern strnumber makefullnamestring(void);
+extern str_number make_full_name_string(void);
 
 #ifdef TeX
-extern string gettexstring (strnumber);
+extern string gettexstring (str_number);
 /* Prototypes for source-specials functions... */
-extern boolean isnewsource (strnumber, int);
-extern poolpointer makesrcspecial (strnumber, int);
-extern void remembersourceinfo (strnumber, int);
+extern boolean is_new_source (str_number, int);
+extern pool_pointer make_src_special (str_number, int);
+extern void remember_source_info (str_number, int);
 
 #ifdef pdfTeX
 #include <pdftexdir/pdftex.h>

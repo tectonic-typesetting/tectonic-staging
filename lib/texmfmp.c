@@ -28,6 +28,10 @@
 
 #include <signal.h> /* Catch interrupts.  */
 
+#ifndef strnumber
+#define strnumber str_number
+#endif
+
 #include <texmfmp-help.h>
 
 /* {tex,mf}d.h defines TeX, MF, INI, and other such symbols.
@@ -627,7 +631,7 @@ string default_translate_filename;
 /* Needed for --src-specials option. */
 static char *last_source_name;
 static int last_lineno;
-static boolean srcspecialsoption = false;
+static boolean src_specials_option = false;
 static void parse_src_specials_option (const_string);
 #endif
 
@@ -657,7 +661,7 @@ const char *ptexbanner = BANNER;
 static string
 normalize_quotes (const_string name, const_string mesg);
 #ifndef TeX
-int srcspecialsp = 0;
+int src_specials_p = 0;
 #endif
 /* Support of 8.3-name convention. If *buffer == NULL, nothing is done. */
 static void change_to_long_name (char **buffer)
@@ -677,7 +681,7 @@ static void change_to_long_name (char **buffer)
 #endif /* WIN32 */
 
 /* The entry point: set up for reading the command line, which will
-   happen in `topenin', then call the main body.  */
+   happen in `t_open_in', then call the main body.  */
 
 void
 maininit (int ac, string *av)
@@ -686,12 +690,12 @@ maininit (int ac, string *av)
 #if (IS_upTeX || defined(XeTeX)) && defined(WIN32)
   string enc;
 #endif
-  /* Save to pass along to topenin.  */
+  /* Save to pass along to t_open_in.  */
   argc = ac;
   argv = av;
 
   /* Must be initialized before options are parsed.  */
-  interactionoption = 4;
+  interaction_option = 4;
 
   /* Have things to record as we go along.  */
   kpse_pkgw_set_definst_record_input (recorder_record_input);
@@ -771,7 +775,7 @@ maininit (int ac, string *av)
 #endif
 
   /* FIXME: gather engine names in a single spot. */
-  xputenv ("engine", TEXMFENGINENAME);
+  xputenv ("engine", TEXMF_ENGINE_NAME);
   
   /* Were we given a simple filename? */
   main_input_file = get_input_file_name();
@@ -798,7 +802,7 @@ maininit (int ac, string *av)
 #ifdef XeTeX
       name = normalize_quotes(argv[argc-1], "argument");
       main_input_file = kpse_find_file(argv[argc-1], kpse_tex_format, false);
-      if (!srcspecialsp) {
+      if (!src_specials_p) {
         change_to_long_name (&main_input_file);
         if (main_input_file)
           name = normalize_quotes(main_input_file, "argument");
@@ -813,14 +817,14 @@ maininit (int ac, string *av)
         name++;
       }
       main_input_file = kpse_find_file(name, kpse_tex_format, false);
-      if (!srcspecialsp)
+      if (!src_specials_p)
         change_to_long_name (&main_input_file);
       if (quoted) {
         /* Undo modifications */
         name[strlen(name)] = '"';
         name--;
       }
-      if (!srcspecialsp) {
+      if (!src_specials_p) {
         if (main_input_file)
           name = normalize_quotes(main_input_file, "argument");
       }
@@ -832,21 +836,21 @@ maininit (int ac, string *av)
 
   /* Second chance to activate file:line:error style messages, this
      time from texmf.cnf. */
-  if (filelineerrorstylep < 0) {
-    filelineerrorstylep = 0;
-  } else if (!filelineerrorstylep) {
-    filelineerrorstylep = texmf_yesno ("file_line_error_style");
+  if (file_line_error_style_p < 0) {
+    file_line_error_style_p = 0;
+  } else if (!file_line_error_style_p) {
+    file_line_error_style_p = texmf_yesno ("file_line_error_style");
   }
 
   /* If no dump default yet, and we're not doing anything special on
      this run, we may want to look at the first line of the main input
      file for a %&<dumpname> specifier.  */
-  if (parsefirstlinep < 0) {
-    parsefirstlinep = 0;
-  } else if (!parsefirstlinep) {
-    parsefirstlinep = texmf_yesno ("parse_first_line");
+  if (parse_first_line_p < 0) {
+    parse_first_line_p = 0;
+  } else if (!parse_first_line_p) {
+    parse_first_line_p = texmf_yesno ("parse_first_line");
   }
-  if (parsefirstlinep && (!dump_name || !translate_filename)) {
+  if (parse_first_line_p && (!dump_name || !translate_filename)) {
     parse_first_line (main_input_file);
   }
   /* Check whether there still is no translate_filename known.  If so,
@@ -857,21 +861,21 @@ maininit (int ac, string *av)
   }
   /* If we're preloaded, I guess everything is set up.  I don't really
      know any more, it's been so long since anyone preloaded.  */
-  if (readyalready != 314159) {
+  if (ready_already != 314159) {
     /* The `ini_version' variable is declared/used in the change files.  */
     boolean virversion = false;
     if (FILESTRCASEEQ (kpse_program_name, INI_PROGRAM)) {
-      iniversion = true;
+      ini_version = true;
     } else if (FILESTRCASEEQ (kpse_program_name, VIR_PROGRAM)) {
       virversion = true;
 #ifdef TeX
     } else if (FILESTRCASEEQ (kpse_program_name, "initex")) {
-      iniversion = true;
+      ini_version = true;
     } else if (FILESTRCASEEQ (kpse_program_name, "virtex")) {
       virversion = true;
 #ifndef Aleph
     } else if (FILESTRCASEEQ (kpse_program_name, "mltex")) {
-      mltexp = true;
+      mltex_p = true;
 #endif /* !Aleph */
 #endif /* TeX */
     }
@@ -885,9 +889,9 @@ maininit (int ac, string *av)
   
 #ifdef TeX
   /* Sanity check: -mltex, -enc, -etex only work in combination with -ini. */
-  if (!iniversion) {
+  if (!ini_version) {
 #if !defined(Aleph)
-    if (mltexp) {
+    if (mltex_p) {
       fprintf(stderr, "-mltex only works with -ini\n");
     }
 #if !defined(XeTeX) && !IS_pTeX
@@ -897,7 +901,7 @@ maininit (int ac, string *av)
 #endif
 #endif
 #if IS_eTeX
-    if (etexp) {
+    if (etex_p) {
       fprintf(stderr, "-etex only works with -ini\n");
     }
 #endif
@@ -952,14 +956,14 @@ maininit (int ac, string *av)
 
   init_shell_escape ();
 
-  if (!outputcomment) {
-    outputcomment = kpse_var_value ("output_comment");
+  if (!output_comment) {
+    output_comment = kpse_var_value ("output_comment");
   }
 #endif /* TeX */
 }
 
 /* The entry point: set up for reading the command line, which will
-   happen in `topenin', then call the main body.  */
+   happen in `t_open_in', then call the main body.  */
 
 int
 #if defined(DLLPROC)
@@ -1001,7 +1005,7 @@ main (int ac, string *av)
 #endif
 
   /* Call the real main program.  */
-  mainbody ();
+  main_body ();
 
   return EXIT_SUCCESS;
 }
@@ -1013,20 +1017,20 @@ main (int ac, string *av)
    `last=first'.  */
 
 void
-topenin (void)
+t_open_in (void)
 {
   int i;
 
 #ifdef XeTeX
   static UFILE termin_file;
-  if (termin == 0) {
-    termin = &termin_file;
-    termin->f = stdin;
-    termin->savedChar = -1;
-    termin->skipNextLF = 0;
-    termin->encodingMode = UTF8;
-    termin->conversionData = 0;
-    inputfile[0] = termin;
+  if (term_in == 0) {
+    term_in = &termin_file;
+    term_in->f = stdin;
+    term_in->savedChar = -1;
+    term_in->skipNextLF = 0;
+    term_in->encodingMode = UTF8;
+    term_in->conversionData = 0;
+    input_file[0] = term_in;
   }
 #endif
 
@@ -1306,19 +1310,19 @@ ipcpage (int is_eof)
     
     ipc_open_out ();
 #if !defined(Aleph)
-    len = strstart[outputfilename + 1] - strstart[outputfilename];
+    len = str_start[outputfilename + 1] - str_start[outputfilename];
 #else
-    len = strstartar[outputfilename + 1 - 65536L] -
-            strstartar[outputfilename - 65536L];
+    len = str_startar[outputfilename + 1 - 65536L] -
+            str_startar[outputfilename - 65536L];
 #endif
     name = xmalloc (len + 1);
 #if !defined(Aleph)
-    strncpy (name, (string)&strpool[strstart[outputfilename]], len);
+    strncpy (name, (string)&str_pool[str_start[outputfilename]], len);
 #else
     {
     unsigned i;
     for (i=0; i<len; i++)
-      name[i] =  strpool[i+strstartar[outputfilename - 65536L]];
+      name[i] =  str_pool[i+str_startar[outputfilename - 65536L]];
     }
 #endif
     name[len] = 0;
@@ -1563,7 +1567,7 @@ get_input_file_name (void)
 #ifdef XeTeX
     input_file_name = kpse_find_file(argv[optind], kpse_tex_format, false);
 #ifdef WIN32
-    if (!srcspecialsp)
+    if (!src_specials_p)
       change_to_long_name (&input_file_name);
 #endif
 #else
@@ -1575,7 +1579,7 @@ get_input_file_name (void)
     }
     input_file_name = kpse_find_file(name, kpse_tex_format, false);
 #ifdef WIN32
-    if (!srcspecialsp)
+    if (!src_specials_p)
       change_to_long_name (&input_file_name);
 #endif
     if (quoted) {
@@ -1585,7 +1589,7 @@ get_input_file_name (void)
     }
 #endif
 #ifdef WIN32
-    if (!srcspecialsp) {
+    if (!src_specials_p) {
       if (input_file_name)
         name = normalize_quotes (input_file_name, "argument");
     }
@@ -1610,9 +1614,9 @@ static struct option long_options[]
       { "efmt",                      1, 0, 0 },
 #endif
       { "help",                      0, 0, 0 },
-      { "ini",                       0, &iniversion, 1 },
+      { "ini",                       0, &ini_version, 1 },
       { "interaction",               1, 0, 0 },
-      { "halt-on-error",             0, &haltonerrorp, 1 },
+      { "halt-on-error",             0, &halt_on_error_p, 1 },
       { "progname",                  1, 0, 0 },
       { "version",                   0, 0, 0 },
       { "recorder",                  0, &recorder_enabled, 1 },
@@ -1622,13 +1626,13 @@ static struct option long_options[]
       { "ipc-start",                 0, &ipcon, 2 },
 #endif /* IPC */
 #if !defined(Aleph)
-      { "mltex",                     0, &mltexp, 1 },
+      { "mltex",                     0, &mltex_p, 1 },
 #if !defined(XeTeX) && !IS_pTeX
       { "enc",                       0, &enctexp, 1 },
 #endif
 #endif /* !Aleph */
 #if IS_eTeX
-      { "etex",                      0, &etexp, 1 },
+      { "etex",                      0, &etex_p, 1 },
 #endif
       { "output-comment",            1, 0, 0 },
 #if defined(pdfTeX)
@@ -1640,7 +1644,7 @@ static struct option long_options[]
       { "enable-write18",            0, &shellenabledp, 1 },
       { "disable-write18",           0, &shellenabledp, -1 },
       { "shell-restricted",          0, 0, 0 },
-      { "debug-format",              0, &debugformatfile, 1 },
+      { "debug-format",              0, &debug_format_file, 1 },
       { "src-specials",              2, 0, 0 },
 #if defined(__SyncTeX__)
       /* Synchronization: just like "interaction" above */
@@ -1648,22 +1652,22 @@ static struct option long_options[]
 #endif
 #endif /* TeX */
 #if defined (TeX) || defined (MF)
-      { "file-line-error-style",     0, &filelineerrorstylep, 1 },
-      { "no-file-line-error-style",  0, &filelineerrorstylep, -1 },
+      { "file-line-error-style",     0, &file_line_error_style_p, 1 },
+      { "no-file-line-error-style",  0, &file_line_error_style_p, -1 },
       /* Shorter option names for the above. */
-      { "file-line-error",           0, &filelineerrorstylep, 1 },
-      { "no-file-line-error",        0, &filelineerrorstylep, -1 },
+      { "file-line-error",           0, &file_line_error_style_p, 1 },
+      { "no-file-line-error",        0, &file_line_error_style_p, -1 },
       { "jobname",                   1, 0, 0 },
       { "output-directory",          1, 0, 0 },
-      { "parse-first-line",          0, &parsefirstlinep, 1 },
-      { "no-parse-first-line",       0, &parsefirstlinep, -1 },
+      { "parse-first-line",          0, &parse_first_line_p, 1 },
+      { "no-parse-first-line",       0, &parse_first_line_p, -1 },
 #if !defined(Aleph)
       { "translate-file",            1, 0, 0 },
       { "default-translate-file",    1, 0, 0 },
-      { "8bit",                      0, &eightbitp, 1 },
+      { "8bit",                      0, &eight_bit_p, 1 },
 #endif /* !Aleph */
 #if defined(XeTeX)
-      { "no-pdf",                    0, &nopdfoutput, 1 },
+      { "no-pdf",                    0, &no_pdf_output, 1 },
       { "output-driver",             1, 0, 0 },
       { "papersize",                 1, 0, 0 },
 #endif /* XeTeX */
@@ -1719,13 +1723,13 @@ parse_options (int argc, string *argv)
 
     } else if (ARGUMENT_IS (DUMP_OPTION)) {
       dump_name = optarg;
-      dumpoption = true;
+      dump_option = true;
 
 #ifdef TeX
     /* FIXME: Obsolete -- for backward compatibility only. */
     } else if (ARGUMENT_IS ("efmt")) {
       dump_name = optarg;
-      dumpoption = true;
+      dump_option = true;
 #endif
 
     } else if (ARGUMENT_IS ("output-directory")) {
@@ -1735,13 +1739,13 @@ parse_options (int argc, string *argv)
     } else if (ARGUMENT_IS ("output-comment")) {
       unsigned len = strlen (optarg);
       if (len < 256) {
-        outputcomment = optarg;
+        output_comment = optarg;
       } else {
         WARNING2 ("Comment truncated to 255 characters from %d. (%s)",
                   len, optarg);
-        outputcomment = xmalloc (256);
-        strncpy (outputcomment, optarg, 255);
-        outputcomment[255] = 0;
+        output_comment = xmalloc (256);
+        strncpy (output_comment, optarg, 255);
+        output_comment[255] = 0;
       }
 
 #ifdef IPC
@@ -1775,10 +1779,10 @@ parse_options (int argc, string *argv)
        last_source_name = xstrdup("");
        /* Option `--src" without any value means `auto' mode. */
        if (optarg == NULL) {
-         insertsrcspecialeverypar = true;
-         insertsrcspecialauto = true;
-         srcspecialsoption = true;
-         srcspecialsp = true;
+         insert_src_special_every_par = true;
+         insert_src_special_auto = true;
+         src_specials_option = true;
+         src_specials_p = true;
        } else {
           parse_src_specials_option(optarg);
        }
@@ -1813,13 +1817,13 @@ parse_options (int argc, string *argv)
     } else if (ARGUMENT_IS ("interaction")) {
         /* These numbers match @d's in *.ch */
       if (STREQ (optarg, "batchmode")) {
-        interactionoption = 0;
+        interaction_option = 0;
       } else if (STREQ (optarg, "nonstopmode")) {
-        interactionoption = 1;
+        interaction_option = 1;
       } else if (STREQ (optarg, "scrollmode")) {
-        interactionoption = 2;
+        interaction_option = 2;
       } else if (STREQ (optarg, "errorstopmode")) {
-        interactionoption = 3;
+        interaction_option = 3;
       } else {
         WARNING1 ("Ignoring unknown argument `%s' to --interaction", optarg);
       }
@@ -1862,49 +1866,49 @@ parse_src_specials_option (const_string opt_list)
 {
   char * toklist = xstrdup(opt_list);
   char * tok;
-  insertsrcspecialauto = false;
+  insert_src_special_auto = false;
   tok = strtok (toklist, ", ");
   while (tok) {
     if (strcmp (tok, "everypar") == 0
         || strcmp (tok, "par") == 0
         || strcmp (tok, "auto") == 0) {
-      insertsrcspecialauto = true;
-      insertsrcspecialeverypar = true;
+      insert_src_special_auto = true;
+      insert_src_special_every_par = true;
     } else if (strcmp (tok, "everyparend") == 0
                || strcmp (tok, "parend") == 0)
-      insertsrcspecialeveryparend = true;
+      insert_src_special_every_parend = true;
     else if (strcmp (tok, "everycr") == 0
              || strcmp (tok, "cr") == 0)
-      insertsrcspecialeverycr = true;
+      insert_src_special_every_cr = true;
     else if (strcmp (tok, "everymath") == 0
              || strcmp (tok, "math") == 0)
-      insertsrcspecialeverymath = true;
+      insert_src_special_every_math = true;
     else if (strcmp (tok, "everyhbox") == 0
              || strcmp (tok, "hbox") == 0)
-      insertsrcspecialeveryhbox = true;
+      insert_src_special_every_hbox = true;
     else if (strcmp (tok, "everyvbox") == 0
              || strcmp (tok, "vbox") == 0)
-      insertsrcspecialeveryvbox = true;
+      insert_src_special_every_vbox = true;
     else if (strcmp (tok, "everydisplay") == 0
              || strcmp (tok, "display") == 0)
-      insertsrcspecialeverydisplay = true;
+      insert_src_special_every_display = true;
     else if (strcmp (tok, "none") == 0) {
       /* This one allows to reset an option that could appear in texmf.cnf */
-      insertsrcspecialauto = insertsrcspecialeverypar = 
-        insertsrcspecialeveryparend = insertsrcspecialeverycr = 
-        insertsrcspecialeverymath =  insertsrcspecialeveryhbox =
-        insertsrcspecialeveryvbox = insertsrcspecialeverydisplay = false;
+      insert_src_special_auto = insert_src_special_every_par = 
+        insert_src_special_every_parend = insert_src_special_every_cr = 
+        insert_src_special_every_math =  insert_src_special_every_hbox =
+        insert_src_special_every_vbox = insert_src_special_every_display = false;
     } else {
       WARNING1 ("Ignoring unknown argument `%s' to --src-specials", tok);
     }
     tok = strtok(0, ", ");
   }
   free(toklist);
-  srcspecialsp=insertsrcspecialauto | insertsrcspecialeverypar |
-    insertsrcspecialeveryparend | insertsrcspecialeverycr |
-    insertsrcspecialeverymath |  insertsrcspecialeveryhbox |
-    insertsrcspecialeveryvbox | insertsrcspecialeverydisplay;
-  srcspecialsoption = true;
+  src_specials_p=insert_src_special_auto | insert_src_special_every_par |
+    insert_src_special_every_parend | insert_src_special_every_cr |
+    insert_src_special_every_math |  insert_src_special_every_hbox |
+    insert_src_special_every_vbox | insert_src_special_every_display;
+  src_specials_option = true;
 }
 #endif
 
@@ -1954,7 +1958,7 @@ parse_first_line (const_string filename)
             dump_name = xstrdup (part[0]);
             kpse_reset_program_name (dump_name);
             /* Tell TeX/MF/MP we have a %&name line... */
-            dumpline = true;
+            dump_line = true;
           }
           free (f_name);
         }
@@ -2012,11 +2016,11 @@ open_in_or_pipe (FILE **f_ptr, int filefmt, const_string fopen_mode)
        skip past the pipe symbol in the file name. filename
        quoting is assumed to happen elsewhere (it does :-)) */
 
-    if (shellenabledp && *(nameoffile+1) == '|') {
+    if (shellenabledp && *(name_of_file+1) == '|') {
       /* the user requested a pipe */
       *f_ptr = NULL;
-      fname = xmalloc(strlen((const_string)(nameoffile+1))+1);
-      strcpy(fname,(const_string)(nameoffile+1));
+      fname = xmalloc(strlen((const_string)(name_of_file+1))+1);
+      strcpy(fname,(const_string)(name_of_file+1));
       if (fullnameoffile)
         free(fullnameoffile);
       fullnameoffile = xstrdup(fname);
@@ -2052,7 +2056,7 @@ u_open_in_or_pipe(unicodefile* f, integer filefmt, const_string fopen_mode, inte
        skip past the pipe symbol in the file name. filename
        quoting is assumed to happen elsewhere (it does :-)) */
 
-    if (shellenabledp && *(nameoffile+1) == '|') {
+    if (shellenabledp && *(name_of_file+1) == '|') {
       /* the user requested a pipe */
       *f = malloc(sizeof(UFILE));
       (*f)->encodingMode = (mode == AUTO) ? UTF8 : mode;
@@ -2060,8 +2064,8 @@ u_open_in_or_pipe(unicodefile* f, integer filefmt, const_string fopen_mode, inte
       (*f)->savedChar = -1;
       (*f)->skipNextLF = 0;
       (*f)->f = NULL;
-      fname = xmalloc(strlen((const_string)(nameoffile+1))+1);
-      strcpy(fname,(const_string)(nameoffile+1));
+      fname = xmalloc(strlen((const_string)(name_of_file+1))+1);
+      strcpy(fname,(const_string)(name_of_file+1));
       if (fullnameoffile)
         free(fullnameoffile);
       fullnameoffile = xstrdup(fname);
@@ -2083,7 +2087,7 @@ u_open_in_or_pipe(unicodefile* f, integer filefmt, const_string fopen_mode, inte
       return (*f)->f != NULL;
     }
 
-    return u_open_in(f, filefmt, fopen_mode, mode, encodingData);
+    return real_u_open_in(f, filefmt, fopen_mode, mode, encodingData);
 }
 #endif
 
@@ -2099,10 +2103,10 @@ open_out_or_pipe (FILE **f_ptr, const_string fopen_mode)
        is a bare word.  Some small string trickery is needed to make
        sure the correct number of bytes is free()-d afterwards */
 	
-    if (shellenabledp && *(nameoffile+1) == '|') {
+    if (shellenabledp && *(name_of_file+1) == '|') {
       /* the user requested a pipe */
-      fname = xmalloc(strlen((const_string)(nameoffile+1))+1);
-      strcpy(fname,(const_string)(nameoffile+1));
+      fname = xmalloc(strlen((const_string)(name_of_file+1))+1);
+      strcpy(fname,(const_string)(name_of_file+1));
       if (strchr (fname,' ')==NULL && strchr(fname,'>')==NULL) {
         /* mp and mf currently do not use this code, but it 
            is better to be prepared */
@@ -2420,8 +2424,8 @@ static const_string edit_value = EDITOR;
    actual filename starts; FNLENGTH is how long the filename is.  */
    
 void
-calledit (packedASCIIcode *filename,
-          poolpointer fnstart,
+call_edit (packedASCIIcode *filename,
+          pool_pointer fnstart,
           integer fnlength,
           integer linenumber)
 {
@@ -2439,11 +2443,11 @@ calledit (packedASCIIcode *filename,
   filename += fnstart;
 
   /* Close any open input files, since we're going to kill the job.  */
-  for (i = 1; i <= inopen; i++)
+  for (i = 1; i <= in_open; i++)
 #ifdef XeTeX
-    xfclose (inputfile[i]->f, "inputfile");
+    xfclose (input_file[i]->f, "inputfile");
 #else
-    xfclose (inputfile[i], "inputfile");
+    xfclose (input_file[i], "inputfile");
 #endif
 
   /* Replace the default with the value of the appropriate environment
@@ -2666,7 +2670,7 @@ do_dump (char *p, int item_size, int nitems,  FILE *out_file)
 #endif
     {
       fprintf (stderr, "! Could not write %d %d-byte item(s) to %s.\n",
-               nitems, item_size, nameoffile+1);
+               nitems, item_size, name_of_file+1);
       uexit (1);
     }
 
@@ -2693,7 +2697,7 @@ do_undump (char *p, int item_size, int nitems, FILE *in_file)
   if (fread (p, item_size, nitems, in_file) != (size_t) nitems)
 #endif
     FATAL3 ("Could not undump %d %d-byte item(s) from %s",
-            nitems, item_size, nameoffile+1);
+            nitems, item_size, name_of_file+1);
 
 #if !defined (WORDS_BIGENDIAN) && !defined (NO_DUMP_SHARE)
   swap_items (p, nitems, item_size);
@@ -2704,11 +2708,11 @@ do_undump (char *p, int item_size, int nitems, FILE *in_file)
 #if defined(TeX) || defined(MF)
 #if !defined(pdfTeX)
 static void
-checkpoolpointer (poolpointer poolptr, size_t len)
+checkpool_pointer (pool_pointer pool_ptr, size_t len)
 {
-  if (poolptr + len >= poolsize) {
+  if (pool_ptr + len >= pool_size) {
     fprintf (stderr, "\nstring pool overflow [%i bytes]\n", 
-            (int)poolsize); /* fixme */
+            (int)pool_size); /* fixme */
     exit(1);
   }
 }
@@ -2726,12 +2730,12 @@ maketexstring(const_string s)
 #endif
 #if defined(TeX)
   if (s == NULL || *s == 0)
-    return getnullstr();
+    return get_nullstr();
 #else
   assert (s != 0);
 #endif
   len = strlen(s);
-  checkpoolpointer (poolptr, len); /* in the XeTeX case, this may be more than enough */
+  checkpool_pointer (pool_ptr, len); /* in the XeTeX case, this may be more than enough */
 #ifdef XeTeX
   while ((rval = *(cp++)) != 0) {
     UInt16 extraBytes = bytesFromUTF8[rval];
@@ -2746,23 +2750,23 @@ maketexstring(const_string s)
     rval -= offsetsFromUTF8[extraBytes];
     if (rval > 0xffff) {
       rval -= 0x10000;
-      strpool[poolptr++] = 0xd800 + rval / 0x0400;
-      strpool[poolptr++] = 0xdc00 + rval % 0x0400;
+      str_pool[pool_ptr++] = 0xd800 + rval / 0x0400;
+      str_pool[pool_ptr++] = 0xdc00 + rval % 0x0400;
     }
     else
-      strpool[poolptr++] = rval;
+      str_pool[pool_ptr++] = rval;
   }
 #else /* ! XeTeX */
   while (len-- > 0)
-    strpool[poolptr++] = *s++;
+    str_pool[pool_ptr++] = *s++;
 #endif /* ! XeTeX */
 
-  return makestring();
+  return make_string();
 }
 #endif /* !pdfTeX */
 
 strnumber
-makefullnamestring(void)
+make_full_name_string(void)
 {
   return maketexstring(fullnameoffile);
 }
@@ -2770,7 +2774,7 @@ makefullnamestring(void)
 /* Get the job name to be used, which may have been set from the
    command line. */
 strnumber
-getjobname(strnumber name)
+get_job_name(strnumber name)
 {
     strnumber ret = name;
     if (c_job_name != NULL)
@@ -2803,15 +2807,15 @@ string
 gettexstring (strnumber s)
 {
   unsigned bytesToWrite = 0;
-  poolpointer len, i, j;
+  pool_pointer len, i, j;
   string name;
-  len = strstart[s + 1 - 65536L] - strstart[s - 65536L];
+  len = str_start[s + 1 - 65536L] - str_start[s - 65536L];
   name = xmalloc(len * 3 + 1); /* max UTF16->UTF8 expansion
                                   (code units, not bytes) */
   for (i = 0, j = 0; i < len; i++) {
-    unsigned c = strpool[i + strstart[s - 65536L]];
+    unsigned c = str_pool[i + str_start[s - 65536L]];
     if (c >= 0xD800 && c <= 0xDBFF) {
-      unsigned lo = strpool[++i + strstart[s - 65536L]];
+      unsigned lo = str_pool[++i + str_start[s - 65536L]];
       if (lo >= 0xDC00 && lo <= 0xDFFF)
         c = (c - 0xD800) * 0x0400 + lo - 0xDC00;
       else
@@ -2848,21 +2852,21 @@ gettexstring (strnumber s)
 string
 gettexstring (strnumber s)
 {
-  poolpointer len;
+  pool_pointer len;
   string name;
 #if !defined(Aleph)
-  len = strstart[s + 1] - strstart[s];
+  len = str_start[s + 1] - str_start[s];
 #else
-  len = strstartar[s + 1 - 65536L] - strstartar[s - 65536L];
+  len = str_startar[s + 1 - 65536L] - str_startar[s - 65536L];
 #endif
   name = (string)xmalloc (len + 1);
 #if !defined(Aleph)
-  strncpy (name, (string)&strpool[strstart[s]], len);
+  strncpy (name, (string)&str_pool[str_start[s]], len);
 #else
   {
-  poolpointer i;
-  /* Don't use strncpy.  The strpool is not made up of chars. */
-  for (i=0; i<len; i++) name[i] =  strpool[i+strstartar[s - 65536L]];
+  pool_pointer i;
+  /* Don't use strncpy.  The str_pool is not made up of chars. */
+  for (i=0; i<len; i++) name[i] =  str_pool[i+str_startar[s - 65536L]];
   }
 #endif
   name[len] = 0;
@@ -2872,14 +2876,14 @@ gettexstring (strnumber s)
 #endif /* not XeTeX */
 
 boolean
-isnewsource (strnumber srcfilename, int lineno)
+is_new_source (strnumber srcfilename, int lineno)
 {
   char *name = gettexstring(srcfilename);
   return (compare_paths(name, last_source_name) != 0 || lineno != last_lineno);
 }
 
 void
-remembersourceinfo (strnumber srcfilename, int lineno)
+remember_source_info (strnumber srcfilename, int lineno)
 {
   if (last_source_name)
        free(last_source_name);
@@ -2887,10 +2891,10 @@ remembersourceinfo (strnumber srcfilename, int lineno)
   last_lineno = lineno;
 }
 
-poolpointer
-makesrcspecial (strnumber srcfilename, int lineno)
+pool_pointer
+make_src_special (strnumber srcfilename, int lineno)
 {
-  poolpointer oldpoolptr = poolptr;
+  pool_pointer oldpool_ptr = pool_ptr;
   char *filename = gettexstring(srcfilename);
   /* FIXME: Magic number. */
   char buf[40];
@@ -2901,19 +2905,19 @@ makesrcspecial (strnumber srcfilename, int lineno)
    */
   sprintf (buf, "src:%d ", lineno);
 
-  if (poolptr + strlen(buf) + strlen(filename) >= (size_t)poolsize) {
+  if (pool_ptr + strlen(buf) + strlen(filename) >= (size_t)pool_size) {
        fprintf (stderr, "\nstring pool overflow\n"); /* fixme */
        exit (1);
   }
   s = buf;
   while (*s)
-    strpool[poolptr++] = *s++;
+    str_pool[pool_ptr++] = *s++;
 
   s = filename;
   while (*s)
-    strpool[poolptr++] = *s++;
+    str_pool[pool_ptr++] = *s++;
 
-  return (oldpoolptr);
+  return (oldpool_ptr);
 }
 
 /* pdfTeX routines also used for e-pTeX, e-upTeX, and XeTeX */
@@ -2954,14 +2958,14 @@ void pdftex_fail(const char *fmt, ...)
 {
     va_list args;
     va_start(args, fmt);
-    println();
+    print_ln();
     safe_print("!error: ");
     vsnprintf(print_buf, PRINTF_BUF_SIZE, fmt, args);
     safe_print(print_buf);
     va_end(args);
-    println();
+    print_ln();
     safe_print(" ==> Fatal error occurred, output file will be damaged!");
-    println();
+    print_ln();
     exit(EXIT_FAILURE);
 }
 #endif /* not pdfTeX */
@@ -3043,11 +3047,11 @@ char *makecstring(integer s)
     static char *cstrbuf = NULL;
     char *p;
     static int allocsize;
-    int allocgrow, i, l = strstart[s + 1] - strstart[s];
+    int allocgrow, i, l = str_start[s + 1] - str_start[s];
     check_buf(l + 1, MAX_CSTRING_LEN);
     if (cstrbuf == NULL) {
         allocsize = l + 1;
-        cstrbuf = xmallocarray(char, allocsize);
+        cstrbuf = xmalloc_array(char, allocsize);
     } else if (l + 1 > allocsize) {
         allocgrow = allocsize * 0.2;
         if (l + 1 - allocgrow > allocsize)
@@ -3056,11 +3060,11 @@ char *makecstring(integer s)
             allocsize += allocgrow;
         else
             allocsize = MAX_CSTRING_LEN;
-        cstrbuf = xreallocarray(cstrbuf, char, allocsize);
+        cstrbuf = xrealloc_array(cstrbuf, char, allocsize);
     }
     p = cstrbuf;
     for (i = 0; i < l; i++)
-        *p++ = strpool[i + strstart[s]];
+        *p++ = str_pool[i + str_start[s]];
     *p = 0;
     return cstrbuf;
 }
@@ -3091,20 +3095,20 @@ void getcreationdate(void)
 {
     size_t len;
     initstarttime();
-    /* put creation date on top of string pool and update poolptr */
+    /* put creation date on top of string pool and update pool_ptr */
     len = strlen(start_time_str);
 
     /* In e-pTeX, "init len => call initstarttime()" (as pdftexdir/utils.c)
        yields  unintentional output. */
 
-    if ((unsigned) (poolptr + len) >= (unsigned) (poolsize)) {
-        poolptr = poolsize;
+    if ((unsigned) (pool_ptr + len) >= (unsigned) (pool_size)) {
+        pool_ptr = pool_size;
         /* error by str_toks that calls str_room(1) */
         return;
     }
 
-    memcpy(&strpool[poolptr], start_time_str, len);
-    poolptr += len;
+    memcpy(&str_pool[pool_ptr], start_time_str, len);
+    pool_ptr += len;
 }
 
 void getfilemoddate(integer s)
@@ -3123,12 +3127,12 @@ void getfilemoddate(integer s)
 
         makepdftime(file_data.st_mtime, time_str, /* utc= */false);
         len = strlen(time_str);
-        if ((unsigned) (poolptr + len) >= (unsigned) (poolsize)) {
-            poolptr = poolsize;
+        if ((unsigned) (pool_ptr + len) >= (unsigned) (pool_size)) {
+            pool_ptr = pool_size;
             /* error by str_toks that calls str_room(1) */
         } else {
-            memcpy(&strpool[poolptr], time_str, len);
-            poolptr += len;
+            memcpy(&str_pool[pool_ptr], time_str, len);
+            pool_ptr += len;
         }
     }
     /* else { errno contains error code } */
@@ -3157,12 +3161,12 @@ void getfilesize(integer s)
                      "%lu", (long unsigned int) file_data.st_size);
         check_nprintf(i, sizeof(buf));
         len = strlen(buf);
-        if ((unsigned) (poolptr + len) >= (unsigned) (poolsize)) {
-            poolptr = poolsize;
+        if ((unsigned) (pool_ptr + len) >= (unsigned) (pool_size)) {
+            pool_ptr = pool_size;
             /* error by str_toks that calls str_room(1) */
         } else {
-            memcpy(&strpool[poolptr], buf, len);
-            poolptr += len;
+            memcpy(&str_pool[pool_ptr], buf, len);
+            pool_ptr += len;
         }
     }
     /* else { errno contains error code } */
@@ -3174,8 +3178,8 @@ void getfiledump(integer s, int offset, int length)
 {
     FILE *f;
     int read, i;
-    poolpointer data_ptr;
-    poolpointer data_end;
+    pool_pointer data_ptr;
+    pool_pointer data_end;
     char *file_name;
 
     if (length == 0) {
@@ -3183,9 +3187,9 @@ void getfiledump(integer s, int offset, int length)
         return;
     }
 
-    if (poolptr + 2 * length + 1 >= poolsize) {
+    if (pool_ptr + 2 * length + 1 >= pool_size) {
         /* no place for result */
-        poolptr = poolsize;
+        pool_ptr = pool_size;
         /* error by str_toks that calls str_room(1) */
         return;
     }
@@ -3210,17 +3214,17 @@ void getfiledump(integer s, int offset, int length)
        data are put in the upper half of the result, thus
        the conversion to hex can be done without overwriting
        unconverted bytes. */
-    data_ptr = poolptr + length;
-    read = fread(&strpool[data_ptr], sizeof(char), length, f);
+    data_ptr = pool_ptr + length;
+    read = fread(&str_pool[data_ptr], sizeof(char), length, f);
     fclose(f);
 
     /* convert to hex */
     data_end = data_ptr + read;
     for (; data_ptr < data_end; data_ptr++) {
-        i = snprintf((char *) &strpool[poolptr], 3,
-                     "%.2X", (unsigned int) strpool[data_ptr]);
+        i = snprintf((char *) &str_pool[pool_ptr], 3,
+                     "%.2X", (unsigned int) str_pool[data_ptr]);
         check_nprintf(i, 3);
-        poolptr += i;
+        pool_ptr += i;
     }
     xfree(file_name);
 }
@@ -3303,23 +3307,23 @@ void getmd5sum(strnumber s, boolean file)
         xfree (xname);
 #else
         md5_append(&state,
-                   (md5_byte_t *) &strpool[strstart[s]],
-                   strstart[s + 1] - strstart[s]);
+                   (md5_byte_t *) &str_pool[str_start[s]],
+                   str_start[s + 1] - str_start[s]);
 #endif
         md5_finish(&state, digest);
     }
 
-    if (poolptr + len >= poolsize) {
+    if (pool_ptr + len >= pool_size) {
         /* error by str_toks that calls str_room(1) */
         return;
     }
     convertStringToHexString((char *) digest, outbuf, DIGEST_SIZE);
 #if defined(XeTeX)
     for (i = 0; i < 2 * DIGEST_SIZE; i++)
-        strpool[poolptr++] = (uint16_t)outbuf[i];
+        str_pool[pool_ptr++] = (uint16_t)outbuf[i];
 #else
-    memcpy(&strpool[poolptr], outbuf, len);
-    poolptr += len;
+    memcpy(&str_pool[pool_ptr], outbuf, len);
+    pool_ptr += len;
 #endif
 }
 

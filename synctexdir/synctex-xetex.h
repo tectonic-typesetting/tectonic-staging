@@ -54,11 +54,11 @@ Thu Jun 19 09:39:21 UTC 2008
 
 /* We observe nopdfoutput in order to determine whether output mode is
  * pdf or xdv. */
-#  define SYNCTEX_OFFSET_IS_PDF (nopdfoutput==0)
-#  define SYNCTEX_OUTPUT (nopdfoutput!=0?"xdv":"pdf")
+#  define SYNCTEX_OFFSET_IS_PDF (no_pdf_output==0)
+#  define SYNCTEX_OUTPUT (no_pdf_output!=0?"xdv":"pdf")
 
-#define SYNCTEX_CURH ((nopdfoutput==0)?(curh+4736287):curh)
-#define SYNCTEX_CURV ((nopdfoutput==0)?(curv+4736287):curv)
+#define SYNCTEX_CURH ((no_pdf_output==0)?(cur_h+4736287):cur_h)
+#define SYNCTEX_CURV ((no_pdf_output==0)?(cur_v+4736287):cur_v)
 
 /*  WARNING:
     The definition below must be in sync with their eponym declarations in synctex-xetex.ch1

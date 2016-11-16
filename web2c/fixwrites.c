@@ -323,7 +323,7 @@ main (int argc,  string *argv)
 	    ++cp;
 	}
 
-      if (strncmp (cp, "write (", 7) && strncmp (cp, "writeln (", 9))
+      if (strncmp (cp, "write (", 7) && strncmp (cp, "writeln (", 9) && strncmp (cp, "write_ln (", 10))
 	{
 	  /* if not a write/writeln, just copy it to stdout and continue */
 	  puts (cp);

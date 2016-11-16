@@ -653,7 +653,7 @@ VAR_ID:			undef_id_tok
 BODY:
 	  /* empty */
 	| begin_tok
-		{ my_output ("void mainbody( void ) {");
+		{ my_output ("void main_body( void ) {");
 		  indent++;
 		  new_line ();
 		}

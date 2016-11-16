@@ -16,7 +16,7 @@
 #define outbufsize (144)
 #define stacksize (100)
 #define maxidlength (50)
-#define unambiglength (25)
+#define unambiglength (30)
 #define noptions (3)
 
 typedef unsigned char ASCIIcode;
@@ -755,12 +755,9 @@ found:
             h = 0;
 
             while ((i < idloc) && (s < unambiglength)) {
-                if (buffer[i] != UNDERSCORE) {
-                    choppedid[s] = buffer[i];
-                    h = (h + h + choppedid[s]) % hashsize;
-                    s = s + 1;
-                }
-
+		choppedid[s] = buffer[i];
+		h = (h + h + choppedid[s]) % hashsize;
+		s = s + 1;
                 i = i + 1;
             }
             choppedid[s] = 0;
@@ -802,11 +799,9 @@ found:
 		    while (k < bytestart[q + 3] && s < unambiglength) {
 			c = bytemem[w][k];
 
-			if (c != UNDERSCORE) {
-			    if (choppedid[s] != c)
-				goto notfound;
-			    s = s + 1;
-			}
+			if (choppedid[s] != c)
+			    goto notfound;
+			s = s + 1;
 			k = k + 1;
 		    }
 
@@ -2054,8 +2049,6 @@ void send_the_output(void)
 		k = k + 1;
 		outcontrib[k] = bytemem[w][j];
 		j = j + 1;
-		if (outcontrib[k] == UNDERSCORE)
-		    k = k - 1;
 	    }
 	    send_out(IDENT, k);
             break;

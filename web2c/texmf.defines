@@ -1,8 +1,8 @@
 {This file defines symbols in addition to those in `common.defines',
  for use in the TeX, Metafont, and MetaPost change files.  Public domain.}
 
-@define const TEXMFPOOLNAME;
-@define const TEXMFENGINENAME;
+@define const TEXMF_POOL_NAME;
+@define const TEXMF_ENGINE_NAME;
 
 @define @field b0;
 @define @field b1;
@@ -17,66 +17,66 @@
 @define @field rh;
 {`qqqq' is already defined, in ./common.defines, because of gftodvi.}
 
-@define function bopenin ();
-@define function bopenout ();
-@define function floorscaled ();
-@define function floorunscaled ();
-@define function getjobname ();
-@define function initscreen;
-@define function inputln ();
-@define function isnewsource ();
+@define function b_open_in ();
+@define function b_open_out ();
+@define function floor_scaled ();
+@define function floor_unscaled ();
+@define function get_job_name ();
+@define function init_screen;
+@define function input_ln ();
+@define function is_new_source ();
 @define function loadpoolstrings ();
-@define function makefullnamestring;
-@define function makesrcspecial ();
-@define function ocpopenin ();
-@define function ofmopenin ();
-@define function roundfraction ();
-@define function roundunscaled ();
+@define function make_full_name_string;
+@define function make_src_special ();
+@define function ocp_open_in ();
+@define function ofm_open_in ();
+@define function round_fraction ();
+@define function round_unscaled ();
 @define function runsystem ();
-@define function wopenin ();
-@define function wopenout ();
+@define function w_open_in ();
+@define function w_open_out ();
 
-@define procedure bclose ();
-@define procedure blankrectangle ();
-@define procedure calledit ();
-@define procedure clearterminal;
-@define procedure dateandtime ();
-@define procedure secondsandmicros ();
-@define procedure dumpcore;
-@define procedure dumphh ();
-@define procedure dumpint ();
-@define procedure dumpqqqq ();
-@define procedure dumpthings ();
-@define procedure dumpwd ();
-@define procedure flushdvi;
-@define procedure ipcpage ();
-@define procedure paintrow ();
+@define procedure b_close ();
+@define procedure blank_rectangle ();
+@define procedure call_edit ();
+@define procedure clear_terminal;
+@define procedure date_and_time ();
+@define procedure seconds_and_micros ();
+@define procedure dump_core;
+@define procedure dump_hh ();
+@define procedure dump_int ();
+@define procedure dump_qqqq ();
+@define procedure dump_things ();
+@define procedure dump_wd ();
+@define procedure flush_dvi;
+@define procedure ipc_page ();
+@define procedure paint_row ();
 @define procedure put2bytes ();
 @define procedure put4bytes ();
-@define procedure readtcxfile;
-@define procedure remembersourceinfo ();
-@define procedure topenin;
-@define procedure undumphh ();
-@define procedure undumpint ();
-@define procedure undumpqqqq ();
-@define procedure undumpthings ();
-@define procedure undumpcheckedthings ();
-@define procedure undumpuppercheckthings ();
-@define procedure undumpwd ();
-@define procedure updatescreen;
-@define procedure wakeupterminal;
-@define procedure wclose ();
+@define procedure read_tcx_file;
+@define procedure remember_source_info ();
+@define procedure t_open_in;
+@define procedure undump_hh ();
+@define procedure undump_int ();
+@define procedure undump_qqqq ();
+@define procedure undump_things ();
+@define procedure undump_checked_things ();
+@define procedure undump_upper_check_things ();
+@define procedure undump_wd ();
+@define procedure update_screen;
+@define procedure wake_up_terminal;
+@define procedure w_close ();
 @define procedure writegf ();
 
-@define type fourquarters;
-@define type twohalves;
-@define type fmemoryword;
+@define type four_quarters;
+@define type two_halves;
+@define type fmemory_word;
 
 @define var eqtb;
 @define var mem;
-@define var kpsemaketexdiscarderrors;
-@define var translatefilename;
+@define var kpse_make_tex_discard_errors;
+@define var translate_filename;
 
 {For TeX; see openclose.c.}
-@define var tfmtemp;
-@define var texinputtype;
+@define var tfm_temp;
+@define var tex_input_type;

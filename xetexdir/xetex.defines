@@ -33,113 +33,113 @@ authorization from the copyright holders.
 { xetex.defines: additions for xetex }
 
 @define @field ptr;
-@define const nullptr;
-@define type voidpointer;
-@define function getnativechar();
-@define function getnativeusv();
-@define procedure setnativechar();
-@define function getnativeglyph();
-@define procedure setnativemetrics();
-@define procedure setjustifiednativeglyphs();
-@define procedure setnativeglyphmetrics();
-@define function findnativefont();
-@define procedure releasefontengine();
+@define const null_ptr;
+@define type void_pointer;
+@define function get_native_char();
+@define function get_native_usv();
+@define procedure set_native_char();
+@define function get_native_glyph();
+@define procedure set_native_metrics();
+@define procedure set_justified_native_glyphs();
+@define procedure set_native_glyph_metrics();
+@define function find_native_font();
+@define procedure release_font_engine();
 @define function sizeof();
-@define function makefontdef();
-@define function makexdvglypharraydata();
-@define function xdvbufferbyte();
+@define function make_font_def();
+@define function make_xdv_glyph_array_data();
+@define function xdv_buffer_byte();
 @define procedure fprintf();
-@define type unicodefile;
-@define function uopenin();
-@define function uopenout();
-@define procedure uclose();
-@define function dviopenout();
-@define function dviclose();
+@define type unicode_file;
+@define function u_open_in();
+@define function u_open_out();
+@define procedure u_close();
+@define function dvi_open_out();
+@define function dvi_close();
 @define function delcode1();
 @define procedure setdelcode1();
 @define function readcint1();
 @define procedure setcint1();
-@define procedure printutf8str();
-@define procedure setinputfileencoding();
-@define procedure terminatefontmanager;
+@define procedure print_utf8_str();
+@define procedure set_input_file_encoding();
+@define procedure terminate_font_manager;
 @define type gzFile;
-@define procedure checkfortfmfontmapping;
-@define function loadtfmfontmapping;
-@define function applytfmfontmapping();
+@define procedure check_for_tfm_font_mapping;
+@define function load_tfm_font_mapping;
+@define function apply_tfm_font_mapping();
 
 @define procedure initGraphiteBreaking();
 @define function findNextGraphiteBreak();
 @define function usingOpenType();
 @define function usingGraphite();
-@define procedure grprintfontname();
-@define function grfontgetnamed();
-@define function grfontgetnamed1();
+@define procedure gr_print_font_name();
+@define function gr_font_get_named();
+@define function gr_font_get_named_1();
 @define function isOpenTypeMathFont();
 
 @define function strerror();
 @define procedure memcpy();
 @define function glyphinfobyte();
-@define function casttoushort();
+@define function cast_to_ushort();
 
-@define function aatfontget();
-@define function aatfontget1();
-@define function aatfontget2();
-@define function aatfontgetnamed();
-@define function aatfontgetnamed1();
-@define procedure aatprintfontname();
-@define function otfontget();
-@define function otfontget1();
-@define function otfontget2();
-@define function otfontget3();
-@define function mapchartoglyph();
-@define function mapglyphtoindex();
-@define function getglyphbounds();
-@define procedure getnativecharheightdepth();
-@define procedure getnativecharsidebearings();
-@define function getnativeitaliccorrection();
-@define function getnativeglyphitaliccorrection();
-@define procedure printglyphname();
-@define function getfontcharrange();
+@define function aat_font_get();
+@define function aat_font_get_1();
+@define function aat_font_get_2();
+@define function aat_font_get_named();
+@define function aat_font_get_named_1();
+@define procedure aat_print_font_name();
+@define function ot_font_get();
+@define function ot_font_get_1();
+@define function ot_font_get_2();
+@define function ot_font_get_3();
+@define function map_char_to_glyph();
+@define function map_glyph_to_index();
+@define function get_glyph_bounds();
+@define procedure get_native_char_height_depth();
+@define procedure get_native_char_sidebearings();
+@define function get_native_italic_correction();
+@define function get_native_glyph_italic_correction();
+@define procedure print_glyph_name();
+@define function get_font_char_range();
 
 @define function getnativecharwd();
 @define function getnativecharht();
 @define function getnativechardp();
 @define function getnativecharic();
 
-@define function getnativemathsyparam();
-@define function getnativemathexparam();
-@define function getotmathconstant();
-@define function getotmathvariant();
-@define function getotassemblyptr();
-@define function getotmathitalcorr();
-@define function getotmathaccentpos();
-@define function getotmathkern();
+@define function get_native_mathsy_param();
+@define function get_native_mathex_param();
+@define function get_ot_math_constant();
+@define function get_ot_math_variant();
+@define function get_ot_assembly_ptr();
+@define function get_ot_math_ital_corr();
+@define function get_ot_math_accent_pos();
+@define function get_ot_math_kern();
 
-@define function otpartcount();
-@define function otpartglyph();
-@define function otpartstartconnector();
-@define function otpartendconnector();
-@define function otpartfulladvance();
-@define function otpartisextender();
-@define function otminconnectoroverlap();
+@define function ot_part_count();
+@define function ot_part_glyph();
+@define function ot_part_start_connector();
+@define function ot_part_end_connector();
+@define function ot_part_full_advance();
+@define function ot_part_is_extender();
+@define function ot_min_connector_overlap();
 
-@define function setfamilyfield();
-@define function setclassfield();
-@define function mathfamfield();
-@define function mathclassfield();
-@define function mathcharfield();
+@define function set_family_field();
+@define function set_class_field();
+@define function math_fam_field();
+@define function math_class_field();
+@define function math_char_field();
 
-@define procedure aatgetfontmetrics();
-@define procedure otgetfontmetrics();
+@define procedure aat_get_font_metrics();
+@define procedure ot_get_font_metrics();
 
-@define function getencodingmodeandinfo();
+@define function get_encoding_mode_and_info();
 
-@define procedure linebreakstart();
-@define function linebreaknext;
+@define procedure linebreak_start();
+@define function linebreak_next;
 
 { extra stuff used in picfile code }
-@define type realpoint;
-@define type realrect;
+@define type real_point;
+@define type real_rect;
 @define type transform;
 
 @define function deref();
@@ -147,16 +147,16 @@ authorization from the copyright holders.
 @define function D2Fix();
 @define function Fix2D();
 
-@define function findpicfile();
-@define function picpathbyte();
-@define function countpdffilepages;
+@define function find_pic_file();
+@define function pic_path_byte();
+@define function count_pdf_file_pages;
 
-@define procedure makeidentity();
-@define procedure makescale();
-@define procedure maketranslation();
-@define procedure makerotation();
-@define procedure transformpoint();
-@define procedure transformconcat();
+@define procedure make_identity();
+@define procedure make_scale();
+@define procedure make_translation();
+@define procedure make_rotation();
+@define procedure transform_point();
+@define procedure transform_concat();
 
 @define procedure setPoint();
 
@@ -170,10 +170,10 @@ authorization from the copyright holders.
 @define function yField();
 @define function wdField();
 @define function htField();
-@define function applymapping();
+@define function apply_mapping();
 
-@define procedure setcpcode();
-@define function getcpcode();
-@define function getnativewordcp();
+@define procedure set_cp_code();
+@define function get_cp_code();
+@define function get_native_word_cp();
 
 @define procedure getmd5sum();

@@ -880,6 +880,12 @@ found:
 
                 if (l - doublechars == 2) {
                     equiv[p] = buffer[idfirst + 1] + 0x40000000;
+#ifdef PKGW
+		    pkgw_string_values[p] = malloc (2);
+		    /* yay, assume malloc never fails */
+		    pkgw_string_values[p][0] = buffer[idfirst + 1];
+		    pkgw_string_values[p][1] = '\0';
+#endif
                 } else {
 #ifdef PKGW
 		    int pkgw_idx = 0;

@@ -21,7 +21,7 @@
 /* Changing this value will probably stimulate bugs in some
    preprocessors -- those which want to put the expansion of a macro
    entirely on one line.  */
-#define max_line_length 78
+#define max_line_length 1024
 
 #define max_strings 50000
 #define hash_prime 7883

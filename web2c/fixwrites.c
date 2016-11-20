@@ -350,8 +350,8 @@ main (int argc,  string *argv)
           || strncmp (cp + 1, "s ,", 3) == 0
           || strncmp (cp + 1, "dig", 3) == 0
           || strncmp (cp + 1, "HEX", 3) == 0
-          || strncmp (cp + 1, "versionstring", 13) == 0
-          || strncmp (cp + 1, "kpathseaversionstring", 21) == 0
+          || strncmp (cp + 1, "version_string", 14) == 0
+          || strncmp (cp + 1, "kpathsea_version_string", 23) == 0
          )
 	strcpy (filename, "stdout");
       else
@@ -382,7 +382,7 @@ main (int argc,  string *argv)
 	      || strncmp (cp, "ASCII1", 6) == 0
 	      || strncmp (cp, "ASCIIall", 8) == 0              
 	      || strncmp (cp, "months", 6) == 0
-	      || strncmp (cp, "nameoffile", 10) == 0
+	      || strncmp (cp, "name_of_file", 12) == 0
 	      || (strncmp (cp, "buffer", 6) == 0
                   && (STREQ (program_name, "vptovf")
                       || STREQ (program_name, "pltotf")
@@ -421,14 +421,14 @@ main (int argc,  string *argv)
 	    }
 
           /* More kludges -- recognize some things as strings and use %s:
-             - versionstring
-             - poolname
-             - formatengine
-             - dumpname */
-          else if (strncmp (cp, "versionstring", 13) == 0
-                   || strncmp (cp, "poolname", 8) == 0
-                   || strncmp (cp, "formatengine", 12) == 0
-                   || strncmp (cp, "dumpname", 8) == 0)
+             - version_string
+             - pool_name
+             - format_engine
+             - dump_name */
+          else if (strncmp (cp, "version_string", 14) == 0
+                   || strncmp (cp, "pool_name", 9) == 0
+                   || strncmp (cp, "format_engine", 13) == 0
+                   || strncmp (cp, "dump_name", 9) == 0)
             {
               *as++ = '%';
               *as++ = 's';

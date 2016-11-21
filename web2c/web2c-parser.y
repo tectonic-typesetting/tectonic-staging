@@ -1310,10 +1310,10 @@ doreturn (string label)
     return
       tex
       && STREQ (label, "10")
-      && !STREQ (my_routine, "macrocall")
+      && !STREQ (my_routine, "macro_call")
       && !STREQ (my_routine, "hpack")
       && !STREQ (my_routine, "vpackage")
-      && !STREQ (my_routine, "trybreak");
+      && !STREQ (my_routine, "try_break");
 }
 
 

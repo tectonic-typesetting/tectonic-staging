@@ -457,7 +457,7 @@ main (int argc,  string *argv)
 	    ++cp;
 	}
 
-      if (strncmp (cmd, "writeln", 7) == 0)
+      if (strncmp (cmd, "writeln", 7) == 0 || strncmp (cmd, "write_ln", 8) == 0)
 	{
 	  *as++ = '\\';
 	  *as++ = 'n';

@@ -10,7 +10,7 @@ from pwkit import io, ninja_syntax
 
 
 config = {
-    'build_name': 'BUILD',
+    'build_name': 'state/sbuild',
     'base_cflags': '-g -O0',
     # pkg-config --cflags fontconfig harfbuzz harfbuzz-icu freetype2 graphite2 libpng zlib icu-uc poppler
     'pkgconfig_cflags': '-I/usr/include/freetype2 -I/usr/include/libpng16 -I/usr/include/harfbuzz -I/usr/include/glib-2.0 -I/usr/lib64/glib-2.0/include -I/usr/include/freetype2 -I/usr/include/libpng16 -I/usr/include/poppler',
@@ -52,7 +52,7 @@ def inner (top, w):
             description='LINK $out')
 
     w.rule ('tie',
-            command='WEBINPUTS=. BUILD/tie -c $out $in', # TODO: config
+            command='WEBINPUTS=. %(build_name)s/tie -c $out $in' % config,
             description='TIE $out')
 
     w.rule ('lex',
@@ -65,7 +65,7 @@ def inner (top, w):
             description='YACC $out')
 
     w.rule ('otangle',
-            command='WEBINPUTS=. BUILD/otangle $in && mv $basename.p $basename.pool $outdir', # TODO: config
+            command='WEBINPUTS=. %(build_name)s/otangle $in && mv $basename.p $basename.pool $outdir' % config,
             description='OTANGLE $out')
 
     w.rule ('convert',
@@ -73,7 +73,7 @@ def inner (top, w):
             description='CONVERT $out')
 
     w.rule ('makecpool',
-            command='BUILD/web2c/makecpool $basename >$out', # TODO: config
+            command='%(build_name)s/web2c/makecpool $basename >$out' % config,
             description='MAKECPOOL $out')
 
     # build dir
@@ -220,6 +220,7 @@ def inner (top, w):
             web2c_lexer,
             web2c_parser_c,
         ],
+        implicit = [str(web2c_parser_h)],
         rule = 'cc',
         slibs = [libbase, libkps, libkpu],
         cflags = '-Iweb2c -I%(build_name)s -I. %(base_cflags)s' % config,

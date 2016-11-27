@@ -1,52 +1,72 @@
-standalone xetex
+Tectonic Staging
 ================
 
-Research progress investigating the feasibility of building a standalone TeX
-engine that doesn't have the complex filesystem crawling characteristics of
-the standard ones.
+This repository contains scripts for extracting files needed for Tectonic from
+a Git mirror of
+[the TeXLive Subversion repository](http://tug.org/svn/texlive/). These files
+are the source code used as the basis for the Tectonic engine, and the
+compressed “container” files with different TeXLive packages that can be used
+to generate a Tectonic bundle file.
+
+*You do not need this repository to build Tectonic.*
+
+Requirements are:
+
+- Docker.
+- [ninja](https://ninja-build.org/).
+- C and C++ compilers.
+- A Git mirror of the TeXLive Subversion repository.
+
+There is no official Git mirror of the TeXLive Subversion repository. My
+version is generated with `git-svn` and is 21 gigabytes. Creating your own Git
+mirror is probably pretty hard on the TeXLive servers, so please avoid doing
+so. If you want to use the scripts in this repository, contact me (Peter
+Williams <peter@newton.cx>) and I’ll provide you with my repository to use as
+a basis.
+
+The Git mirror should live in a subdirectory named `state/repo` below this
+file. Data files associated with the staging process will land in other
+subdirectories of `state`.
+
+*This* repository has two main branches. The `vendor` branch has the raw
+source code extracted from TeXLive. The `master` branch has modifications to
+that code to get a minimal running `xetex` engine generated from somewhat more
+user-friendly C code than is generated in the TeXLive build system.
 
 
-Current status
---------------
+Updating the mirror
+-------------------
 
-Can compile a `xetex` that only uses some system libraries. To run:
-
-```
-TEXFORMATS=/a/share/texlive/texmf-var// ./BUILD/xetex
-```
-
-To compile the minimal sample LaTeX document in `tests/latex-minimal`:
-
-```
-cd tests/latex-minimal
-export TEXINPUTS=.:/a/share/texlive/texmf-dist//
-export TEXFORMATS=/a/share/texlive/texmf-var//
-../../BUILD/xetex -fmt=xelatex -no-pdf main
-xdvipdfmx main
-```
-
-The more full “xenia” test:
-
-```
-cd tests/latex-minimal
-export TEXINPUTS=.:/a/share/texlive/texmf-dist//
-export TEXFORMATS=/a/share/texlive/texmf-var//
-export TFMFONTS=/a/share/texlive/texmf-dist//
-../../BUILD/xetex -fmt=xelatex -no-pdf paper
-../../BUILD/xetex -fmt=xelatex -no-pdf paper # rerun for crossrefs
-xdvipdfmx paper
-```
+Use `./staging.sh svn-pull` to synchronize with the official repository.
 
 
-Origin of source code
----------------------
+Updating the container files
+----------------------------
 
-The script `fetch-source.sh` copies source code out of a *partially-built*
-TeXLive tree. We need to do the build to generate the C source code from the
-original Web source, since there's no way I'm reimplementing all of that
-stuff. (For now.)
+The first time you do anything, run `./staging.sh build-image` to make a
+standardized Docker image for running the TeXLive scripts and build process.
+Then run `./staging.sh update-containers` to generate versioned container
+files that will land in `state/containers`.
 
-Fetch source into the `vendor` branch. Ideally that branch will be a
-buildable, totally stock version of xetex with some bad settings ... but we'll
-see how long that lasts. The `master` branch hacks things to move towards the
-standalone paradigm.
+
+Making a bundle file
+--------------------
+
+Run `./staging.sh make-zipfile $DESTPATH $PACKAGENAMES` where `$DESTPATH` is
+the name of the Zip file you want to produce and `$PACKAGENAMES` is a list of
+the TeXLive packages that should be installed to produce the bundle file.
+
+
+Updating the reference source code
+----------------------------------
+
+1. **Make sure you’re on the vendor branch!** This is essential.
+2. Build TeXLive in a directory named `state/rbuild`. **TODO**: this should
+   totally be done in the Docker container.
+3. Run `./staging.sh ingest-source`.
+4. If no files were modified (`git status`), there’s nothing more to do.
+5. If files were modified, commit the resulting changes. On the current
+   `vendor` branch.
+6. Check out the `master` branch.
+7. Merge in the changes from `vendor`.
+8. Run `ninja` to build the sample `xetex` binary.

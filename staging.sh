@@ -12,6 +12,7 @@ if [ -z "$1" -o "$1" = help ] ; then
 
 build-image       -- Create/update to builder Docker image.
 builder-bash      -- Run a shell in a temporary builder container.
+ingest-source     -- Copy needed source code from TeXLive to this repo.
 make-installation -- Install TeXLive into a new directory tree.
 make-zipfile      -- Make a Zip file of a TeXLive installation.
 svn-pull          -- Update the Git mirror of the TeXLive SVN repository.
@@ -41,6 +42,12 @@ function build_image () {
 function builder_bash () {
     [ -d $state_dir/repo ] || die "no such directory $state_dir/repo"
     exec docker run -it --rm -v $state_dir:/state $image_name bash
+}
+
+
+function ingest_source () {
+    [ -d $state_dir/rbuild ] || die "no such directory $state_dir/rbuild"
+    exec ./ingest-source.sh
 }
 
 
@@ -157,6 +164,8 @@ case "$command" in
 	build_image "$@" ;;
     builder-bash)
 	builder_bash "$@" ;;
+    ingest-source)
+	ingest_source "$@" ;;
     make-installation)
 	make_installation "$@" ;;
     make-zipfile)

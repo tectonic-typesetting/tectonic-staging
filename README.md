@@ -15,6 +15,7 @@ Requirements are:
 - Docker.
 - [ninja](https://ninja-build.org/).
 - C and C++ compilers.
+- [indent](https://www.gnu.org/software/indent/manual/indent.html).
 - A Git mirror of the TeXLive Subversion repository.
 
 There is no official Git mirror of the TeXLive Subversion repository. My
@@ -70,3 +71,5 @@ Updating the reference source code
 6. Check out the `master` branch.
 7. Merge in the changes from `vendor`.
 8. Run `ninja` to build the sample `xetex` binary.
+9. Run `./staging.sh update-products` to update the prettified C code
+   in `products/`.

@@ -17,6 +17,7 @@ make-installation -- Install TeXLive into a new directory tree.
 make-zipfile      -- Make a Zip file of a TeXLive installation.
 svn-pull          -- Update the Git mirror of the TeXLive SVN repository.
 update-containers -- Rebuild the TeXLive \"container\" files.
+update-products   -- Update the prettified C code in \"products/\".
 
 "
     exit 1
@@ -157,6 +158,16 @@ function update_containers () {
 }
 
 
+function update_products () {
+    [ -d BUILD ] || die "no such directory BUILD"
+    for f in xetex-pool.c xetexini.c xetex0.c xetexcoerce.h xetexd.h ; do
+	cp BUILD/$f products/
+	indent -linux -nut -i4 -l120 products/$f
+	rm -f products/${f}~
+    done
+}
+
+
 # Dispatch subcommands.
 
 case "$command" in
@@ -174,6 +185,8 @@ case "$command" in
 	svn_pull "$@" ;;
     update-containers)
 	update_containers "$@" ;;
+    update-products)
+	update_products "$@" ;;
     *)
 	echo >&2 "error: unrecognized command \"$command\"."
 	exit 1 ;;

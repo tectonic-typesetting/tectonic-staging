@@ -1,6 +1,6 @@
 #! /usr/bin/env python
 # -*- mode: python; coding: utf-8 -*-
-# Copyright 2016 Peter Williams and collaborators.
+# Copyright 2016 the Tectonic Project.
 # Licensed under the MIT License.
 
 from __future__ import absolute_import, division, print_function, unicode_literals

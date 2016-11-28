@@ -73,3 +73,13 @@ Updating the reference source code
 8. Run `ninja` to build the sample `xetex` binary.
 9. Run `./staging.sh update-products` to update the prettified C code
    in `products/`.
+
+
+Copyright and Licensing
+=======================
+
+The source files extracted from TeXLive have copyrights and licenses specified
+in their contents. They are available under a variety of open-source licenses.
+
+The infrastructure scripts in this repository are licensed under the MIT
+License. Their copyright is assigned to the Tectonic Project.

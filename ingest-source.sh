@@ -1,4 +1,6 @@
 #! /bin/bash
+# Copyright 2016 the Tectonic Project.
+# Licensed under the MIT License.
 
 src=state/repo/Build/source
 build=state/rbuild

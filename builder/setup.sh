@@ -1,5 +1,5 @@
 #! /bin/bash
-# Copyright 2016 Peter Williams <peter@newton.cx>
+# Copyright 2016 the Tectonic Project.
 # Licensed under the MIT License.
 #
 # Set up an image that's ready to generate TeXLive packages reproducibly.

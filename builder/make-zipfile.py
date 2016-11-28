@@ -1,7 +1,7 @@
 #! /usr/bin/env python
 # -*- mode: python; coding: utf-8 -*-
-# Copyright 2016 Peter Williams
-# Licensed under the MIT License
+# Copyright 2016 the Tectonic Project.
+# Licensed under the MIT License.
 
 """Create a Zip file containing all of the resources from a TeXLive
 installation. Usefulness not guaranteed unless the installation was created

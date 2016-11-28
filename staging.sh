@@ -1,5 +1,5 @@
 #! /bin/bash
-# Copyright 2016 Peter Williams
+# Copyright 2016 the Tectonic Project.
 # Licensed under the MIT License.
 
 image_name=tectonic-texlive-builder

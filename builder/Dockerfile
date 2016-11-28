@@ -1,4 +1,4 @@
-# Copyright 2016 Peter Williams
+# Copyright 2016 the Tectonic Project.
 # Licensed under the MIT License.
 #
 # See ./build.sh for a simple build recipe.

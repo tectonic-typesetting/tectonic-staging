@@ -1,5 +1,5 @@
 #! /bin/bash
-# Copyright 2016 Peter Williams <peter@newton.cx>
+# Copyright 2016 the Tectonic Project.
 # Licensed under the MIT License.
 #
 # This is the "entrypoint" script for the TeXLive build image. When a user

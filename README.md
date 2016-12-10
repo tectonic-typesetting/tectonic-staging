@@ -1,8 +1,8 @@
 Tectonic Staging
 ================
 
-This repository contains scripts for extracting files needed for Tectonic from
-a Git mirror of
+This repository contains scripts for extracting files needed for
+[Tectonic](https://github.com/pkgw/tectonic) from a Git mirror of
 [the TeXLive Subversion repository](http://tug.org/svn/texlive/). These files
 are the source code used as the basis for the Tectonic engine, and the
 compressed “container” files with different TeXLive packages that can be used

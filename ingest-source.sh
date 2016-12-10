@@ -17,7 +17,6 @@ cp $src/texk/web2c/xetexdir/*.h xetexdir/
 cp $src/texk/web2c/xetexdir/image/*.c xetexdir/image/
 cp $src/texk/web2c/xetexdir/image/*.h xetexdir/image/
 cp $src/texk/web2c/*.h xetexdir/
-rm xetexdir/XeTeX_mac.c xetexdir/XeTeXFontInst_Mac.cpp
 
 cp $src/texk/web2c/tex.ch xetexdir/
 cp $src/texk/web2c/tex-binpool.ch xetexdir/

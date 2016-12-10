@@ -349,7 +349,8 @@ def inner (top, w):
 
     def xetex_c_sources ():
         for src in (top / 'xetexdir').glob ('*.c'):
-            yield src
+            if src.name != 'XeTeX_mac.c':
+                yield src
         for src in (top / 'xetexdir' / 'image').glob ('*.c'):
             yield src
         for src in xetex_c:
@@ -366,7 +367,12 @@ def inner (top, w):
         )
         objs.append (str (obj))
 
-    for src in (top / 'xetexdir').glob ('*.cpp'):
+    def xetex_cpp_sources ():
+        for src in (top / 'xetexdir').glob ('*.cpp'):
+            if src.name != 'XeTeXFontInst_Mac.cpp':
+                yield src
+
+    for src in xetex_cpp_sources ():
         obj = builddir / ('xetex_' + src.name.replace ('.cpp', '.o'))
         w.build (
             str(obj), 'cxx',

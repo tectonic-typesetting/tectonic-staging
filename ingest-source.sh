@@ -14,6 +14,7 @@ mkdir -p xetexdir/image
 cp $src/texk/web2c/xetexdir/*.cpp xetexdir/
 cp $src/texk/web2c/xetexdir/*.c xetexdir/
 cp $src/texk/web2c/xetexdir/*.h xetexdir/
+cp $src/texk/web2c/xetexdir/*.mm xetexdir/
 cp $src/texk/web2c/xetexdir/image/*.c xetexdir/image/
 cp $src/texk/web2c/xetexdir/image/*.h xetexdir/image/
 cp $src/texk/web2c/*.h xetexdir/

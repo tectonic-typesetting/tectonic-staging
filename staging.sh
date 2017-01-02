@@ -42,7 +42,7 @@ function build_image () {
 
 function builder_bash () {
     [ -d $state_dir/repo ] || die "no such directory $state_dir/repo"
-    exec docker run -it --rm -v $state_dir:/state $image_name bash
+    exec docker run -it --rm -v $state_dir:/state:rw,z $image_name bash
 }
 
 
@@ -100,7 +100,7 @@ function make_installation () {
 EOF
     echo $dest
     set +e
-    docker run --rm -v $state_dir:/state $image_name \
+    docker run --rm -v $state_dir:/state:rw,z $image_name \
 	   install-profile $cdest/builder.profile $cdest $(id -u):$(id -g) "$@" &>$dest/outer.log
     ec=$?
     [ $ec -eq 0 ] || die "install-tl failed; see $dest/outer.log"
@@ -128,7 +128,7 @@ function svn_pull () {
 function update_containers () {
     [ -d $state_dir/repo ] || die "no such directory $state_dir/repo"
     mkdir -p $state_dir/containers $state_dir/versioned
-    docker run --rm -v $state_dir:/state $image_name update-containers
+    docker run --rm -v $state_dir:/state:rw,z $image_name update-containers
 
     # Make versioned copies of unmodified packages.
 

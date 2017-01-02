@@ -103,3 +103,9 @@ cp $src/texk/web2c/web2c/*.h web2c/
 cp $src/texk/web2c/web2c/*.l web2c/
 cp $src/texk/web2c/web2c/*.y web2c/
 rm web2c/web2c-lexer.c web2c/web2c-parser.c web2c/web2c-parser.h
+
+# xdvipdfmx
+
+mkdir -p dvipdfm-x
+cp $src/texk/dvipdfm-x/*.c dvipdfm-x/
+cp $src/texk/dvipdfm-x/*.h dvipdfm-x/

@@ -143,6 +143,7 @@ class Bundler (object):
             s.update (self.item_shas[name])
 
         self.final_hexdigest = s.hexdigest ()
+        self.zip.writestr ('SHA1SUM', self.final_hexdigest)
 
 
 def main (argv):

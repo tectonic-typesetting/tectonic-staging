@@ -10,5 +10,4 @@ authors = ["Peter Williams <peter@newton.cx>"]
 clap = "^2.19"
 filetime = "0.1.5"
 libc = "0.2"
-tar = "^0.4"
 zip = "^0.2"

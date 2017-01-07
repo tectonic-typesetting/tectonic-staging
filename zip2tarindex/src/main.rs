@@ -3,14 +3,12 @@
 // Licensed under the MIT License.
 
 extern crate clap;
-extern crate tar;
 extern crate zip;
 
 use clap::{Arg, App};
 use std::{fmt, path, process};
 use std::fs::File;
 use std::io::{stderr, Error, ErrorKind, Read, Result, Seek, SeekFrom, Write};
-use std::ops::{Deref, DerefMut};
 use zip::ZipArchive;
 
 // Here is stuff from tar-rs's lib.rs
@@ -25,7 +23,7 @@ pub use header::{GnuExtSparseHeader};
 pub use entry_type::EntryType;
 //pub use entry::Entry;
 //pub use archive::{Archive, Entries};
-pub use builder::Builder;
+pub use builder::HackedBuilder;
 pub use pax::{PaxExtensions, PaxExtension};
 
 //mod archive;
@@ -35,24 +33,6 @@ mod entry_type;
 mod error;
 mod header;
 mod pax;
-
-// FIXME(rust-lang/rust#26403):
-//      Right now there's a bug when a DST struct's last field has more
-//      alignment than the rest of a structure, causing invalid pointers to be
-//      created when it's casted around at runtime. To work around this we force
-//      our DST struct to instead have a forcibly higher alignment via a
-//      synthesized u64 (hopefully the largest alignment we'll run into in
-//      practice), and this should hopefully ensure that the pointers all work
-//      out.
-struct AlignHigher<R: ?Sized>(u64, R);
-
-impl<R: ?Sized> Deref for AlignHigher<R> {
-    type Target = R;
-    fn deref(&self) -> &R { &self.1 }
-}
-impl<R: ?Sized> DerefMut for AlignHigher<R> {
-    fn deref_mut(&mut self) -> &mut R { &mut self.1 }
-}
 
 fn other(msg: &str) -> Error {
     Error::new(ErrorKind::Other, msg)
@@ -111,7 +91,7 @@ fn main() {
         Err(e) => die(format_args!("couldn\'t open {} as a Zip file: {}", zippath, e))
     };
 
-    let mut tar = tar::Builder::new(&mut tarfile);
+    let mut tar = HackedBuilder::new(&mut tarfile, &mut indexfile);
 
     for i in 0..zip.len() {
         let mut file = zip.by_index(i).unwrap();

@@ -11,22 +11,24 @@ use header::{bytes2path, path2bytes};
 ///
 /// This structure has methods for building up an archive from scratch into any
 /// arbitrary writer.
-pub struct Builder<W: Write> {
+pub struct HackedBuilder<WO: Write, WI: Write> {
     finished: bool,
-    obj: Option<W>,
+    obj: Option<WO>,
+    index: Option<WI>,
 }
 
-impl<W: Write> Builder<W> {
+impl<WO: Write, WI: Write> HackedBuilder<WO, WI> {
     /// Create a new archive builder with the underlying object as the
     /// destination of all data written.
-    pub fn new(obj: W) -> Builder<W> {
-        Builder {
+    pub fn new(obj: WO, index: WI) -> HackedBuilder<WO, WI> {
+        HackedBuilder {
             finished: false,
             obj: Some(obj),
+            index: Some(index),
         }
     }
 
-    fn inner(&mut self) -> &mut W {
+    fn inner(&mut self) -> &mut WO {
         self.obj.as_mut().unwrap()
     }
 
@@ -35,7 +37,7 @@ impl<W: Write> Builder<W> {
     /// This function will finish writing the archive if the `finish` function
     /// hasn't yet been called, returning any I/O error which happens during
     /// that operation.
-    pub fn into_inner(mut self) -> io::Result<W> {
+    pub fn into_inner(mut self) -> io::Result<WO> {
         if !self.finished {
             try!(self.finish());
         }
@@ -65,7 +67,7 @@ impl<W: Write> Builder<W> {
     /// # Examples
     ///
     /// ```
-    /// use tar::{Builder, Header};
+    /// use tar::{HackedBuilder, Header};
     ///
     /// let mut header = Header::new_gnu();
     /// header.set_path("foo");
@@ -74,7 +76,7 @@ impl<W: Write> Builder<W> {
     ///
     /// let mut data: &[u8] = &[1, 2, 3, 4];
     ///
-    /// let mut ar = Builder::new(Vec::new());
+    /// let mut ar = HackedBuilder::new(Vec::new());
     /// ar.append(&header, data).unwrap();
     /// let data = ar.into_inner().unwrap();
     /// ```
@@ -101,9 +103,9 @@ impl<W: Write> Builder<W> {
     /// # Examples
     ///
     /// ```no_run
-    /// use tar::Builder;
+    /// use tar::HackedBuilder;
     ///
-    /// let mut ar = Builder::new(Vec::new());
+    /// let mut ar = HackedBuilder::new(Vec::new());
     ///
     /// ar.append_path("foo/bar.txt").unwrap();
     /// ```
@@ -128,9 +130,9 @@ impl<W: Write> Builder<W> {
     ///
     /// ```no_run
     /// use std::fs::File;
-    /// use tar::Builder;
+    /// use tar::HackedBuilder;
     ///
-    /// let mut ar = Builder::new(Vec::new());
+    /// let mut ar = HackedBuilder::new(Vec::new());
     ///
     /// // Open the file at one location, but insert it into the archive with a
     /// // different name.
@@ -159,9 +161,9 @@ impl<W: Write> Builder<W> {
     ///
     /// ```
     /// use std::fs;
-    /// use tar::Builder;
+    /// use tar::HackedBuilder;
     ///
-    /// let mut ar = Builder::new(Vec::new());
+    /// let mut ar = HackedBuilder::new(Vec::new());
     ///
     /// // Use the directory at one location, but insert it into the archive
     /// // with a different name.
@@ -264,7 +266,7 @@ fn append_fs(dst: &mut Write,
     append(dst, &header, read)
 }
 
-impl<W: Write> Drop for Builder<W> {
+impl<WO: Write, WI: Write> Drop for HackedBuilder<WO, WI> {
     fn drop(&mut self) {
         let _ = self.finish();
     }

@@ -9,5 +9,6 @@ authors = ["Peter Williams <peter@newton.cx>"]
 [dependencies]
 clap = "^2.19"
 filetime = "0.1.5"
+flate2 = "^0.2"
 libc = "0.2"
 zip = "^0.2"

@@ -3,15 +3,17 @@
 // Licensed under the MIT License.
 
 extern crate clap;
+extern crate flate2;
 extern crate zip;
 
 use clap::{Arg, App};
 use std::{fmt, path, process};
 use std::fs::File;
 use std::io::{stderr, Cursor, Error, ErrorKind, Read,  Write};
+use std::os::unix::ffi::OsStringExt;
 use zip::ZipArchive;
 
-// Here is stuff from tar-rs's lib.rs
+// Here is stuff from tar-rs's lib.rs:
 
 extern crate libc;
 extern crate filetime;
@@ -77,21 +79,27 @@ fn main() {
 
     let mut indexpath = path::PathBuf::from(tarpath);
     let mut tar_fn = indexpath.file_name().unwrap().to_os_string();
-    tar_fn.push(".index");
-    indexpath.set_file_name(tar_fn);
-    let mut indexfile = match File::create(&indexpath) {
+    tar_fn.push(".index.gz");
+    indexpath.set_file_name(&tar_fn);
+    let indexfile = match File::create(&indexpath) {
         Ok(f) => f,
         Err(e) => die(format_args!("failed to create \"{}\": {}", indexpath.display(), e)),
     };
 
-    // Let's go!
+    // Stack up our I/O processing chain.
 
     let mut zip = match ZipArchive::new(zipfile) {
         Ok(a) => a,
         Err(e) => die(format_args!("couldn\'t open {} as a Zip file: {}", zippath, e))
     };
 
-    let mut tar = HackedBuilder::new(&mut tarfile, &mut indexfile);
+    let mut gzindex = flate2::GzBuilder::new()
+        .filename(&tar_fn.into_vec())
+        .write(indexfile, flate2::Compression::Default);
+
+    let mut tar = HackedBuilder::new(&mut tarfile, &mut gzindex);
+
+    // Ready to go.
 
     let mut header = Header::new_gnu();
 
@@ -107,7 +115,7 @@ fn main() {
         if let Err(e) = header.set_path(file.name()) {
             die(format_args!("failure encoding filename \"{}\": {}", file.name(), e));
         }
-        
+
         header.set_size(size);
         header.set_cksum();
 

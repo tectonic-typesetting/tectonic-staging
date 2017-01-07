@@ -1,0 +1,14 @@
+# Copyright 2017 the Tectonic Project
+# Licensed under the MIT License.
+
+[package]
+name = "zip2tarindex"
+version = "0.1.0"
+authors = ["Peter Williams <peter@newton.cx>"]
+
+[dependencies]
+clap = "^2.19"
+filetime = "0.1.5"
+libc = "0.2"
+tar = "^0.4"
+zip = "^0.2"

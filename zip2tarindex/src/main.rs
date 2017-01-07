@@ -8,7 +8,7 @@ extern crate zip;
 use clap::{Arg, App};
 use std::{fmt, path, process};
 use std::fs::File;
-use std::io::{stderr, Error, ErrorKind, Read, Result, Seek, SeekFrom, Write};
+use std::io::{stderr, Cursor, Error, ErrorKind, Read,  Write};
 use zip::ZipArchive;
 
 // Here is stuff from tar-rs's lib.rs
@@ -65,7 +65,7 @@ fn main() {
 
     // Open files.
 
-    let mut zipfile = match File::open(zippath) {
+    let zipfile = match File::open(zippath) {
         Ok(f) => f,
         Err(e) => die(format_args!("failed to open \"{}\": {}", zippath, e)),
     };
@@ -93,11 +93,30 @@ fn main() {
 
     let mut tar = HackedBuilder::new(&mut tarfile, &mut indexfile);
 
+    let mut header = Header::new_gnu();
+
     for i in 0..zip.len() {
         let mut file = zip.by_index(i).unwrap();
         let size = file.size();
 
         let mut buf = Vec::with_capacity(size as usize);
-        file.read_to_end(&mut buf);
+        if let Err(e) = file.read_to_end(&mut buf) {
+            die(format_args!("failure reading \"{}\" from Zip: {}", file.name(), e));
+        }
+
+        if let Err(e) = header.set_path(file.name()) {
+            die(format_args!("failure encoding filename \"{}\": {}", file.name(), e));
+        }
+        
+        header.set_size(size);
+        header.set_cksum();
+
+        if let Err(e) = tar.append(&header, Cursor::new(buf)) {
+            die(format_args!("failure appending \"{}\" to tar: {}", file.name(), e));
+        }
+    }
+
+    if let Err(e) = tar.into_inner() {
+        die(format_args!("error finishing tar file: {}", e));
     }
 }

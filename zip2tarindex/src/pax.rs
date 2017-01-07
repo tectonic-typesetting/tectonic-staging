@@ -18,10 +18,10 @@ pub struct PaxExtension<'entry> {
     value: &'entry [u8],
 }
 
-pub fn pax_extensions(a: &[u8]) -> PaxExtensions {
-    fn is_newline(a: &u8) -> bool { *a == b'\n' }
-    PaxExtensions { data: a.split(is_newline) }
-}
+//pub fn pax_extensions(a: &[u8]) -> PaxExtensions {
+//    fn is_newline(a: &u8) -> bool { *a == b'\n' }
+//    PaxExtensions { data: a.split(is_newline) }
+//}
 
 impl<'entry> Iterator for PaxExtensions<'entry> {
     type Item = io::Result<PaxExtension<'entry>>;

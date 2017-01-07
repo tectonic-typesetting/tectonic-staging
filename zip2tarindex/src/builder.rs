@@ -1,11 +1,7 @@
-use std::io;
-use std::path::Path;
+use std::io::{self, SeekFrom};
 use std::io::prelude::*;
-use std::fs;
-use std::borrow::Cow;
 
-use {EntryType, Header, other};
-use header::{bytes2path, path2bytes};
+use Header;
 
 /// A structure for building archives
 ///
@@ -14,7 +10,7 @@ use header::{bytes2path, path2bytes};
 pub struct HackedBuilder<WO: Write + Seek, WI: Write> {
     finished: bool,
     obj: Option<WO>,
-    index: Option<WI>,
+    index: WI,
 }
 
 impl<WO: Write + Seek, WI: Write> HackedBuilder<WO, WI> {
@@ -24,7 +20,7 @@ impl<WO: Write + Seek, WI: Write> HackedBuilder<WO, WI> {
         HackedBuilder {
             finished: false,
             obj: Some(obj),
-            index: Some(index),
+            index: index,
         }
     }
 
@@ -32,22 +28,18 @@ impl<WO: Write + Seek, WI: Write> HackedBuilder<WO, WI> {
         self.obj.as_mut().unwrap()
     }
 
-    fn inner_index(&mut self) -> &mut WI {
-        self.index.as_mut().unwrap()
-    }
-
     /// Unwrap this archive, returning the underlying object.
     ///
     /// This function will finish writing the archive if the `finish` function
     /// hasn't yet been called, returning any I/O error which happens during
     /// that operation.
-    pub fn into_inner(mut self) -> io::Result<(WO, WI)> {
+    pub fn into_inner(mut self) -> io::Result<WO> {
         if !self.finished {
             try!(self.finish());
         }
-        Ok((self.obj.take().unwrap(), self.index.take().unwrap()))
+        Ok(self.obj.take().unwrap())
     }
-
+   
     /// Adds a new entry to this archive.
     ///
     /// This function will append the header specified, followed by contents of
@@ -93,8 +85,14 @@ impl<WO: Write + Seek, WI: Write> HackedBuilder<WO, WI> {
         let mut dst = self.obj.as_mut().unwrap();
 
         try!(dst.write_all(header.as_bytes()));
+        let pos = dst.seek(SeekFrom::Current(0)).unwrap();
+
         let len = try!(io::copy(&mut data, &mut dst));
 
+        // THE HACK: write out an index line.
+        writeln!(self.index, "{} {} {}", header.path().unwrap().display(),
+                 pos, len).expect("index write failed");
+        
         // Pad with zeros if necessary.
         let buf = [0; 512];
         let remaining = 512 - (len % 512);

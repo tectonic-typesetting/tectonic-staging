@@ -2,3 +2,4 @@
 /.ninja_log
 /build.ninja
 /state
+/zip2tarindex/target/

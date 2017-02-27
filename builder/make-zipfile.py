@@ -78,7 +78,7 @@ class Bundler (object):
             contents = f.read ()
 
         self.zip.writestr (base, contents)
-        s = hashlib.sha1 ()
+        s = hashlib.sha256 ()
         s.update (contents)
         self.item_shas[base] = s.digest ()
 
@@ -133,7 +133,7 @@ class Bundler (object):
 
         # Compute a hash of it all.
 
-        s = hashlib.sha1 ()
+        s = hashlib.sha256 ()
         s.update (str (len (self.item_shas)))
         s.update (b'\0')
 
@@ -143,7 +143,7 @@ class Bundler (object):
             s.update (self.item_shas[name])
 
         self.final_hexdigest = s.hexdigest ()
-        self.zip.writestr ('SHA1SUM', self.final_hexdigest)
+        self.zip.writestr ('SHA256SUM', self.final_hexdigest)
 
 
 def main (argv):

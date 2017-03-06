@@ -3,6 +3,7 @@
 # Licensed under the MIT License.
 
 image_name=tectonic-texlive-builder
+builder_cont_name=tectonic-bld-cont
 state_dir=$(pwd)/state # symlink here!
 
 set -e
@@ -13,6 +14,7 @@ if [ -z "$1" -o "$1" = help ] ; then
 build-image       -- Create/update to builder Docker image.
 builder-bash      -- Run a shell in a temporary builder container.
 ingest-source     -- Copy needed source code from TeXLive to this repo.
+init-build        -- Initialize a Docker-based compilation of the TeXLive binaries.
 make-installation -- Install TeXLive into a new directory tree.
 make-zipfile      -- Make a Zip file of a TeXLive installation.
 svn-pull          -- Update the Git mirror of the TeXLive SVN repository.
@@ -41,13 +43,26 @@ function build_image () {
 
 function builder_bash () {
     [ -d $state_dir/repo ] || die "no such directory $state_dir/repo"
-    exec docker run -it --rm -v $state_dir:/state $image_name bash
+    exec docker run -it --rm -v $state_dir:/state:rw,z $image_name bash
 }
 
 
 function ingest_source () {
     [ -d $state_dir/rbuild ] || die "no such directory $state_dir/rbuild"
     exec ./ingest-source.sh
+}
+
+
+function init_build() {
+    [ -d $state_dir/repo ] || die "no such directory $state_dir/repo"
+    [ ! -d $state_dir/rbuild ] || die "directory $state_dir/rbuild may not exist before starting build"
+    docker create \
+           -v $state_dir:/state:rw,z \
+           -i -t \
+           --name $builder_cont_name \
+           $image_name bash || die "could not create builder container $builder_cont_name"
+    docker start $builder_cont_name || die "could not start builder container $builder_cont_name"
+    exec docker exec $builder_cont_name /entrypoint.sh init-build
 }
 
 
@@ -99,7 +114,7 @@ function make_installation () {
 EOF
     echo $dest
     set +e
-    docker run --rm -v $state_dir:/state $image_name \
+    docker run --rm -v $state_dir:/state:rw,z $image_name \
 	   install-profile $cdest/builder.profile $cdest $(id -u):$(id -g) "$@" &>$dest/outer.log
     ec=$?
     [ $ec -eq 0 ] || die "install-tl failed; see $dest/outer.log"
@@ -127,7 +142,7 @@ function svn_pull () {
 function update_containers () {
     [ -d $state_dir/repo ] || die "no such directory $state_dir/repo"
     mkdir -p $state_dir/containers $state_dir/versioned
-    docker run --rm -v $state_dir:/state $image_name update-containers
+    docker run --rm -v $state_dir:/state:rw,z $image_name update-containers
 
     # Make versioned copies of unmodified packages.
 
@@ -166,6 +181,8 @@ case "$command" in
 	builder_bash "$@" ;;
     ingest-source)
 	ingest_source "$@" ;;
+    init-build)
+	init_build "$@" ;;
     make-installation)
 	make_installation "$@" ;;
     make-zipfile)

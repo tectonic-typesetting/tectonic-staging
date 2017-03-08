@@ -109,3 +109,9 @@ rm web2c/web2c-lexer.c web2c/web2c-parser.c web2c/web2c-parser.h
 mkdir -p dvipdfm-x
 cp $src/texk/dvipdfm-x/*.c dvipdfm-x/
 cp $src/texk/dvipdfm-x/*.h dvipdfm-x/
+
+# bibtex
+
+mkdir -p bibtex
+cp $src/texk/web2c/bibtex.web bibtex/
+cp $src/texk/web2c/bibtex.ch bibtex/

@@ -3672,7 +3672,7 @@ boolean load_fmt_file(void)
     }
     if (x != 457477274L) {
         ;
-        fprintf(stdout, "%s%s%s%s\n", "---! ", stringcast(name_of_file + 1), " doesn't match ", pool_name);
+        fprintf(stdout, "%s%s%s\n", "---! ", stringcast(name_of_file + 1), " made by different executable version");
         goto lab6666;
     }
     undump_int(x);

@@ -16,7 +16,7 @@
 
 {These fields are the ones defined by the getopt library.}
 @define @field name;
-@define @field hasarg;
+@define @field has_arg;
 @define @field flag;
 @define @field val;
 
@@ -60,7 +60,7 @@
 @define const stdout;
 @define const true;
 
-@define const BIBTEXHELP;
+@define const BIBTEX_HELP;
 @define const DVICOPYHELP;
 @define const DVITOMPHELP;
 @define const DVITYPEHELP;
@@ -96,6 +96,7 @@
 
 @define function abs ();
 @define function addressof ();
+@define function address_of ();
 @define function a_open_in ();
 @define function a_open_out ();
 @define function atof ();
@@ -117,7 +118,7 @@
 @define function ftell ();
 @define function fopen ();
 @define function getc ();
-@define function getoptlongonly ();
+@define function getopt_long_only ();
 @define function IS_DIR_SEP ();
 @define function kpse_find_file ();
 @define function kpse_find_mf ();
@@ -157,9 +158,9 @@
 @define function XTALLOC ();
 
 @define procedure a_close ();
-@define procedure BIBXRETALLOC (); {For BibTeX.}
-@define procedure BIBXRETALLOCNOSET ();
-@define procedure BIBXRETALLOCSTRING ();
+@define procedure BIB_XRETALLOC (); {For BibTeX.}
+@define procedure BIB_XRETALLOC_NOSET ();
+@define procedure BIB_XRETALLOC_STRING ();
 @define procedure decr ();
 @define procedure fflush (); {can't keep |break|, since it's a reserved word}
 @define procedure free ();
@@ -169,7 +170,7 @@
 @define procedure input2ints ();
 @define procedure input3ints ();
 @define procedure kpseinitprog ();
-@define procedure kpsesetprogramname ();
+@define procedure kpse_set_program_name ();
 @define procedure kpseresetprogramname ();
 @define procedure kpsesetprogramenabled ();
 @define procedure libc_free ();
@@ -189,7 +190,7 @@
 @define procedure strcat ();
 @define procedure strcpy ();
 @define procedure usage ();
-@define procedure usagehelp ();
+@define procedure usage_help ();
 @define procedure uexit ();
 @define procedure vgetc ();
 @define procedure write ();
@@ -200,11 +201,12 @@
 
 @define type boolean = 0..1;
 @define type cinttype;
+@define type c_int_type;
 @define type const_cstring;
 @define type constw2custring;
 @define type cstring;
 @define type char = 0..255;
-@define type getoptstruct;
+@define type getopt_struct;
 @define type integer;
 @define type integer64;
 @define type longinteger;

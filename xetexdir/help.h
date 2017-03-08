@@ -34,7 +34,7 @@ along with this program; if not, see <http://www.gnu.org/licenses/>.  */
 #define HELP_H
 
 #ifdef BIBTEX
-const_string BIBTEXHELP[] = {
+const_string BIBTEX_HELP[] = {
     "Usage: bibtex [OPTION]... AUXFILE[.aux]",
     "  Write bibliography for entries in AUXFILE to AUXFILE.bbl,",
     "  along with a log file AUXFILE.blg."

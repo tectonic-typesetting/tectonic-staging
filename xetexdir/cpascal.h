@@ -20,6 +20,12 @@
 #include <tidy_kpathutil/public.h>
 #include <tidy_kpathsea/public.h>
 
+/* bits from kpathsea/lib.h that are generic */
+/* (Re)Allocate N items of type T using xmalloc/xrealloc.  */
+#define XTALLOC(n, t) ((t *) xmalloc ((n) * sizeof (t)))
+#define XTALLOC1(t) XTALLOC (1, t)
+#define XRETALLOC(addr, n, t) ((addr) = (t *) xrealloc (addr, (n) * sizeof(t)))
+
 /* Help messages.  */
 #include "help.h"
 
@@ -97,6 +103,7 @@ typedef FILE *text;
 /* Pascal has no address-of operator, and we need pointers to integers
    to set up the option table.  */
 #define addressof(x) (&(x))
+#define address_of(x) (&(x))
 
 /* So dvicopy can use stdin/stdout.  */
 #if defined (__DJGPP__) || defined (WIN32)
@@ -168,24 +175,25 @@ typedef FILE *text;
    rely on stringification, or we could avoid the ARRAY_NAME arg.
    Actually allocate one more than requests, so we can index the last
    entry, as Pascal wants to do.  */
-#define BIBXRETALLOCNOSET(array_name, array_var, type, size_var, new_size) \
-  fprintf (logfile, "Reallocated %s (elt_size=%ld) to %ld items from %ld.\n", \
+#define BIB_XRETALLOC_NOSET(array_name, array_var, type, size_var, new_size) \
+  fprintf (log_file, "Reallocated %s (elt_size=%ld) to %ld items from %ld.\n", \
            array_name, (long) sizeof (type), (long) new_size, (long) size_var); \
   XRETALLOC (array_var, new_size + 1, type)
 /* Same as above, but also increase SIZE_VAR when no more arrays
    with the same size parameter will be resized.  */
-#define BIBXRETALLOC(array_name, array_var, type, size_var, new_size) do { \
-  BIBXRETALLOCNOSET(array_name, array_var, type, size_var, new_size); \
+#define BIB_XRETALLOC(array_name, array_var, type, size_var, new_size) do { \
+  BIB_XRETALLOC_NOSET(array_name, array_var, type, size_var, new_size); \
   size_var = new_size; \
 } while (0)
 /* Same as above, but for the pseudo-TYPE ASCII_code[LENGTH+1].  */
-#define BIBXRETALLOCSTRING(array_name, array_var, length, size_var, new_size) \
-  fprintf (logfile, "Reallocated %s (elt_size=%ld) to %ld items from %ld.\n", \
+#define BIB_XRETALLOC_STRING(array_name, array_var, length, size_var, new_size) \
+  fprintf (log_file, "Reallocated %s (elt_size=%ld) to %ld items from %ld.\n", \
            array_name, (long) (length + 1), (long) new_size, (long) size_var); \
-  XRETALLOC (array_var, (new_size) * (length + 1), ASCIIcode)
-  
+  XRETALLOC (array_var, (new_size) * (length + 1), ASCII_code)
+
 /* Need precisely int for getopt, etc. */
 #define cinttype int
+#define c_int_type int
 
 /* Need this because web2c doesn't translate `var1,var2:^char' correctly
    -- var2 lacks the *.  */
@@ -244,6 +252,7 @@ typedef const unsigned char *const_w2custring;
 
 /* We need a new type for the argument parsing, too.  */
 typedef struct option getoptstruct;
+typedef struct option getopt_struct;
 
 /* We never need the `link' system call, which may be declared in
    <unistd.h>, but we do have variables named `link' in the webs.  */

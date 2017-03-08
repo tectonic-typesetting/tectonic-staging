@@ -175,7 +175,7 @@ function update_containers () {
 
 function update_products () {
     [ -d $state_dir/sbuild ] || die "no such directory $state_dir/sbuild"
-    for f in xetex-pool.c xetexini.c xetex0.c xetexcoerce.h xetexd.h ; do
+    for f in xetex-pool.c xetexini.c xetex0.c xetexcoerce.h xetexd.h bibtex.c bibtex.h ; do
 	cp $state_dir/sbuild/$f products/
 	indent -linux -nut -i4 -l120 products/$f
 	rm -f products/${f}~

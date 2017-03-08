@@ -48,6 +48,7 @@ extern string output_directory;
 
 /* printversion.c */
 extern void printversionandexit (const_string, const_string, const_string, const_string);
+#define print_version_and_exit printversionandexit
 
 /* setupvar.c */
 /* Set an array size from texmf.cnf.  */

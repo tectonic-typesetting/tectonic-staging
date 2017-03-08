@@ -65,11 +65,11 @@ def inner (top, w):
             description='YACC $out')
 
     w.rule ('otangle',
-            command='WEBINPUTS=. %(build_name)s/otangle $in && mv $basename.p $basename.pool $outdir' % config,
+            command='WEBINPUTS=. %(build_name)s/otangle $in && mv $basename.p* $outdir' % config,
             description='OTANGLE $out')
 
     w.rule ('convert',
-            command='$convert . $outdir $basename && mv $basename*.c $basename*.h $outdir',
+            command='shopt -s nullglob ; $convert . $outdir $basename && mv $basename*.c $basename*.h $outdir',
             description='CONVERT $out')
 
     w.rule ('makecpool',
@@ -387,6 +387,46 @@ def inner (top, w):
     w.build (str(builddir / 'xetex'), 'executable',
              inputs = objs,
              variables = {'libs': libs},
+    )
+
+    # "otangle"d Pascal source for bibtex
+
+    bibtex_p = builddir / 'bibtex.p'
+
+    w.build ([str(bibtex_p)], 'otangle',
+             inputs = map (str, [
+                 top / 'bibtex' / 'bibtex.web',
+                 top / 'bibtex' / 'bibtex.ch',
+             ]),
+             implicit = [otangleprog],
+             variables = {
+                 'basename': 'bibtex',
+                 'outdir': str(builddir),
+             },
+    )
+
+    # "convert"ed bibtex Pascal code into C code
+
+    bibtex_c = [
+        builddir / 'bibtex.c',
+        builddir / 'bibtex.h',
+    ]
+    convert = str(top / 'web2c' / 'local-convert.sh')
+
+    w.build (map (str, bibtex_c), 'convert',
+             inputs = map (str, [bibtex_p]),
+             implicit = [
+                 convert,
+                 web2cprog,
+                 splitupprog,
+                 fixwritesprog,
+                 str(top / 'web2c' / 'coerce.h'),
+             ],
+             variables = {
+                 'outdir': str(builddir),
+                 'convert': convert,
+                 'basename': 'bibtex',
+             },
     )
 
 

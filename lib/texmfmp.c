@@ -2209,7 +2209,7 @@ void init_start_time() {
         if (source_date_epoch) {
             errno = 0;
             epoch = strtoull(source_date_epoch, &endptr, 10);
-            if (epoch < 0 || *endptr != '\0' || errno != 0) {
+            if (*endptr != '\0' || errno != 0) {
 FATAL1 ("invalid epoch-seconds-timezone value for environment variable $SOURCE_DATE_EPOCH: %s",
                       source_date_epoch);
             }
@@ -2809,6 +2809,8 @@ gettexstring (strnumber s)
   unsigned bytesToWrite = 0;
   pool_pointer len, i, j;
   string name;
+  if (str_start[s + 1 - 65536L] < str_start[s - 65536L])
+    return NULL;
   len = str_start[s + 1 - 65536L] - str_start[s - 65536L];
   name = xmalloc(len * 3 + 1); /* max UTF16->UTF8 expansion
                                   (code units, not bytes) */

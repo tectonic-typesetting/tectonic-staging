@@ -12,6 +12,7 @@ if [ -z "$1" -o "$1" = help ] ; then
     echo "You must supply a subcommand to run in the container. Commands are:
 
 bash              -- Run a bash shell
+init-build        -- Initialize a compilation of the TeXLive sources.
 install-profile   -- Create an installation based on a fixed TeXLive \"profile\" file.
 update-containers -- Rebuild the TeXLive \"container\" files
 
@@ -47,6 +48,40 @@ function _precise_version () {
     git show -s |grep git-svn-id |sed -e 's/.*@//' -e 's/ .*//' >"$destdir/SVNREV"
 }
 
+
+function init_build() {
+    mkdir /state/rbuild
+    cd /state/rbuild
+    ../repo/Build/source/configure \
+        --prefix=/state/rinstall \
+        --disable-static \
+        --disable-native-texlive-build \
+        --with-system-cairo=yes \
+        --with-system-freetype2=yes \
+        --with-system-gd=yes \
+        --with-system-gmp=yes \
+        --with-system-graphite2=yes \
+        --with-system-harfbuzz=yes \
+        --with-system-icu=yes \
+        --with-system-kpathsea=no \
+        --with-system-libpaper=yes \
+        --with-system-libpng=yes \
+        --with-system-mpfr=yes \
+        --with-system-pixman=yes \
+        --with-system-poppler=yes \
+        --with-system-potrace=yes \
+        --with-system-ptexenc=no \
+        --with-system-teckit=no \
+        --with-system-xpdf=no \
+        --with-system-zlib=yes \
+        --with-system-zziplib=yes \
+        --disable-all-pkgs \
+        --enable-web2c \
+        --enable-etex \
+        --enable-xetex \
+        --enable-web-progs \
+        --enable-dvipdfm-x
+}
 
 function install_profile () {
     profile="$1"
@@ -87,6 +122,8 @@ function update_containers () {
 
 if [ "$command" = bash ] ; then
     exec bash "$@"
+elif [ "$command" = init-build ] ; then
+    init_build "$@"
 elif [ "$command" = install-profile ] ; then
     install_profile "$@"
 elif [ "$command" = update-containers ] ; then

@@ -20,6 +20,7 @@ make-zipfile      -- Make a Zip file of a TeXLive installation.
 svn-pull          -- Update the Git mirror of the TeXLive SVN repository.
 update-containers -- Rebuild the TeXLive \"container\" files.
 update-products   -- Update the prettified C code in \"products/\".
+zip2itar          -- Convert a bundle from Zip format to indexed-tar format.
 
 "
     exit 1
@@ -183,6 +184,18 @@ function update_products () {
 }
 
 
+function zip2itar () {
+    zipfile="$1"
+
+    dir=$(cd $(dirname "$zipfile") && pwd)
+    zipfull=$dir/$(basename "$zipfile")
+    tarfull=$dir/$(basename "$zipfile" .zip).tar
+    echo "Generating $tarfull ..."
+    cd $(dirname $0)/zip2tarindex
+    exec cargo run --release -- "$zipfull" "$tarfull"
+}
+
+
 # Dispatch subcommands.
 
 case "$command" in
@@ -204,6 +217,8 @@ case "$command" in
 	update_containers "$@" ;;
     update-products)
 	update_products "$@" ;;
+    zip2itar)
+        zip2itar "$@" ;;
     *)
 	echo >&2 "error: unrecognized command \"$command\"."
 	exit 1 ;;

@@ -109,7 +109,7 @@ function update_containers () {
     cd /state/repo/
     _precise_version /state/containers
 
-    args=(--no-sign --location /state/containers)
+    args=(--gpgcmd=true --location /state/containers)
     if [ ! -e /state/containers/tlpkg/texlive.tlpdb ] ; then
 	args+=(--recreate)
     fi

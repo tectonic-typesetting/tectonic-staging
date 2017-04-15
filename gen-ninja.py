@@ -68,6 +68,10 @@ def inner (top, w):
             command='WEBINPUTS=. %(build_name)s/otangle $in && mv $basename.p* $outdir' % config,
             description='OTANGLE $out')
 
+    w.rule ('merge-changes',
+            command='WEBINPUTS=. %(build_name)s/merge-changes $in >$out.new && mv -f $out.new $out' % config,
+            description='MERGE $out')
+
     w.rule ('convert',
             command='shopt -s nullglob ; $convert . $outdir $basename && mv $basename*.c $basename*.h $outdir',
             description='CONVERT $out')
@@ -121,7 +125,7 @@ def inner (top, w):
             bldprefix = output.name + '_',
             rule = rule,
             **kwargs)
-        objs += map (str, slibs)
+        objs += [str(x) for x in slibs]
         w.build (str(output), 'executable',
                  inputs = objs,
                  variables = {'libs': libs})
@@ -206,7 +210,7 @@ def inner (top, w):
 
     web2c_parser_c = builddir / 'web2c-parser.c'
     web2c_parser_h = builddir / 'web2c-parser.h'
-    w.build (map (str, [web2c_parser_c, web2c_parser_h]), 'yacc',
+    w.build ([str(x) for x in [web2c_parser_c, web2c_parser_h]], 'yacc',
              inputs = [str(top / 'web2c' / 'web2c-parser.y')],
              variables = {
                  'outbase': str(builddir / 'web2c-parser'),
@@ -257,7 +261,7 @@ def inner (top, w):
     xetex_ch = builddir / 'xetex.ch'
 
     w.build (str(xetex_ch), 'tie',
-             inputs = map (str, [
+             inputs = [str(x) for x in [
                  top / 'xetexdir' / 'xetex.web',
                  top / 'xetexdir' / 'tex.ch0',
                  top / 'xetexdir' / 'tex.ch',
@@ -270,7 +274,7 @@ def inner (top, w):
                  top / 'xetexdir' / 'xetex.ch',
                  top / 'synctexdir' / 'synctex-xe-rec.ch3',
                  top / 'xetexdir' / 'tex-binpool.ch',
-             ]),
+             ]],
              implicit = [tieprog],
     )
 
@@ -280,15 +284,34 @@ def inner (top, w):
     xetex_pool = builddir / 'xetex.pool'
 
     w.build ([str(xetex_p), str(xetex_pool)], 'otangle',
-             inputs = map (str, [
+             inputs = [str(x) for x in [
                  top / 'xetexdir' / 'xetex.web',
                  xetex_ch,
-             ]),
+             ]],
              implicit = [otangleprog],
              variables = {
                  'basename': 'xetex',
                  'outdir': str(builddir),
              },
+    )
+
+    # utility - a hacked version of otangle that just prints out the final merged
+    # program source.
+
+    mymergeprog = executable (
+        output = builddir / 'merge-changes',
+        sources = [top / 'otangle' / 'merge-changes.c'],
+        rule = 'cc',
+        slibs = [libbase, libkps, libkpu],
+        cflags = '-I. -Ilib -Ixetexdir %(base_cflags)s' % config,
+    )
+
+    w.build(str(builddir / 'merged.web'), 'merge-changes',
+            inputs = [str(x) for x in [
+                top / 'xetexdir' / 'xetex.web',
+                xetex_ch,
+            ]],
+            implicit = [mymergeprog],
     )
 
     # "convert"ed Pascal code into C code
@@ -301,8 +324,8 @@ def inner (top, w):
     ]
     convert = str(top / 'web2c' / 'local-convert.sh')
 
-    w.build (map (str, xetex_c), 'convert',
-             inputs = map (str, [xetex_p, xetex_pool]),
+    w.build ([str(x) for x in xetex_c], 'convert',
+             inputs = [str(x) for x in [xetex_p, xetex_pool]],
              implicit = [
                  convert,
                  web2cprog,
@@ -322,7 +345,7 @@ def inner (top, w):
     xetex_cpool = builddir / 'xetex-pool.c'
 
     w.build (str (xetex_cpool), 'makecpool',
-             inputs = map (str, [xetex_p, xetex_pool]),
+             inputs = [str(x) for x in [xetex_p, xetex_pool]],
              implicit = [makecpoolprog],
              variables = {
                  'outdir': str(builddir),
@@ -339,7 +362,7 @@ def inner (top, w):
         cflags = ('-DHAVE_CONFIG_H -Ixetexdir -I. -I%(build_name)s -DU_STATIC_IMPLEMENTATION '
                   '-D__SyncTeX__ -DSYNCTEX_ENGINE_H=\\"synctexdir/synctex-xetex.h\\" '
                   '%(pkgconfig_cflags)s %(base_cflags)s' % config),
-        implicit = map (str, xetex_c),
+        implicit = [str(x) for x in xetex_c],
     )
 
     # xetex
@@ -381,7 +404,7 @@ def inner (top, w):
         )
         objs.append (str (obj))
 
-    objs += map (str, [libsynctex, libbase, libmd5, libtk, libkps, libkpu])
+    objs += [str(x) for x in [libsynctex, libbase, libmd5, libtk, libkps, libkpu]]
     libs = '%(pkgconfig_libs)s -lz' % config
 
     w.build (str(builddir / 'xetex'), 'executable',
@@ -394,10 +417,10 @@ def inner (top, w):
     bibtex_p = builddir / 'bibtex.p'
 
     w.build ([str(bibtex_p)], 'otangle',
-             inputs = map (str, [
+             inputs = [str(x) for x in [
                  top / 'bibtex' / 'bibtex.web',
                  top / 'bibtex' / 'bibtex.ch',
-             ]),
+             ]],
              implicit = [otangleprog],
              variables = {
                  'basename': 'bibtex',
@@ -413,8 +436,8 @@ def inner (top, w):
     ]
     convert = str(top / 'web2c' / 'local-convert.sh')
 
-    w.build (map (str, bibtex_c), 'convert',
-             inputs = map (str, [bibtex_p]),
+    w.build ([str(x) for x in bibtex_c], 'convert',
+             inputs = [str(x) for x in [bibtex_p]],
              implicit = [
                  convert,
                  web2cprog,

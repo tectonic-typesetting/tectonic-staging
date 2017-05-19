@@ -16,7 +16,7 @@ builder-bash      -- Run a shell in a temporary builder container.
 ingest-source     -- Copy needed source code from TeXLive to this repo.
 init-build        -- Initialize a Docker-based compilation of the TeXLive binaries.
 make-installation -- Install TeXLive into a new directory tree.
-make-zipfile      -- Make a Zip file of a TeXLive installation.
+make-base-zipfile -- Make a Zip file of a standardized base TeXLive installation.
 svn-pull          -- Update the Git mirror of the TeXLive SVN repository.
 update-containers -- Rebuild the TeXLive \"container\" files.
 update-products   -- Update the prettified C code in \"products/\".
@@ -124,10 +124,36 @@ EOF
 }
 
 
-function make_zipfile () {
+function make_base_zipfile () {
     zip="$1"
+    bundle_id=tlextras2016
     shift
-    installdir=$(make_installation "$@")
+
+    # First, TeXLive package installation.
+
+    installdir=$(make_installation \
+         collection-basic \
+         collection-fontsextra \
+         collection-fontsrecommended \
+         collection-genericextra \
+         collection-genericrecommended \
+         collection-latexextra \
+         collection-latexrecommended \
+         collection-latex \
+         collection-luatex \
+         collection-mathextra \
+         collection-plainextra \
+         collection-publishers \
+         collection-science \
+         collection-xetex
+    )
+
+    # Some manual fiddles for format file generation
+
+    cp extras/$bundle_id/* $installdir/texmf-dist/
+
+    # Finally, turn it all into a Zip file.
+
     ./builder/make-zipfile.py "$installdir" "$zip"
     rm -rf "$installdir"
 }
@@ -209,8 +235,8 @@ case "$command" in
 	init_build "$@" ;;
     make-installation)
 	make_installation "$@" ;;
-    make-zipfile)
-	make_zipfile "$@" ;;
+    make-base-zipfile)
+	make_base_zipfile "$@" ;;
     svn-pull)
 	svn_pull "$@" ;;
     update-containers)

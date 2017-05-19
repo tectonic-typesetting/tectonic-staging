@@ -99,6 +99,9 @@ class Bundler(object):
         if base_name.endswith('.log'):
             return
 
+        if base_name.endswith('.fmt'):
+            return
+
         self.add_file(full_path)
 
 

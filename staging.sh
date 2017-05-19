@@ -11,6 +11,7 @@ set -e
 if [ -z "$1" -o "$1" = help ] ; then
     echo "You must supply a subcommand. Subcommands are:
 
+bintray-upload    -- Upload an indexed tar file to Bintray.
 build-image       -- Create/update to builder Docker image.
 builder-bash      -- Run a shell in a temporary builder container.
 ingest-source     -- Copy needed source code from TeXLive to this repo.
@@ -33,6 +34,24 @@ shift
 function die () {
     echo >&2 "error:" "$@"
     exit 1
+}
+
+
+function bintray_upload () {
+    tar_path="$1"
+    version="$2"
+    package_id="tl2016extras"
+
+    [ x"$2" != x ] || die "usage: staging.sh bintray-upload <tar-path> <version>"
+    [ x"$BINTRAY_API_KEY" != x ] || die "you must set the \$BINTRAY_API_KEY environment variable"
+
+    curl -T $tar_path.index.gz -u"pkgw:$BINTRAY_API_KEY" \
+         -H "X-Bintray-Package:$package_id" -H "X-Bintray-Version:$version" \
+         https://api.bintray.com/content/pkgw/tectonic/$package_id/$version/$(basename $tar_path).index.gz
+
+    curl -T $tar_path -u"pkgw:$BINTRAY_API_KEY" \
+         -H "X-Bintray-Package:$package_id" -H "X-Bintray-Version:$version" \
+         https://api.bintray.com/content/pkgw/tectonic/$package_id/$version/$(basename $tar_path)
 }
 
 
@@ -225,6 +244,8 @@ function zip2itar () {
 # Dispatch subcommands.
 
 case "$command" in
+    bintray-upload)
+	bintray_upload "$@" ;;
     build-image)
 	build_image "$@" ;;
     builder-bash)

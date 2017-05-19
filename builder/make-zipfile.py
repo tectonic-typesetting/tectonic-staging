@@ -10,7 +10,8 @@ with the "texlive-builder/builder.sh" script.
 """
 from __future__ import absolute_import, division, print_function, unicode_literals
 
-import argparse, hashlib, io, os.path, sys, zipfile
+import argparse, hashlib, io, os.path, struct, sys, zipfile
+from six import PY2, reraise
 
 
 ignored_base_names = set([
@@ -134,11 +135,14 @@ class Bundler(object):
         # Compute a hash of it all.
 
         s = hashlib.sha256()
-        s.update(str(len(self.item_shas)))
+        s.update(struct.pack('>I', len(self.item_shas)))
         s.update(b'\0')
 
-        for name in sorted(self.item_shas.iterkeys()):
-            s.update(name)
+        for name in sorted(self.item_shas.keys()):
+            if PY2:
+                s.update(name)
+            else:
+                s.update(name.encode('utf8'))
             s.update(b'\0')
             s.update(self.item_shas[name])
 
@@ -160,7 +164,7 @@ def main(argv):
             os.unlink(args.dest_path)
         except:
             pass
-        raise e1, e2, e3
+        reraise(e1, e2, e3)
 
 
 if __name__ == '__main__':

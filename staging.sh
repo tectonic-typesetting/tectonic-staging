@@ -164,7 +164,26 @@ function make_base_zipfile () {
          collection-plainextra \
          collection-publishers \
          collection-science \
-         collection-xetex
+         collection-xetex \
+         collection-langafrican \
+         collection-langarabic \
+         collection-langchinese \
+         collection-langcjk \
+         collection-langcyrillic \
+         collection-langczechslovak \
+         collection-langenglish \
+         collection-langeuropean \
+         collection-langfrench \
+         collection-langgerman \
+         collection-langgreek \
+         collection-langindic \
+         collection-langitalian \
+         collection-langjapanese \
+         collection-langkorean \
+         collection-langother \
+         collection-langpolish \
+         collection-langportuguese \
+         collection-langspanish
     )
 
     # Some manual fiddles for format file generation

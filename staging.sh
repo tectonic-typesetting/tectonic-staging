@@ -152,6 +152,7 @@ function make_base_zipfile () {
 
     installdir=$(make_installation \
          collection-basic \
+         collection-bibtexextra \
          collection-fontsextra \
          collection-fontsrecommended \
          collection-genericextra \

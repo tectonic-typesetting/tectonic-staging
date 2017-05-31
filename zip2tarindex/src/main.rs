@@ -93,6 +93,15 @@ fn main() {
         Err(e) => die(format_args!("couldn\'t open {} as a Zip file: {}", zippath, e))
     };
 
+    if zip.len() == 0xFFFF {
+        // OK, I suppose it's possible that the Zip file really has exactly
+        // 65535 files in it. But zip-rs 0.2.3 doesn't handle ZIP64 files, and
+        // the behavior you get is what's tested for here -- which then can
+        // cause silent failures, with the resulting tar file not containing
+        // all of the files it should.
+        die(format_args!("this Zip file requires a ZIP64-capable parser, which we don't have"));
+    }
+
     let mut gzindex = flate2::GzBuilder::new()
         .filename(&tar_fn.into_vec())
         .write(indexfile, flate2::Compression::Default);

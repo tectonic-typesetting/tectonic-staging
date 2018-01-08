@@ -164,8 +164,8 @@ show_version (void)
   if (*my_name == 'x')
     printf ("an extended version of DVIPDFMx, which in turn was\n");
   printf ("an extended version of dvipdfm-0.13.2c developed by Mark A. Wicks.\n");
-  printf ("\nCopyright (C) 2002-2016 the DVIPDFMx project team\n");
-  printf ("Copyright (C) 2006-2016 SIL International.\n");
+  printf ("\nCopyright (C) 2002-2017 the DVIPDFMx project team\n");
+  printf ("Copyright (C) 2006-2017 SIL International.\n");
   printf ("\nThis is free software; you can redistribute it and/or modify\n");
   printf ("it under the terms of the GNU General Public License as published by\n");
   printf ("the Free Software Foundation; either version 2 of the License, or\n");
@@ -196,7 +196,7 @@ show_usage (void)
   printf ("  -r resolution\tSet resolution (in DPI) for raster fonts [600]\n");
   printf ("  -s pages\tSelect page ranges [all pages]\n");
   printf ("  --showpaper\tShow available paper formats and exit\n");
-  printf ("  -t \t\tEmbed thumbnail images of PNG format [DVIFILE.1] \n");
+  printf ("  -t \t\tEmbed thumbnail images of PNG format (DVIFILE.pageno, pageno=int) \n");
   printf ("  --version\tOutput version information and exit\n");
   printf ("  -v \t\tBe verbose\n");
   printf ("  -vv\t\tBe more verbose\n");
@@ -257,7 +257,11 @@ read_length (double *vp, const char **pp, const char *endptr)
 #define K_UNIT__CM  2
 #define K_UNIT__MM  3
 #define K_UNIT__BP  4
-    "pt", "in", "cm", "mm", "bp",
+#define K_UNIT__PC  5
+#define K_UNIT__DD  6
+#define K_UNIT__CC  7
+#define K_UNIT__SP  8
+    "pt", "in", "cm", "mm", "bp", "pc", "dd", "cc", "sp",
      NULL
   };
   int     k, error = 0;
@@ -292,6 +296,10 @@ read_length (double *vp, const char **pp, const char *endptr)
       case K_UNIT__CM: u *= 72.0 / 2.54 ; break;
       case K_UNIT__MM: u *= 72.0 / 25.4 ; break;
       case K_UNIT__BP: u *= 1.0 ; break;
+      case K_UNIT__PC: u *= 12.0 * 72.0 / 72.27 ; break;
+      case K_UNIT__DD: u *= 1238.0 / 1157.0 * 72.0 / 72.27 ; break;
+      case K_UNIT__CC: u *= 12.0 * 1238.0 / 1157.0 * 72.0 / 72.27 ; break;
+      case K_UNIT__SP: u *= 72.0 / (72.27 * 65536) ; break;
       default:
         WARN("Unknown unit of measure: %s", q);
         error = -1;
@@ -394,7 +402,7 @@ select_pages (const char *pagespec)
   return;
 }
 
-static const char *optstrig = ":hD:r:m:g:x:y:o:s:t:p:clf:i:qvV:z:d:I:S:K:P:O:MC:Ee";
+static const char *optstrig = ":hD:r:m:g:x:y:o:s:p:clf:i:qtvV:z:d:I:K:P:O:MSC:Ee";
 
 static struct option long_options[] = {
   {"help", 0, 0, 'h'},

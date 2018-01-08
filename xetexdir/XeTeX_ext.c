@@ -460,8 +460,9 @@ static uint32_t *utf32Buf = NULL;
     if (last >= max_buf_stack)
         max_buf_stack = last;
 
-    /* Trim trailing whitespace.  */
-    while (last > first && ISBLANK(buffer[last - 1]))
+    /* Trim trailing space or EOL characters. */
+#define IS_SPC_OR_EOL(c) ((c) == ' ' || (c) == '\r' || (c) == '\n')
+    while (last > first && IS_SPC_OR_EOL(buffer[last - 1]))
         --last;
 
     return true;
@@ -2779,6 +2780,10 @@ get_uni_c(UFILE* f)
                         return 0xfffd;      /* return without adjusting by offsetsFromUTF8 */
                 };
                 rval -= offsetsFromUTF8[extraBytes];
+                if (rval < 0 || rval > 0x10ffff) {
+                    bad_utf8_warning();
+                    return 0xfffd;
+                }
             }
             break;
 

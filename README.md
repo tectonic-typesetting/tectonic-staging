@@ -1,9 +1,10 @@
 # Tectonic Staging
 
-This repository contains scripts for extracting files needed for Tectonic from
+This repository contains scripts for extracting files needed for
+[Tectonic](https://tectonic-typesetting.github.io) from
 [Norbert Preining’s Git mirror](http://git.preining.info/texlive/) of
-[the TeXLive Subversion repository](http://tug.org/svn/texlive/). The extracted
-files are essential to two aspects of Tectonic:
+[the TeXLive Subversion repository](http://tug.org/svn/texlive/). The
+extracted files are essential to two aspects of Tectonic:
 
 1. The many TeX files tracked in the TeXLive repository are assembled into
    Tectonic “bundle” files.
@@ -15,6 +16,8 @@ files are essential to two aspects of Tectonic:
 *You do not need this repository to build Tectonic.* You only need these scripts
 if you want to make your own bundle of TeX files, or you want to keep tabs on
 the changes going into the XeTeX engine.
+
+<!-- NOTE: edit this file on the `vendor` branch, and merge changes into `master`! -->
 
 
 ## Getting started: creating the builder image
@@ -43,6 +46,11 @@ using. To create this container, run:
 
 ## Creating your own bundle
 
+To make your own bundle, beyond Docker and the Git checkout, you also need:
+
+- A Python 2 interpreter. (FIXME: we should make the scripts compatible with
+  Python 2 and Python 3.)
+
 The first step to creating your own bundle is to create TeXLive “containers” —
 which are different than Docker containers. A Docker container is an
 encapsulated Linux machine that provides a reproducible build environment.
@@ -62,28 +70,32 @@ in `state/containers`. The script will furthermore copy those files to
 package. *Note that the results of this step will depend on what version of
 the TeXLive tree you currently have checked out in `state/repo`.*
 
-Once you have created your containers, run:
+Once you have created your TeXLive containers, the script
+`builder/make-zipfile.py` can compile them into a single master Zip file. The
+operation `./staging.sh make-base-zipfile $DESTPATH` will do this for the
+standard Tectonic base bundle, `tlextras`. It does so using the helper
+`./staging.sh make-installation`.
 
-```
-./staging.sh make-zipfile $DESTPATH $PACKAGENAMES
-``` 
-
-where `$DESTPATH` is the name of the Zip file you want to produce and
-`$PACKAGENAMES` is a list of the TeXLive packages that should be installed to
-produce the bundle file.
-
-For bundles to be hosted on the web, the Rust program `zip2tarindex` will
-convert the resulting Zip file to the “indexed tar” format used for Web-based
-bundles. **TODO**: this is not adequately documented at all.
+For bundles to be hosted on the web, the operation `./staging.sh zip2iter`
+will convert the resulting Zip file to the “indexed tar” format used for
+Web-based bundles. **TODO**: this is not adequately documented at all.
 
 
 ## Updating the reference source code
 
-Some preliminaries: this repository has two main branches. The `vendor` branch
+To update the reference source you will also need:
+
+- A Python 2 interpreter. (FIXME: we should make the scripts compatible with
+  Python 2 and Python 3.)
+- [ninja](https://ninja-build.org/).
+- C and C++ compilers.
+- [indent](https://www.gnu.org/software/indent/manual/indent.html).
+
+More preliminaries: this repository has two main branches. The `vendor` branch
 has the raw source code extracted from TeXLive. The `master` branch has
-modifications to that code to get a minimal running `xetex` engine generated
-from somewhat more user-friendly C code than is generated in the TeXLive build
-system.
+modifications to that code to get a minimal running `xetex` engine, which
+generated from somewhat more user-friendly C code than is generated in the
+TeXLive build system.
 
 To update the Tectonic reference source code, you need to compile some parts
 of TeXLive using the builder container.
@@ -100,15 +112,19 @@ of TeXLive using the builder container.
    `vendor` branch.
 7. Check out the `master` branch.
 8. Merge in the changes from `vendor`.
+9. If you have not already done so, run `./gen-ninja.py` to generate the Ninja
+   build specification file.
+10. Run `ninja` to verify that the sample `xetex` binary builds.
+11. Run `./staging.sh update-products` to update the prettified C code in
+    `products/`.
 
-You can additionally compile a standalone version of XeTeX ...
+At this point, automation has run its course. You must read and understand the
+changes to the files in `products/`, and decide how best to manually import
+them into the main Tectonic codebase.
 
-To update the reference source 
-
-- [ninja](https://ninja-build.org/).
-- C and C++ compilers.
-
-1. Run `ninja` to build the sample `xetex` binary.
+**TODO**: be super explicit about where in the main codebase we write down
+what version of the reference source we are derived from, and tell people to
+update that when importing changes.
 
 Note: there is a separate standalone XeTeX repository
 [on SourceForge](https://sourceforge.net/p/xetex/code/ci/master/tree/)

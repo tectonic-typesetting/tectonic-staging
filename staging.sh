@@ -2,6 +2,9 @@
 # Copyright 2016 the Tectonic Project.
 # Licensed under the MIT License.
 
+# NOTE: edit this file on the `vendor` branch and merge into `master`! We need
+# to have it on `vendor` to manage our various source-staging operations.
+
 image_name=tectonic-texlive-builder
 builder_cont_name=tectonic-bld-cont
 state_dir=$(pwd)/state # symlink here!
@@ -11,14 +14,17 @@ set -e
 if [ -z "$1" -o "$1" = help ] ; then
     echo "You must supply a subcommand. Subcommands are:
 
+bintray-upload    -- Upload an indexed tar file to Bintray.
 build-image       -- Create/update to builder Docker image.
 builder-bash      -- Run a shell in a temporary builder container.
 ingest-source     -- Copy needed source code from TeXLive to this repo.
 init-build        -- Initialize a Docker-based compilation of the TeXLive binaries.
 make-installation -- Install TeXLive into a new directory tree.
-make-zipfile      -- Make a Zip file of a TeXLive installation.
+make-base-zipfile -- Make a Zip file of a standardized base TeXLive installation.
 run-build         -- Launch a Docker-based compilation of the TeXLive binaries.
 update-containers -- Rebuild the TeXLive \"container\" files.
+update-products   -- Update the prettified C code in \"products/\".
+zip2itar          -- Convert a bundle from Zip format to indexed-tar format.
 
 "
     exit 1
@@ -31,6 +37,24 @@ shift
 function die () {
     echo >&2 "error:" "$@"
     exit 1
+}
+
+
+function bintray_upload () {
+    tar_path="$1"
+    version="$2"
+    package_id="tl2016extras"
+
+    [ x"$2" != x ] || die "usage: staging.sh bintray-upload <tar-path> <version>"
+    [ x"$BINTRAY_API_KEY" != x ] || die "you must set the \$BINTRAY_API_KEY environment variable"
+
+    curl -T $tar_path.index.gz -u"pkgw:$BINTRAY_API_KEY" \
+         -H "X-Bintray-Package:$package_id" -H "X-Bintray-Version:$version" \
+         https://api.bintray.com/content/pkgw/tectonic/$package_id/$version/$(basename $tar_path).index.gz
+
+    curl -T $tar_path -u"pkgw:$BINTRAY_API_KEY" \
+         -H "X-Bintray-Package:$package_id" -H "X-Bintray-Version:$version" \
+         https://api.bintray.com/content/pkgw/tectonic/$package_id/$version/$(basename $tar_path)
 }
 
 
@@ -122,10 +146,56 @@ EOF
 }
 
 
-function make_zipfile () {
+function make_base_zipfile () {
     zip="$1"
+    bundle_id=tlextras2016
     shift
-    installdir=$(make_installation "$@")
+
+    # First, TeXLive package installation.
+
+    installdir=$(make_installation \
+         collection-basic \
+         collection-bibtexextra \
+         collection-fontsextra \
+         collection-fontsrecommended \
+         collection-genericextra \
+         collection-genericrecommended \
+         collection-latexextra \
+         collection-latexrecommended \
+         collection-latex \
+         collection-luatex \
+         collection-mathextra \
+         collection-plainextra \
+         collection-publishers \
+         collection-science \
+         collection-xetex \
+         collection-langafrican \
+         collection-langarabic \
+         collection-langchinese \
+         collection-langcjk \
+         collection-langcyrillic \
+         collection-langczechslovak \
+         collection-langenglish \
+         collection-langeuropean \
+         collection-langfrench \
+         collection-langgerman \
+         collection-langgreek \
+         collection-langindic \
+         collection-langitalian \
+         collection-langjapanese \
+         collection-langkorean \
+         collection-langother \
+         collection-langpolish \
+         collection-langportuguese \
+         collection-langspanish
+    )
+
+    # Some manual fiddles for format file generation
+
+    cp extras/$bundle_id/* $installdir/texmf-dist/
+
+    # Finally, turn it all into a Zip file.
+
     ./builder/make-zipfile.py "$installdir" "$zip"
     rm -rf "$installdir"
 }
@@ -173,9 +243,33 @@ function update_containers () {
 }
 
 
+function update_products () {
+    [ -d $state_dir/sbuild ] || die "no such directory $state_dir/sbuild"
+    for f in xetex-pool.c xetexini.c xetex0.c xetexcoerce.h xetexd.h bibtex.c bibtex.h ; do
+	cp $state_dir/sbuild/$f products/
+	indent -linux -nut -i4 -l120 products/$f
+	rm -f products/${f}~
+    done
+}
+
+
+function zip2itar () {
+    zipfile="$1"
+
+    dir=$(cd $(dirname "$zipfile") && pwd)
+    zipfull=$dir/$(basename "$zipfile")
+    tarfull=$dir/$(basename "$zipfile" .zip).tar
+    echo "Generating $tarfull ..."
+    cd $(dirname $0)/zip2tarindex
+    exec cargo run --release -- "$zipfull" "$tarfull"
+}
+
+
 # Dispatch subcommands.
 
 case "$command" in
+    bintray-upload)
+	bintray_upload "$@" ;;
     build-image)
 	build_image "$@" ;;
     builder-bash)
@@ -186,12 +280,16 @@ case "$command" in
 	init_build "$@" ;;
     make-installation)
 	make_installation "$@" ;;
-    make-zipfile)
-	make_zipfile "$@" ;;
+    make-base-zipfile)
+	make_base_zipfile "$@" ;;
     run-build)
 	run_build "$@" ;;
     update-containers)
 	update_containers "$@" ;;
+    update-products)
+	update_products "$@" ;;
+    zip2itar)
+        zip2itar "$@" ;;
     *)
 	echo >&2 "error: unrecognized command \"$command\"."
 	exit 1 ;;

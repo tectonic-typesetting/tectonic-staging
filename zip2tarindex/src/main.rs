@@ -16,7 +16,6 @@ use zip::ZipArchive;
 // Here is stuff from tar-rs's lib.rs:
 
 extern crate libc;
-extern crate filetime;
 //#[cfg(all(unix, feature = "xattr"))]
 //extern crate xattr;
 
@@ -103,8 +102,8 @@ fn main() {
     }
 
     let mut gzindex = flate2::GzBuilder::new()
-        .filename(&tar_fn.into_vec())
-        .write(indexfile, flate2::Compression::Default);
+        .filename(tar_fn.into_vec())
+        .write(indexfile, flate2::Compression::default());
 
     let mut tar = HackedBuilder::new(&mut tarfile, &mut gzindex);
 

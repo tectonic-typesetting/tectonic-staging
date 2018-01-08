@@ -7,8 +7,7 @@ version = "0.1.0"
 authors = ["Peter Williams <peter@newton.cx>"]
 
 [dependencies]
-clap = "^2.19"
-filetime = "0.1.5"
-flate2 = "^0.2"
+clap = "^2.29"
+flate2 = "^1.0"
 libc = "0.2"
 zip = "^0.2"

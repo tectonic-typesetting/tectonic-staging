@@ -17,7 +17,7 @@ ingest-source     -- Copy needed source code from TeXLive to this repo.
 init-build        -- Initialize a Docker-based compilation of the TeXLive binaries.
 make-installation -- Install TeXLive into a new directory tree.
 make-zipfile      -- Make a Zip file of a TeXLive installation.
-svn-pull          -- Update the Git mirror of the TeXLive SVN repository.
+run-build         -- Launch a Docker-based compilation of the TeXLive binaries.
 update-containers -- Rebuild the TeXLive \"container\" files.
 
 "
@@ -131,11 +131,12 @@ function make_zipfile () {
 }
 
 
-function svn_pull () {
+function run_build() {
     [ -d $state_dir/repo ] || die "no such directory $state_dir/repo"
-    cd $state_dir/repo
-    git svn fetch
-    exec git merge --ff-only svn/heads/trunk
+    [ -d $state_dir/rbuild ] || die "no such directory $state_dir/rbuild"
+    docker start $builder_cont_name || die "could not start builder container $builder_cont_name"
+    echo "Building with logs to state/rbuild/build.log ..."
+    exec docker exec $builder_cont_name /entrypoint.sh bash -c 'cd /state/rbuild && make' &> state/rbuild/build.log
 }
 
 
@@ -187,8 +188,8 @@ case "$command" in
 	make_installation "$@" ;;
     make-zipfile)
 	make_zipfile "$@" ;;
-    svn-pull)
-	svn_pull "$@" ;;
+    run-build)
+	run_build "$@" ;;
     update-containers)
 	update_containers "$@" ;;
     *)

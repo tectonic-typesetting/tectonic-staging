@@ -409,7 +409,7 @@ void initialize(void)
         {
             register integer for_end;
             k = 0;
-            for_end = 65535L /*number_chars -1 */ ;
+            for_end = 1114111L /*number_usvs -1 */ ;
             if (k <= for_end)
                 do
                     eqtb[8939080L /*del_code_base */  + k].cint = -1;
@@ -587,7 +587,7 @@ void zprimitive(str_number s, quarterword c, halfword o)
     integer prim_val;
     if (s < 256) {
         cur_val = s + 1114113L;
-        prim_val = s;
+        prim_val = prim_lookup(s);
     } else {
 
         k = str_start[(s) - 65536L];
@@ -3308,7 +3308,7 @@ void store_fmt_file(void)
     dump_int(x);
     dump_things(format_engine[0], x);
     libc_free(format_engine);
-    dump_int(457477274L);
+    dump_int(397341720L);
     dump_int(1073741823L);
     dump_int(hash_high);
     dump_int(eTeX_mode);
@@ -3670,7 +3670,7 @@ boolean load_fmt_file(void)
         fprintf(stderr, "%s%s", "fmtdebug:", "string pool checksum");
         fprintf(stderr, "%s%ld\n", " = ", (long)x);
     }
-    if (x != 457477274L) {
+    if (x != 397341720L) {
         ;
         fprintf(stdout, "%s%s%s\n", "---! ", stringcast(name_of_file + 1), " made by different executable version");
         goto lab6666;
@@ -4593,11 +4593,11 @@ void init_prim(void)
     primitive(66159L /*"nullfont" */ , 89 /*set_font */ , 0 /*font_base */ );
     hash[2243238L /*frozen_null_font */ ].v.RH = 66159L /*"nullfont" */ ;
     eqtb[2243238L /*frozen_null_font */ ] = eqtb[cur_val];
-    primitive(66288L /*"span" */ , 4 /*tab_mark */ , 65537L /*span_code */ );
-    primitive(66289L /*"cr" */ , 5 /*car_ret */ , 65538L /*cr_code */ );
+    primitive(66288L /*"span" */ , 4 /*tab_mark */ , 1114113L /*span_code */ );
+    primitive(66289L /*"cr" */ , 5 /*car_ret */ , 1114114L /*cr_code */ );
     hash[2243227L /*frozen_cr */ ].v.RH = 66289L /*"cr" */ ;
     eqtb[2243227L /*frozen_cr */ ] = eqtb[cur_val];
-    primitive(66290L /*"crcr" */ , 5 /*car_ret */ , 65539L /*cr_cr_code */ );
+    primitive(66290L /*"crcr" */ , 5 /*car_ret */ , 1114115L /*cr_cr_code */ );
     hash[2243231L /*frozen_end_template */ ].v.RH = 66291L /*"endtemplate" */ ;
     hash[2243232L /*frozen_endv */ ].v.RH = 66291L /*"endtemplate" */ ;
     eqtb[2243232L /*frozen_endv */ ].hh.b0 = 9 /*endv */ ;
@@ -5195,9 +5195,9 @@ void main_body(void)
     term_offset = 0;
     file_offset = 0;
     if (src_specials_p || file_line_error_style_p || parse_first_line_p)
-        fprintf(stdout, "%s%s%s", "This is XeTeX, Version 3.14159265", "-2.6", "-0.99996");
+        fprintf(stdout, "%s%s%s", "This is XeTeX, Version 3.14159265", "-2.6", "-0.99998");
     else
-        fprintf(stdout, "%s%s%s", "This is XeTeX, Version 3.14159265", "-2.6", "-0.99996");
+        fprintf(stdout, "%s%s%s", "This is XeTeX, Version 3.14159265", "-2.6", "-0.99998");
     Fputs(stdout, version_string);
     if (format_ident == 0)
         fprintf(stdout, "%s%s%c\n", " (preloaded format=", dump_name, ')');

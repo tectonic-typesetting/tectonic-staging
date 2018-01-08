@@ -10,7 +10,7 @@
 
 static const char *poolfilearr[] = {
     ".6",
-    ".99996",
+    ".99998",
     "buffer size",
     "pool size",
     "number of strings",

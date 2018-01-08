@@ -12,9 +12,10 @@
                                                                   implementation. web2c.yacc can parse these @define statements.*//*The fields in the memory_word structure, defined in
                                                                                                                                                                                                                                                                                                                                                `mfware/gftodmem.h' and `common/texmf.h'. *//*These fields are the ones defined by the getopt library. *//*This is used by \TeX--XeT. *//*@define @field rh; *//*For BibTeX. *//*can't keep |break|, since it's a reserved word *//*for gftodvi, TeX, and Metafont *//*These are all set by getopt.  optiontable is really _getopt_long_options. *//*This file defines symbols in addition to those in `common.defines',
                                                                                                                                                                                   for use in the TeX, Metafont, and MetaPost change files.  Public domain. *//*`qqqq' is already defined, in ./common.defines, because of gftodvi. *//*For TeX; see openclose.c. *//*
-                                                                                                                                                                                  Copyright (c) 2008, 2009 jerome DOT laurens AT u-bourgogne DOT fr
+                                                                                                                                                                                  Copyright (c) 2008-2017 jerome DOT laurens AT u-bourgogne DOT fr
 
-                                                                                                                                                                                  This file is part of the SyncTeX package. Latest Revision: Wed Jul  1 11:18:05 UTC 2009
+                                                                                                                                                                                  This file is part of the SyncTeX package. Version 1
+                                                                                                                                                                                  Latest Revision: Sat Apr 22 10:07:05 UTC 2017
 
                                                                                                                                                                                   License:
                                                                                                                                                                                   --------
@@ -48,10 +49,7 @@
                                                                                                                                                                                   Nota Bene:
                                                                                                                                                                                   ----------
                                                                                                                                                                                   If you include or use a significant part of the synctex package into a software,
-                                                                                                                                                                                  I would appreciate to be listed as contributor and see "SyncTeX" highlighted. Version 1
-                                                                                                                                                                                  Latest Revision: Wed Jul  1 08:17:41 UTC 2009
-
-                                                                                                                                                                                  Notice:
+                                                                                                                                                                                  I would appreciate to be listed as contributor and see "SyncTeX" highlighted. Notice:
                                                                                                                                                                                   -------
                                                                                                                                                                                   This file is an interface to the synctex system for web2c. It declares the public functions API of synctex.c. It is always embedded as common definitions when convert'ing
                                                                                                                                                                   from web to c (See the convert shell script). *//* functions from the synctex controller in synctex.c *//* end of synctex.defines *//* vim: set syntax=web : *//*
@@ -266,7 +264,7 @@ unsigned char /*error_stop_mode */ interaction;
 unsigned char /*unspecified_mode */ interaction_option;
 boolean deletions_allowed;
 boolean set_box_allowed;
-unsigned char /*fatal_error_stop */ history;
+unsigned char /*output_failure */ history;
 schar error_count;
 str_number help_line[6];
 unsigned char help_ptr;

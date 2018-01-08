@@ -4689,7 +4689,7 @@ void zprint_cmd_chr(quarterword cmd, halfword chr_code)
             print_esc(66133L /*"else" */ );
         break;
     case 4:
-        if (chr_code == 65537L /*span_code */ )
+        if (chr_code == 1114113L /*span_code */ )
             print_esc(66288L /*"span" */ );
         else {
 
@@ -4701,7 +4701,7 @@ void zprint_cmd_chr(quarterword cmd, halfword chr_code)
         }
         break;
     case 5:
-        if (chr_code == 65538L /*cr_code */ )
+        if (chr_code == 1114114L /*cr_code */ )
             print_esc(66289L /*"cr" */ );
         else
             print_esc(66290L /*"crcr" */ );
@@ -5581,10 +5581,12 @@ halfword zprim_lookup(str_number s)
     halfword p;
     halfword k;
     integer j, l;
-    if (s < 256) {
-        p = s;
-        if ((p < 0) || (prim_eqtb[p].hh.b1 != 1 /*level_one */ ))
+    if (s <= 65535L /*biggest_char */ ) {
+        if (s < 0) {
             p = 0 /*undefined_primitive */ ;
+            goto lab40;
+        } else
+            p = (s % 431 /*prim_prime */ ) + 1;
     } else {
 
         j = str_start[(s) - 65536L];
@@ -5606,36 +5608,36 @@ halfword zprim_lookup(str_number s)
                 while (k++ < for_end);
         }
         p = h + 1;
-        while (true) {
+    }
+    while (true) {
 
-            if (prim[p].v.RH > 0) {
+        if (prim[p].v.RH > 65536L) {
+            if (length(prim[p].v.RH - 1) == l) {
 
-                if (length(prim[p].v.RH) == l) {
-
-                    if (str_eq_str(prim[p].v.RH, s))
-                        goto lab40;
-                }
+                if (str_eq_str(prim[p].v.RH - 1, s))
+                    goto lab40;
             }
-            if (prim[p].v.LH == 0) {
-                if (no_new_control_sequence)
-                    p = 0 /*undefined_primitive */ ;
-                else {          /*272: */
+        } else if (prim[p].v.RH == 1 + s)
+            goto lab40;
+        if (prim[p].v.LH == 0) {
+            if (no_new_control_sequence)
+                p = 0 /*undefined_primitive */ ;
+            else {              /*272: */
 
-                    if (prim[p].v.RH > 0) {
-                        do {
-                            if ((prim_used == 1 /*prim_base */ ))
-                                overflow(65808L /*"primitive size" */ , 500 /*prim_size */ );
-                            decr(prim_used);
-                        } while (!(prim[prim_used].v.RH == 0));
-                        prim[p].v.LH = prim_used;
-                        p = prim_used;
-                    }
-                    prim[p].v.RH = s;
+                if (prim[p].v.RH > 0) {
+                    do {
+                        if ((prim_used == 1 /*prim_base */ ))
+                            overflow(65808L /*"primitive size" */ , 500 /*prim_size */ );
+                        decr(prim_used);
+                    } while (!(prim[prim_used].v.RH == 0));
+                    prim[p].v.LH = prim_used;
+                    p = prim_used;
                 }
-                goto lab40;
+                prim[p].v.RH = s + 1;
             }
-            p = prim[p].v.LH;
+            goto lab40;
         }
+        p = prim[p].v.LH;
     }
  lab40:                        /*found */ Result = p;
     return Result;
@@ -7698,7 +7700,7 @@ void get_next(void)
                     cur_chr = eqtb[cur_cs].hh.v.RH;
                     if (cur_cmd > 102 /*max_command */ ) {
                         cur_cmd = 0 /*relax */ ;
-                        cur_chr = 65537L /*no_expand_flag */ ;
+                        cur_chr = 1114113L /*no_expand_flag */ ;
                     }
                 } else
                     check_outer_validity();
@@ -8427,7 +8429,7 @@ void expand(void)
                 get_token();
                 scanner_status = save_scanner_status;
                 if (cur_cs < 2228226L /*hash_base */ )
-                    cur_cs = prim_lookup(cur_cs - 257);
+                    cur_cs = prim_lookup(cur_cs - 1114113L);
                 else
                     cur_cs = prim_lookup(hash[cur_cs].v.RH);
                 if (cur_cs != 0 /*undefined_primitive */ ) {
@@ -11821,7 +11823,7 @@ void conv_toks(void)
         print_int(cur_val);
         break;
     case 6:
-        print(65537L /*".99996" */ );
+        print(65537L /*".99998" */ );
         break;
     case 7:
         if ((font_area[fnt] == 65535L /*aat_font_flag */ ))
@@ -12028,7 +12030,7 @@ halfword zscan_toks(boolean macro_def, boolean xpand)
 
                     if (mem[mem[cur_chr].hh.v.RH].hh.v.LH == 29360129L /*protected_token */ ) {
                         cur_cmd = 0 /*relax */ ;
-                        cur_chr = 65537L /*no_expand_flag */ ;
+                        cur_chr = 1114113L /*no_expand_flag */ ;
                     }
                 }
                 if (cur_cmd <= 102 /*max_command */ )
@@ -12325,7 +12327,7 @@ void conditional(void)
                 get_x_token();
                 if (cur_cmd == 0 /*relax */ ) {
 
-                    if (cur_chr == 65537L /*no_expand_flag */ ) {
+                    if (cur_chr == 1114113L /*no_expand_flag */ ) {
                         cur_cmd = 13 /*active_char */ ;
                         cur_chr = cur_tok - 33554432L;
                     }
@@ -12343,7 +12345,7 @@ void conditional(void)
                 get_x_token();
                 if (cur_cmd == 0 /*relax */ ) {
 
-                    if (cur_chr == 65537L /*no_expand_flag */ ) {
+                    if (cur_chr == 1114113L /*no_expand_flag */ ) {
                         cur_cmd = 13 /*active_char */ ;
                         cur_chr = cur_tok - 33554432L;
                     }
@@ -12628,7 +12630,7 @@ void conditional(void)
             get_next();
             scanner_status = save_scanner_status;
             if (cur_cs < 2228226L /*hash_base */ )
-                m = prim_lookup(cur_cs - 257);
+                m = prim_lookup(cur_cs - 1114113L);
             else
                 m = prim_lookup(hash[cur_cs].v.RH);
             b = ((cur_cmd != 103 /*undefined_cs */ ) && (m != 0 /*undefined_primitive */ )
@@ -13184,9 +13186,9 @@ void open_log_file(void)
     log_opened = true;
     {
         if (src_specials_p || file_line_error_style_p || parse_first_line_p)
-            fprintf(log_file, "%s%s%s", "This is XeTeX, Version 3.14159265", "-2.6", "-0.99996");
+            fprintf(log_file, "%s%s%s", "This is XeTeX, Version 3.14159265", "-2.6", "-0.99998");
         else
-            fprintf(log_file, "%s%s%s", "This is XeTeX, Version 3.14159265", "-2.6", "-0.99996");
+            fprintf(log_file, "%s%s%s", "This is XeTeX, Version 3.14159265", "-2.6", "-0.99998");
         Fputs(log_file, version_string);
         print(format_ident);
         print(66158L /*"  " */ );
@@ -18804,6 +18806,7 @@ halfword zvar_delimiter(halfword d, integer s, scaled v)
         mem[b + 1].cint = eqtb[10053203L /*dimen_base 11 */ ].cint;
     }
     mem[b + 4].cint = half(mem[b + 3].cint - mem[b + 2].cint) - axis_height(s);
+    free_ot_assembly(ot_assembly_ptr);
     Result = b;
     return Result;
 }
@@ -19123,6 +19126,7 @@ void zmake_math_accent(halfword q)
     void_pointer ot_assembly_ptr;
     fetch(q + 4);
     x = -268435455L;
+    ot_assembly_ptr = nil;
     if (((font_area[cur_f] == 65535L /*aat_font_flag */ ) || (font_area[cur_f] == 65534L /*otgr_font_flag */ ))) {
         c = cur_c;
         f = cur_f;
@@ -19289,6 +19293,7 @@ void zmake_math_accent(halfword q)
         mem[q + 1].hh.v.LH = y;
         mem[q + 1].hh.v.RH = 2 /*sub_box */ ;
     }
+    free_ot_assembly(ot_assembly_ptr);
 }
 
 void zmake_fraction(halfword q)
@@ -19406,6 +19411,7 @@ scaled zmake_op(halfword q)
     if ((mem[q].hh.b1 == 0 /*normal */ ) && (cur_style < 2 /*text_style */ ))
         mem[q].hh.b1 = 1 /*limits */ ;
     delta = 0;
+    ot_assembly_ptr = nil;
     if (mem[q + 1].hh.v.RH == 1 /*math_char */ ) {
         fetch(q + 1);
         if (!((font_area[cur_f] == 65534L /*otgr_font_flag */ ) && (usingOpenType(font_layout_engine[cur_f])))) {
@@ -19515,6 +19521,7 @@ scaled zmake_op(halfword q)
         }
         mem[q + 1].cint = v;
     }
+    free_ot_assembly(ot_assembly_ptr);
     Result = delta;
     return Result;
 }
@@ -20406,7 +20413,7 @@ void pop_alignment(void)
 void get_preamble_token(void)
 {
  get_preamble_token_regmem lab20:      /*restart */ get_token();
-    while ((cur_chr == 65537L /*span_code */ ) && (cur_cmd == 4 /*tab_mark */ )) {
+    while ((cur_chr == 1114113L /*span_code */ ) && (cur_cmd == 4 /*tab_mark */ )) {
 
         get_token();
         if (cur_cmd > 102 /*max_command */ ) {
@@ -20619,7 +20626,7 @@ boolean fin_col(void)
     if (align_state < 500000L)
         fatal_error(65915L /*"(interwoven alignment preambles are not allowed)" */ );
     p = mem[q].hh.v.RH;
-    if ((p == -268435455L) && (mem[cur_align + 5].hh.v.LH < 65538L /*cr_code */ )) {
+    if ((p == -268435455L) && (mem[cur_align + 5].hh.v.LH < 1114114L /*cr_code */ )) {
 
         if (cur_loop != -268435455L) {  /*822: */
             mem[q].hh.v.RH = new_null_box();
@@ -20668,11 +20675,11 @@ boolean fin_col(void)
                 help_line[1] = 66302L /*"in the preamble to the \halign or \valign now in progress." */ ;
                 help_line[0] = 66303L /*"So I'll assume that you meant to type \cr instead." */ ;
             }
-            mem[cur_align + 5].hh.v.LH = 65538L /*cr_code */ ;
+            mem[cur_align + 5].hh.v.LH = 1114114L /*cr_code */ ;
             error();
         }
     }
-    if (mem[cur_align + 5].hh.v.LH != 65537L /*span_code */ ) {
+    if (mem[cur_align + 5].hh.v.LH != 1114113L /*span_code */ ) {
         unsave();
         new_save_level(6 /*align_group */ );
         {
@@ -20743,7 +20750,7 @@ boolean fin_col(void)
             cur_list.tail_field = mem[cur_list.tail_field].hh.v.RH;
         }
         mem[cur_list.tail_field].hh.b1 = 12 /*tab_skip_code 1 *//*:824 */ ;
-        if (mem[cur_align + 5].hh.v.LH >= 65538L /*cr_code */ ) {
+        if (mem[cur_align + 5].hh.v.LH >= 1114114L /*cr_code */ ) {
             Result = true;
             return Result;
         }
@@ -21114,7 +21121,7 @@ void align_peek(void)
             normal_paragraph();
     } else if (cur_cmd == 2 /*right_brace */ )
         fin_align();
-    else if ((cur_cmd == 5 /*car_ret */ ) && (cur_chr == 65539L /*cr_cr_code */ ))
+    else if ((cur_cmd == 5 /*car_ret */ ) && (cur_chr == 1114115L /*cr_cr_code */ ))
         goto lab20;
     else {
 
@@ -28799,7 +28806,7 @@ void main_control(void)
                         get_next();
                         scanner_status = t;
                         if (cur_cs < 2228226L /*hash_base */ )
-                            cur_cs = prim_lookup(cur_cs - 257);
+                            cur_cs = prim_lookup(cur_cs - 1114113L);
                         else
                             cur_cs = prim_lookup(hash[cur_cs].v.RH);
                         if (cur_cs != 0 /*undefined_primitive */ ) {
@@ -30468,6 +30475,7 @@ void close_files_and_terminate(void)
             print_nl(66211L /*"file " */ );
             print(output_file_name);
             print(66212L /*" may not be valid." */ );
+            history = 4 /*output_failure */ ;
         }
     }
     synctex_terminate(log_opened);

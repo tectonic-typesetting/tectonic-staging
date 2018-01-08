@@ -2,6 +2,9 @@
 # Copyright 2016 the Tectonic Project.
 # Licensed under the MIT License.
 
+# NOTE: edit this file on the `vendor` branch and merge into `master`! We need
+# to have it on `vendor` to manage our various source-staging operations.
+
 image_name=tectonic-texlive-builder
 builder_cont_name=tectonic-bld-cont
 state_dir=$(pwd)/state # symlink here!

@@ -205,8 +205,9 @@ function run_build() {
     [ -d $state_dir/repo ] || die "no such directory $state_dir/repo"
     [ -d $state_dir/rbuild ] || die "no such directory $state_dir/rbuild"
     docker start $builder_cont_name || die "could not start builder container $builder_cont_name"
-    echo "Building with logs to state/rbuild/build.log ..."
-    exec docker exec $builder_cont_name /entrypoint.sh bash -c 'cd /state/rbuild && make' &> state/rbuild/build.log
+    echo "Building with logs to state/rbuild.log ..."
+    docker exec $builder_cont_name /entrypoint.sh bash -c 'cd /state/rbuild && make' &> state/rbuild.log \
+           || die "build exited with an error code! consult the log file"
 }
 
 

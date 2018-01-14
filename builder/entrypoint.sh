@@ -56,6 +56,30 @@ function init_build() {
         --prefix=/state/rinstall \
         --disable-static \
         --disable-native-texlive-build \
+        --disable-all-pkgs \
+        --enable-web2c \
+        --enable-web-progs \
+        --enable-dvipdfm-x \
+        \
+        --disable-tex \
+        --disable-etex \
+        --disable-ptex \
+        --disable-eptex \
+        --disable-uptex \
+        --disable-euptex \
+        --disable-aleph \
+        --disable-pdftex \
+        --disable-luatex \
+        --disable-luajittex \
+        --disable-mp \
+        --disable-pmp \
+        --disable-upmp \
+        --enable-xetex \
+        --disable-mf \
+        --disable-mf-nowin \
+        --disable-mflua \
+        --disable-mfluajit \
+        \
         --with-system-cairo=yes \
         --with-system-freetype2=yes \
         --with-system-gd=yes \
@@ -74,13 +98,7 @@ function init_build() {
         --with-system-teckit=no \
         --with-system-xpdf=no \
         --with-system-zlib=yes \
-        --with-system-zziplib=yes \
-        --disable-all-pkgs \
-        --enable-web2c \
-        --enable-etex \
-        --enable-xetex \
-        --enable-web-progs \
-        --enable-dvipdfm-x
+        --with-system-zziplib=yes
 }
 
 function install_profile () {

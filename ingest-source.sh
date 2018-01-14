@@ -18,6 +18,7 @@ cp $src/texk/web2c/xetexdir/*.mm xetexdir/
 cp $src/texk/web2c/xetexdir/image/*.c xetexdir/image/
 cp $src/texk/web2c/xetexdir/image/*.h xetexdir/image/
 cp $src/texk/web2c/*.h xetexdir/
+rm xetexdir/MathTable.h
 
 cp $src/texk/web2c/tex.ch xetexdir/
 cp $src/texk/web2c/tex-binpool.ch xetexdir/
@@ -109,6 +110,7 @@ rm web2c/web2c-lexer.c web2c/web2c-parser.c web2c/web2c-parser.h
 mkdir -p dvipdfm-x
 cp $src/texk/dvipdfm-x/*.c dvipdfm-x/
 cp $src/texk/dvipdfm-x/*.h dvipdfm-x/
+rm dvipdfm-x/xbb.c
 
 # bibtex
 

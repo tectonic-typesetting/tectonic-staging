@@ -111,7 +111,9 @@ of TeXLive using the builder container.
 6. If files were modified, commit the resulting changes. On the current
    `vendor` branch.
 7. Check out the `master` branch.
-8. Merge in the changes from `vendor`.
+8. Merge in the changes from `vendor`, using a commit message like “Update
+   master to TeXLive NNNNN“, where NNNNN is the relevant TeXLive Subversion
+   revision number.
 9. If you have not already done so, run `./gen-ninja.py` to generate the Ninja
    build specification file.
 10. Run `ninja` to verify that the sample `xetex` binary builds.

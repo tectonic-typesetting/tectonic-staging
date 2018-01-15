@@ -18,7 +18,6 @@ cp $src/texk/web2c/xetexdir/*.mm xetexdir/
 cp $src/texk/web2c/xetexdir/image/*.c xetexdir/image/
 cp $src/texk/web2c/xetexdir/image/*.h xetexdir/image/
 cp $src/texk/web2c/*.h xetexdir/
-rm xetexdir/MathTable.h
 
 cp $src/texk/web2c/tex.ch xetexdir/
 cp $src/texk/web2c/tex-binpool.ch xetexdir/
@@ -117,3 +116,9 @@ rm dvipdfm-x/xbb.c
 mkdir -p bibtex
 cp $src/texk/web2c/bibtex.web bibtex/
 cp $src/texk/web2c/bibtex.ch bibtex/
+
+# weave (for generating XeTeX The Program)
+
+mkdir -p weave
+cp $src/texk/web2c/weave.web weave/
+cp $src/texk/web2c/weave.ch weave/

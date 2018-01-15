@@ -181,7 +181,7 @@ additional error checking needs to be done. We will see below that
 \.{WEAVE} reads through the entire input twice.
 @^system dependencies@>
 
-@p procedure open_input; {prepare to read |web_file| and |change_file|}
+@p procedure weave_open_input; {prepare to read |web_file| and |change_file|}
 begin reset(web_file); reset(change_file);
 end;
 @y
@@ -189,7 +189,7 @@ end;
 This is called after the filename variables have been set appropriately.
 @^system dependencies@>
 
-@p procedure open_input; {prepare to read |web_file| and |change_file|}
+@p procedure weave_open_input; {prepare to read |web_file| and |change_file|}
 begin web_file := kpse_open_file(web_name, kpse_web_format);
   if chg_name then change_file := kpse_open_file(chg_name, kpse_web_format);
 end;
@@ -391,7 +391,7 @@ begin
   end;
 
   {Change |".web"| to |".tex"| and use the current directory.}
-  tex_name := basename_change_suffix (web_name, '.web', '.tex');
+  tex_name := basenamechangesuffix (web_name, '.web', '.tex');
 end;
 
 @ Here are the options we allow.  The first is one of the standard GNU options.
@@ -419,7 +419,7 @@ incr (current_option);
 @.-x@>
 
 @<Define the option...@> =
-long_options[current_option].name := char_to_string ('x');
+long_options[current_option].name := chartostring ('x');
 long_options[current_option].has_arg := 0;
 long_options[current_option].flag := address_of (no_xref);
 long_options[current_option].val := 1;
@@ -440,5 +440,5 @@ long_options[current_option].val := 0;
 @ Global filenames.
 
 @<Global...@> =
-@!web_name,@!chg_name,@!tex_name:const_c_string;
+@!web_name,@!chg_name,@!tex_name:const_cstring;
 @z

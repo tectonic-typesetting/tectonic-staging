@@ -25,7 +25,7 @@ main (int  ac,  string* av)
 
   argc = ac;
   argv = av;
-  mainbody ();
+  main_body ();
   return EXIT_SUCCESS;
 }
 

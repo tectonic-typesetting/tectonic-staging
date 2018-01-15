@@ -22,7 +22,7 @@ usage (const_string str)
    limitations (sigh).
 */
 void
-usagehelp (const_string *message, const_string bug_email)
+usage_help (const_string *message, const_string bug_email)
 {
     if (!bug_email)
         bug_email = "tex-k@tug.org";

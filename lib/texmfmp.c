@@ -1844,7 +1844,7 @@ parse_options (int argc, string *argv)
 #endif
 
     } else if (ARGUMENT_IS ("help")) {
-        usagehelp (PROGRAM_HELP, BUG_ADDRESS);
+        usage_help (PROGRAM_HELP, BUG_ADDRESS);
 
 #if defined(__SyncTeX__)
     } else if (ARGUMENT_IS ("synctex")) {

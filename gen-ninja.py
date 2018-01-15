@@ -80,6 +80,10 @@ def inner (top, w):
             command='%(build_name)s/web2c/makecpool $basename >$out' % config,
             description='MAKECPOOL $out')
 
+    w.rule ('weave',
+            command='WEBINPUTS=. %(build_name)s/weave $in && mv $basename*.tex $outdir' % config,
+            description='WEAVE $out')
+
     # build dir
 
     builddir = top / config['build_name']
@@ -306,7 +310,9 @@ def inner (top, w):
         cflags = '-I. -Ilib -Ixetexdir %(base_cflags)s' % config,
     )
 
-    w.build(str(builddir / 'merged.web'), 'merge-changes',
+    merged_web = builddir / 'merged.web'
+
+    w.build(str(merged_web), 'merge-changes',
             inputs = [str(x) for x in [
                 top / 'xetexdir' / 'xetex.web',
                 xetex_ch,
@@ -449,6 +455,73 @@ def inner (top, w):
                  'outdir': str(builddir),
                  'convert': convert,
                  'basename': 'bibtex',
+             },
+    )
+
+    # "otangle"d Pascal source for weave
+
+    weave_p = builddir / 'weave.p'
+
+    w.build ([str(weave_p)], 'otangle',
+             inputs = [str(x) for x in [
+                 top / 'weave' / 'weave.web',
+                 top / 'weave' / 'weave.ch',
+             ]],
+             implicit = [otangleprog],
+             variables = {
+                 'basename': 'weave',
+                 'outdir': str(builddir),
+             },
+    )
+
+    # "convert"ed weave Pascal code into C code
+
+    weave_c = [
+        builddir / 'weave.c',
+        builddir / 'weave.h',
+    ]
+
+    w.build ([str(x) for x in weave_c], 'convert',
+             inputs = [str(x) for x in [weave_p]],
+             implicit = [
+                 convert,
+                 web2cprog,
+                 splitupprog,
+                 fixwritesprog,
+                 str(top / 'web2c' / 'coerce.h'),
+             ],
+             variables = {
+                 'outdir': str(builddir),
+                 'convert': convert,
+                 'basename': 'weave',
+             },
+    )
+
+    # the weave program
+
+    weaveprog = executable (
+        output = builddir / 'weave',
+        sources = [
+            builddir / 'weave.c',
+            top / 'weave' / 'main.c',
+        ],
+        rule = 'cc',
+        slibs = [libbase, libkps, libkpu],
+        cflags = '-I. -Ilib -Ixetexdir %(base_cflags)s' % config,
+    )
+
+    # TeX source of what you could call "XeTeX: The Program"
+
+    book_tex = builddir / 'merged.tex'
+
+    w.build (str(book_tex), 'weave',
+             inputs = [str(merged_web)],
+             implicit = [
+                 weaveprog,
+             ],
+             variables = {
+                 'outdir': str(builddir),
+                 'basename': 'merged',
              },
     )
 

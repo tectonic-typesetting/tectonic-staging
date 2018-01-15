@@ -169,7 +169,7 @@ parsearguments ( void )
     } 
     else if ( ( strcmp ( longoptions [optionindex ].name , "help" ) == 0 ) ) 
     {
-      usagehelp ( OTANGLEHELP , nil ) ;
+      usage_help ( OTANGLEHELP , nil ) ;
     } 
     else if ( ( strcmp ( longoptions [optionindex ].name , "version" ) == 0 
     ) ) 

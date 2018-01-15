@@ -92,7 +92,7 @@
 @define const UPTFTOPLHELP;
 @define const VFTOVPHELP;
 @define const VPTOVFHELP;
-@define const WEAVEHELP;
+@define const WEAVE_HELP;
 
 @define function abs ();
 @define function addressof ();
@@ -110,7 +110,7 @@
 @define function conststringcast ();
 @define function eof ();
 @define function eoln ();
-@define function extendfilename ();
+@define function extend_filename ();
 @define function fabs ();
 @define function feof ();
 @define function findsuffix ();

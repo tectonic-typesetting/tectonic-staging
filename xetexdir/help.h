@@ -608,7 +608,7 @@ const_string VPTOVFHELP[] = {
 #endif /* VPTOVF */
 
 #ifdef WEAVE
-const_string WEAVEHELP[] = {
+const_string WEAVE_HELP[] = {
     "Usage: weave [OPTION]... WEBFILE[.web] [CHANGEFILE[.ch]]",
     "  Weave WEBFILE with CHANGEFILE into a TeX document.",
     "  Default CHANGEFILE is " DEV_NULL ";",

@@ -429,7 +429,7 @@ void parsearguments(void)
         } else if (getoptreturnval == QUESTION_MARK) {
             usage("otangle");
         } else if ((strcmp(longoptions[optionindex].name, "help") == 0)) {
-            usagehelp(OTANGLEHELP, nil);
+            usage_help(OTANGLEHELP, nil);
         } else if ((strcmp(longoptions[optionindex].name, "version") == 0)) {
             printversionandexit("This is OTANGLE, Version 4.4", nil,
                                 "J. Plaice, Y. Haralambous, D.E. Knuth", nil);

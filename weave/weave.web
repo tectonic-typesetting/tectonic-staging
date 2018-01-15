@@ -549,7 +549,7 @@ additional error checking needs to be done. We will see below that
 \.{WEAVE} reads through the entire input twice.
 @^system dependencies@>
 
-@p procedure open_input; {prepare to read |web_file| and |change_file|}
+@p procedure weave_open_input; {prepare to read |web_file| and |change_file|}
 begin reset(web_file); reset(change_file);
 end;
 
@@ -604,7 +604,7 @@ else  begin while not eoln(f) do
 @.Input line too long@>
       end;
     end;
-  read_ln(f); limit:=final_limit; input_ln:=true;
+  readln(f); limit:=final_limit; input_ln:=true;
   end;
 end;
 
@@ -1435,7 +1435,7 @@ if limit>1 then if buffer[0]="@@" then
 user's \.{WEB} input, is used at the beginning of phases one and two.
 
 @p procedure reset_input;
-begin open_input; line:=0; other_line:=0;@/
+begin weave_open_input; line:=0; other_line:=0;@/
 changing:=true; prime_the_change_buffer; change_changing;@/
 limit:=0; loc:=1; buffer[0]:=" "; input_has_ended:=false;
 end;

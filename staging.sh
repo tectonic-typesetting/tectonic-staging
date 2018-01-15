@@ -21,6 +21,7 @@ ingest-source     -- Copy needed source code from TeXLive to this repo.
 init-build        -- Initialize a Docker-based compilation of the TeXLive binaries.
 make-installation -- Install TeXLive into a new directory tree.
 make-base-zipfile -- Make a Zip file of a standardized base TeXLive installation.
+make-book         -- Compile the XeTeX referenece manual PDF (\"XeTeX: The Program\").
 run-build         -- Launch a Docker-based compilation of the TeXLive binaries.
 update-containers -- Rebuild the TeXLive \"container\" files.
 update-products   -- Update the prettified C code in \"products/\".
@@ -201,6 +202,18 @@ function make_base_zipfile () {
 }
 
 
+function make_book () {
+    # We implement this here just to make this feature a bit more discoverable
+    # (i.e. if you just run `./staging.sh` and don't read the README.)
+
+    [ -f $state_dir/sbuild/merged.tex ] || \
+        die "you need to build the reference files with \`ninja\` - no such file $state_dir/sbuild/merged.tex"
+
+    set -x
+    exec tectonic --format=plain $state_dir/sbuild/merged.tex
+}
+
+
 function run_build() {
     [ -d $state_dir/repo ] || die "no such directory $state_dir/repo"
     [ -d $state_dir/rbuild ] || die "no such directory $state_dir/rbuild"
@@ -283,6 +296,8 @@ case "$command" in
 	make_installation "$@" ;;
     make-base-zipfile)
 	make_base_zipfile "$@" ;;
+    make-book)
+	make_book "$@" ;;
     run-build)
 	run_build "$@" ;;
     update-containers)

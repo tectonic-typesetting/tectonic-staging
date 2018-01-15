@@ -136,6 +136,26 @@ better-maintained. So, that is what we use as our reference. It's not fully
 clear to me (PKGW) how the two forks interact.
 
 
+## Generating the reference book
+
+The build process described in the previous section will build a copy of the
+WEB `weave` tool and use it to generate TeX code for the reference manual to
+the XeTeX source code — the analogue to
+[TeX: The Program](http://www.worldcat.org/title/tex-the-program/oclc/826569131)
+(also
+[available on Amazon](https://www.amazon.com/Computers-Typesetting-B-TeX-Program/dp/0201134373/ref=oosr)).
+After building the reference materials as described above, you can generate
+a PDF copy of the reference book with:
+
+```
+./staging.sh make-book
+```
+
+(Assuming, of course, that you have a functioning Tectonic installation.) The
+book currently weighs in at 756 pages, with *extensive* description of the bulk
+of the code that forms the basis of XeTeX and Tectonic.
+
+
 # Copyright and Licensing
 
 The source files extracted from TeXLive have copyrights and licenses specified

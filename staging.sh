@@ -118,7 +118,6 @@ function make_installation () {
     TEXMFCONFIG $cdest/texmf-config
     TEXMFVAR $cdest/texmf-var
     collection-basic 1
-    in_place 0
     option_adjustrepo 1
     option_autobackup 0
     option_desktop_integration 0
@@ -126,7 +125,6 @@ function make_installation () {
     option_file_assocs 0
     option_fmt 1
     option_letter 1
-    option_menu_integration 0
     option_path 0
     option_post_code 1
     option_src 0
@@ -138,6 +136,7 @@ function make_installation () {
     portable 0
 EOF
     echo $dest
+    echo >&2 "Logging installation to $dest/outer.log ..."
     set +e
     docker run --rm -v $state_dir:/state:rw,z $image_name \
 	   install-profile $cdest/builder.profile $cdest $(id -u):$(id -g) "$@" &>$dest/outer.log
@@ -149,7 +148,12 @@ EOF
 
 function make_base_zipfile () {
     zip="$1"
-    bundle_id=tlextras2016
+
+    if [ -z "$zip" ] ; then
+        die "usage: $0 make-base-zipfile <output-zip-filename>"
+    fi
+
+    bundle_id=tlextras2018
     shift
 
     # First, TeXLive package installation.
@@ -159,18 +163,16 @@ function make_base_zipfile () {
          collection-bibtexextra \
          collection-fontsextra \
          collection-fontsrecommended \
-         collection-genericextra \
-         collection-genericrecommended \
+         collection-humanities \
          collection-latexextra \
          collection-latexrecommended \
          collection-latex \
          collection-luatex \
-         collection-mathextra \
-         collection-plainextra \
+         collection-mathscience \
+         collection-pictures \
+         collection-plaingeneric \
          collection-publishers \
-         collection-science \
          collection-xetex \
-         collection-langafrican \
          collection-langarabic \
          collection-langchinese \
          collection-langcjk \
@@ -181,7 +183,6 @@ function make_base_zipfile () {
          collection-langfrench \
          collection-langgerman \
          collection-langgreek \
-         collection-langindic \
          collection-langitalian \
          collection-langjapanese \
          collection-langkorean \
@@ -269,6 +270,10 @@ function update_products () {
 
 function zip2itar () {
     zipfile="$1"
+
+    if [ ! -f "$zipfile" ] ; then
+        die "no such input file \"$zipfile\""
+    fi
 
     dir=$(cd $(dirname "$zipfile") && pwd)
     zipfull=$dir/$(basename "$zipfile")

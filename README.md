@@ -76,7 +76,7 @@ operation `./staging.sh make-base-zipfile $DESTPATH` will do this for the
 standard Tectonic base bundle, `tlextras`. It does so using the helper
 `./staging.sh make-installation`.
 
-For bundles to be hosted on the web, the operation `./staging.sh zip2iter`
+For bundles to be hosted on the web, the operation `./staging.sh zip2itar`
 will convert the resulting Zip file to the “indexed tar” format used for
 Web-based bundles. **TODO**: this is not adequately documented at all.
 

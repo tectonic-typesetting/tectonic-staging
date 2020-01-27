@@ -2,7 +2,7 @@
 
 This repository contains scripts for extracting files needed for
 [Tectonic](https://tectonic-typesetting.github.io) from
-[Norbert Preining’s Git mirror](http://git.preining.info/texlive/) of
+[Norbert Preining’s Git mirror](http://git.texlive.info/texlive/) of
 [the TeXLive Subversion repository](http://tug.org/svn/texlive/). The
 extracted files are essential to two aspects of Tectonic:
 
@@ -27,9 +27,9 @@ minimum:
 
 - An installation of [Docker](https://www.docker.com/).
 - A checkout of the Preining TeXLive Git repository
-  (`git://git.preining.info/texlive.git`), placed or symlinked in a
+  (`git://git.texlive.info/texlive.git`), placed or symlinked in a
   subdirectory named `state/repo` below this file. Be aware that this
-  repository currently weighs in at **30 gigabytes**!
+  repository currently weighs in at **40 gigabytes**!
 
 Data files associated with the staging process will land in other
 subdirectories of `state/`.

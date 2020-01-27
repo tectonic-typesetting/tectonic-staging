@@ -165,6 +165,7 @@ function make_base_zipfile () {
          collection-latex \
          collection-luatex \
          collection-mathextra \
+         collection-music \
          collection-plainextra \
          collection-publishers \
          collection-science \

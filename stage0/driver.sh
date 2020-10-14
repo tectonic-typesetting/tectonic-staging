@@ -34,6 +34,11 @@ fi
 
 state_dir="$topdir/state"
 
+docker_args=(
+    -v "$topdir":/source:ro,z
+    -v "$state_dir":/state:rw,z
+)
+
 
 # Commands
 
@@ -44,14 +49,14 @@ function build_image () {
 
 function builder_bash () {
     [ -d $state_dir/repo ] || die "no such directory $state_dir/repo"
-    exec docker run -it --rm -v $state_dir:/state:rw,z $image_name bash "$@"
+    exec docker run -it --rm "${docker_args[@]}" $image_name bash "$@"
 }
 
 
 function init_build() {
     [ -d $state_dir/repo ] || die "no such directory $state_dir/repo"
     [ ! -d $state_dir/rbuild ] || die "directory $state_dir/rbuild may not exist before starting build"
-    exec docker run -it --rm -v $state_dir:/state:rw,z $image_name init-build
+    exec docker run -it --rm "${docker_args[@]}" $image_name init-build
 }
 
 
@@ -59,7 +64,7 @@ function run_build() {
     [ -d $state_dir/repo ] || die "no such directory $state_dir/repo"
     [ -d $state_dir/rbuild ] || die "no such directory $state_dir/rbuild"
     echo "Building with logs to $state_dir/rbuild.log ..."
-    docker run -it --rm -v $state_dir:/state:rw,z $image_name bash -c 'cd /state/rbuild && make' \
+    docker run -it --rm "${docker_args[@]}" $image_name bash -c 'cd /state/rbuild && make' \
         &> $state_dir/rbuild.log \
         || die "build exited with an error code! consult the log file"
 }

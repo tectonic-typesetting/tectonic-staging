@@ -5,6 +5,7 @@
 
 FROM ubuntu:20.04
 
+VOLUME /source/
 VOLUME /state/
 
 COPY setup.sh /

@@ -27,6 +27,7 @@ libpoppler-dev
 libpoppler-private-dev
 libpotrace-dev
 libzzip-dev
+ninja-build
 python3
 texinfo
 wget

@@ -36,6 +36,7 @@ cp $src/texk/web2c/xetexdir/*.defines $out/xetexdir/
 
 mkdir -p $out/w2c
 cp $src/texk/web2c/w2c/*.h $out/w2c/
+cp $build/texk/web2c/w2c/*.h $out/w2c/
 
 # synctex
 
@@ -69,7 +70,7 @@ rm $out/libmd5/md5main.c
 mkdir -p $out/kpathsea
 cp $src/texk/kpathsea/*.c $out/kpathsea/
 cp $src/texk/kpathsea/*.h $out/kpathsea/
-cp $build/texk/kpathsea/kpathsea.h $out/kpathsea/
+cp $build/texk/kpathsea/*.h $out/kpathsea/
 for f in getopt.c getopt1.c kpsestat.c kpsewhich.c knj.c knj.h putenv.c readlink.c win32lib.c ; do
     rm $out/kpathsea/$f
 done
@@ -81,6 +82,7 @@ cp $src/libs/teckit/TECkit-src/source/Engine.cpp $out/teckit/
 cp $src/libs/teckit/TECkit-src/source/*.h $out/teckit/
 cp $src/libs/teckit/TECkit-src/source/NormalizationData.c $out/teckit/
 cp $src/libs/teckit/TECkit-src/source/Public-headers/*.h $out/teckit/
+cp $build/libs/teckit/*.h $out/teckit/
 
 # tie -- which is itself generated from another program, so its source comes
 # out of the build directory. We shouldn't need to go any farther down this
@@ -104,6 +106,7 @@ cp $src/texk/web2c/web2c/*.c $out/web2c/
 cp $src/texk/web2c/web2c/*.h $out/web2c/
 cp $src/texk/web2c/web2c/*.l $out/web2c/
 cp $src/texk/web2c/web2c/*.y $out/web2c/
+cp $src/texk/web2c/web2c/convert $out/web2c/
 rm $out/web2c/web2c-lexer.c $out/web2c/web2c-parser.c $out/web2c/web2c-parser.h
 
 # xdvipdfmx

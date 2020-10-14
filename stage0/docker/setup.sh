@@ -12,6 +12,7 @@ file
 flex
 git-core
 indent
+less
 libcairo2-dev
 libfreetype6-dev
 libgd-dev
@@ -29,6 +30,7 @@ libpotrace-dev
 libzzip-dev
 ninja-build
 python3
+ripgrep
 texinfo
 wget
 "

@@ -7,13 +7,7 @@ set -xeuo pipefail
 stage0dir="$(dirname $0)"
 statedir="$stage0dir/../state"
 
-# In order to get the stage1 build working nicely, we need to hack the "convert"
-# program a little bit. So export it into the repo so that we can manage those
-# hacks through Git's merge functionality.
-
-cp "$statedir/repo/Build/source/texk/web2c/web2c/convert" "$stage0dir/exports/web2c-convert"
-
-# Now, the many "outputs" that are not tracked in the repository itself.
+# The many "outputs" that are not tracked in the repository itself.
 
 cd "$statedir"
 

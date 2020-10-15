@@ -405,11 +405,13 @@ void error(void)
 
 void parsearguments(void)
 {
-    getoptstruct longoptions[noptions + 1];
-    integer getoptreturnval;
 #ifdef TECTONIC_STAGE4_UNDERSCORES
+    getopt_struct longoptions[noptions + 1];
+    integer getoptreturnval;
     c_int_type optionindex;
 #else
+    getoptstruct longoptions[noptions + 1];
+    integer getoptreturnval;
     cinttype optionindex;
 #endif
     integer currentoption;

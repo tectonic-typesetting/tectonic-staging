@@ -362,7 +362,7 @@ begin
   @<Define the option table@>;
   repeat
     getopt_return_val := getopt_long_only (argc, argv, '', long_options,
-                                           address_of (option_index));
+                                           addressof (option_index));
     if getopt_return_val = -1 then begin
       {End of arguments; we exit the loop below.} ;
 
@@ -421,7 +421,7 @@ incr (current_option);
 @<Define the option...@> =
 long_options[current_option].name := char_to_string ('x');
 long_options[current_option].has_arg := 0;
-long_options[current_option].flag := address_of (no_xref);
+long_options[current_option].flag := addressof (no_xref);
 long_options[current_option].val := 1;
 incr (current_option);
 
@@ -440,5 +440,5 @@ long_options[current_option].val := 0;
 @ Global filenames.
 
 @<Global...@> =
-@!web_name,@!chg_name,@!tex_name:const_c_string;
+@!web_name,@!chg_name,@!tex_name:const_cstring;
 @z

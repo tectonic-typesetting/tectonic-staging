@@ -184,13 +184,13 @@ BLOCK:
                  if (tex) {
                    if (uses_mem && uses_eqtb)
                     fprintf(coerce,
-             "#define %s_regmem register memoryword *mem=zmem, *eqtb=zeqtb;\n",
+             "#define %s_regmem register memory_word *mem=zmem, *eqtb=zeqtb;\n",
                        my_routine);
                    else if (uses_mem)
-          fprintf(coerce, "#define %s_regmem register memoryword *mem=zmem;\n",
+          fprintf(coerce, "#define %s_regmem register memory_word *mem=zmem;\n",
                           my_routine);
                    else if (uses_eqtb)
-        fprintf(coerce, "#define %s_regmem register memoryword *eqtb=zeqtb;\n",
+        fprintf(coerce, "#define %s_regmem register memory_word *eqtb=zeqtb;\n",
                           my_routine);
                    else
                      fprintf(coerce, "#define %s_regmem\n", my_routine);

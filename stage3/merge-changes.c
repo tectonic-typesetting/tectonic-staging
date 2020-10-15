@@ -405,11 +405,13 @@ void error(void)
 
 void parsearguments(void)
 {
-    getoptstruct longoptions[noptions + 1];
-    integer getoptreturnval;
 #ifdef TECTONIC_STAGE4_UNDERSCORES
+    getopt_struct longoptions[noptions + 1];
+    integer getoptreturnval;
     c_int_type optionindex;
 #else
+    getoptstruct longoptions[noptions + 1];
+    integer getoptreturnval;
     cinttype optionindex;
 #endif
     integer currentoption;
@@ -476,14 +478,14 @@ void parsearguments(void)
         usage("otangle");
     }
 #ifdef TECTONIC_STAGE4_UNDERSCORES
-    webname = extendfilename(cmdline(optind), "web");
-    if (optind + 2 == argc) {
-        chgname = extendfilename(cmdline(optind + 1), "ch");
-    }
-#else
     webname = extend_filename(cmdline(optind), "web");
     if (optind + 2 == argc) {
         chgname = extend_filename(cmdline(optind + 1), "ch");
+    }
+#else
+    webname = extendfilename(cmdline(optind), "web");
+    if (optind + 2 == argc) {
+        chgname = extendfilename(cmdline(optind + 1), "ch");
     }
 #endif
     pascalname = basenamechangesuffix(webname, ".web", ".p");

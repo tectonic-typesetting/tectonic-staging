@@ -7,17 +7,20 @@ aat_get_font_metrics
 aat_print_font_name
 a_close
 a_open_in
+a_open_in_with_dirname
 a_open_out
 apply_mapping
 apply_tfm_font_mapping
 b_close
 BIB_XRETALLOC
 BIB_XRETALLOC_NOSET
+BIB_XRETALLOC_STRING
 blank_rectangle
 b_open_in
 b_open_out
 call_edit
 cast_to_ushort
+char_to_string
 check_for_tfm_font_mapping
 clear_terminal
 const_cstring
@@ -66,6 +69,7 @@ get_ot_math_ital_corr
 get_ot_math_kern
 get_ot_math_variant
 getopt_long_only
+getopt_struct
 gr_font_get_named
 gr_font_get_named_1
 gr_print_font_name
@@ -228,6 +232,7 @@ unicode_file
 u_open_in
 u_open_out
 update_screen
+usage_help
 version_string
 void_pointer
 wake_up_terminal

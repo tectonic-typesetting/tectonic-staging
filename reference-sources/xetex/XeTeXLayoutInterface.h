@@ -160,8 +160,8 @@ uint32_t getGraphiteFeatureSettingCode(XeTeXLayoutEngine engine, uint32_t featur
 uint32_t getGraphiteFeatureDefaultSetting(XeTeXLayoutEngine engine, uint32_t feature);
 char* getGraphiteFeatureLabel(XeTeXLayoutEngine engine, uint32_t feature);
 char* getGraphiteFeatureSettingLabel(XeTeXLayoutEngine engine, uint32_t feature, uint32_t setting);
-long findGraphiteFeatureNamed(XeTeXLayoutEngine engine, const char* name, int namelength);
-long findGraphiteFeatureSettingNamed(XeTeXLayoutEngine engine, uint32_t feature, const char* name, int namelength);
+long findGraphiteFeatureNamed(XeTeXLayoutEngine engine, const char* name, int name_length);
+long findGraphiteFeatureSettingNamed(XeTeXLayoutEngine engine, uint32_t feature, const char* name, int name_length);
 
 #ifdef __cplusplus
 };

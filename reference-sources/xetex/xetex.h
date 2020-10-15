@@ -50,17 +50,15 @@ authorization from the copyright holders.
 
 #define set_justified_native_glyphs(p)             store_justified_native_glyphs(&(mem[p]))
 
-#define get_native_italic_correction(p)            real_get_native_italic_correction(&(mem[p]))
-#define get_native_glyph_italic_correction(p)       real_get_native_glyph_italic_correction(&(mem[p]))
+#define get_native_italic_correction(p)            get_native_italic_correction_impl(&(mem[p]))
+#define get_native_glyph_italic_correction(p)       get_native_glyph_italic_correction_impl(&(mem[p]))
 
-#define get_native_glyph(p,i)                     real_get_native_glyph(&(mem[p]), i)
+#define get_native_glyph(p,i)                     get_native_glyph_impl(&(mem[p]), i)
 
 #define make_xdv_glyph_array_data(p)                makeXDVGlyphArrayData(&(mem[p]))
 #define xdv_buffer_byte(i)                        xdv_buffer[i]
 
-#define getcpcode       get_cp_code
-#define setcpcode       set_cp_code
-#define get_native_word_cp(p,s)                    real_get_native_word_cp(&(mem[p]), s)
+#define get_native_word_cp(p,s)                    get_native_word_cp_impl(&(mem[p]), s)
 
 #define pic_node_size                           9
 
@@ -73,7 +71,7 @@ authorization from the copyright holders.
 #define dvi_open_out(f)                           open_dvi_output(&(f))
 
 #define null_ptr                                 (NULL)
-#define glyph_info_byte(p,k)                      ((unsigned char*)p)[k]
+#define glyphinfobyte(p,k)                      ((unsigned char*)p)[k]
 #define cast_to_ushort(x)                         (unsigned short)(x)
 
 /* easier to do the bit-twiddling here than in Pascal */
@@ -86,22 +84,6 @@ authorization from the copyright holders.
 #define set_class_field(x)                        (((unsigned)(x) & 0x07) << 21)
 
 /* aliases */
-#define getnativemathsyparam                    get_native_mathsy_param
-#define getnativemathexparam                    get_native_mathex_param
-#define getotmathconstant                       get_ot_math_constant
-#define getotmathvariant                        get_ot_math_variant
-#define getotassemblyptr                        get_ot_assembly_ptr
-#define freeotassembly                          free_ot_assembly
-#define getotmathitalcorr                       get_ot_math_ital_corr
-#define getotmathaccentpos                      get_ot_math_accent_pos
-#define getotmathkern                           get_ot_math_kern
-#define otpartcount                             ot_part_count
-#define otpartglyph                             ot_part_glyph
-#define otpartisextender                        ot_part_is_extender
-#define otpartstartconnector                    ot_part_start_connector
-#define otpartendconnector                      ot_part_end_connector
-#define otpartfulladvance                       ot_part_full_advance
-#define otminconnectoroverlap                   ot_min_connector_overlap
 /* prototypes used in xetex.web */
 #include "XeTeXOTMath.h"
 

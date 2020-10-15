@@ -15,16 +15,15 @@
 /* We must include this first, to resolve many C issues.  */
 #include <w2c/config.h>
 
+/* We only use getopt in the applications, not in web2c itself.  */
+#include <kpathsea/getopt.h>
+
 /* Almost everybody needs path searching.  May as well always include
    them and simplify the change files.  */
-#include <tidy_kpathutil/public.h>
-#include <tidy_kpathsea/public.h>
-
-/* bits from kpathsea/lib.h that are generic */
-/* (Re)Allocate N items of type T using xmalloc/xrealloc.  */
-#define XTALLOC(n, t) ((t *) xmalloc ((n) * sizeof (t)))
-#define XTALLOC1(t) XTALLOC (1, t)
-#define XRETALLOC(addr, n, t) ((addr) = (t *) xrealloc (addr, (n) * sizeof(t)))
+#include <kpathsea/progname.h>
+#include <kpathsea/proginit.h>
+#include <kpathsea/tex-file.h>
+#include <kpathsea/variable.h>
 
 /* Help messages.  */
 #include "help.h"
@@ -56,10 +55,10 @@
 #define maxint INTEGER_MAX
 #define nil NULL
 
-#define floorunscaled(i) ((i)>>16)
-#define floorscaled(i) ((i)&(-65536))
-#define roundunscaled(i) ((((i)>>15)+1)>>1)
-#define roundfraction(i) ((((i)>>11)+1)>>1)
+#define floor_unscaled(i) ((i)>>16)
+#define floor_scaled(i) ((i)&(-65536))
+#define round_unscaled(i) ((((i)>>15)+1)>>1)
+#define round_fraction(i) ((((i)>>11)+1)>>1)
 #ifndef TeX
 /* In TeX, the half routine is always applied to positive integers.
    In MF and MP, it isn't; therefore, we can't portably use the C shift
@@ -79,8 +78,8 @@
    spend any more time on it.  */
 #define reset(f,n) f = xfopen (n, FOPEN_R_MODE)
 #define rewrite(f,n) f = xfopen (n, FOPEN_W_MODE)
-#define resetbin(f,n) f = xfopen (n, FOPEN_RBIN_MODE)
-#define rewritebin(f,n) f = xfopen (n, FOPEN_WBIN_MODE)
+#define reset_bin(f,n) f = xfopen (n, FOPEN_RBIN_MODE)
+#define rewrite_bin(f,n) f = xfopen (n, FOPEN_WBIN_MODE)
 
 #if defined(read)
 #undef read
@@ -103,7 +102,6 @@ typedef FILE *text;
 /* Pascal has no address-of operator, and we need pointers to integers
    to set up the option table.  */
 #define addressof(x) (&(x))
-#define address_of(x) (&(x))
 
 /* So dvicopy can use stdin/stdout.  */
 #if defined (__DJGPP__) || defined (WIN32)
@@ -116,7 +114,7 @@ typedef FILE *text;
 
 /* It's not worth fixing fixwrites to handle Pascal-style n:m write
    specifiers for reals, so the change files call print_real instead.  */
-#define printreal(r,n,m) fprintreal (stdout, r, n, m)
+#define print_real(r,n,m) fprintreal (stdout, r, n, m)
 
 /* Write the byte X to the file F.  */
 #define put_byte(x,f) \
@@ -137,9 +135,9 @@ typedef FILE *text;
    aren't worth checking the return value on.  */
 #define Fputs(f,s) (void) fputs (s, f)
 
-/* `aopenin' is used for all kinds of input text files, so it
+/* `a_open_in' is used for all kinds of input text files, so it
    needs to know what path to use.  Used by BibTeX, MF, TeX.  */
-#define a_open_in(f,p) open_input (&(f), p, FOPEN_RBIN_MODE)
+#define a_open_in(f,p) open_input_impl (&(f), p, FOPEN_RBIN_MODE)
 #define a_open_out(f)  open_output (&(f), FOPEN_W_MODE)
 #define a_close close_file
 
@@ -151,9 +149,9 @@ typedef FILE *text;
     FATAL_PERROR ("fwrite");
 
 #ifdef GFTODVI
-#define writedvi WRITE_OUT 
-#define OUT_FILE dvifile
-#define OUT_BUF dvibuf
+#define write_dvi WRITE_OUT 
+#define OUT_FILE dvi_file
+#define OUT_BUF dvi_buf
 #endif
 
 /* PatGen 2 uses this.  */
@@ -190,16 +188,14 @@ typedef FILE *text;
   fprintf (log_file, "Reallocated %s (elt_size=%ld) to %ld items from %ld.\n", \
            array_name, (long) (length + 1), (long) new_size, (long) size_var); \
   XRETALLOC (array_var, (new_size) * (length + 1), ASCII_code)
-
+  
 /* Need precisely int for getopt, etc. */
-#define cinttype int
 #define c_int_type int
 
 /* Need this because web2c doesn't translate `var1,var2:^char' correctly
    -- var2 lacks the *.  */
 #define cstring string
 
-#define constcstring const_string
 #define const_cstring const_string
 
 /* For strings of unsigned chars, used as array indices.  */
@@ -240,18 +236,8 @@ typedef const unsigned char *const_w2custring;
 
 /* Tangle removes underscores from names.  Put them back for things that
    are defined in C with _'s.  */
-#define extendfilename	extend_filename
-#define findsuffix	find_suffix
-#define makesuffix	make_suffix
-#define FOPENRBINMODE	FOPEN_RBIN_MODE
-#define FOPENRMODE	FOPEN_R_MODE
-#define getoptlongonly	getopt_long_only
-#define hasarg		has_arg
-#define ISDIRSEP	IS_DIR_SEP
-#define recorderchangefilename	recorder_change_filename
 
 /* We need a new type for the argument parsing, too.  */
-typedef struct option getoptstruct;
 typedef struct option getopt_struct;
 
 /* We never need the `link' system call, which may be declared in

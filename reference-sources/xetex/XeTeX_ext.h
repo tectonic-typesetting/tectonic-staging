@@ -38,7 +38,7 @@ authorization from the copyright holders.
 #include <unicode/utypes.h>
 
 #ifndef XETEX_UNICODE_FILE_DEFINED
-typedef struct UFILE* unicodefile;
+typedef struct UFILE* unicode_file;
 #endif
 
 #define AAT_FONT_FLAG   0xFFFFU
@@ -195,13 +195,13 @@ extern "C" {
 #endif
     void initversionstring(char **versions);
 
-    void set_input_file_encoding(unicodefile f, integer mode, integer encodingData);
-    void u_close(unicodefile f);
+    void set_input_file_encoding(unicode_file f, integer mode, integer encodingData);
+    void u_close(unicode_file f);
     void linebreak_start(int f, integer localeStrNum, uint16_t* text, integer textLength);
     int linebreak_next(void);
     int get_encoding_mode_and_info(integer* info);
     void print_utf8_str(const unsigned char* str, int len);
-    void print_chars(const unsigned short* str, int len);
+    void printchars(const unsigned short* str, int len);
     void* find_native_font(unsigned char* name, integer scaled_size);
     void release_font_engine(void* engine, int type_flag);
     int readCommonFeatures(const char* feat, const char* end, float* extend, float* slant, float* embolden, float* letterspace, uint32_t* rgbValue);
@@ -228,15 +228,15 @@ extern "C" {
     int apply_mapping(void* cnv, uint16_t* txtPtr, int txtLen);
     void store_justified_native_glyphs(void* node);
     void measure_native_node(void* node, int use_glyph_metrics);
-    Fixed real_get_native_italic_correction(void* node);
-    Fixed real_get_native_glyph_italic_correction(void* node);
-    integer real_get_native_word_cp(void* node, int side);
+    Fixed get_native_italic_correction_impl(void* node);
+    Fixed get_native_glyph_italic_correction_impl(void* node);
+    integer get_native_word_cp_impl(void* node, int side);
     void measure_native_glyph(void* node, int use_glyph_metrics);
     integer map_char_to_glyph(integer font, integer ch);
     integer map_glyph_to_index(integer font);
     integer get_font_char_range(integer font, int first);
     void print_glyph_name(integer font, integer gid);
-    uint16_t real_get_native_glyph(void* pNode, unsigned index);
+    uint16_t get_native_glyph_impl(void* pNode, unsigned index);
 
     void gr_print_font_name(integer what, void* pEngine, integer param1, integer param2);
     integer gr_font_get_named(integer what, void* pEngine);
@@ -247,7 +247,7 @@ extern "C" {
 
     int count_pdf_file_pages(void);
     int find_pic_file(char** path, real_rect* bounds, int pdfBoxType, int page);
-    int real_u_open_in(unicodefile* f, integer filefmt, const char* fopen_mode, integer mode, integer encodingData);
+    int u_open_in_impl(unicode_file* f, integer filefmt, const char* fopen_mode, integer mode, integer encodingData);
     int open_dvi_output(FILE** fptr);
     int dvi_close(FILE* fptr);
     int get_uni_c(UFILE* f);

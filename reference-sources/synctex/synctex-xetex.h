@@ -52,7 +52,7 @@ Thu Jun 19 09:39:21 UTC 2008
 
 #  include <xetexdir/xetexextra.h>
 
-/* We observe nopdfoutput in order to determine whether output mode is
+/* We observe no_pdf_output in order to determine whether output mode is
  * pdf or xdv. */
 #  define SYNCTEX_OFFSET_IS_PDF (no_pdf_output==0)
 #  define SYNCTEX_OUTPUT (no_pdf_output!=0?"xdv":"pdf")

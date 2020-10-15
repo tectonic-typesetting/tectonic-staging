@@ -3,7 +3,5 @@
 
 typedef union {
    scaled sc;
-   fourquarters qqqq;
-} memoryword;
-
-typedef memoryword memory_word;
+   four_quarters qqqq;
+} memory_word;

@@ -44,7 +44,7 @@ authorization from the copyright holders.
 #include <hb-ot.h>
 
 // see cpascal.h
-#define printcstring(STR)        \
+#define print_c_string(STR)        \
   do {                           \
     const char* ch_ptr = (STR);  \
     while (*ch_ptr)              \
@@ -389,8 +389,8 @@ XeTeXFontMgr::findFont(const char* name, char* variant, double ptSize)
     if (get_tracing_fonts_state() > 0) {
         begin_diagnostic();
         zprint_nl(' ');
-        printcstring("-> ");
-        printcstring(getPlatformFontDesc(font->fontRef).c_str());
+        print_c_string("-> ");
+        print_c_string(getPlatformFontDesc(font->fontRef).c_str());
         zend_diagnostic(0);
     }
 

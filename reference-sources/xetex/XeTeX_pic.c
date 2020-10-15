@@ -41,8 +41,11 @@ XeTeX_pic.c
 
 #include "XeTeX_ext.h"
 
-#include <tidy_kpathutil/public.h>
-#include <tidy_kpathsea/public.h>
+#include <kpathsea/c-ctype.h>
+#include <kpathsea/line.h>
+#include <kpathsea/readable.h>
+#include <kpathsea/variable.h>
+#include <kpathsea/absolute.h>
 
 #include "pdfimage.h"
 #include "image/pngimage.h"
@@ -66,7 +69,7 @@ count_pdf_file_pages(void)
 
 
 /*
-	locate picture file from /nameoffile+1/ using kpathsearch
+	locate picture file from /name_of_file+1/ using kpathsearch
 	pdfBoxType indicates which pdf bounding box to use (0 for \XeTeXpicfile)
 	page indicates which page is wanted (0-based)
 	return 0 for success, or non-zero error code for failure

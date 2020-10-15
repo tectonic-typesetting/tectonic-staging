@@ -75,7 +75,7 @@ public:
         // SIDE EFFECT: sets sReqEngine to 'A' or 'O' or 'G' if appropriate,
         //   else clears it to 0
 
-        // SIDE EFFECT: updates TeX variables /nameoffile/ and /namelength/,
+        // SIDE EFFECT: updates TeX variables /name_of_file/ and /name_length/,
         //   to match the actual font found
 
         // SIDE EFFECT: edits /variant/ string in-place removing /B or /I

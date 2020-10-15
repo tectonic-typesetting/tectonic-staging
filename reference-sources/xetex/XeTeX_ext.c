@@ -61,8 +61,14 @@ authorization from the copyright holders.
 
 #include <teckit/TECkit_Engine.h>
 
-#include <tidy_kpathutil/public.h>
-#include <tidy_kpathsea/public.h>
+#include <kpathsea/c-ctype.h>
+#include <kpathsea/line.h>
+#include <kpathsea/readable.h>
+#include <kpathsea/variable.h>
+#include <kpathsea/absolute.h>
+#if defined(WIN32)
+#include <kpathsea/concatn.h>
+#endif
 
 #include <math.h> /* for fabs() */
 
@@ -536,7 +542,7 @@ int
 get_encoding_mode_and_info(integer* info)
 {
     /* \XeTeXinputencoding "enc-name"
-     *   -> name is packed in |nameoffile| as a C string, starting at [1]
+     *   -> name is packed in |name_of_file| as a C string, starting at [1]
      * Check if it's a built-in name; if not, try to open an ICU converter by that name
      */
     UErrorCode err = U_ZERO_ERROR;
@@ -591,7 +597,7 @@ print_utf8_str(const unsigned char* str, int len)
 }
 
 void
-print_chars(const unsigned short* str, int len)
+printchars(const unsigned short* str, int len)
 {
     while (len-- > 0)
         print_char(*(str++));
@@ -1526,7 +1532,7 @@ makeXDVGlyphArrayData(void* pNode)
 {
     unsigned char* cp;
     uint16_t* glyphIDs;
-    memoryword* p = (memoryword*) pNode;
+    memory_word* p = (memory_word*) pNode;
     void* glyph_info;
     FixedPoint* locations;
     Fixed width;
@@ -1920,9 +1926,9 @@ getnativecharwd(integer f, integer c)
 }
 
 uint16_t
-real_get_native_glyph(void* pNode, unsigned index)
+get_native_glyph_impl(void* pNode, unsigned index)
 {
-    memoryword* node = (memoryword*)pNode;
+    memory_word* node = (memory_word*)pNode;
     FixedPoint* locations = (FixedPoint*)native_glyph_info_ptr(node);
     uint16_t* glyphIDs = (uint16_t*)(locations + native_glyph_count(node));
     if (index >= native_glyph_count(node))
@@ -1934,7 +1940,7 @@ real_get_native_glyph(void* pNode, unsigned index)
 void
 store_justified_native_glyphs(void* pNode)
 {
-    memoryword* node = (memoryword*)pNode;
+    memory_word* node = (memory_word*)pNode;
     unsigned f = native_font(node);
 
 #ifdef XETEX_MAC /* separate Mac-only codepath for AAT fonts */
@@ -1986,7 +1992,7 @@ store_justified_native_glyphs(void* pNode)
 void
 measure_native_node(void* pNode, int use_glyph_metrics)
 {
-    memoryword* node = (memoryword*)pNode;
+    memory_word* node = (memory_word*)pNode;
     int txtLen = native_length(node);
     uint16_t* txtPtr = (uint16_t*)(node + native_node_size);
 
@@ -2183,9 +2189,9 @@ measure_native_node(void* pNode, int use_glyph_metrics)
 }
 
 Fixed
-real_get_native_italic_correction(void* pNode)
+get_native_italic_correction_impl(void* pNode)
 {
-    memoryword* node = (memoryword*) pNode;
+    memory_word* node = (memory_word*) pNode;
     unsigned f = native_font(node);
     unsigned n = native_glyph_count(node);
     if (n > 0) {
@@ -2207,9 +2213,9 @@ real_get_native_italic_correction(void* pNode)
 
 
 Fixed
-real_get_native_glyph_italic_correction(void* pNode)
+get_native_glyph_italic_correction_impl(void* pNode)
 {
-    memoryword* node = (memoryword*) pNode;
+    memory_word* node = (memory_word*) pNode;
     uint16_t gid = native_glyph(node);
     unsigned f = native_font(node);
 
@@ -2226,7 +2232,7 @@ real_get_native_glyph_italic_correction(void* pNode)
 void
 measure_native_glyph(void* pNode, int use_glyph_metrics)
 {
-    memoryword* node = (memoryword*) pNode;
+    memory_word* node = (memory_word*) pNode;
     uint16_t gid = native_glyph(node);
     unsigned f = native_font(node);
 
@@ -2548,7 +2554,7 @@ aat_print_font_name(int what, CFDictionaryRef attributes, int param1, int param2
         CFIndex len = CFStringGetLength(name);
         UniChar* buf = xcalloc(len, sizeof(UniChar));
         CFStringGetCharacters(name, CFRangeMake(0, len), buf);
-        print_chars(buf, len);
+        printchars(buf, len);
         free(buf);
     }
 #endif
@@ -2576,15 +2582,15 @@ print_glyph_name(integer font, integer gid)
 }
 
 int
-real_u_open_in(unicodefile* f, integer filefmt, const_string fopen_mode, integer mode, integer encodingData)
+u_open_in_impl(unicode_file* f, integer filefmt, const_string fopen_mode, integer mode, integer encodingData)
 {
     boolean rval;
-    *f = (unicodefile) xmalloc(sizeof(UFILE));
+    *f = (unicode_file) xmalloc(sizeof(UFILE));
     (*f)->encodingMode = 0;
     (*f)->conversionData = 0;
     (*f)->savedChar = -1;
     (*f)->skipNextLF = 0;
-    rval = open_input (&((*f)->f), filefmt, fopen_mode);
+    rval = open_input_impl (&((*f)->f), filefmt, fopen_mode);
     if (rval) {
         int B1, B2;
         if (mode == AUTO) {
@@ -2903,9 +2909,9 @@ make_utf16_name(void)
 }
 
 
-integer real_get_native_word_cp(void* pNode, int side)
+integer get_native_word_cp_impl(void* pNode, int side)
 {
-    memoryword* node = (memoryword*)pNode;
+    memory_word* node = (memory_word*)pNode;
     FixedPoint* locations = (FixedPoint*)native_glyph_info_ptr(node);
     uint16_t* glyphIDs = (uint16_t*)(locations + native_glyph_count(node));
     uint16_t glyphCount = native_glyph_count(node);

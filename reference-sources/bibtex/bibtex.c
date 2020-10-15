@@ -9085,17 +9085,17 @@ void setup_params(void)
     kpse_set_program_name(argv[0], "bibtex");
     bound_default = ENT_STR_SIZE;
     bound_name = "ent_str_size";
-    setup_bound_variable(address_of(ent_str_size), bound_name, bound_default);
+    setup_bound_variable(addressof(ent_str_size), bound_name, bound_default);
     if (ent_str_size < bound_default)
         ent_str_size = bound_default;
     bound_default = GLOB_STR_SIZE;
     bound_name = "glob_str_size";
-    setup_bound_variable(address_of(glob_str_size), bound_name, bound_default);
+    setup_bound_variable(addressof(glob_str_size), bound_name, bound_default);
     if (glob_str_size < bound_default)
         glob_str_size = bound_default;
     bound_default = MAX_STRINGS;
     bound_name = "max_strings";
-    setup_bound_variable(address_of(max_strings), bound_name, bound_default);
+    setup_bound_variable(addressof(max_strings), bound_name, bound_default);
     if (max_strings < bound_default)
         max_strings = bound_default;
     hash_size = max_strings;
@@ -9553,7 +9553,7 @@ void parse_arguments(void)
     current_option = 0;
     long_options[0].name = "terse";
     long_options[0].has_arg = 0;
-    long_options[0].flag = address_of(verbose);
+    long_options[0].flag = addressof(verbose);
     long_options[0].val = 0;
     current_option = current_option + 1;
     long_options[current_option].name = "min-crossrefs";
@@ -9576,7 +9576,7 @@ void parse_arguments(void)
     long_options[current_option].flag = 0;
     long_options[current_option].val = 0;
     do {
-        getopt_return_val = getopt_long_only(argc, argv, "", long_options, address_of(option_index));
+        getopt_return_val = getopt_long_only(argc, argv, "", long_options, addressof(option_index));
         if (getopt_return_val == -1) {
             ;
         } else if (getopt_return_val == 63 /*"?" */ ) {

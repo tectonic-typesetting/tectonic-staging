@@ -52,32 +52,32 @@
                                                                                                                                                                                   I would appreciate to be listed as contributor and see "SyncTeX" highlighted. Notice:
                                                                                                                                                                                   -------
                                                                                                                                                                                   This file is an interface to the synctex system for web2c. It declares the public functions API of synctex.c. It is always embedded as common definitions when convert'ing
-                                                                                                                                                                  from web to c (See the convert shell script). *//* functions from the synctex controller in synctex.c *//* end of synctex.defines *//* vim: set syntax=web : *//*
-                                                                                                                                                                  Part of the XeTeX typesetting system
-                                                                                                                                                                  Copyright (c) 1994-2008 by SIL International
-                                                                                                                                                                  Copyright (c) 2009 by Jonathan Kew
+                                                                                                                                                                         from web to c (See the convert shell script). *//* functions from the synctex controller in synctex.c *//* end of synctex.defines *//* vim: set syntax=web : *//*
+                                                                                                                                                                         Part of the XeTeX typesetting system
+                                                                                                                                                                         Copyright (c) 2009-2019 by Jonathan Kew
+                                                                                                                                                                         Copyright (c) 1994-2008 by SIL International
 
-                                                                                                                                                                  SIL Author(s): Jonathan Kew
+                                                                                                                                                                         SIL Author(s): Jonathan Kew
 
-                                                                                                                                                                  Permission is hereby granted, free of charge, to any person obtaining
-                                                                                                                                                                  a copy of this software and associated documentation files (the
-                                                                                                                                                                  "Software"), to deal in the Software without restriction, including
-                                                                                                                                                                  without limitation the rights to use, copy, modify, merge, publish,
-                                                                                                                                                                  distribute, sublicense, and/or sell copies of the Software, and to
-                                                                                                                                                                  permit persons to whom the Software is furnished to do so, subject to
-                                                                                                                                                                  the following conditions:
+                                                                                                                                                                         Permission is hereby granted, free of charge, to any person obtaining
+                                                                                                                                                                         a copy of this software and associated documentation files (the
+                                                                                                                                                                         "Software"), to deal in the Software without restriction, including
+                                                                                                                                                                         without limitation the rights to use, copy, modify, merge, publish,
+                                                                                                                                                                         distribute, sublicense, and/or sell copies of the Software, and to
+                                                                                                                                                                         permit persons to whom the Software is furnished to do so, subject to
+                                                                                                                                                                         the following conditions:
 
-                                                                                                                                                                  The above copyright notice and this permission notice shall be
-                                                                                                                                                                  included in all copies or substantial portions of the Software. THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND,
-                                                                                                                                                                  EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF
-                                                                                                                                                                  MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND
-                                                                                                                                                                  NONINFRINGEMENT. IN NO EVENT SHALL THE COPYRIGHT HOLDERS BE LIABLE
-                                                                                                                                                                  FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF
-                                                                                                                                                                  CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION
-                                                                                                                                                                  WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE. Except as contained in this notice, the name of the copyright holders
-                                                                                                                                                                  shall not be used in advertising or otherwise to promote the sale,
-                                                                                                                                                                  use or other dealings in this Software without prior written
-                                                                                                                                         authorization from the copyright holders. *//* xetex.defines: additions for xetex *//* extra stuff used in picfile code *//*4: *//*9: *//*$C-,A+,D- */
+                                                                                                                                                                         The above copyright notice and this permission notice shall be
+                                                                                                                                                                         included in all copies or substantial portions of the Software. THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND,
+                                                                                                                                                                         EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF
+                                                                                                                                                                         MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND
+                                                                                                                                                                         NONINFRINGEMENT. IN NO EVENT SHALL THE COPYRIGHT HOLDERS BE LIABLE
+                                                                                                                                                                         FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF
+                                                                                                                                                                         CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION
+                                                                                                                                                                         WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE. Except as contained in this notice, the name of the copyright holders
+                                                                                                                                                                         shall not be used in advertising or otherwise to promote the sale,
+                                                                                                                                                                         use or other dealings in this Software without prior written
+                                                                                                                                                authorization from the copyright holders. *//* xetex.defines: additions for xetex *//* extra stuff used in picfile code *//*4: *//*9: *//*$C-,A+,D- */
 #ifdef TEXMF_DEBUG
 /*$C+,D+*/
 #endif                          /* TEXMF_DEBUG */
@@ -221,10 +221,10 @@ integer nest_size;
 integer save_size;
 integer dvi_buf_size;
 integer expand_depth;
-cinttype parse_first_line_p;
-cinttype file_line_error_style_p;
-cinttype eight_bit_p;
-cinttype halt_on_error_p;
+c_int_type parse_first_line_p;
+c_int_type file_line_error_style_p;
+c_int_type eight_bit_p;
+c_int_type halt_on_error_p;
 boolean quoted_filename;
 boolean src_specials_p;
 boolean insert_src_special_auto;
@@ -536,7 +536,7 @@ integer hyph_next;
 #ifdef INITEX
 integer
 #define trie_op_hash (zzzab - (int)(neg_trie_op_size))
-    zzzab[trie_op_size - neg_trie_op_size + 1];
+ zzzab[trie_op_size - neg_trie_op_size + 1];
 trie_opcode trie_used[256];
 unsigned char /*biggest_lang */ trie_op_lang[trie_op_size + 1];
 trie_opcode trie_op_val[trie_op_size + 1];
@@ -634,12 +634,12 @@ trie_pointer hyph_index;
 halfword disc_ptr[4];
 pool_pointer edit_name_start;
 integer edit_name_length, edit_line;
-cinttype ipc_on;
+c_int_type ipc_on;
 boolean stop_at_space;
 str_number save_str_ptr;
 pool_pointer save_pool_ptr;
-cinttype shellenabledp;
-cinttype restrictedshell;
+c_int_type shellenabledp;
+c_int_type restrictedshell;
 char *output_comment;
 unsigned char k, l;
 boolean debug_format_file;

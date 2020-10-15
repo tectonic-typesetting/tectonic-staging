@@ -3,8 +3,8 @@
    that the (un)dumping routines do suffices to put things in the right
    place in memory.
 
-   A memory_word can be broken up into a `twohalves' or a
-   `fourquarters', and a `twohalves' can be further broken up.  Here is
+   A memory_word can be broken up into a `two_halves' or a
+   `four_quarters', and a `two_halves' can be further broken up.  Here is
    a picture.  ..._M = most significant byte, ..._L = least significant
    byte.
    
@@ -12,17 +12,17 @@
    this leads to further complications:
    
    BigEndian:
-   twohalves.v:  RH_MM RH_ML RH_LM RH_LL LH_MM LH_ML LH_LM LH_LL
-   twohalves.u:  ---------JUNK----------  B0         B1
-   fourquarters:   B0    B1    B2    B3
+   two_halves.v:  RH_MM RH_ML RH_LM RH_LL LH_MM LH_ML LH_LM LH_LL
+   two_halves.u:  ---------JUNK----------  B0         B1
+   four_quarters:   B0    B1    B2    B3
 
    LittleEndian:
-   twohalves.v:  LH_LL LH_LM LH_ML LH_MM RH_LL RH_LM RH_ML RH_MM
-   twohalves.u:  B1          B0
-   fourquarters: ---------JUNK----------  B3    B2    B1    B0
+   two_halves.v:  LH_LL LH_LM LH_ML LH_MM RH_LL RH_LM RH_ML RH_MM
+   two_halves.u:  B1          B0
+   four_quarters: ---------JUNK----------  B3    B2    B1    B0
 
    I guess TeX and Metafont never refer to the B1 and B0 in the
-   fourquarters structure as the B1 and B0 in the twohalves.u structure.
+   four_quarters structure as the B1 and B0 in the two_halves.u structure.
    
    The B0 and B1 fields are declared short instead of quarterword,
    because they are used in character nodes to store a font number and a
@@ -34,27 +34,27 @@
    done to handle >256 fonts):
    
    If BigEndian:
-   twohalves.v:  RH_M  RH_L  LH_M  LH_L
-   twohalves.u:  JNK1  JNK2    B0    B1
-   fourquarters:   B0    B1    B2    B3
+   two_halves.v:  RH_M  RH_L  LH_M  LH_L
+   two_halves.u:  JNK1  JNK2    B0    B1
+   four_quarters:   B0    B1    B2    B3
    
    If LittleEndian:
-   twohalves.v:  LH_L  LH_M  RH_L  RH_M
-   twohalves.u:    B1    B0  JNK1  JNK2
-   fourquarters:   B3    B2    B1    B0
+   two_halves.v:  LH_L  LH_M  RH_L  RH_M
+   two_halves.u:    B1    B0  JNK1  JNK2
+   four_quarters:   B3    B2    B1    B0
    
    In Aleph, quarterwords are two octets, so the picture becomes simpler:
    
    BigEndian:
-   twohalves.v:  RH_MM RH_ML RH_LM RH_LL LH_MM LH_ML LH_LM LH_LL
-   twohalves.u:  ---------JUNK---------- ----B0----- ----B1-----
-   fourquarters: ----B0----- ----B1----- ----B2----- ----B3-----
+   two_halves.v:  RH_MM RH_ML RH_LM RH_LL LH_MM LH_ML LH_LM LH_LL
+   two_halves.u:  ---------JUNK---------- ----B0----- ----B1-----
+   four_quarters: ----B0----- ----B1----- ----B2----- ----B3-----
    twoints:      ---------CINT0--------- ---------CINT1---------
    
    LittleEndian:
-   twohalves.v:  LH_LL LH_LM LH_ML LH_MM RH_LL RH_LM RH_ML RH_MM
-   twohalves.u:  ----B1----- ----B0-----
-   fourquarters: ----B3----- ----B2----- ----B1----- ----B0-----
+   two_halves.v:  LH_LL LH_LM LH_ML LH_MM RH_LL RH_LM RH_ML RH_MM
+   two_halves.u:  ----B1----- ----B0-----
+   four_quarters: ----B3----- ----B2----- ----B1----- ----B0-----
    twoints:      ---------CINT1--------- ---------CINT0---------
    
    This file can't be part of texmf.h, because texmf.h gets included by
@@ -90,9 +90,7 @@ typedef union
 #endif /* big memory words */
 #endif /* LittleEndian */
   } u;
-} twohalves;
-
-typedef twohalves two_halves;
+} two_halves;
 
 typedef struct
 {
@@ -104,24 +102,22 @@ typedef struct
     quarterword B3, B2, B1, B0;
 #endif
   } u;
-} fourquarters;
-
-typedef fourquarters four_quarters;
+} four_quarters;
 
 typedef union
 {
 #ifdef TeX
   glueratio gr;
-  twohalves hh;
+  two_halves hh;
 #else
-  twohalves hhfield;
+  two_halves hhfield;
 #endif
 #ifdef XeTeX
-  voidpointer ptr;
+  void_pointer ptr;
 #endif
 #ifdef WORDS_BIGENDIAN
   integer cint;
-  fourquarters qqqq;
+  four_quarters qqqq;
 #else /* not WORDS_BIGENDIAN */
   struct
   {
@@ -138,12 +134,10 @@ typedef union
     halfword junk;
 #endif /* big {TeX,MF,MP} */
 #endif
-    fourquarters QQQQ;
+    four_quarters QQQQ;
   } v;
 #endif /* not WORDS_BIGENDIAN */
-} memoryword;
-
-typedef memoryword memory_word;
+} memory_word;
 
 
 /* fmemory_word for font_list; needs to be only four bytes.  This saves
@@ -152,7 +146,7 @@ typedef union
 {
 #ifdef WORDS_BIGENDIAN
   integer cint;
-  fourquarters qqqq;
+  four_quarters qqqq;
 #else /* not WORDS_BIGENDIAN */
   struct
   {
@@ -164,12 +158,10 @@ typedef union
 
   struct
   {
-    fourquarters QQQQ;
+    four_quarters QQQQ;
   } v;
 #endif /* not WORDS_BIGENDIAN */
-} fmemoryword;
-
-typedef fmemoryword fmemory_word;
+} fmemory_word;
 
 /* To keep the original structure accesses working, we must go through
    the extra names C forced us to introduce.  */
@@ -216,7 +208,7 @@ typedef union
 #endif /* big memory words */
 #endif /* LittleEndian */
   } u;
-} twohalves;
+} two_halves;
 
 typedef struct
 {
@@ -228,7 +220,7 @@ typedef struct
     quarterword B3, B2, B1, B0;
 #endif
   } u;
-} fourquarters;
+} four_quarters;
 
 typedef struct
 {
@@ -246,11 +238,11 @@ typedef struct
 
 typedef union
 {
-  twohalves hh;
-  fourquarters qqqq;
+  two_halves hh;
+  four_quarters qqqq;
   twoints ii;
   glues gg;
-} memoryword;
+} memory_word;
 
 #define b0 u.B0
 #define b1 u.B1

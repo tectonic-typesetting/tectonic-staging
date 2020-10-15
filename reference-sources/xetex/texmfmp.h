@@ -3,8 +3,8 @@
    output by web2c.  */
 
 #include "cpascal.h"
-#include <tidy_kpathutil/public.h>
-#include <tidy_kpathsea/public.h>
+#include <kpathsea/c-pathch.h> /* for IS_DIR_SEP, used in the change files */
+#include <kpathsea/tex-make.h> /* for kpse_make_tex_discard_errors */
 
 #ifdef XeTeX
 #ifdef XETEX_MAC
@@ -13,7 +13,7 @@
  * http://llvm.org/bugs/show_bug.cgi?id=14964 */
 #include <ApplicationServices/ApplicationServices.h>
 #endif
-/* added typedefs for unicodefile and voidpointer */
+/* added typedefs for unicode_file and void_pointer */
 #define XETEX_UNICODE_FILE_DEFINED	1
 typedef struct {
   FILE *f;
@@ -22,11 +22,9 @@ typedef struct {
   short encodingMode;
   void *conversionData;
 } UFILE;
-typedef UFILE* unicodefile;
-typedef unicodefile unicode_file;
+typedef UFILE* unicode_file;
 
-typedef void* voidpointer;
-typedef voidpointer void_pointer;
+typedef void* void_pointer;
 #endif
 
 /* If we have these macros, use them, as they provide a better guide to
@@ -84,14 +82,33 @@ typedef voidpointer void_pointer;
 #define TEXMF_ENGINE_NAME "tex"
 #endif
 #define DUMP_FILE fmt_file
+#define DUMP_FORMAT kpse_fmt_format
 #define write_dvi WRITE_OUT
 #define flush_dvi flush_out
 #define OUT_FILE dvi_file
 #define OUT_BUF dvi_buf
 #endif /* TeX */
+#ifdef MF
+#if defined(MFLua)
+#define TEXMF_POOL_NAME "mflua.pool"
+#define TEXMF_ENGINE_NAME "mflua"
+#elif defined(MFLuaJIT)
+#define TEXMF_POOL_NAME "mfluajit.pool"
+#define TEXMF_ENGINE_NAME "mfluajit"
+#else
+#define TEXMF_POOL_NAME "mf.pool"
+#define TEXMF_ENGINE_NAME "metafont"
+#endif
+#define DUMP_FILE basefile
+#define DUMP_FORMAT kpse_base_format
+#define writegf WRITE_OUT
+#define OUT_FILE gffile
+#define OUT_BUF gfbuf
+#endif /* MF */
 
 /* Restore underscores.  */
 #define dumpname dump_name
+#define kpse_dvipsconfig_format kpse_dvips_config_format
 
 /* Hacks for TeX that are better not to #ifdef, see lib/openclose.c.  */
 extern int tfm_temp, tex_input_type;
@@ -103,7 +120,7 @@ extern void pdftex_fail(const char *fmt, ...);
 #endif
 #if !defined(XeTeX)
 extern char start_time_str[];
-extern void initstarttime(void);
+extern void init_start_time(void);
 extern char *makecstring(integer s);
 extern char *makecfilename(integer s);
 extern void getcreationdate(void);
@@ -138,14 +155,13 @@ extern __declspec(dllexport) int DLLPROC (int ac, string *av);
 
 /* All but the Omega family use this. */
 #if !defined(Aleph)
-extern void readtcxfile (void);
+extern void read_tcx_file (void);
 extern string translate_filename;
-#define translatefilename translate_filename
 #endif
 
 #ifdef TeX
 /* The type `glueratio' should be a floating point type which won't
-   unnecessarily increase the size of the memoryword structure.  This is
+   unnecessarily increase the size of the memory_word structure.  This is
    the basic requirement.  On most machines, if you're building a
    normal-sized TeX, then glueratio must probably meet the following
    restriction: sizeof(glueratio) <= sizeof(integer).  Usually, then,
@@ -168,7 +184,7 @@ typedef GLUERATIO_TYPE glueratio;
 #endif
 
 #ifdef IPC
-extern void ipcpage (int);
+extern void ipc_page (int);
 #endif /* IPC */
 #endif /* TeX */
 
@@ -199,18 +215,18 @@ extern void get_date_and_time (integer *, integer *, integer *, integer *);
 
 #if defined(pdfTeX) || defined(epTeX) || defined(eupTeX)
 /* Get high-res time info. */
-#define secondsandmicros(i,j) get_seconds_and_micros (&(i), &(j))
+#define seconds_and_micros(i,j) get_seconds_and_micros (&(i), &(j))
 extern void get_seconds_and_micros (integer *, integer *);
 #endif
 
 /* Copy command-line arguments into the buffer, despite the name.  */
 extern void t_open_in (void);
 
-/* Can't prototype this since it uses poolpointer and ASCIIcode, which
+/* Can't prototype this since it uses pool_pointer and ASCII_code, which
    are defined later in mfd.h, and mfd.h uses stuff from here.  */
 /* Therefore the department of ugly hacks decided to move this declaration
    to the *coerce.h files. */
-/* extern void calledit (); */
+/* extern void call_edit (); */
 
 /* These defines reroute the file i/o calls to the new pipe-enabled 
    functions in texmfmp.c*/
@@ -224,53 +240,53 @@ extern void t_open_in (void);
 #define a_close(f)     close_file_or_pipe(f)
 #endif
 
-/* `bopenin' (and out) is used only for reading (and writing) .tfm
-   files; `wopenin' (and out) only for dump files.  The filenames are
-   passed in as a global variable, `nameoffile'.  */
-#define b_open_in(f)	open_input (&(f), kpse_tfm_format, FOPEN_RBIN_MODE)
-#define ocp_open_in(f)	open_input (&(f), kpse_ocp_format, FOPEN_RBIN_MODE)
-#define ofm_open_in(f)	open_input (&(f), kpse_ofm_format, FOPEN_RBIN_MODE)
+/* `b_open_in' (and out) is used only for reading (and writing) .tfm
+   files; `w_open_in' (and out) only for dump files.  The filenames are
+   passed in as a global variable, `name_of_file'.  */
+#define b_open_in(f)	open_input_impl (&(f), kpse_tfm_format, FOPEN_RBIN_MODE)
+#define ocp_open_in(f)	open_input_impl (&(f), kpse_ocp_format, FOPEN_RBIN_MODE)
+#define ofm_open_in(f)	open_input_impl (&(f), kpse_ofm_format, FOPEN_RBIN_MODE)
 
 #define b_open_out(f)	open_output (&(f), FOPEN_WBIN_MODE)
 #define b_close		a_close
 #ifdef XeTeX
 /* f is declared as gzFile, but we temporarily use it for a FILE *
    so that we can use the standard open calls */
-#define w_open_in(f)	(open_input ((FILE**)&(f), kpse_fmt_format, FOPEN_RBIN_MODE) \
+#define w_open_in(f)	(open_input_impl ((FILE**)&(f), DUMP_FORMAT, FOPEN_RBIN_MODE) \
 						&& (f = gzdopen(fileno((FILE*)f), FOPEN_RBIN_MODE)))
 #define w_open_out(f)	(open_output ((FILE**)&(f), FOPEN_WBIN_MODE) \
 						&& (f = gzdopen(fileno((FILE*)f), FOPEN_WBIN_MODE)) \
 						&& (gzsetparams(f, 1, Z_DEFAULT_STRATEGY) == Z_OK))
 #define w_close(f)	gzclose(f)
 #else
-#define w_open_in(f)	open_input (&(f), kpse_fmt_format, FOPEN_RBIN_MODE)
+#define w_open_in(f)	open_input_impl (&(f), DUMP_FORMAT, FOPEN_RBIN_MODE)
 #define w_open_out	b_open_out
 #define w_close		a_close
 #endif
 
 #ifdef XeTeX
 #if ENABLE_PIPES
-extern boolean u_open_in_or_pipe(unicodefile* f, integer filefmt, const_string fopen_mode, integer mode, integer encodingData);
+extern boolean u_open_in_or_pipe(unicode_file* f, integer filefmt, const_string fopen_mode, integer mode, integer encodingData);
 #define u_open_in(f,p,m,d) u_open_in_or_pipe(&(f), p, FOPEN_RBIN_MODE, m, d)
 #else
-#define u_open_in(f,p,m,d) real_u_open_in(&(f), p, FOPEN_RBIN_MODE, m, d)
+#define u_open_in(f,p,m,d) u_open_in_impl(&(f), p, FOPEN_RBIN_MODE, m, d)
 #endif
 #endif
 
 /* Used in tex.ch (section 1338) to get a core dump in debugging mode.  */
 #ifdef unix
-#define dumpcore abort
+#define dump_core abort
 #else
-#define dumpcore uexit (1)
+#define dump_core uexit (1)
 #endif
 
 #ifdef MF
-extern boolean initscreen (void);
-extern void updatescreen (void);
-/* Can't prototype these for same reason as `calledit' above.  */
+extern boolean init_screen (void);
+extern void update_screen (void);
+/* Can't prototype these for same reason as `call_edit' above.  */
 #if 0  /* Therefore the real declaration is found in the coerce.h files.  */
-extern void blankrectangle (/*screencol, screencol, screenrow, screenrow*/);
-extern void paintrow (/*screenrow, pixelcolor, transspec, screencol*/);
+extern void blank_rectangle (/*screencol, screencol, screenrow, screenrow*/);
+extern void paint_row (/*screenrow, pixelcolor, transspec, screencol*/);
 #endif
 #endif /* MF */
 

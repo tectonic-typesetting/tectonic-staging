@@ -27607,6 +27607,10 @@ void new_interaction(void)
     new_interaction_regmem print_ln();
     interaction = cur_chr;
     if (interaction == 0 /*batch_mode */ )
+        kpse_make_tex_discard_errors = 1;
+    else
+        kpse_make_tex_discard_errors = 0;
+    if (interaction == 0 /*batch_mode */ )
         selector = 16 /*no_print */ ;
     else
         selector = 17 /*term_only *//*:79 */ ;

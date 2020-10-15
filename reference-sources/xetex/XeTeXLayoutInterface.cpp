@@ -522,7 +522,7 @@ findGraphiteFeature(XeTeXLayoutEngine engine, const char* s, const char* e, hb_t
 }
 
 long
-findGraphiteFeatureNamed(XeTeXLayoutEngine engine, const char* name, int namelength)
+findGraphiteFeatureNamed(XeTeXLayoutEngine engine, const char* name, int name_length)
 {
     long rval = -1;
 
@@ -540,7 +540,7 @@ findGraphiteFeatureNamed(XeTeXLayoutEngine engine, const char* name, int namelen
             char* label = (char*) xmalloc(len);
             label = (char*) gr_fref_label(feature, &langID, gr_utf8, &len);
 
-            if (strncmp(label, name, namelength) == 0) {
+            if (strncmp(label, name, name_length) == 0) {
                 rval = gr_fref_id(feature);
                 gr_label_destroy(label);
                 break;
@@ -554,7 +554,7 @@ findGraphiteFeatureNamed(XeTeXLayoutEngine engine, const char* name, int namelen
 }
 
 long
-findGraphiteFeatureSettingNamed(XeTeXLayoutEngine engine, uint32_t id, const char* name, int namelength)
+findGraphiteFeatureSettingNamed(XeTeXLayoutEngine engine, uint32_t id, const char* name, int name_length)
 {
     long rval = -1;
 
@@ -572,7 +572,7 @@ findGraphiteFeatureSettingNamed(XeTeXLayoutEngine engine, uint32_t id, const cha
             char* label = (char*) xmalloc(len);
             label = (char*) gr_fref_value_label(feature, i, &langID, gr_utf8, &len);
 
-            if (strncmp(label, name, namelength) == 0) {
+            if (strncmp(label, name, name_length) == 0) {
                 rval = gr_fref_value(feature, i);
                 gr_label_destroy(label);
                 break;

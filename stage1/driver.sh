@@ -8,9 +8,10 @@ topdir="$(cd "$stage1dir/.." && pwd)"
 
 if [ -z "$1" -o "$1" = help ] ; then
     echo "You must supply a subcommand. Subcommands are:
-copy-source -- Copy outputs from stage0 into stage1 working directory
-setup-build -- Set up the stage1 compilation
-run-build   -- Run the stage1 compilation
+copy-source    -- Copy outputs from stage0 into stage1 working directory
+setup-build    -- Set up the stage1 compilation
+run-build      -- Run the stage1 compilation
+update-exports -- Update files in `exports/`
 "
     exit 1
 fi
@@ -53,6 +54,13 @@ function run_build() {
         "cd /state/outputs/stage1/build && ninja $@"
 }
 
+function update_exports() {
+    for f in web2c/fixwrites.c web2c/main.c web2c/splitup.c web2c/web2c-lexer.l \
+        web2c/web2c-parser.y xetexdir/xetex.defines ; do
+        cp $topdir/state/outputs/stage1/$f $stage1dir/exports/$f
+    done
+}
+
 
 # Dispatch subcommands.
 
@@ -63,6 +71,8 @@ case "$command" in
         setup_build "$@" ;;
     run-build)
         run_build "$@" ;;
+    update-exports)
+        update_exports "$@" ;;
     *)
         die "unrecognized command \"$command\"" ;;
 esac

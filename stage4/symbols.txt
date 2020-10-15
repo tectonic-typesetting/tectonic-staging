@@ -11,7 +11,9 @@ a_open_in_with_dirname
 a_open_out
 apply_mapping
 apply_tfm_font_mapping
+basename_change_suffix
 b_close
+BIBTEX_HELP
 BIB_XRETALLOC
 BIB_XRETALLOC_NOSET
 BIB_XRETALLOC_STRING
@@ -34,6 +36,7 @@ dump_qqqq
 dump_things
 dump_wd
 dvi_close
+dvi_file
 dvi_open_out
 extend_filename
 find_native_font
@@ -135,6 +138,7 @@ make_scale
 make_src_special
 make_suffix
 make_translation
+make_utf16_name
 make_xdv_glyph_array_data
 map_char_to_glyph
 map_glyph_to_index
@@ -168,6 +172,7 @@ print_utf8_str
 print_version_and_exit
 prompt_file_name_help_msg
 put_byte
+read_ln
 read_tcx_file
 real_point
 real_rect
@@ -237,6 +242,7 @@ version_string
 void_pointer
 wake_up_terminal
 w_close
+WEAVE_HELP
 w_open_in
 w_open_out
 write_dvi

@@ -457,9 +457,9 @@ void parsearguments(void)
             usage("otangle");
         } else if ((strcmp(longoptions[optionindex].name, "help") == 0)) {
 #ifdef TECTONIC_STAGE4_UNDERSCORES
-            usagehelp(OTANGLEHELP, nil);
-#else
             usage_help(OTANGLEHELP, nil);
+#else
+            usagehelp(OTANGLEHELP, nil);
 #endif
         } else if ((strcmp(longoptions[optionindex].name, "version") == 0)) {
 #ifdef TECTONIC_STAGE4_UNDERSCORES
@@ -482,13 +482,14 @@ void parsearguments(void)
     if (optind + 2 == argc) {
         chgname = extend_filename(cmdline(optind + 1), "ch");
     }
+    pascalname = basename_change_suffix(webname, ".web", ".p");
 #else
     webname = extendfilename(cmdline(optind), "web");
     if (optind + 2 == argc) {
         chgname = extendfilename(cmdline(optind + 1), "ch");
     }
-#endif
     pascalname = basenamechangesuffix(webname, ".web", ".p");
+#endif
 }
 
 void initialize(void)
@@ -725,7 +726,11 @@ boolean input_ln(textfile f)
                 error();
             }
         }
+#ifdef TECTONIC_STAGE4_UNDERSCORES
+        read_ln(f);
+#else
         readln(f);
+#endif
         limit = finallimit;
         Result = true;
     }
@@ -935,7 +940,11 @@ found:
 #endif
 
                     if (stringptr == NUMBER_CHARS) {
+#ifdef TECTONIC_STAGE4_UNDERSCORES
+                        poolname = basename_change_suffix(webname, ".web", ".pool");
+#else
                         poolname = basenamechangesuffix(webname, ".web", ".pool");
+#endif
                         rewrite(pool, poolname);
                     }
 

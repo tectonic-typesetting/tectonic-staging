@@ -1615,7 +1615,7 @@ begin
   @<Define the option table@>;
   repeat
     getopt_return_val := getopt_long_only (argc, argv, '', long_options,
-                                           address_of (option_index));
+                                           addressof (option_index));
     if getopt_return_val = -1 then begin
       {End of arguments; we exit the loop below.} ;
 
@@ -1649,7 +1649,7 @@ end;
 current_option := 0;
 long_options[0].name := 'terse';
 long_options[0].has_arg := 0;
-long_options[0].flag := address_of (verbose);
+long_options[0].flag := addressof (verbose);
 long_options[0].val := 0;
 incr (current_option);
 
@@ -1721,7 +1721,7 @@ environment, configuration file, or default value.  Set
 @d setup_bound_var(#)==bound_default:=#; setup_bound_var_end
 @d setup_bound_var_end(#)==bound_name:=#; setup_bound_var_end_end
 @d setup_bound_var_end_end(#)==
-  setup_bound_variable(address_of(#), bound_name, bound_default);
+  setup_bound_variable(addressof(#), bound_name, bound_default);
   if # < bound_default then # := bound_default
 
 @<Procedures and functions for about everything@>=

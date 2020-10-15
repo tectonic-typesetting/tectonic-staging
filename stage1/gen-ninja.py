@@ -19,7 +19,7 @@ config = {
 
 
 # stage2 patch: add use_custom_otangle option
-def inner(src, build, w, use_custom_otangle):
+def inner(src, build, w, use_custom_otangle, build_book_tex):
     config['src'] = str(src)
 
     # build.ninja gen rule.
@@ -27,9 +27,10 @@ def inner(src, build, w, use_custom_otangle):
     w.comment('Automatically generated.')
 
     custom_otangle_flag = ' --use-custom-otangle' if use_custom_otangle else ''
+    book_tex_flag = ' --build-book-tex' if build_book_tex else ''
 
     w.rule('regen',
-            command=f'python3 $in{custom_otangle_flag} {src}',
+            command=f'python3 $in{custom_otangle_flag}{book_tex_flag} {src}',
             description='GEN $out',
             generator=True)
     w.build('build.ninja', 'regen', inputs=[__file__])
@@ -448,7 +449,7 @@ def inner(src, build, w, use_custom_otangle):
 
     weave_c = convert('weave', [weave_p])
 
-    executable(
+    weaveprog = executable(
         output = build / 'weave',
         sources = [weave_c[0], src / 'lib' / 'main.c'],  # intentional; shared `main`
         rule = 'cc',
@@ -456,11 +457,49 @@ def inner(src, build, w, use_custom_otangle):
         cflags = '-I%(src)s -I%(src)s/lib -I%(src)s/xetexdir %(base_cflags)s' % config,
     )
 
+    # stage3 patch: building book TeX source
+
+    if build_book_tex:
+        mymergeprog = executable(
+            output = build / 'merge-changes',
+            sources = [Path('/source/stage3/merge-changes.c')],
+            rule = 'cc',
+            slibs = [libbase, libkp],
+            cflags = '-I%(src)s -I%(src)s/lib -I%(src)s/xetexdir %(base_cflags)s' % config,
+        )
+
+        w.rule('merge-changes',
+            command='WEBINPUTS=. ./merge-changes $in >$out.new && mv -f $out.new $out' % config,
+            description='MERGE $out')
+
+        merged_web = build / 'xetex-merged.web'
+
+        w.build(str(merged_web), 'merge-changes',
+            inputs = [str(x) for x in [
+                src / 'xetexdir' / 'xetex.web',
+                xetex_ch,
+            ]],
+            implicit = [mymergeprog],
+        )
+
+        book_tex = build / 'xetex-book.tex'
+
+        w.build(str(book_tex), 'weave',
+            inputs = [str(merged_web)],
+            implicit = [
+                weaveprog,
+            ],
+        )
+
 
 def outer(argv0, args):
     use_custom_otangle = '--use-custom-otangle' in args
     if use_custom_otangle:
         args.remove('--use-custom-otangle')
+
+    build_book_tex = '--build-book-tex' in args
+    if build_book_tex:
+        args.remove('--build-book-tex')
 
     build = Path('')
     me = Path(argv0).parent
@@ -468,7 +507,7 @@ def outer(argv0, args):
 
     with (build / 'build.ninja').open('wt') as f:
         w = ninja_syntax.Writer(f)
-        inner(src, build, w, use_custom_otangle)
+        inner(src, build, w, use_custom_otangle, build_book_tex)
 
 
 if __name__ == '__main__':

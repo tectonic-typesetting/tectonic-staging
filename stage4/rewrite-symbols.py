@@ -14,12 +14,20 @@ class Rewriter(object):
 
         with open(os.path.join(os.path.dirname(__file__), 'symbols.txt')) as f:
             for line in f:
-                underscored = line.strip()
+                pieces = line.strip().split()
+                underscored = pieces[0]
                 short = underscored.replace('_', '')
 
                 if short in seen_short:
                     print(f'BAD: clashing short symbols {short}', file=sys.stderr)
                     continue
+
+                if len(pieces) > 1 and 'IMPL' in pieces[1]:
+                    # A symbol that is defined natively in the C/C++ code,
+                    # so that if we naively rename the short form, we'll get clashes.
+                    # We work around by renaming the underscore-y name first.
+                    regex = BDY + underscored.encode('ascii') + BDY
+                    rewriters.append((re.compile(regex), (underscored + '_impl').encode('ascii')))
 
                 regex = BDY + short.encode('ascii') + BDY
                 rewriters.append((re.compile(regex), underscored.encode('ascii')))

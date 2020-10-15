@@ -8,9 +8,10 @@ topdir="$(cd "$stage2dir/.." && pwd)"
 
 if [ -z "$1" -o "$1" = help ] ; then
     echo "You must supply a subcommand. Subcommands are:
-copy-source -- Copy outputs from stage0 into stage1 working directory
-setup-build -- Set up the stage1 compilation
-run-build   -- Run the stage1 compilation
+copy-source    -- Copy outputs from previous stages into working directory
+setup-build    -- Set up the compilation
+run-build      -- Run the compilation
+update-exports -- Update the exported files
 "
     exit 1
 fi
@@ -61,6 +62,10 @@ function run_build() {
         "cd /state/outputs/stage2/build && ninja $@"
 }
 
+function update_exports() {
+    cp $topdir/state/outputs/stage1/xetexdir/xetex.web $stage2dir/exports/xetexdir/
+}
+
 
 # Dispatch subcommands.
 
@@ -71,6 +76,8 @@ case "$command" in
         setup_build "$@" ;;
     run-build)
         run_build "$@" ;;
+    update-exports)
+        update_exports "$@" ;;
     *)
         die "unrecognized command \"$command\"" ;;
 esac

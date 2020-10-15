@@ -472,7 +472,7 @@ def inner(src, build, w, use_custom_otangle, build_book_tex):
             command='WEBINPUTS=. ./merge-changes $in >$out.new && mv -f $out.new $out' % config,
             description='MERGE $out')
 
-        merged_web = build / 'xetex-merged.web'
+        merged_web = build / 'xetex-book.web'
 
         w.build(str(merged_web), 'merge-changes',
             inputs = [str(x) for x in [

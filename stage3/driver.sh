@@ -40,6 +40,11 @@ function copy_source () {
     mkdir -p $state_dir/outputs/stage3
     cp -r $state_dir/outputs/stage2/* $state_dir/outputs/stage3
     rm -rf $state_dir/outputs/stage3/build
+
+    cd $topdir/stage2/exports
+    find -type f |while read fn ; do
+        cp $fn ../../state/outputs/stage3/$fn
+    done
 }
 
 function setup_build() {

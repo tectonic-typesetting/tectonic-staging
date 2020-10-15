@@ -34,10 +34,17 @@ state_dir="$topdir/state"
 # Commands
 
 function copy_source () {
+    set -x
+
     rm -rf $state_dir/outputs/stage2
     mkdir -p $state_dir/outputs/stage2
     cp -r $state_dir/outputs/stage1/* $state_dir/outputs/stage2
     rm -rf $state_dir/outputs/stage2/build
+
+    cd $topdir/stage1/exports
+    find -type f |while read fn ; do
+        cp $fn ../../state/outputs/stage2/$fn
+    done
 }
 
 function setup_build() {

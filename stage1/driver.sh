@@ -58,6 +58,13 @@ function update_exports() {
     for f in web2c/fixwrites.c web2c/main.c web2c/splitup.c web2c/web2c-lexer.l \
         web2c/web2c-parser.y xetexdir/xetex.defines ; do
         cp $topdir/state/outputs/stage1/$f $stage1dir/exports/$f
+
+        case $f in
+            *.c|*.h)
+                indent -linux -nut -i4 -l120 $stage1dir/exports/$f
+                rm -f $stage1dir/exports/$f~
+                ;;
+        esac
     done
 }
 

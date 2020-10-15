@@ -449,10 +449,10 @@ def inner(src, build, w):
     )
 
 
-def outer(args):
+def outer(argv0, args):
     build = Path('')
-    me = Path(sys.argv[0]).parent
-    src = Path(sys.argv[1])
+    me = Path(argv0).parent
+    src = Path(args[0])
 
     with (build / 'build.ninja').open('wt') as f:
         w = ninja_syntax.Writer(f)
@@ -461,4 +461,4 @@ def outer(args):
 
 if __name__ == '__main__':
     import sys
-    outer(sys.argv[1:])
+    outer(sys.argv[0], sys.argv[1:])

@@ -63,7 +63,8 @@ function run_build() {
 }
 
 function update_exports() {
-    cp $topdir/state/outputs/stage1/xetexdir/xetex.web $stage2dir/exports/xetexdir/
+    cp $topdir/state/outputs/stage2/xetexdir/xetex.web $stage2dir/exports/xetexdir/
+    cp $topdir/state/outputs/stage2/xetexdir/tex.ch $stage2dir/exports/xetexdir/
 }
 
 

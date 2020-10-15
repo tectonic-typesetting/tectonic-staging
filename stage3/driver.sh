@@ -70,7 +70,7 @@ function build_book() {
 
 function update_exports() {
     for f in web2c/cvtbib.sed web2c/fixwrites.c web2c/makecpool.c web2c/web2c-parser.y \
-        xetexdir/tex.ch ; do
+        weave/weave.ch xetexdir/tex.ch ; do
         cp $topdir/state/outputs/stage3/$f $stage3dir/exports/$f
 
         case $f in

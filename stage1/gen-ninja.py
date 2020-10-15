@@ -414,7 +414,7 @@ def inner(src, build, w):
              variables = {'libs': libs},
     )
 
-    # Bibtex source code.
+    # Bibtex source code and executable
 
     bibtex_p = otangle('bibtex', [
         src / 'bibtex' / 'bibtex.web',
@@ -422,6 +422,14 @@ def inner(src, build, w):
     ])
 
     bibtex_c = convert('bibtex', [bibtex_p])
+
+    executable(
+        output = build / 'bibtex',
+        sources = [bibtex_c[0], src / 'lib' / 'main.c'],  # intentional; shared `main`
+        rule = 'cc',
+        slibs = [libbase, libkp],
+        cflags = '-I%(src)s -I%(src)s/lib -I%(src)s/xetexdir %(base_cflags)s' % config,
+    )
 
     # Weave source code and executable
 

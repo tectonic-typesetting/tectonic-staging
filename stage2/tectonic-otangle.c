@@ -761,11 +761,17 @@ namepointer id_lookup(eightbits t)
             h = 0;
 
             while ((i < idloc) && (s < unambiglength)) {
+#ifdef TECTONIC_STAGE4_UNDERSCORES
+                choppedid[s] = buffer[i];
+                h = (h + h + choppedid[s]) % hashsize;
+                s = s + 1;
+#else
                 if (buffer[i] != UNDERSCORE) {
                     choppedid[s] = buffer[i];
                     h = (h + h + choppedid[s]) % hashsize;
                     s = s + 1;
                 }
+#endif
                 i = i + 1;
             }
             choppedid[s] = 0;
@@ -807,12 +813,18 @@ namepointer id_lookup(eightbits t)
                     while (k < bytestart[q + 3] && s < unambiglength) {
                         c = bytemem[w][k];
 
+#ifdef TECTONIC_STAGE4_UNDERSCORES
+                        if (choppedid[s] != c)
+                            goto notfound;
+                        s = s + 1;
+#else
                         if (c != UNDERSCORE) {
 
                             if (choppedid[s] != c)
                                 goto notfound;
                             s = s + 1;
                         }
+#endif
                         k = k + 1;
                     }
 
@@ -2078,8 +2090,10 @@ void send_the_output(void)
                 k = k + 1;
                 outcontrib[k] = bytemem[w][j];
                 j = j + 1;
+#ifndef TECTONIC_STAGE4_UNDERSCORES
                 if (outcontrib[k] == UNDERSCORE)
                     k = k - 1;
+#endif
             }
             send_out(IDENT, k);
             break;
@@ -3700,8 +3714,11 @@ void mainbody(void)
     buffer[0] = SPACE;
     inputhasended = false;
     Fputs(stdout, "This is OTANGLE, Version 4.4");
+#ifdef TECTONIC_STAGE4_UNDERSCORES
+    fprintf(stdout, "%s\n", version_string);
+#else
     fprintf(stdout, "%s\n", versionstring);
-
+#endif
     phaseone = true;
     modulecount = 0;
 

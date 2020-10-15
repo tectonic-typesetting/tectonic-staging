@@ -19,7 +19,7 @@ config = {
 
 
 # stage2 patch: add use_custom_otangle option
-def inner(src, build, w, use_custom_otangle, build_book_tex):
+def inner(src, build, w, use_custom_otangle, build_book_tex, underscores):
     config['src'] = str(src)
 
     # build.ninja gen rule.
@@ -28,9 +28,10 @@ def inner(src, build, w, use_custom_otangle, build_book_tex):
 
     custom_otangle_flag = ' --use-custom-otangle' if use_custom_otangle else ''
     book_tex_flag = ' --build-book-tex' if build_book_tex else ''
+    underscores_flag = ' --underscores' if underscores else ''
 
     w.rule('regen',
-            command=f'python3 $in{custom_otangle_flag}{book_tex_flag} {src}',
+            command=f'python3 $in{custom_otangle_flag}{book_tex_flag}{underscores_flag} {src}',
             description='GEN $out',
             generator=True)
     w.build('build.ninja', 'regen', inputs=[__file__])
@@ -196,12 +197,17 @@ def inner(src, build, w, use_custom_otangle, build_book_tex):
     else:
         otangle_c = src / 'otangle' / 'otangle.c'
 
+    if underscores:
+        config['underscores_cflags'] = '-DTECTONIC_STAGE4_UNDERSCORES=1'
+    else:
+        config['underscores_cflags'] = ''
+
     otangleprog = executable(
         output = build / 'otangle',
         sources = [otangle_c],
         rule = 'cc',
         slibs = [libbase, libkp],
-        cflags = '-I%(src)s -I%(src)s/lib -I%(src)s/xetexdir %(base_cflags)s' % config,
+        cflags = '%(underscores_cflags)s -I%(src)s -I%(src)s/lib -I%(src)s/xetexdir %(base_cflags)s' % config,
     )
 
     w.rule('otangle',
@@ -501,13 +507,17 @@ def outer(argv0, args):
     if build_book_tex:
         args.remove('--build-book-tex')
 
+    underscores = '--underscores' in args
+    if underscores:
+        args.remove('--underscores')
+
     build = Path('')
     me = Path(argv0).parent
     src = Path(args[0])
 
     with (build / 'build.ninja').open('wt') as f:
         w = ninja_syntax.Writer(f)
-        inner(src, build, w, use_custom_otangle, build_book_tex)
+        inner(src, build, w, use_custom_otangle, build_book_tex, underscores)
 
 
 if __name__ == '__main__':

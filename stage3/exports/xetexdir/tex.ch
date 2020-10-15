@@ -4087,8 +4087,8 @@ if x<>69069 then goto bad_fmt
 @x [51.1332] l.24203 - make the main program a procedure, for eqtb hack.
 @p begin @!{|start_here|}
 @y
-@d const_chk(#)==begin if # < inf@&# then # := inf@&# else
-                         if # > sup@&# then # := sup@&# end
+@d const_chk(#)==begin if # < inf_@&# then # := inf_@&# else
+                         if # > sup_@&# then # := sup_@&# end
 
 {|setup_bound_var| stuff duplicated in \.{mf.ch}.}
 @d setup_bound_var(#)==bound_default:=#; setup_bound_var_end

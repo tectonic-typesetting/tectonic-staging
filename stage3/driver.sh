@@ -8,10 +8,11 @@ topdir="$(cd "$stage3dir/.." && pwd)"
 
 if [ -z "$1" -o "$1" = help ] ; then
     echo "You must supply a subcommand. Subcommands are:
-copy-source -- Copy outputs from previous stages into working directory
-setup-build -- Set up the compilation
-run-build   -- Run the compilation
-build-book  -- Build the book PDF
+copy-source    -- Copy outputs from previous stages into working directory
+setup-build    -- Set up the compilation
+run-build      -- Run the compilation
+build-book     -- Build the book PDF
+update-exports -- Update export files for this stage
 "
     exit 1
 fi
@@ -67,6 +68,20 @@ function build_book() {
     tectonic -f plain $topdir/state/outputs/stage3/build/xetex-book.tex
 }
 
+function update_exports() {
+    for f in web2c/fixwrites.c web2c/web2c-parser.y xetexdir/tex.ch ; do
+        cp $topdir/state/outputs/stage3/$f $stage3dir/exports/$f
+
+        case $f in
+            *.c|*.h)
+                indent -linux -nut -i4 -l120 $stage3dir/exports/$f
+                rm -f $stage3dir/exports/$f~
+                ;;
+        esac
+    done
+}
+
+
 # Dispatch subcommands.
 
 case "$command" in
@@ -78,6 +93,8 @@ case "$command" in
         run_build "$@" ;;
     build-book)
         build_book "$@" ;;
+    update-exports)
+        update_exports "$@" ;;
     *)
         die "unrecognized command \"$command\"" ;;
 esac

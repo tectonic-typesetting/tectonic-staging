@@ -1156,7 +1156,7 @@ str_number get_nullstr(void);
 #define get_nullstr_regmem
 /* Some definitions that get appended to the `coerce.h' file that web2c
    outputs.  */
-/* $Id$ */
+// $Id$
 
 /* The C compiler ignores most unnecessary casts (i.e., casts of
    something to its own type).  However, for structures, it doesn't.
@@ -1184,7 +1184,7 @@ str_number get_nullstr(void);
 extern str_number get_job_name(str_number);
 
 #ifdef XeTeX
-/* XeTeX redefines "ASCII" types.... */
+// XeTeX redefines "ASCII" types....
 typedef packed_UTF16_code packedASCIIcode;
 #endif
 extern void call_edit(packedASCIIcode *, pool_pointer, integer, integer);
@@ -1201,20 +1201,20 @@ extern str_number make_full_name_string(void);
 
 #ifdef TeX
 extern string gettexstring(str_number);
-/* Prototypes for source-specials functions... */
+// Prototypes for source-specials functions...
 extern boolean is_new_source(str_number, int);
 extern pool_pointer make_src_special(str_number, int);
 extern void remember_source_info(str_number, int);
 
 #ifdef pdfTeX
 #include <pdftexdir/pdftex.h>
-#endif                          /* pdfTeX */
+#endif                          // pdfTeX
 
 #ifdef XeTeX
 #include <xetexdir/xetex.h>
-#endif                          /* XeTeX */
+#endif                          // XeTeX
 
 #ifdef __SyncTeX__
 #include <synctexdir/synctex.h>
 #endif
-#endif                          /* TeX */
+#endif                          // TeX

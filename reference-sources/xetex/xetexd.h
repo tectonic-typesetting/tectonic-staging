@@ -77,11 +77,11 @@
                                                                                                                                                                          WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE. Except as contained in this notice, the name of the copyright holders
                                                                                                                                                                          shall not be used in advertising or otherwise to promote the sale,
                                                                                                                                                                          use or other dealings in this Software without prior written
-                                                                                                                                                authorization from the copyright holders. *//* xetex.defines: additions for xetex *//* extra stuff used in picfile code *//*4: *//*9: *//*$C-,A+,D- */
+                                                                                                                                                authorization from the copyright holders. *//* xetex.defines: additions for xetex *//* extra stuff used in picfile code *//*4: *//*9: *///$C-,A+,D-
 #ifdef TEXMF_DEBUG
-/*$C+,D+*/
-#endif                          /* TEXMF_DEBUG */
-/*:9*/
+//$C+,D+
+#endif                          // TEXMF_DEBUG
+//:9
 #define XETEXCOERCE
 #include "texmfmp.h"
 #define /*11:*/hash_offset ( 514 )
@@ -182,13 +182,13 @@ UnicodeScalar *buffer;
 integer first;
 integer last;
 integer max_buf_stack;
-       /*:30*//*32: */
+       /*:30*///32:
 #ifdef INITEX
 boolean ini_version;
 boolean dump_option;
 boolean dump_line;
 
-#endif                          /* INITEX */
+#endif                          // INITEX
 const_cstring dump_name;
 unicode_file term_in;
 integer bound_default;
@@ -241,11 +241,11 @@ pool_pointer pool_ptr;
 str_number str_ptr;
 pool_pointer init_pool_ptr;
 str_number init_str_ptr;
-       /*:39*//*50: */
+       /*:39*///50:
 #ifdef INITEX
 alpha_file pool_file;
 
-#endif                          /* INITEX */
+#endif                          // INITEX
 alpha_file log_file;
 unsigned char /*max_selector */ selector;
 unsigned char dig[23];
@@ -288,14 +288,14 @@ halfword hlist_stack[513];
 short /*max_hlist_stack */ hlist_stack_level;
 halfword first_p;
 halfword global_prev_p;
-        /*:163*//*172: */
+        /*:163*///172:
 #ifdef TEXMF_DEBUG
 boolean free_arr[10];
 boolean was_free[10];
 halfword was_mem_end, was_lo_max, was_hi_min;
 boolean panicking;
 
-#endif                          /* TEXMF_DEBUG */
+#endif                          // TEXMF_DEBUG
 integer font_in_short_display;
 integer depth_threshold;
 integer breadth_max;
@@ -532,7 +532,7 @@ halfword *hyph_list;
 hyph_pointer *hyph_link;
 integer hyph_count;
 integer hyph_next;
-        /*:961*//*978: */
+        /*:961*///978:
 #ifdef INITEX
 integer
 #define trie_op_hash (zzzab - (int)(neg_trie_op_size))
@@ -542,10 +542,10 @@ unsigned char /*biggest_lang */ trie_op_lang[trie_op_size + 1];
 trie_opcode trie_op_val[trie_op_size + 1];
 integer trie_op_ptr;
 
-#endif                          /* INITEX */
+#endif                          // INITEX
 trie_opcode max_op_used;
 boolean small_op;
-        /*:978*//*982: */
+        /*:978*///982:
 #ifdef INITEX
 packed_UTF16_code *trie_c;
 trie_opcode *trie_o;
@@ -554,15 +554,15 @@ trie_pointer *trie_r;
 trie_pointer trie_ptr;
 trie_pointer *trie_hash;
 
-#endif                          /* INITEX */
-        /*:982*//*985: */
+#endif                          // INITEX
+        /*:982*///985:
 #ifdef INITEX
 boolean *trie_taken;
 trie_pointer trie_min[65536];
 trie_pointer trie_max;
 boolean trie_not_ready;
 
-#endif                          /* INITEX */
+#endif                          // INITEX
 scaled best_height_plus_depth;
 halfword page_tail;
 unsigned char /*box_there */ page_contents;
@@ -656,5 +656,5 @@ scaled accent_width, accent_height;
 scaled delta;
 integer synctexoption;
 integer synctexoffset;
-/*:1683*/
+//:1683
 #include "xetexcoerce.h"

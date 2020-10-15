@@ -10,5 +10,5 @@ while [ $# -gt 0 ] ; do
   shift
 
   indent -linux -nut -i4 -l120 $fn
-  rm -rf $fn~
+  rm -f $fn~
 done

@@ -15268,7 +15268,7 @@ while font_ptr>font_base do
   decr(font_ptr);
   end
 
-@* \[32b] \pdfTeX\ output low-level subroutines (equivalents)
+@* \[32b] \pdfTeX\ output low-level subroutines (equivalents).
 
 @<Glob...@>=
 @!epochseconds: integer;

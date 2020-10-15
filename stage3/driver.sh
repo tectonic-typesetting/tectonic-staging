@@ -11,6 +11,7 @@ if [ -z "$1" -o "$1" = help ] ; then
 copy-source -- Copy outputs from previous stages into working directory
 setup-build -- Set up the compilation
 run-build   -- Run the compilation
+build-book  -- Build the book PDF
 "
     exit 1
 fi
@@ -61,6 +62,10 @@ function run_build() {
         "cd /state/outputs/stage3/build && ninja $@"
 }
 
+function build_book() {
+    cp $topdir/state/outputs/stage3/xetexdir/xewebmac.tex $topdir/state/outputs/stage3/build/
+    tectonic -f plain $topdir/state/outputs/stage3/build/xetex-book.tex
+}
 
 # Dispatch subcommands.
 
@@ -71,6 +76,8 @@ case "$command" in
         setup_build "$@" ;;
     run-build)
         run_build "$@" ;;
+    build-book)
+        build_book "$@" ;;
     *)
         die "unrecognized command \"$command\"" ;;
 esac

@@ -18,7 +18,6 @@
         fputs (str, stderr);                                            \
         fputs (".\n", stderr); exit (1); } while (0)
 
-
 #if defined (FATAL1)
 #undef FATAL1
 #endif
@@ -27,7 +26,6 @@
         fprintf (stderr, "%s: fatal: ", argv[0]);                       \
         fprintf (stderr, str, e1);                                      \
         fputs (".\n", stderr); exit (1); } while (0)
-
 
 #ifdef VMS
 #define unlink delete
@@ -58,21 +56,17 @@ FILE *out, *ini, *temp;
  * `true' else `false'.  We also keep up with the #ifdef/#endif nesting
  * so we know when it's safe to finish writing the current file.
  */
-static int
-read_line (void)
+static int read_line(void)
 {
-  if (fgets (buffer, sizeof (buffer), stdin) == NULL)
-    return false;
-  if (strncmp (buffer, "#ifdef", 6) == 0
-      || strncmp (buffer, "#ifndef", 7) == 0)
-    {
-      ++ifdef_nesting;
-      if (strncmp (&buffer[7], "INI", 3) == 0)
-	has_ini = true;
-    }
-  else if (strncmp (buffer, "#endif", 6) == 0)
-    --ifdef_nesting;
-  return true;
+    if (fgets(buffer, sizeof(buffer), stdin) == NULL)
+        return false;
+    if (strncmp(buffer, "#ifdef", 6) == 0 || strncmp(buffer, "#ifndef", 7) == 0) {
+        ++ifdef_nesting;
+        if (strncmp(&buffer[7], "INI", 3) == 0)
+            has_ini = true;
+    } else if (strncmp(buffer, "#endif", 6) == 0)
+        --ifdef_nesting;
+    return true;
 }
 
 #ifdef WIN32
@@ -80,173 +74,164 @@ read_line (void)
 #include <fcntl.h>
 #endif
 
-int
-main (int argc, string *argv)
+int main(int argc, string * argv)
 {
-  const_string coerce;
-  unsigned coerce_len;
-  int option;
+    const_string coerce;
+    unsigned coerce_len;
+    int option;
 
 #ifdef WIN32
-  setmode(fileno(stdout), _O_BINARY);
+    setmode(fileno(stdout), _O_BINARY);
 #endif
 
-  while ((option = getopt(argc, argv, "il:")) != -1) {
-    switch (option) {
-    case 'i':
-      do_ini = true;
-      break;
-    case 'l':
-      max_lines = atoi(optarg);
-      if (max_lines <= 0)
+    while ((option = getopt(argc, argv, "il:")) != -1) {
+        switch (option) {
+        case 'i':
+            do_ini = true;
+            break;
+        case 'l':
+            max_lines = atoi(optarg);
+            if (max_lines <= 0)
+                FATAL("[-i] [-l lines] name");
+            break;
+        default:
+            FATAL("[-i] [-l lines] name");
+            break;
+        }
+    }
+    if (optind + 1 != argc)
         FATAL("[-i] [-l lines] name");
-      break;
-    default:
-      FATAL("[-i] [-l lines] name");
-      break;
-    }
-  }
-  if (optind + 1 != argc)
-    FATAL("[-i] [-l lines] name");
-  output_name = argv[optind];
+    output_name = argv[optind];
 
-  sprintf (filename, "%sd.h", output_name);
-  sprintf (tempfile, "%s.tmp", output_name);
-  out = xfopen (filename, FOPEN_W_MODE);
-  fputs ("#undef TRIP\n#undef TRAP\n", out);
-  /* We have only one binary that can do both ini stuff and vir stuff.  */
-  fputs ("#define STAT\n#define INI\n", out);
-  
-  if (STREQ (output_name, "mf")) {
-    fputs ("#define INIMF\n#define MF\n#define onlyMF\n", out);
-    coerce = "mfcoerce.h";
-  } else if (STREQ (output_name, "mflua")) {
-    fputs ("#define INIMF\n#define MF\n#define MFLua\n", out);
-    coerce = "mfluacoerce.h";
-  } else if (STREQ (output_name, "mfluajit")) {
-    fputs ("#define INIMF\n#define MF\n#define MFLuaJIT\n", out);
-    coerce = "mfluajitcoerce.h";
-  } else if (STREQ (output_name, "tex")) {
-    fputs ("#define INITEX\n#define TeX\n#define onlyTeX\n", out);
-    coerce = "texcoerce.h";
-  } else if (STREQ (output_name, "aleph")) {
-    fputs ("#define INITEX\n#define TeX\n#define Aleph\n", out);
-    coerce = "alephcoerce.h";
-  } else if (STREQ (output_name, "etex")) {
-    fputs ("#define INITEX\n#define TeX\n#define eTeX\n", out);
-    coerce = "etexcoerce.h";
-  } else if (STREQ (output_name, "pdftex")) {
-    fputs ("#define INITEX\n#define TeX\n#define pdfTeX\n", out);
-    coerce = "pdftexcoerce.h";
-  } else if (STREQ (output_name, "ptex")) {
-    fputs ("#define INITEX\n#define TeX\n#define pTeX\n", out);
-    coerce = "ptexcoerce.h";
-  } else if (STREQ (output_name, "eptex")) {
-    fputs ("#define INITEX\n#define TeX\n#define epTeX\n", out);
-    coerce = "eptexcoerce.h";
-  } else if (STREQ (output_name, "euptex")) {
-    fputs ("#define INITEX\n#define TeX\n#define eupTeX\n", out);
-    coerce = "euptexcoerce.h";
-  } else if (STREQ (output_name, "uptex")) {
-    fputs ("#define INITEX\n#define TeX\n#define upTeX\n", out);
-    coerce = "uptexcoerce.h";
-  } else if (STREQ (output_name, "xetex")) {
-    fputs ("#define INITEX\n#define TeX\n#define XeTeX\n", out);
-    coerce = "xetexcoerce.h";
-  } else
-    FATAL1 ("Can only split mf, tex, aleph, eptex, euptex, etex, pdftex, ptex, uptex, or xetex,\n not %s", output_name);
-  
-  coerce_len = strlen (coerce);
-  
-  /* Read everything up to coerce.h.  */
-  while (fgets (buffer, sizeof (buffer), stdin))
-    {
-      if (strncmp (&buffer[10], coerce, coerce_len) == 0)
-	break;
+    sprintf(filename, "%sd.h", output_name);
+    sprintf(tempfile, "%s.tmp", output_name);
+    out = xfopen(filename, FOPEN_W_MODE);
+    fputs("#undef TRIP\n#undef TRAP\n", out);
+    /* We have only one binary that can do both ini stuff and vir stuff.  */
+    fputs("#define STAT\n#define INI\n", out);
 
-      if (buffer[0] == '#' || buffer[0] == '\n' || buffer[0] == '}'
-	  || buffer[0] == '/' || buffer[0] == ' '
-	  || strncmp (buffer, "typedef", 7) == 0)
-	/*nothing */ ;
-      else
-	fputs ("EXTERN ", out);
+    if (STREQ(output_name, "mf")) {
+        fputs("#define INIMF\n#define MF\n#define onlyMF\n", out);
+        coerce = "mfcoerce.h";
+    } else if (STREQ(output_name, "mflua")) {
+        fputs("#define INIMF\n#define MF\n#define MFLua\n", out);
+        coerce = "mfluacoerce.h";
+    } else if (STREQ(output_name, "mfluajit")) {
+        fputs("#define INIMF\n#define MF\n#define MFLuaJIT\n", out);
+        coerce = "mfluajitcoerce.h";
+    } else if (STREQ(output_name, "tex")) {
+        fputs("#define INITEX\n#define TeX\n#define onlyTeX\n", out);
+        coerce = "texcoerce.h";
+    } else if (STREQ(output_name, "aleph")) {
+        fputs("#define INITEX\n#define TeX\n#define Aleph\n", out);
+        coerce = "alephcoerce.h";
+    } else if (STREQ(output_name, "etex")) {
+        fputs("#define INITEX\n#define TeX\n#define eTeX\n", out);
+        coerce = "etexcoerce.h";
+    } else if (STREQ(output_name, "pdftex")) {
+        fputs("#define INITEX\n#define TeX\n#define pdfTeX\n", out);
+        coerce = "pdftexcoerce.h";
+    } else if (STREQ(output_name, "ptex")) {
+        fputs("#define INITEX\n#define TeX\n#define pTeX\n", out);
+        coerce = "ptexcoerce.h";
+    } else if (STREQ(output_name, "eptex")) {
+        fputs("#define INITEX\n#define TeX\n#define epTeX\n", out);
+        coerce = "eptexcoerce.h";
+    } else if (STREQ(output_name, "euptex")) {
+        fputs("#define INITEX\n#define TeX\n#define eupTeX\n", out);
+        coerce = "euptexcoerce.h";
+    } else if (STREQ(output_name, "uptex")) {
+        fputs("#define INITEX\n#define TeX\n#define upTeX\n", out);
+        coerce = "uptexcoerce.h";
+    } else if (STREQ(output_name, "xetex")) {
+        fputs("#define INITEX\n#define TeX\n#define XeTeX\n", out);
+        coerce = "xetexcoerce.h";
+    } else
+        FATAL1("Can only split mf, tex, aleph, eptex, euptex, etex, pdftex, ptex, uptex, or xetex,\n not %s",
+               output_name);
 
-      fputs (buffer, out);
+    coerce_len = strlen(coerce);
+
+    /* Read everything up to coerce.h.  */
+    while (fgets(buffer, sizeof(buffer), stdin)) {
+        if (strncmp(&buffer[10], coerce, coerce_len) == 0)
+            break;
+
+        if (buffer[0] == '#' || buffer[0] == '\n' || buffer[0] == '}'
+            || buffer[0] == '/' || buffer[0] == ' ' || strncmp(buffer, "typedef", 7) == 0)
+            /*nothing */ ;
+        else
+            fputs("EXTERN ", out);
+
+        fputs(buffer, out);
     }
 
-  if (strncmp (&buffer[10], coerce, coerce_len) != 0)
-    FATAL1 ("No #include %s line", coerce);
+    if (strncmp(&buffer[10], coerce, coerce_len) != 0)
+        FATAL1("No #include %s line", coerce);
 
-  fputs (buffer, out);
-  xfclose (out, filename);
+    fputs(buffer, out);
+    xfclose(out, filename);
 
-  if (do_ini) {
-    sprintf (ini_name, "%sini.c", output_name);
-    ini = xfopen (ini_name, FOPEN_W_MODE);
-    fputs ("#define EXTERN extern\n", ini);
-    fprintf (ini, "#include \"%sd.h\"\n\n", output_name);
-  }
-
-  sprintf (filename, "%s0.c", output_name);
-  out = xfopen (filename, FOPEN_W_MODE);
-  fputs ("#define EXTERN extern\n", out);
-  fprintf (out, "#include \"%sd.h\"\n\n", output_name);
-
-  do
-    {
-      /* Read one routine into a temp file */
-      has_ini = false;
-      temp = xfopen (tempfile, "wb+");
-
-      while (read_line ())
-	{
-	  fputs (buffer, temp);
-	  if (buffer[0] == '}')
-	    break;		/* End of procedure */
-	}
-      while (ifdef_nesting > 0 && read_line ())
-	fputs (buffer, temp);
-      rewind (temp);
-
-      if (do_ini && has_ini)
-	{			/* Contained "#ifdef INI..." */
-	  while (fgets (buffer, sizeof (buffer), temp))
-	    fputs (buffer, ini);
-	}
-      else
-	{			/* Doesn't contain "#ifdef INI..." */
-	  while (fgets (buffer, sizeof (buffer), temp))
-	    {
-	      fputs (buffer, out);
-	      lines_in_file++;
-	    }
-	}
-      xfclose (temp, tempfile);
-
-      /* Switch to new output file.  */
-      if (max_lines && lines_in_file > max_lines)
-	{
-	  xfclose (out, filename);
-	  sprintf (filename, "%s%d.c", output_name, ++filenumber);
-	  out = xfopen (filename, FOPEN_W_MODE);
-	  fputs ("#define EXTERN extern\n", out);
-	  fprintf (out, "#include \"%sd.h\"\n\n", output_name);
-	  lines_in_file = 0;
-	}
+    if (do_ini) {
+        sprintf(ini_name, "%sini.c", output_name);
+        ini = xfopen(ini_name, FOPEN_W_MODE);
+        fputs("#define EXTERN extern\n", ini);
+        fprintf(ini, "#include \"%sd.h\"\n\n", output_name);
     }
-  while (!feof (stdin));
 
-  xfclose (out, filename);
-  if (lines_in_file == 0)
-    unlink (filename);
+    sprintf(filename, "%s0.c", output_name);
+    out = xfopen(filename, FOPEN_W_MODE);
+    fputs("#define EXTERN extern\n", out);
+    fprintf(out, "#include \"%sd.h\"\n\n", output_name);
 
-  if (do_ini)
-    xfclose (ini, ini_name);
+    do {
+        /* Read one routine into a temp file */
+        has_ini = false;
+        temp = xfopen(tempfile, "wb+");
 
-  if (unlink (tempfile)) {
-      perror (tempfile);
-      exit (EXIT_FAILURE);
-  }
+        while (read_line()) {
+            fputs(buffer, temp);
+            if (buffer[0] == '}')
+                break;          /* End of procedure */
+        }
+        while (ifdef_nesting > 0 && read_line())
+            fputs(buffer, temp);
+        rewind(temp);
 
-  return EXIT_SUCCESS;
+        if (do_ini && has_ini) {        /* Contained "#ifdef INI..." */
+            while (fgets(buffer, sizeof(buffer), temp))
+                fputs(buffer, ini);
+        } else {                /* Doesn't contain "#ifdef INI..." */
+            while (fgets(buffer, sizeof(buffer), temp)) {
+                fputs(buffer, out);
+                lines_in_file++;
+            }
+        }
+        xfclose(temp, tempfile);
+
+        /* Switch to new output file.  */
+        if (max_lines && lines_in_file > max_lines) {
+            xfclose(out, filename);
+            sprintf(filename, "%s%d.c", output_name, ++filenumber);
+            out = xfopen(filename, FOPEN_W_MODE);
+            fputs("#define EXTERN extern\n", out);
+            fprintf(out, "#include \"%sd.h\"\n\n", output_name);
+            lines_in_file = 0;
+        }
+    }
+    while (!feof(stdin));
+
+    xfclose(out, filename);
+    if (lines_in_file == 0)
+        unlink(filename);
+
+    if (do_ini)
+        xfclose(ini, ini_name);
+
+    if (unlink(tempfile)) {
+        perror(tempfile);
+        exit(EXIT_FAILURE);
+    }
+
+    return EXIT_SUCCESS;
 }

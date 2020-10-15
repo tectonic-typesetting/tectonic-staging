@@ -53,7 +53,7 @@ function setup_build() {
     mkdir -p $build
 
     $topdir/stage0/driver.sh builder-bash -c \
-        "cd /state/outputs/stage2/build && python3 /source/stage2/gen-ninja.py .."
+        "cd /state/outputs/stage2/build && python3 /source/stage1/gen-ninja.py --use-custom-otangle .."
 }
 
 function run_build() {

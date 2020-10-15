@@ -18,15 +18,18 @@ config = {
 }
 
 
-def inner(src, build, w):
+# stage2 patch: add use_custom_otangle option
+def inner(src, build, w, use_custom_otangle):
     config['src'] = str(src)
 
     # build.ninja gen rule.
 
     w.comment('Automatically generated.')
 
+    custom_otangle_flag = ' --use-custom-otangle' if use_custom_otangle else ''
+
     w.rule('regen',
-            command=f'python3 $in {src}',
+            command=f'python3 $in{custom_otangle_flag} {src}',
             description='GEN $out',
             generator=True)
     w.build('build.ninja', 'regen', inputs=[__file__])
@@ -187,9 +190,14 @@ def inner(src, build, w):
 
     # otangle
 
+    if use_custom_otangle:
+        otangle_c = Path('/source/stage2/tectonic-otangle.c')
+    else:
+        otangle_c = src / 'otangle' / 'otangle.c'
+
     otangleprog = executable(
         output = build / 'otangle',
-        sources = [src / 'otangle' / 'otangle.c'],
+        sources = [otangle_c],
         rule = 'cc',
         slibs = [libbase, libkp],
         cflags = '-I%(src)s -I%(src)s/lib -I%(src)s/xetexdir %(base_cflags)s' % config,
@@ -442,13 +450,17 @@ def inner(src, build, w):
 
 
 def outer(args):
+    use_custom_otangle = '--use-custom-otangle' in args
+    if use_custom_otangle:
+        args.remove('--use-custom-otangle')
+
     build = Path('')
     me = Path(sys.argv[0]).parent
-    src = Path(sys.argv[1])
+    src = Path(args[0])
 
     with (build / 'build.ninja').open('wt') as f:
         w = ninja_syntax.Writer(f)
-        inner(src, build, w)
+        inner(src, build, w, use_custom_otangle)
 
 
 if __name__ == '__main__':

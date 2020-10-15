@@ -5,6 +5,9 @@ set -euo pipefail
 
 cd /state/outputs/stage99
 
+# See the comment in this script for a description of why it's (currently) needed
+python3 /source/stage99/hack-comments.py "$@"
+
 while [ $# -gt 0 ] ; do
   fn="$1"
   shift

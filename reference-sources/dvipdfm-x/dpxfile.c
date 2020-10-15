@@ -1,5 +1,5 @@
 /* This is dvipdfmx, an eXtended version of dvipdfm by Mark A. Wicks.
-    Copyright (C) 2007-2016 by Jin-Hwan Cho and Shunsaku Hirata,
+    Copyright (C) 2007-2019 by Jin-Hwan Cho and Shunsaku Hirata,
     the dvipdfmx project team.
     
     Copyright (C) 1998, 1999 by Mark A. Wicks <mwicks@kettering.edu>
@@ -36,6 +36,7 @@
 #include "error.h"
 #include "mem.h"
 
+#include "dpxconf.h"
 #include "dpxutil.h"
 #include "mfileio.h"
 
@@ -69,16 +70,6 @@
 #  define PATH_MAX 256
 #endif
 #endif /* MIKTEX || TESTCOMPILE */
-
-static int verbose = 0;
-int keep_cache = 0;
-
-void
-dpx_file_set_verbose (void)
-{
-  verbose++;
-}
-
 
 /* Kpathsea library does not check file type. */
 static int qcheck_filetype (const char *fqpn, dpx_res_type type);
@@ -168,11 +159,17 @@ miktex_find_psheader_file (const char *filename, char *buf)
 static char  _tmpbuf[PATH_MAX+1];
 #endif /* MIKTEX */
 
+#if defined(WIN32)
+extern int utf8name_failed;
+#endif /* WIN32 */
+
+#define CMDBUFSIZ 1024
 static int exec_spawn (char *cmd)
 {
   char **cmdv, **qv;
   char *p, *pp;
-  char buf[1024];
+  char buf[CMDBUFSIZ];
+  int  charcnt;
   int  i, ret = -1;
 #ifdef WIN32
   wchar_t **cmdvw, **qvw;
@@ -191,11 +188,12 @@ static int exec_spawn (char *cmd)
       i++;
     p++;
   }
-  cmdv = xcalloc (i + 2, sizeof (char *));
+  cmdv = xcalloc (i + 4, sizeof (char *));
   p = cmd;
   qv = cmdv;
   while (*p) {
     pp = buf;
+    charcnt = 0;
     if (*p == '"') {
       p++;
       while (*p != '"') {
@@ -203,6 +201,10 @@ static int exec_spawn (char *cmd)
           goto done;
         }
         *pp++ = *p++;
+        charcnt++;
+        if (charcnt > CMDBUFSIZ - 1) {
+          ERROR("Too long a command line.");
+        }
       }
       p++;
     } else if (*p == '\'') {
@@ -212,6 +214,10 @@ static int exec_spawn (char *cmd)
           goto done;
         }
         *pp++ = *p++;
+        charcnt++;
+        if (charcnt > CMDBUFSIZ - 1) {
+          ERROR("Too long a command line.");
+        }
       }
       p++;
     } else {
@@ -223,10 +229,18 @@ static int exec_spawn (char *cmd)
                  goto done;
              }
              *pp++ = *p++;
+             charcnt++;
+             if (charcnt > CMDBUFSIZ - 1) {
+               ERROR("Too long a command line.");
+             }
           }
           p++;
         } else {
           *pp++ = *p++;
+          charcnt++;
+          if (charcnt > CMDBUFSIZ - 1) {
+            ERROR("Too long a command line.");
+          }
         }
       }
     }
@@ -244,20 +258,39 @@ static int exec_spawn (char *cmd)
       p++;
     qv++;
   }
+  *qv = NULL;
+
 #ifdef WIN32
 #if defined(MIKTEX)
   ret = _spawnvp(_P_WAIT, *cmdv, (const char* const*)cmdv); 
 #else
-  cmdvw = xcalloc (i + 2, sizeof (wchar_t *));
-  qv = cmdv;
-  qvw = cmdvw;
-  while (*qv) {
-    *qvw = get_wstring_from_fsyscp(*qv, *qvw=NULL);
-    qv++;
-    qvw++;
+  cmdvw = xcalloc (i + 4, sizeof (wchar_t *));
+  if (utf8name_failed == 0) {
+    qv = cmdv;
+    qvw = cmdvw;
+    while (*qv) {
+      *qvw = get_wstring_from_fsyscp(*qv, *qvw=NULL);
+      qv++;
+      qvw++;
+    }
+    *qvw = NULL;
+    ret = _wspawnvp (_P_WAIT, *cmdvw, (const wchar_t* const*) cmdvw);
+  } else {
+    int tmpcp;
+    tmpcp = file_system_codepage;
+    file_system_codepage = win32_codepage;
+    qv = cmdv;
+    qvw = cmdvw;
+    while (*qv) {
+      *qvw = get_wstring_from_fsyscp(*qv, *qvw=NULL);
+      qv++;
+      qvw++;
+    }
+    *qvw = NULL;
+    file_system_codepage = tmpcp;
+    utf8name_failed = 0;
+    ret = _wspawnvp (_P_WAIT, *cmdvw, (const wchar_t* const*) cmdvw);
   }
-  *qvw = NULL;
-  ret = _wspawnvp (_P_WAIT, *cmdvw, (const wchar_t* const*) cmdvw);
   if (cmdvw) {
     qvw = cmdvw;
     while (*qvw) {
@@ -359,7 +392,7 @@ insistupdate (const char      *filename,
 #else
   kpse_format_info_type *fif;
   kpse_format_info_type *fir;
-  if (verbose < 1)
+  if (dpx_conf.verbose_level < 1)
     return;
   fif = &kpse_format_info[foolformat];
   fir = &kpse_format_info[realformat];
@@ -431,7 +464,7 @@ dpx_open_file (const char *filename, dpx_res_type type)
   switch (type) {
   case DPX_RES_TYPE_FONTMAP:
     fqpn = dpx_find_fontmap_file(filename);
-    if (verbose) {
+    if (dpx_conf.verbose_level > 0) {
       if (fqpn != NULL)
         MESG(fqpn);
     }
@@ -969,7 +1002,7 @@ dpx_delete_old_cache (int life)
   time_t limit;
 
   if (life == -2) {
-      keep_cache = -1;
+      dpx_conf.file.keep_cache = -1;
       return;
   }
 
@@ -977,7 +1010,7 @@ dpx_delete_old_cache (int life)
   pathname = NEW(strlen(dir)+1+strlen(PREFIX)+MAX_KEY_LEN*2 + 1, char);
   limit = time(NULL) - life * 60 * 60;
 
-  if (life >= 0) keep_cache = 1;
+  if (life >= 0) dpx_conf.file.keep_cache = 1;
   if ((dp = opendir(dir)) != NULL) {
       while((de = readdir(dp)) != NULL) {
           if (dpx_clear_cache_filter(de)) {
@@ -1001,7 +1034,7 @@ dpx_delete_temp_file (char *tmp, int force)
 {
   if (!tmp)
     return;
-  if (force || keep_cache != 1) remove (tmp);
+  if (force || dpx_conf.file.keep_cache != 1) remove (tmp);
   RELEASE(tmp);
 
   return;
@@ -1016,8 +1049,7 @@ dpx_delete_temp_file (char *tmp, int force)
  */
 int
 dpx_file_apply_filter (const char *cmdtmpl,
-                      const char *input, const char *output,
-                      unsigned char version)
+                      const char *input, const char *output, int version)
 {
   char   *cmd = NULL;
   const char   *p, *q;
@@ -1060,8 +1092,8 @@ if ((l) + (n) >= (m)) { \
         }
         break;
       case  'v': /* Version number, e.g. 1.4 */ {
-       char buf[6];
-       sprintf(buf, "1.%hu", (unsigned short) version);
+       char buf[256];
+       sprintf(buf, "%d.%d", version/10, version%10);
        need(cmd, n, size, strlen(buf));
        strcpy(cmd + n, buf);  n += strlen(buf);
        break;
@@ -1252,3 +1284,21 @@ qcheck_filetype (const char *fqpn, dpx_res_type type)
 
   return  r;
 }
+
+#if defined(WIN32)
+FILE *generic_fsyscp_fopen (const char *filename, const char *mode)
+{
+  FILE *f;
+
+  f = fsyscp_fopen (filename, mode);
+
+  if (f == NULL && file_system_codepage != win32_codepage) {
+    int tmpcp = file_system_codepage;
+    file_system_codepage = win32_codepage;
+    f = fsyscp_fopen (filename, mode);
+    file_system_codepage = tmpcp;
+  }
+
+  return f;
+}
+#endif /* WIN32 */

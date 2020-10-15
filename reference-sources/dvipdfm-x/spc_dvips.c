@@ -1,6 +1,6 @@
 /* This is dvipdfmx, an eXtended version of dvipdfm by Mark A. Wicks.
 
-    Copyright (C) 2002-2016 by Jin-Hwan Cho and Shunsaku Hirata,
+    Copyright (C) 2002-2019 by Jin-Hwan Cho and Shunsaku Hirata,
     the dvipdfmx project team.
     
     Copyright (C) 1998, 1999 by Mark A. Wicks <mwicks@kettering.edu>
@@ -353,7 +353,7 @@ spc_handler_ps_tricks_tdef (struct spc_env *spe, struct spc_arg *args)
   return 0;
 }
 
-static int calculate_PS (char *string, int length, double *res1, double *res2, double *res3, double *res4, double *res5, double *res6);
+static int calculate_PS (char *strptr, int length, double *res1, double *res2, double *res3, double *res4, double *res5, double *res6);
 
 static int
 spc_handler_ps_tricks_bput (struct spc_env *spe, struct spc_arg *args, int must_def, int pre_def)
@@ -483,7 +483,7 @@ spc_handler_ps_tricks_transform (struct spc_env *spe, struct spc_arg *args)
   static const char *post = "concat matrix currentmatrix ==";
 
   cmd = calloc(l + 41, 1);
-  strncpy(cmd, "matrix setmatrix ", 17);
+  strncpy(cmd, "matrix setmatrix ", 18);
   strncpy(cmd + 17, args->curptr, l);
   concat = strstr(cmd, "concat");
   if (concat != 0) {
@@ -606,7 +606,7 @@ spc_handler_ps_tricks_parse_path (struct spc_env *spe, struct spc_arg *args)
   fclose(fp);
 
   error = dpx_file_apply_filter(distiller_template, gs_in, gs_out,
-                               (unsigned char) pdf_get_version());
+    pdf_get_version());
   if (error) {
     WARN("Image format conversion for PSTricks failed.");
     RELEASE(gs_in);
@@ -701,7 +701,7 @@ spc_handler_ps_tricks_render (struct spc_env *spe, struct spc_arg *args)
     fclose(fp);
 
     error = dpx_file_apply_filter(distiller_template, gs_in, gs_out,
-                                 (unsigned char) pdf_get_version());
+      pdf_get_version());
     if (error) {
       WARN("Image format conversion for PSTricks failed.");
       RELEASE(gs_in);
@@ -1019,15 +1019,15 @@ spc_dvips_setup_handler (struct spc_handler *handle,
 }
 
 #ifdef __EMX__
-#define GS_CALCULATOR "gsos2 -q -dNOPAUSE -dBATCH -sDEVICE=nullpage -f "
+#define GS_CALCULATOR "gsos2 -q -dDELAYSAFER -dNOPAUSE -dBATCH -sDEVICE=nullpage -f "
 #elif defined(WIN32)
-#define GS_CALCULATOR "rungs -q -dNOPAUSE -dBATCH -sDEVICE=nullpage -f "
+#define GS_CALCULATOR "rungs -q -dDELAYSAFER -dNOPAUSE -dBATCH -sDEVICE=nullpage -f "
 #else
-#define GS_CALCULATOR "gs -q -dNOPAUSE -dBATCH -sDEVICE=nullpage -f "
+#define GS_CALCULATOR "gs -q -dDELAYSAFER -dNOPAUSE -dBATCH -sDEVICE=nullpage -f "
 #endif
 
 static
-int calculate_PS (char *string, int length, double *res1, double *res2, double *res3, double *res4, double *res5, double *res6) {
+int calculate_PS (char *strptr, int length, double *res1, double *res2, double *res3, double *res4, double *res5, double *res6) {
   char *formula, *cmd;
   FILE *fp, *coord;
   int k;
@@ -1049,7 +1049,7 @@ int calculate_PS (char *string, int length, double *res1, double *res2, double *
     fprintf(fp, "(%s) run\n", page_defs);
   if (temporary_defs)
     fprintf(fp, "(%s) run\n", temporary_defs);
-  fwrite(string, 1, length, fp);
+  fwrite(strptr, 1, length, fp);
   fclose(fp);
 #ifdef MIKTEX
   {

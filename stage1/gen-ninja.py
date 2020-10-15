@@ -276,7 +276,7 @@ def inner(src, build, w):
     convertprog = str(src / 'web2c' / 'convert')
 
     w.rule('convert',
-            command=f'srcdir=$srcdir {convertprog} $basename',
+            command=f'rm -f $out && srcdir=$srcdir {convertprog} $basename',
             description='CONVERT $out')
 
     def convert(basename, inputs, full_outputs=False):

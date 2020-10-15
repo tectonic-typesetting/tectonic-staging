@@ -40,6 +40,7 @@ const_string ALEPHHELP[] = {
     "",
     "  If no arguments or options are specified, prompt for input.",
     "",
+    "-cnf-line=STRING        parse STRING as a configuration file line",
     "-etex                   enable e-TeX extensions",
     "[-no]-file-line-error   disable/enable file:line:error style messages",
     "-fmt=FMTNAME            use FMTNAME instead of program name or a %& line",
@@ -95,6 +96,7 @@ const_string EPTEXHELP[] = {
     "",
     "  If no arguments or options are specified, prompt for input.",
     "",
+    "-cnf-line=STRING        parse STRING as a configuration file line",
     "-etex                   enable e-TeX extensions",
     "-fmt=NAME               use NAME instead of program name or %&format.",
 #if defined(WIN32)
@@ -124,9 +126,6 @@ const_string EPTEXHELP[] = {
     "-recorder               enable filename recorder",
     "[-no]-shell-escape      disable/enable \\write18{SHELL COMMAND}",
     "-shell-restricted       enable restricted \\write18",
-#if defined(WIN32)
-    "-sjis-terminal          always output to stdout and stderr by CP932",
-#endif
     "-src-specials           insert source specials into the DVI file",
     "-src-specials=WHERE     insert source specials in certain places of",
     "                          the DVI file. WHERE is a comma-separated value",
@@ -162,6 +161,7 @@ const_string ETEXHELP[] = {
     "",
     "  If no arguments or options are specified, prompt for input.",
     "",
+    "-cnf-line=STRING        parse STRING as a configuration file line",
     "-enc                    enable encTeX extensions such as \\mubyte",
     "-etex                   enable e-TeX extensions",
     "[-no]-file-line-error   disable/enable file:line:error style messages",
@@ -225,6 +225,7 @@ const_string EUPTEXHELP[] = {
     "",
     "  If no arguments or options are specified, prompt for input.",
     "",
+    "-cnf-line=STRING        parse STRING as a configuration file line",
     "-etex                   enable e-TeX extensions",
     "-fmt=NAME               use NAME instead of program name or %&format.",
 #if defined(WIN32)
@@ -254,9 +255,6 @@ const_string EUPTEXHELP[] = {
     "-recorder               enable filename recorder",
     "[-no]-shell-escape      disable/enable \\write18{SHELL COMMAND}",
     "-shell-restricted       enable restricted \\write18",
-#if defined(WIN32)
-    "-sjis-terminal          always output to stdout and stderr by CP932",
-#endif
     "-src-specials           insert source specials into the DVI file",
     "-src-specials=WHERE     insert source specials in certain places of",
     "                          the DVI file. WHERE is a comma-separated value",
@@ -295,6 +293,7 @@ const_string MFHELP[] = {
     "  If no arguments or options are specified, prompt for input.",
     "",
     "-base=BASENAME          use BASENAME instead of program name or a %& line",
+    "-cnf-line=STRING        parse STRING as a configuration file line",
     "[-no]-file-line-error   disable/enable file:line:error style messages",
     "-halt-on-error          stop processing at the first error",
     "-ini                    be inimf, for dumping bases; this is implicitly",
@@ -427,6 +426,7 @@ const_string PDFTEXHELP[] = {
     "",
     "  If no arguments or options are specified, prompt for input.",
     "",
+    "-cnf-line=STRING        parse STRING as a configuration file line",
     "-draftmode              switch on draft mode (generates no output PDF)",
     "-enc                    enable encTeX extensions such as \\mubyte",
     "-etex                   enable e-TeX extensions",
@@ -495,6 +495,7 @@ const_string PTEXHELP[] = {
     "",
     "  If no arguments or options are specified, prompt for input.",
     "",
+    "-cnf-line=STRING        parse STRING as a configuration file line",
     "-fmt=NAME               use NAME instead of program name or %&format.",
 #if defined(WIN32)
     "[-no]-guess-input-enc   disable/enable to guess input file encoding",
@@ -523,9 +524,6 @@ const_string PTEXHELP[] = {
     "-recorder               enable filename recorder",
     "[-no]-shell-escape      disable/enable \\write18{SHELL COMMAND}",
     "-shell-restricted       enable restricted \\write18",
-#if defined(WIN32)
-    "-sjis-terminal          always output to stdout and stderr by CP932",
-#endif
     "-src-specials           insert source specials into the DVI file",
     "-src-specials=WHERE     insert source specials in certain places of",
     "                          the DVI file. WHERE is a comma-separated value",
@@ -561,6 +559,7 @@ const_string TEXHELP[] = {
     "",
     "  If no arguments or options are specified, prompt for input.",
     "",
+    "-cnf-line=STRING        parse STRING as a configuration file line",
     "-enc                    enable encTeX extensions such as \\mubyte",
     "[-no]-file-line-error   disable/enable file:line:error style messages",
     "-fmt=FMTNAME            use FMTNAME instead of program name or a %& line",
@@ -623,6 +622,7 @@ const_string UPTEXHELP[] = {
     "",
     "  If no arguments or options are specified, prompt for input.",
     "",
+    "-cnf-line=STRING        parse STRING as a configuration file line",
     "-fmt=NAME               use NAME instead of program name or %&format.",
 #if defined(WIN32)
     "[-no]-guess-input-enc   disable/enable to guess input file encoding",
@@ -651,9 +651,6 @@ const_string UPTEXHELP[] = {
     "-recorder               enable filename recorder",
     "[-no]-shell-escape      disable/enable \\write18{SHELL COMMAND}",
     "-shell-restricted       enable restricted \\write18",
-#if defined(WIN32)
-    "-sjis-terminal          always output to stdout and stderr by CP932",
-#endif
     "-src-specials           insert source specials into the DVI file",
     "-src-specials=WHERE     insert source specials in certain places of",
     "                          the DVI file. WHERE is a comma-separated value",
@@ -689,6 +686,7 @@ const_string XETEXHELP[] = {
     "",
     "  If no arguments or options are specified, prompt for input.",
     "",
+    "-cnf-line=STRING        parse STRING as a configuration file line",
     "-etex                   enable e-TeX extensions",
     "[-no]-file-line-error   disable/enable file:line:error style messages",
     "-fmt=FMTNAME            use FMTNAME instead of program name or a %& line",

@@ -78,7 +78,7 @@ pdf_get_rect(char* filename, int page_num, int pdf_box, real_rect* box)
 
 	Page*		page = doc->getCatalog()->getPage(page_num);
 
-	PDFRectangle*	r;
+	const PDFRectangle*	r;
 	switch (pdf_box) {
 		default:
 		case pdfbox_crop:
@@ -103,27 +103,14 @@ pdf_get_rect(char* filename, int page_num, int pdf_box, real_rect* box)
 	if (RotAngle < 0)
 		RotAngle += 360;
 	if (RotAngle == 90 || RotAngle == 270) {
-		double tmpvalue;
-		if (r->x1 > r->x2) {
-			tmpvalue = r->x1;
-			r->x1 = r->x2;
-			r->x2 = tmpvalue;
-		}
-		if (r->y1 > r->y2) {
-			tmpvalue = r->y1;
-			r->y1 = r->y2;
-			r->y2 = tmpvalue;
-		}
-
-		tmpvalue = r->x2;
-		r->x2 = r->x1 + r->y2 - r->y1;
-		r->y2 = r->y1 + tmpvalue - r->x1;
+		box->wd = 72.27 / 72 * fabs(r->y2 - r->y1);
+		box->ht = 72.27 / 72 * fabs(r->x2 - r->x1);
+	} else {
+		box->wd = 72.27 / 72 * fabs(r->x2 - r->x1);
+		box->ht = 72.27 / 72 * fabs(r->y2 - r->y1);
 	}
-
 	box->x  = 72.27 / 72 * my_fmin(r->x1, r->x2);
 	box->y  = 72.27 / 72 * my_fmin(r->y1, r->y2);
-	box->wd = 72.27 / 72 * fabs(r->x2 - r->x1);
-	box->ht = 72.27 / 72 * fabs(r->y2 - r->y1);
 
 	delete doc;
 

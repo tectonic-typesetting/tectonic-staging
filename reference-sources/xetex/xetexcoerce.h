@@ -126,6 +126,28 @@ scaled zxn_over_d(scaled x, integer n, integer d);
 halfword zbadness(scaled t, scaled s);
 #define badness(t, s) zbadness((scaled) (t), (scaled) (s))
 #define badness_regmem
+integer zmake_frac(integer p, integer q);
+#define make_frac(p, q) zmake_frac((integer) (p), (integer) (q))
+#define make_frac_regmem
+integer ztake_frac(integer q, integer f);
+#define take_frac(q, f) ztake_frac((integer) (q), (integer) (f))
+#define take_frac_regmem
+integer zm_log(integer x);
+#define m_log(x) zm_log((integer) (x))
+#define m_log_regmem
+integer zab_vs_cd(integer a, integer b, integer c, integer d);
+#define ab_vs_cd(a, b, c, d) zab_vs_cd((integer) (a), (integer) (b), (integer) (c), (integer) (d))
+#define ab_vs_cd_regmem
+void new_randoms(void);
+#define new_randoms_regmem
+void zinit_randoms(integer seed);
+#define init_randoms(seed) zinit_randoms((integer) (seed))
+#define init_randoms_regmem
+integer zunif_rand(integer x);
+#define unif_rand(x) zunif_rand((integer) (x))
+#define unif_rand_regmem
+integer norm_rand(void);
+#define norm_rand_regmem
 void zprint_word(memory_word w);
 #define print_word(w) zprint_word((memory_word) (w))
 #define print_word_regmem
@@ -198,6 +220,8 @@ halfword zprev_rightmost(halfword s, halfword e);
 scaled zround_xn_over_d(scaled x, integer n, integer d);
 #define round_xn_over_d(x, n, d) zround_xn_over_d((scaled) (x), (integer) (n), (integer) (d))
 #define round_xn_over_d_regmem
+integer get_microinterval(void);
+#define get_microinterval_regmem
 void zshort_display(integer p);
 #define short_display(p) zshort_display((integer) (p))
 #define short_display_regmem register memory_word *mem=zmem;
@@ -477,7 +501,7 @@ void zscan_something_internal(small_number level, boolean negative);
 #define scan_something_internal(level, negative) zscan_something_internal((small_number) (level), (boolean) (negative))
 #define scan_something_internal_regmem register memory_word *mem=zmem, *eqtb=zeqtb;
 void scan_int(void);
-#define scan_int_regmem
+#define scan_int_regmem register memory_word *eqtb=zeqtb;
 void zxetex_scan_dimen(boolean mu, boolean inf, boolean shortcut, boolean requires_units);
 #define xetex_scan_dimen(mu, inf, shortcut, requires_units) zxetex_scan_dimen((boolean) (mu), (boolean) (inf), (boolean) (shortcut), (boolean) (requires_units))
 #define xetex_scan_dimen_regmem register memory_word *mem=zmem, *eqtb=zeqtb;
@@ -564,6 +588,8 @@ str_number zzw_make_name_string(word_file * f);
 #define w_make_name_string_regmem
 void scan_file_name(void);
 #define scan_file_name_regmem
+void scan_file_name_braced(void);
+#define scan_file_name_braced_regmem register memory_word *mem=zmem;
 void zpack_job_name(str_number s);
 #define pack_job_name(s) zpack_job_name((str_number) (s))
 #define pack_job_name_regmem

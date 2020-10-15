@@ -118,16 +118,17 @@ extern int tfm_temp, tex_input_type;
 #if !defined (pdfTeX)
 extern void pdftex_fail(const char *fmt, ...);
 #endif
-#if !defined(XeTeX)
 extern char start_time_str[];
 extern void init_start_time(void);
+extern string find_input_file(integer s);
+#if !defined(XeTeX)
 extern char *makecstring(integer s);
 extern char *makecfilename(integer s);
+#endif /* !XeTeX */
 extern void getcreationdate(void);
 extern void getfilemoddate(integer s);
 extern void getfilesize(integer s);
 extern void getfiledump(integer s, int offset, int length);
-#endif
 extern void convertStringToHexString(const char *in, char *out, int lin);
 extern void getmd5sum(integer s, int file);
 #endif
@@ -213,7 +214,7 @@ extern boolean input_line (FILE *);
 #define	date_and_time(i,j,k,l) get_date_and_time (&(i), &(j), &(k), &(l))
 extern void get_date_and_time (integer *, integer *, integer *, integer *);
 
-#if defined(pdfTeX) || defined(epTeX) || defined(eupTeX)
+#if defined(pdfTeX) || defined(epTeX) || defined(eupTeX) || defined(XeTeX)
 /* Get high-res time info. */
 #define seconds_and_micros(i,j) get_seconds_and_micros (&(i), &(j))
 extern void get_seconds_and_micros (integer *, integer *);
@@ -240,6 +241,14 @@ extern void t_open_in (void);
 #define a_close(f)     close_file_or_pipe(f)
 #endif
 
+/* define FMT_COMPRESS for engines which compress formats */
+#if defined(pTeX) || defined(epTeX) || defined(upTeX) || defined(eupTeX)
+#define FMT_COMPRESS 1
+#endif
+#if defined(eTeX) || defined(pdfTeX) || defined(XeTeX)
+#define FMT_COMPRESS 1
+#endif
+
 /* `b_open_in' (and out) is used only for reading (and writing) .tfm
    files; `w_open_in' (and out) only for dump files.  The filenames are
    passed in as a global variable, `name_of_file'.  */
@@ -249,7 +258,7 @@ extern void t_open_in (void);
 
 #define b_open_out(f)	open_output (&(f), FOPEN_WBIN_MODE)
 #define b_close		a_close
-#ifdef XeTeX
+#ifdef FMT_COMPRESS
 /* f is declared as gzFile, but we temporarily use it for a FILE *
    so that we can use the standard open calls */
 #define w_open_in(f)	(open_input_impl ((FILE**)&(f), DUMP_FORMAT, FOPEN_RBIN_MODE) \
@@ -267,9 +276,12 @@ extern void t_open_in (void);
 #ifdef XeTeX
 #if ENABLE_PIPES
 extern boolean u_open_in_or_pipe(unicode_file* f, integer filefmt, const_string fopen_mode, integer mode, integer encodingData);
+extern void u_close_file_or_pipe(unicode_file* f);
 #define u_open_in(f,p,m,d) u_open_in_or_pipe(&(f), p, FOPEN_RBIN_MODE, m, d)
+#define u_close(f) u_close_file_or_pipe(&(f))
 #else
 #define u_open_in(f,p,m,d) u_open_in_impl(&(f), p, FOPEN_RBIN_MODE, m, d)
+#define u_close(f) u_close_inout(&(f))
 #endif
 #endif
 
@@ -341,7 +353,7 @@ extern void paint_row (/*screenrow, pixelcolor, transspec, screencol*/);
   } while (0)
 
 /* We define the routines to do the actual work in texmfmp.c.  */
-#ifdef XeTeX
+#ifdef FMT_COMPRESS
 #include <zlib.h>
 extern void do_dump (char *, int, int, gzFile);
 extern void do_undump (char *, int, int, gzFile);

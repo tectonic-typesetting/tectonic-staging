@@ -141,6 +141,9 @@ typedef FILE *text;
 #define a_open_out(f)  open_output (&(f), FOPEN_W_MODE)
 #define a_close close_file
 
+/* Used in BibTeX for subsidiary aux files. */
+#define a_open_in_with_dirname(f,p,s) open_input_with_dirname (&(f), p, s)
+
 /* How to output to the GF or DVI file.  */
 #define WRITE_OUT(a, b)							\
   if ((size_t) fwrite ((char *) &OUT_BUF[a], sizeof (OUT_BUF[a]),       \

@@ -274,6 +274,11 @@ integer interrupt;
 boolean OK_to_interrupt;
 boolean arith_error;
 scaled tex_remainder;
+integer randoms[55];
+unsigned char j_random;
+scaled random_seed;
+integer two_to_the[31];
+integer spec_log[29];
 halfword temp_ptr;
 memory_word *yzmem;
 memory_word *zmem;
@@ -289,7 +294,7 @@ halfword hlist_stack[513];
 short /*max_hlist_stack */ hlist_stack_level;
 halfword first_p;
 halfword global_prev_p;
-        /*:163*///172:
+        /*:181*///190:
 #ifdef TEXMF_DEBUG
 boolean free_arr[10];
 boolean was_free[10];
@@ -308,7 +313,7 @@ short /*mmode */ shown_mode;
 unsigned char /*max_selector */ old_setting;
 memory_word *zeqtb;
 quarterword
-#define xeq_level (zzzaa -8938740)
+#define xeq_level (zzzaa -8939240)
     zzzaa[1114731];
 two_halves *hash;
 two_halves *yhash;
@@ -321,7 +326,6 @@ boolean no_new_control_sequence;
 integer cs_count;
 two_halves prim[501];
 halfword prim_used;
-memory_word prim_eqtb[501];
 memory_word *save_stack;
 integer save_ptr;
 integer max_save_stack;
@@ -450,6 +454,8 @@ scaled dvi_h, dvi_v;
 scaled cur_h, cur_v;
 internal_font_number dvi_f;
 integer cur_s;
+integer epochseconds;
+integer microseconds;
 scaled total_stretch[4], total_shrink[4];
 integer last_badness;
 halfword adjust_tail;
@@ -533,11 +539,11 @@ halfword *hyph_list;
 hyph_pointer *hyph_link;
 integer hyph_count;
 integer hyph_next;
-        /*:961*///978:
+        /*:982*///999:
 #ifdef INITEX
 integer
 #define trie_op_hash (zzzab - (int)(neg_trie_op_size))
- zzzab[trie_op_size - neg_trie_op_size + 1];
+    zzzab[trie_op_size - neg_trie_op_size + 1];
 trie_opcode trie_used[256];
 unsigned char /*biggest_lang */ trie_op_lang[trie_op_size + 1];
 trie_opcode trie_op_val[trie_op_size + 1];
@@ -546,7 +552,7 @@ integer trie_op_ptr;
 #endif                          // INITEX
 trie_opcode max_op_used;
 boolean small_op;
-        /*:978*///982:
+        /*:999*///1003:
 #ifdef INITEX
 packed_UTF16_code *trie_c;
 trie_opcode *trie_o;
@@ -556,7 +562,7 @@ trie_pointer trie_ptr;
 trie_pointer *trie_hash;
 
 #endif                          // INITEX
-        /*:982*///985:
+         /*:1003*///1006:
 #ifdef INITEX
 boolean *trie_taken;
 trie_pointer trie_min[65536];
@@ -657,5 +663,5 @@ scaled accent_width, accent_height;
 scaled delta;
 integer synctexoption;
 integer synctexoffset;
-//:1683
+//:1708
 #include "xetexcoerce.h"

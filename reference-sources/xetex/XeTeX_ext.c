@@ -267,17 +267,6 @@ set_input_file_encoding(UFILE* f, integer mode, integer encodingData)
     }
 }
 
-void
-u_close(UFILE* f)
-{
-    if (f != 0) {
-        fclose(f->f);
-        if ((f->encodingMode == ICUMAPPING) && (f->conversionData != NULL))
-            ucnv_close((UConverter*)(f->conversionData));
-        free((void*)f);
-    }
-}
-
 static void
 buffer_overflow(void)
 {
@@ -2624,6 +2613,17 @@ u_open_in_impl(unicode_file* f, integer filefmt, const_string fopen_mode, intege
         set_input_file_encoding(*f, mode, encodingData);
     }
     return rval;
+}
+
+void
+u_close_inout(unicode_file* f)
+{
+    if (f != 0) {
+        fclose((*f)->f);
+        if (((*f)->encodingMode == ICUMAPPING) && ((*f)->conversionData != NULL))
+            ucnv_close((*f)->conversionData);
+        free(*f);
+    }
 }
 
 #if defined(WIN32)

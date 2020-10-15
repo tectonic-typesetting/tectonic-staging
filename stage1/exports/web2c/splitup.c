@@ -158,7 +158,7 @@ int main(int argc, string * argv)
             break;
 
         if (buffer[0] == '#' || buffer[0] == '\n' || buffer[0] == '}'
-            || buffer[0] == '/' || buffer[0] == ' ' || strncmp(buffer, "typedef", 7) == 0)
+            || buffer[0] == '/' || buffer[0] == ' ' || buffer[0] == '\t' || strncmp(buffer, "typedef", 7) == 0)
             /*nothing */ ;
         else
             fputs("EXTERN ", out);

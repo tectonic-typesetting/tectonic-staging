@@ -52,10 +52,18 @@ HHB1		("hh"{WW}"."{WW}"b1")
 
 %%
 {W}				;
-"{"		{ while (webinput() != '}'); }
+"{"		{
+				/* Tectonic: preserve comments */
+				int c; 
+				fputs("/*", out);				
+				while ((c = webinput()) != '}')
+					putc(c, out);
+				fputs("*/", out);
+			}
 
 "#"		{
 		    register int c;
+		    putc('\n', out);
 		    putc('#', out);
 		    while ((c = webinput()) && c != ';')
 			putc(c, out);
@@ -72,12 +80,12 @@ HHB1		("hh"{WW}"."{WW}"b1")
 		 *cp = '\0';
 		 (void) webinput();
 		 if (doing_statements) fputs("\t;\n", out);
-		 fprintf(out, "#ifdef %s\n", conditional);
+		 fprintf(out, "\n#ifdef %s\n", conditional);
 		}
 
 "endif("	{register int c;
 		 new_line();
-		 fputs("#endif /* ", out);
+		 fputs("\n#endif /* ", out);
 		 while ((c = webinput()) != '\'')
 		    ;
 		 while ((c = webinput()) != '\'')
@@ -97,12 +105,12 @@ HHB1		("hh"{WW}"."{WW}"b1")
 		 *cp = '\0';
 		 (void) webinput();
 		 if (doing_statements) fputs("\t;\n", out);
-		 fprintf(out, "#ifndef %s\n", conditional);
+		 fprintf(out, "\n#ifndef %s\n", conditional);
 		}
 
 "endifn("	{register int c;
 		 new_line();
-		 fputs("#endif /* not ", out);
+		 fputs("\n#endif /* not ", out);
 		 while ((c = webinput()) != '\'')
 		    ;
 		 while ((c = webinput()) != '\'')

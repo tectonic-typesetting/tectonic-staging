@@ -20,7 +20,7 @@
 /* Changing this value will probably stimulate bugs in some
    preprocessors -- those which want to put the expansion of a macro
    entirely on one line.  */
-#define max_line_length 78
+#define max_line_length 1024 /* Tectonic: boost line length a lot */
 
 #define max_strings 50000
 #define hash_prime 7883
@@ -241,6 +241,7 @@ int main(int argc, string * argv)
 
     initialize();
     yyparse();
+    line_pos = 1; /* Tectonic: force final newline */
     new_line();
 
     xfclose(coerce, coerce_name);

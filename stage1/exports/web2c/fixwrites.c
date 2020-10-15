@@ -15,7 +15,7 @@ static void remove_newline(string s)
 {
     char *temp = strrchr(s, '\n');
     if (temp == NULL) {
-        fprintf(stderr, "Lost newline somehow.\n");
+        fprintf(stderr, "Lost newline somehow in \"%s\".\n", s); /* Tectonic: extra debug context */
         /* This is so the convert script can delete the output file on error.  */
         puts("@error@");
         exit(1);
@@ -192,12 +192,36 @@ int main(int argc, string * argv)
             while (*--cp == ' ') ;
         }
 
-        for (cp = buf, indent = 0; *cp == ' ' || *cp == '\t'; ++cp) {
+        /* Tectonic: skip line-leading comments */
+        for (cp = buf, indent = 0; ; ++cp) {
             if (*cp == ' ')
                 indent++;
-            else
+            else if (*cp == '\t')
                 indent += 8;
+            else if (*cp == '/' && *(cp+1) == '*') {
+                char *save_cp = cp;
+                int save_indent = indent;
+                cp += 2;
+                indent += 2;
+                while ((*cp != '*' || *(cp+1) != '/') && *(cp+1)) {
+                    cp++;
+                    indent++;
+                }
+
+                if (*(cp+1) == 0) {
+                    /* Multi-line comment; skip */
+                    cp = save_cp;
+                    indent = save_indent;
+                    break;
+                }
+
+                cp += 1; /* cp will be incremented once more by the for loop */
+                indent += 2;
+            } else {
+                break;
+            }
         }
+        /* End Tectonic patch */
 
         if (!*cp) {             /* All blanks, possibly with "{" */
             puts(buf);

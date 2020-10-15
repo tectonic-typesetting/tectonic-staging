@@ -422,7 +422,7 @@ def inner(src, build, w, use_custom_otangle):
              variables = {'libs': libs},
     )
 
-    # Bibtex source code.
+    # Bibtex source code and executable
 
     bibtex_p = otangle('bibtex', [
         src / 'bibtex' / 'bibtex.web',
@@ -430,6 +430,14 @@ def inner(src, build, w, use_custom_otangle):
     ])
 
     bibtex_c = convert('bibtex', [bibtex_p])
+
+    executable(
+        output = build / 'bibtex',
+        sources = [bibtex_c[0], src / 'lib' / 'main.c'],  # intentional; shared `main`
+        rule = 'cc',
+        slibs = [libbase, libkp],
+        cflags = '-I%(src)s -I%(src)s/lib -I%(src)s/xetexdir %(base_cflags)s' % config,
+    )
 
     # Weave source code and executable
 
@@ -449,13 +457,13 @@ def inner(src, build, w, use_custom_otangle):
     )
 
 
-def outer(args):
+def outer(argv0, args):
     use_custom_otangle = '--use-custom-otangle' in args
     if use_custom_otangle:
         args.remove('--use-custom-otangle')
 
     build = Path('')
-    me = Path(sys.argv[0]).parent
+    me = Path(argv0).parent
     src = Path(args[0])
 
     with (build / 'build.ninja').open('wt') as f:
@@ -465,4 +473,4 @@ def outer(args):
 
 if __name__ == '__main__':
     import sys
-    outer(sys.argv[1:])
+    outer(sys.argv[0], sys.argv[1:])

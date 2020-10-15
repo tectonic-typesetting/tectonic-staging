@@ -11,6 +11,8 @@ a_open_out
 apply_mapping
 apply_tfm_font_mapping
 b_close
+BIB_XRETALLOC
+BIB_XRETALLOC_NOSET
 blank_rectangle
 b_open_in
 b_open_out
@@ -20,6 +22,7 @@ check_for_tfm_font_mapping
 clear_terminal
 const_cstring
 count_pdf_file_pages
+c_int_type
 date_and_time
 dump_core
 dump_hh
@@ -29,13 +32,18 @@ dump_things
 dump_wd
 dvi_close
 dvi_open_out
+extend_filename
 find_native_font
 find_pic_file
+find_suffix
 floor_scaled
 floor_unscaled
 flush_dvi
 fmemory_word
+FOPEN_RBIN_MODE
+FOPEN_R_MODE
 four_quarters
+free_ot_assembly
 get_cp_code
 get_encoding_mode_and_info
 get_font_char_range
@@ -57,9 +65,11 @@ get_ot_math_constant
 get_ot_math_ital_corr
 get_ot_math_kern
 get_ot_math_variant
+getopt_long_only
 gr_font_get_named
 gr_font_get_named_1
 gr_print_font_name
+has_arg
 init_screen
 input_int
 input_ln
@@ -81,6 +91,7 @@ kpse_find_vf
 kpse_fontmap_format
 kpse_gf_format
 kpse_in_name_ok
+kpse_init_prog
 kpse_last_format
 kpse_make_tex_discard_errors
 kpse_mf_format
@@ -97,6 +108,9 @@ kpse_out_name_ok
 kpse_ovf_format
 kpse_ovp_format
 kpse_pk_format
+kpse_reset_program_name
+kpse_set_program_enabled
+kpse_set_program_name
 kpse_src_cmdline
 kpse_src_compile
 kpse_tex_format
@@ -115,6 +129,7 @@ make_identity
 make_rotation
 make_scale
 make_src_special
+make_suffix
 make_translation
 make_xdv_glyph_array_data
 map_char_to_glyph
@@ -139,7 +154,9 @@ ot_part_glyph
 ot_part_is_extender
 ot_part_start_connector
 paint_row
+packed_UTF16_code
 pic_path_byte
+pool_pointer
 print_c_string
 print_glyph_name
 print_real
@@ -169,6 +186,7 @@ set_native_glyph_metrics
 set_native_metrics
 set_paths
 setup_bound_variable
+str_number
 synctex_abort
 synctex_char
 synctex_current
@@ -191,6 +209,7 @@ terminate_font_manager
 tex_input_type
 TEXMF_ENGINE_NAME
 TEXMF_POOL_NAME
+texmf_yesno
 tfm_temp
 t_open_in
 transform_concat

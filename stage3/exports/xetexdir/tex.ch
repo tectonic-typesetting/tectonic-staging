@@ -570,10 +570,10 @@ tini@/
   at most |max_halfword|}
 @!dvi_buf_size:integer; {size of the output buffer; must be a multiple of 8}
 @!expand_depth:integer; {limits recursive calls to the |expand| procedure}
-@!parse_first_line_p:cinttype; {parse the first line for options}
-@!file_line_error_style_p:cinttype; {format messages as file:line:error}
-@!eight_bit_p:cinttype; {make all characters printable by default}
-@!halt_on_error_p:cinttype; {stop at first error}
+@!parse_first_line_p:c_int_type; {parse the first line for options}
+@!file_line_error_style_p:c_int_type; {format messages as file:line:error}
+@!eight_bit_p:c_int_type; {make all characters printable by default}
+@!halt_on_error_p:c_int_type; {stop at first error}
 @!quoted_filename:boolean; {current filename is quoted}
 {Variables for source specials}
 @!src_specials_p : boolean;{Whether |src_specials| are enabled at all}
@@ -4503,7 +4503,7 @@ system-dependent section allows easy integration of Web2c and e-\TeX, etc.)
 @<Glob...@>=
 @!edit_name_start: pool_pointer; {where the filename to switch to starts}
 @!edit_name_length,@!edit_line: integer; {what line to start editing at}
-@!ipc_on: cinttype; {level of IPC action, 0 for none [default]}
+@!ipc_on: c_int_type; {level of IPC action, 0 for none [default]}
 @!stop_at_space: boolean; {whether |more_name| returns false for space}
 
 @ The |edit_name_start| will be set to point into |str_pool| somewhere after
@@ -4519,8 +4519,8 @@ strings.
 @<Global...@> =
 @!save_str_ptr: str_number;
 @!save_pool_ptr: pool_pointer;
-@!shellenabledp: cinttype;
-@!restrictedshell: cinttype;
+@!shellenabledp: c_int_type;
+@!restrictedshell: c_int_type;
 @!output_comment: ^char;
 @!k,l: 0..255; {used by `Make the first 256 strings', etc.}
 

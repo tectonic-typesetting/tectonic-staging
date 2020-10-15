@@ -47,6 +47,9 @@ function copy_source() {
     find -type f |while read fn ; do
         cp $fn ../../state/outputs/stage4/$fn
     done
+
+    $topdir/stage0/driver.sh builder-bash -c \
+        "python3 /source/stage4/rewrite-symbols.py /state/outputs/stage4"
 }
 
 function setup_build() {
@@ -55,7 +58,7 @@ function setup_build() {
     mkdir -p $build
 
     $topdir/stage0/driver.sh builder-bash -c \
-        "cd /state/outputs/stage4/build && python3 /source/stage1/gen-ninja.py --use-custom-otangle --build-book-tex .."
+        "cd /state/outputs/stage4/build && python3 /source/stage1/gen-ninja.py --use-custom-otangle --build-book-tex --underscores .."
 }
 
 function run_build() {

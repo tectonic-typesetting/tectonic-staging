@@ -259,7 +259,11 @@ boolean scanninghex;
 eightbits nextcontrol;
 textpointer currepltext;
 short modulecount;
+#ifdef TECTONIC_STAGE4_UNDERSCORES
+const_cstring webname, chgname, pascalname, poolname;
+#else
 constcstring webname, chgname, pascalname, poolname;
+#endif
 
 #ifdef PKGW
 static boolean pkgw_outputting_named_numeric_constant = false;
@@ -403,36 +407,66 @@ void parsearguments(void)
 {
     getoptstruct longoptions[noptions + 1];
     integer getoptreturnval;
+#ifdef TECTONIC_STAGE4_UNDERSCORES
+    c_int_type optionindex;
+#else
     cinttype optionindex;
+#endif
     integer currentoption;
 
     currentoption = 0;
     longoptions[currentoption].name = "help";
+#ifdef TECTONIC_STAGE4_UNDERSCORES
+    longoptions[currentoption].has_arg = 0;
+#else
     longoptions[currentoption].hasarg = 0;
+#endif
     longoptions[currentoption].flag = 0;
     longoptions[currentoption].val = 0;
     currentoption = currentoption + 1;
     longoptions[currentoption].name = "version";
+#ifdef TECTONIC_STAGE4_UNDERSCORES
+    longoptions[currentoption].has_arg = 0;
+#else
     longoptions[currentoption].hasarg = 0;
+#endif
     longoptions[currentoption].flag = 0;
     longoptions[currentoption].val = 0;
     currentoption = currentoption + 1;
     longoptions[currentoption].name = 0;
+#ifdef TECTONIC_STAGE4_UNDERSCORES
+    longoptions[currentoption].has_arg = 0;
+#else
     longoptions[currentoption].hasarg = 0;
+#endif
     longoptions[currentoption].flag = 0;
     longoptions[currentoption].val = 0;
     do {
+#ifdef TECTONIC_STAGE4_UNDERSCORES
+        getoptreturnval = getopt_long_only(argc, argv, "", longoptions,
+                                         addressof(optionindex));
+#else
         getoptreturnval = getoptlongonly(argc, argv, "", longoptions,
                                          addressof(optionindex));
+#endif
         if (getoptreturnval == -1) {
             ;
         } else if (getoptreturnval == QUESTION_MARK) {
             usage("otangle");
         } else if ((strcmp(longoptions[optionindex].name, "help") == 0)) {
+#ifdef TECTONIC_STAGE4_UNDERSCORES
             usagehelp(OTANGLEHELP, nil);
+#else
+            usage_help(OTANGLEHELP, nil);
+#endif
         } else if ((strcmp(longoptions[optionindex].name, "version") == 0)) {
+#ifdef TECTONIC_STAGE4_UNDERSCORES
+            print_version_and_exit("This is OTANGLE, Version 4.4", nil,
+                                "J. Plaice, Y. Haralambous, D.E. Knuth", nil);
+#else
             printversionandexit("This is OTANGLE, Version 4.4", nil,
                                 "J. Plaice, Y. Haralambous, D.E. Knuth", nil);
+#endif
         }
     }
     while (!(getoptreturnval == -1));
@@ -441,10 +475,17 @@ void parsearguments(void)
                 ": Need one or two file arguments.");
         usage("otangle");
     }
+#ifdef TECTONIC_STAGE4_UNDERSCORES
     webname = extendfilename(cmdline(optind), "web");
     if (optind + 2 == argc) {
         chgname = extendfilename(cmdline(optind + 1), "ch");
     }
+#else
+    webname = extend_filename(cmdline(optind), "web");
+    if (optind + 2 == argc) {
+        chgname = extend_filename(cmdline(optind + 1), "ch");
+    }
+#endif
     pascalname = basenamechangesuffix(webname, ".web", ".p");
 }
 

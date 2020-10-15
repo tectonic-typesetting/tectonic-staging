@@ -471,7 +471,7 @@ def inner(src, build, w, use_custom_otangle, build_book_tex, underscores):
             sources = [Path('/source/stage3/merge-changes.c')],
             rule = 'cc',
             slibs = [libbase, libkp],
-            cflags = '-I%(src)s -I%(src)s/lib -I%(src)s/xetexdir %(base_cflags)s' % config,
+            cflags = '%(underscores_cflags)s -I%(src)s -I%(src)s/lib -I%(src)s/xetexdir %(base_cflags)s' % config,
         )
 
         w.rule('merge-changes',

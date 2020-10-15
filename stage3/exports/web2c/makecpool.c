@@ -75,14 +75,14 @@ int main(int argc, char *argv[])
     printf("  NULL };\n"
            "int loadpoolstrings (integer spare_size) {\n"
            "  const char *s;\n"
-           "  strnumber g=0;\n"
+           "  str_number g=0;\n"
            "  int i=0,j=0;\n"
            "  while ((s = poolfilearr[j++])) {\n"
            "    int l = strlen (s);\n" "    i += l;\n" "    if (i>=spare_size) return 0;\n");
     if (is_luatex)
         printf("    while (l-- > 0) str_pool[pool_ptr++] = *s++;\n" "    g = make_string();\n");
     else
-        printf("    while (l-- > 0) strpool[poolptr++] = *s++;\n" "    g = makestring();\n");
+        printf("    while (l-- > 0) str_pool[pool_ptr++] = *s++;\n" "    g = make_string();\n");
     if (is_metafont)
         printf("    strref[g]= 127;\n");
     printf("  }\n" "  return g;\n" "}\n");

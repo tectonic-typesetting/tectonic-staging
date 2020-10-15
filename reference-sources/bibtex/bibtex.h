@@ -2,6 +2,8 @@ void print_a_newline(void);
 void mark_warning(void);
 void mark_error(void);
 void mark_fatal(void);
+cstring zbib_makecstring(str_number s);
+#define bib_makecstring(s) zbib_makecstring((str_number) (s))
 void print_overflow(void);
 void print_confusion(void);
 void buffer_overflow(void);
@@ -27,6 +29,8 @@ void zaux_err_illegal_another_print(integer cmd_num);
 void aux_err_no_right_brace_print(void);
 void aux_err_stuff_after_right_brace_print(void);
 void aux_err_white_space_in_argument_print(void);
+boolean zstr_ends_with(str_number s, str_number ext);
+#define str_ends_with(s, ext) zstr_ends_with((str_number) (s), (str_number) (ext))
 void print_bib_name(void);
 void log_pr_bib_name(void);
 void print_bst_name(void);

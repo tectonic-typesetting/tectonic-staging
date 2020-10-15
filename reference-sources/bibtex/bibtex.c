@@ -339,6 +339,28 @@ void mark_fatal(void)
     history = 3 /*fatal_message */ ;
 }
 
+cstring zbib_makecstring(str_number s)
+{
+    register cstring Result;
+    cstring cstr;
+    pool_pointer i;
+    cstr = xmalloc_array(ASCII_code, (str_start[s + 1] - str_start[s]) + 1);
+    {
+        register integer for_end;
+        i = 0;
+        for_end = (str_start[s + 1] - str_start[s]) - 1;
+        if (i <= for_end)
+            do {
+                cstr[i] = str_pool[str_start[s] + i];
+            }
+            while (i++ < for_end);
+    }
+    cstr[(str_start[s + 1] - str_start[s])] = 0;
+    Result = cstr;
+ lab10:                        /*exit */ ;
+    return Result;
+}
+
 void print_overflow(void)
 {
     {
@@ -631,10 +653,36 @@ void aux_err_white_space_in_argument_print(void)
     }
 }
 
+boolean zstr_ends_with(str_number s, str_number ext)
+{
+    register boolean Result;
+    integer i;
+    integer str_idx, ext_idx;
+    ASCII_code str_char, ext_char;
+    Result = false;
+    if (((str_start[ext + 1] - str_start[ext]) > (str_start[s + 1] - str_start[s])))
+        goto lab10;
+    str_idx = (str_start[s + 1] - str_start[s]) - 1;
+    ext_idx = (str_start[ext + 1] - str_start[ext]) - 1;
+    while ((ext_idx >= 0)) {
+
+        str_char = str_pool[str_start[s] + str_idx];
+        ext_char = str_pool[str_start[ext] + ext_idx];
+        if ((str_char != ext_char))
+            goto lab10;
+        str_idx = str_idx - 1;
+        ext_idx = ext_idx - 1;
+    }
+    Result = true;
+ lab10:                        /*exit */ ;
+    return Result;
+}
+
 void print_bib_name(void)
 {
     print_a_pool_str(bib_list[bib_ptr]);
-    print_a_pool_str(s_bib_extension);
+    if (!str_ends_with(bib_list[bib_ptr], s_bib_extension))
+        print_a_pool_str(s_bib_extension);
     print_a_newline();
 }
 
@@ -643,7 +691,7 @@ void log_pr_bib_name(void)
     {
         out_pool_str(log_file, bib_list[bib_ptr]);
     }
-    {
+    if (!str_ends_with(bib_list[bib_ptr], s_bib_extension)) {
         out_pool_str(log_file, s_bib_extension);
     }
     {
@@ -2889,14 +2937,17 @@ boolean compress_bib_white(void)
     register boolean Result;
     Result = false;
     {
-        if ((ex_buf_ptr == buf_size)) {
-            bib_field_too_long_print();
-            goto lab10;
-        } else {
-
-            ex_buf[ex_buf_ptr] = 32 /*space */ ;
-            ex_buf_ptr = ex_buf_ptr + 1;
+        if ((ex_buf_ptr >= buf_size)) {
+            {
+                fprintf(log_file, "%s%ld%s", "Field filled up at ", (long)32 /*space */ , ", reallocating.");
+            }
+            {
+                putc('\n', log_file);
+            }
+            buffer_overflow();
         }
+        ex_buf[ex_buf_ptr] = 32 /*space */ ;
+        ex_buf_ptr = ex_buf_ptr + 1;
     }
     while ((!scan_white_space())) {
 
@@ -2941,14 +2992,18 @@ boolean scan_balanced_braces(void)
                 {
                     bib_brace_level = bib_brace_level + 1;
                     {
-                        if ((ex_buf_ptr == buf_size)) {
-                            bib_field_too_long_print();
-                            goto lab10;
-                        } else {
-
-                            ex_buf[ex_buf_ptr] = 123 /*left_brace */ ;
-                            ex_buf_ptr = ex_buf_ptr + 1;
+                        if ((ex_buf_ptr >= buf_size)) {
+                            {
+                                fprintf(log_file, "%s%ld%s", "Field filled up at ", (long)123 /*left_brace */ ,
+                                        ", reallocating.");
+                            }
+                            {
+                                putc('\n', log_file);
+                            }
+                            buffer_overflow();
                         }
+                        ex_buf[ex_buf_ptr] = 123 /*left_brace */ ;
+                        ex_buf_ptr = ex_buf_ptr + 1;
                     }
                     buf_ptr2 = buf_ptr2 + 1;
                     {
@@ -2965,14 +3020,18 @@ boolean scan_balanced_braces(void)
                                 {
                                     bib_brace_level = bib_brace_level - 1;
                                     {
-                                        if ((ex_buf_ptr == buf_size)) {
-                                            bib_field_too_long_print();
-                                            goto lab10;
-                                        } else {
-
-                                            ex_buf[ex_buf_ptr] = 125 /*right_brace */ ;
-                                            ex_buf_ptr = ex_buf_ptr + 1;
+                                        if ((ex_buf_ptr >= buf_size)) {
+                                            {
+                                                fprintf(log_file, "%s%ld%s", "Field filled up at ",
+                                                        (long)125 /*right_brace */ , ", reallocating.");
+                                            }
+                                            {
+                                                putc('\n', log_file);
+                                            }
+                                            buffer_overflow();
                                         }
+                                        ex_buf[ex_buf_ptr] = 125 /*right_brace */ ;
+                                        ex_buf_ptr = ex_buf_ptr + 1;
                                     }
                                     buf_ptr2 = buf_ptr2 + 1;
                                     {
@@ -2991,14 +3050,18 @@ boolean scan_balanced_braces(void)
                                 {
                                     bib_brace_level = bib_brace_level + 1;
                                     {
-                                        if ((ex_buf_ptr == buf_size)) {
-                                            bib_field_too_long_print();
-                                            goto lab10;
-                                        } else {
-
-                                            ex_buf[ex_buf_ptr] = 123 /*left_brace */ ;
-                                            ex_buf_ptr = ex_buf_ptr + 1;
+                                        if ((ex_buf_ptr >= buf_size)) {
+                                            {
+                                                fprintf(log_file, "%s%ld%s", "Field filled up at ",
+                                                        (long)123 /*left_brace */ , ", reallocating.");
+                                            }
+                                            {
+                                                putc('\n', log_file);
+                                            }
+                                            buffer_overflow();
                                         }
+                                        ex_buf[ex_buf_ptr] = 123 /*left_brace */ ;
+                                        ex_buf_ptr = ex_buf_ptr + 1;
                                     }
                                     buf_ptr2 = buf_ptr2 + 1;
                                     {
@@ -3014,14 +3077,18 @@ boolean scan_balanced_braces(void)
                             default:
                                 {
                                     {
-                                        if ((ex_buf_ptr == buf_size)) {
-                                            bib_field_too_long_print();
-                                            goto lab10;
-                                        } else {
-
-                                            ex_buf[ex_buf_ptr] = buffer[buf_ptr2];
-                                            ex_buf_ptr = ex_buf_ptr + 1;
+                                        if ((ex_buf_ptr >= buf_size)) {
+                                            {
+                                                fprintf(log_file, "%s%ld%s", "Field filled up at ",
+                                                        (long)buffer[buf_ptr2], ", reallocating.");
+                                            }
+                                            {
+                                                putc('\n', log_file);
+                                            }
+                                            buffer_overflow();
                                         }
+                                        ex_buf[ex_buf_ptr] = buffer[buf_ptr2];
+                                        ex_buf_ptr = ex_buf_ptr + 1;
                                     }
                                     buf_ptr2 = buf_ptr2 + 1;
                                     {
@@ -3048,14 +3115,18 @@ boolean scan_balanced_braces(void)
             default:
                 {
                     {
-                        if ((ex_buf_ptr == buf_size)) {
-                            bib_field_too_long_print();
-                            goto lab10;
-                        } else {
-
-                            ex_buf[ex_buf_ptr] = buffer[buf_ptr2];
-                            ex_buf_ptr = ex_buf_ptr + 1;
+                        if ((ex_buf_ptr >= buf_size)) {
+                            {
+                                fprintf(log_file, "%s%ld%s", "Field filled up at ", (long)buffer[buf_ptr2],
+                                        ", reallocating.");
+                            }
+                            {
+                                putc('\n', log_file);
+                            }
+                            buffer_overflow();
                         }
+                        ex_buf[ex_buf_ptr] = buffer[buf_ptr2];
+                        ex_buf_ptr = ex_buf_ptr + 1;
                     }
                     buf_ptr2 = buf_ptr2 + 1;
                     {
@@ -3174,14 +3245,18 @@ boolean scan_a_field_token_and_eat_white(void)
                 while ((tmp_ptr < buf_ptr2)) {
 
                     {
-                        if ((ex_buf_ptr == buf_size)) {
-                            bib_field_too_long_print();
-                            goto lab10;
-                        } else {
-
-                            ex_buf[ex_buf_ptr] = buffer[tmp_ptr];
-                            ex_buf_ptr = ex_buf_ptr + 1;
+                        if ((ex_buf_ptr >= buf_size)) {
+                            {
+                                fprintf(log_file, "%s%ld%s", "Field filled up at ", (long)buffer[tmp_ptr],
+                                        ", reallocating.");
+                            }
+                            {
+                                putc('\n', log_file);
+                            }
+                            buffer_overflow();
                         }
+                        ex_buf[ex_buf_ptr] = buffer[tmp_ptr];
+                        ex_buf_ptr = ex_buf_ptr + 1;
                     }
                     tmp_ptr = tmp_ptr + 1;
                 }
@@ -3250,14 +3325,18 @@ boolean scan_a_field_token_and_eat_white(void)
 
                         if (((lex_class[str_pool[tmp_ptr]] == 1 /*white_space */ ) && (tmp_ptr < tmp_end_ptr))) {
                             {
-                                if ((ex_buf_ptr == buf_size)) {
-                                    bib_field_too_long_print();
-                                    goto lab10;
-                                } else {
-
-                                    ex_buf[ex_buf_ptr] = 32 /*space */ ;
-                                    ex_buf_ptr = ex_buf_ptr + 1;
+                                if ((ex_buf_ptr >= buf_size)) {
+                                    {
+                                        fprintf(log_file, "%s%ld%s", "Field filled up at ", (long)32 /*space */ ,
+                                                ", reallocating.");
+                                    }
+                                    {
+                                        putc('\n', log_file);
+                                    }
+                                    buffer_overflow();
                                 }
+                                ex_buf[ex_buf_ptr] = 32 /*space */ ;
+                                ex_buf_ptr = ex_buf_ptr + 1;
                             }
                             tmp_ptr = tmp_ptr + 1;
                             while (((lex_class[str_pool[tmp_ptr]] == 1 /*white_space */ ) && (tmp_ptr < tmp_end_ptr)))
@@ -3267,23 +3346,31 @@ boolean scan_a_field_token_and_eat_white(void)
                     while ((tmp_ptr < tmp_end_ptr)) {
 
                         if ((lex_class[str_pool[tmp_ptr]] != 1 /*white_space */ )) {
-                            if ((ex_buf_ptr == buf_size)) {
-                                bib_field_too_long_print();
-                                goto lab10;
-                            } else {
-
-                                ex_buf[ex_buf_ptr] = str_pool[tmp_ptr];
-                                ex_buf_ptr = ex_buf_ptr + 1;
+                            if ((ex_buf_ptr >= buf_size)) {
+                                {
+                                    fprintf(log_file, "%s%ld%s", "Field filled up at ", (long)str_pool[tmp_ptr],
+                                            ", reallocating.");
+                                }
+                                {
+                                    putc('\n', log_file);
+                                }
+                                buffer_overflow();
                             }
+                            ex_buf[ex_buf_ptr] = str_pool[tmp_ptr];
+                            ex_buf_ptr = ex_buf_ptr + 1;
                         } else if ((ex_buf[ex_buf_ptr - 1] != 32 /*space */ )) {
-                            if ((ex_buf_ptr == buf_size)) {
-                                bib_field_too_long_print();
-                                goto lab10;
-                            } else {
-
-                                ex_buf[ex_buf_ptr] = 32 /*space */ ;
-                                ex_buf_ptr = ex_buf_ptr + 1;
+                            if ((ex_buf_ptr >= buf_size)) {
+                                {
+                                    fprintf(log_file, "%s%ld%s", "Field filled up at ", (long)32 /*space */ ,
+                                            ", reallocating.");
+                                }
+                                {
+                                    putc('\n', log_file);
+                                }
+                                buffer_overflow();
                             }
+                            ex_buf[ex_buf_ptr] = 32 /*space */ ;
+                            ex_buf_ptr = ex_buf_ptr + 1;
                         }
                         tmp_ptr = tmp_ptr + 1;
                     }
@@ -6647,7 +6734,9 @@ void aux_input_command(void)
             name_ptr = name_length + 1;
             name_of_file[name_ptr] = 0;
             if ((!kpse_in_name_ok(stringcast(name_of_file + 1))
-                 || !a_open_in(aux_file[aux_ptr], -1 /*no_file_path */ ))) {
+                 || (!a_open_in(aux_file[aux_ptr], -1 /*no_file_path */ )
+                     && !a_open_in_with_dirname(aux_file[aux_ptr], -1 /*no_file_path */ ,
+                                                bib_makecstring(top_lev_str))))) {
                 {
                     Fputs(log_file, "I couldn't open auxiliary file ");
                     Fputs(standard_output, "I couldn't open auxiliary file ");
@@ -6661,9 +6750,8 @@ void aux_input_command(void)
             }
             {
                 fprintf(log_file, "%s%ld%s", "A level-", (long)aux_ptr, " auxiliary file: ");
-                fprintf(standard_output, "%s%ld%s", "A level-", (long)aux_ptr, " auxiliary file: ");
             }
-            print_aux_name();
+            log_pr_aux_name();
             aux_ln_stack[aux_ptr] = 0;
         }
     }

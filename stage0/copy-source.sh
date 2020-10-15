@@ -26,6 +26,7 @@ cp $src/texk/web2c/xetexdir/*.cpp $out/xetexdir/
 cp $src/texk/web2c/xetexdir/*.c $out/xetexdir/
 cp $src/texk/web2c/xetexdir/*.h $out/xetexdir/
 cp $src/texk/web2c/xetexdir/*.mm $out/xetexdir/
+cp $src/texk/web2c/xetexdir/*.tex $out/xetexdir/
 cp $src/texk/web2c/xetexdir/image/*.c $out/xetexdir/image/
 cp $src/texk/web2c/xetexdir/image/*.h $out/xetexdir/image/
 cp $src/texk/web2c/*.h $out/xetexdir/

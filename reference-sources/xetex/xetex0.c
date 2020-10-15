@@ -553,7 +553,8 @@ void error(void)
             case 55:
             case 56:
             case 57:
-                if (deletions_allowed) {        //92:
+                if (deletions_allowed)  //92:
+                {
                     s1 = cur_tok;
                     s2 = cur_cmd;
                     s3 = cur_chr;

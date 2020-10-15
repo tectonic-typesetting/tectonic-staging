@@ -1,7 +1,7 @@
 /****************************************************************************\
  Part of the XeTeX typesetting system
  Copyright (c) 1994-2008 by SIL International
- Copyright (c) 2009, 2017 by Jonathan Kew
+ Copyright (c) 2009-2018 by Jonathan Kew
 
  SIL Author(s): Jonathan Kew
 
@@ -68,7 +68,7 @@ pdf_get_rect(char* filename, int page_num, int pdf_box, real_rect* box)
 		return -1;
 	}
 
-	int			pages = doc->getNumPages();
+	int	pages = doc->getNumPages();
 	if (page_num > pages)
 		page_num = pages;
 	if (page_num < 0)

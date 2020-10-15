@@ -5,7 +5,8 @@
 #define INITEX
 #define TeX
 #define XeTeX
-/*common.defines.  Public domain. This file is concatenated by ./convert to the beginning of the Pascal
+/*$Id$
+ common.defines.  Public domain. This file is concatenated by ./convert to the beginning of the Pascal
  code that tangle outputs.  The idea is to put all these symbols, which
  can be defined as macros or functions, or as part of standard C, into
  web2c's symbol table, so that we can access them from a change file. Some are standard Pascal functions, others are simply used in our
@@ -52,32 +53,32 @@
                                                                                                                                                                                   I would appreciate to be listed as contributor and see "SyncTeX" highlighted. Notice:
                                                                                                                                                                                   -------
                                                                                                                                                                                   This file is an interface to the synctex system for web2c. It declares the public functions API of synctex.c. It is always embedded as common definitions when convert'ing
-                                                                                                                                                                         from web to c (See the convert shell script). *//* functions from the synctex controller in synctex.c *//* end of synctex.defines *//* vim: set syntax=web : *//*
-                                                                                                                                                                         Part of the XeTeX typesetting system
-                                                                                                                                                                         Copyright (c) 2009-2019 by Jonathan Kew
-                                                                                                                                                                         Copyright (c) 1994-2008 by SIL International
+                                                                                                                                                                  from web to c (See the convert shell script). *//* functions from the synctex controller in synctex.c *//* end of synctex.defines *//* vim: set syntax=web : *//*
+                                                                                                                                                                  Part of the XeTeX typesetting system
+                                                                                                                                                                  Copyright (c) 2009-2019 by Jonathan Kew
+                                                                                                                                                                  Copyright (c) 1994-2008 by SIL International
 
-                                                                                                                                                                         SIL Author(s): Jonathan Kew
+                                                                                                                                                                  SIL Author(s): Jonathan Kew
 
-                                                                                                                                                                         Permission is hereby granted, free of charge, to any person obtaining
-                                                                                                                                                                         a copy of this software and associated documentation files (the
-                                                                                                                                                                         "Software"), to deal in the Software without restriction, including
-                                                                                                                                                                         without limitation the rights to use, copy, modify, merge, publish,
-                                                                                                                                                                         distribute, sublicense, and/or sell copies of the Software, and to
-                                                                                                                                                                         permit persons to whom the Software is furnished to do so, subject to
-                                                                                                                                                                         the following conditions:
+                                                                                                                                                                  Permission is hereby granted, free of charge, to any person obtaining
+                                                                                                                                                                  a copy of this software and associated documentation files (the
+                                                                                                                                                                  "Software"), to deal in the Software without restriction, including
+                                                                                                                                                                  without limitation the rights to use, copy, modify, merge, publish,
+                                                                                                                                                                  distribute, sublicense, and/or sell copies of the Software, and to
+                                                                                                                                                                  permit persons to whom the Software is furnished to do so, subject to
+                                                                                                                                                                  the following conditions:
 
-                                                                                                                                                                         The above copyright notice and this permission notice shall be
-                                                                                                                                                                         included in all copies or substantial portions of the Software. THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND,
-                                                                                                                                                                         EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF
-                                                                                                                                                                         MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND
-                                                                                                                                                                         NONINFRINGEMENT. IN NO EVENT SHALL THE COPYRIGHT HOLDERS BE LIABLE
-                                                                                                                                                                         FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF
-                                                                                                                                                                         CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION
-                                                                                                                                                                         WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE. Except as contained in this notice, the name of the copyright holders
-                                                                                                                                                                         shall not be used in advertising or otherwise to promote the sale,
-                                                                                                                                                                         use or other dealings in this Software without prior written
-                                                                                                                                                authorization from the copyright holders. *//* xetex.defines: additions for xetex *//* extra stuff used in picfile code *//*4: *//*9: *///$C-,A+,D-
+                                                                                                                                                                  The above copyright notice and this permission notice shall be
+                                                                                                                                                                  included in all copies or substantial portions of the Software. THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND,
+                                                                                                                                                                  EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF
+                                                                                                                                                                  MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND
+                                                                                                                                                                  NONINFRINGEMENT. IN NO EVENT SHALL THE COPYRIGHT HOLDERS BE LIABLE
+                                                                                                                                                                  FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF
+                                                                                                                                                                  CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION
+                                                                                                                                                                  WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE. Except as contained in this notice, the name of the copyright holders
+                                                                                                                                                                  shall not be used in advertising or otherwise to promote the sale,
+                                                                                                                                                                  use or other dealings in this Software without prior written
+                                                                                                                                         authorization from the copyright holders. *//* xetex.defines: additions for xetex *//* extra stuff used in picfile code *//*4: *//*9: *///$C-,A+,D-
 #ifdef TEXMF_DEBUG
 //$C+,D+
 #endif                          // TEXMF_DEBUG

@@ -9,6 +9,11 @@ TeXLive Subversion repository](http://tug.org/svn/texlive/).
 *You do not need this repository to build Tectonic.* You only need these scripts
 if you want to keep tabs on the changes going into the XeTeX engine.
 
+**The Tectonic “bundle” tools are no longer in this repository**. They have been
+moved to [tectonic-texlive-bundles].
+
+[tectonic-texlive-bundles]: https://github.com/tectonic-typesetting/tectonic-texlive-bundles/
+
 
 ## Current status
 

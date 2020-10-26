@@ -15,12 +15,14 @@ prev_bld=$prev_src/build
 
 stage=state/outputs/stage99
 rm -rf $stage
-mkdir -p $stage/{bibtex,dvipdfm-x,synctex,teckit,xetex}
+mkdir -p $stage/{bibtex,dvipdfm-x,lib,synctex,teckit,xetex}
 
 cp $prev_bld/bibtex.[ch] $stage/bibtex/
 
 cp $prev_src/dvipdfm-x/*.c $stage/dvipdfm-x/
 cp $prev_src/dvipdfm-x/*.h $stage/dvipdfm-x/
+
+cp $prev_src/lib/texmfmp.c $stage/lib/
 
 cp $prev_src/synctexdir/*.c $stage/synctex/
 cp $prev_src/synctexdir/*.h $stage/synctex/

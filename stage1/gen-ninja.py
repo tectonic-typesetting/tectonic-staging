@@ -12,9 +12,9 @@ import ninja_syntax
 
 config = {
     'base_cflags': '-g -O0',
-    # pkg-config --cflags fontconfig harfbuzz harfbuzz-icu freetype2 graphite2 libpng zlib icu-uc poppler
-    'pkgconfig_cflags': '-I/usr/include/freetype2 -I/usr/include/libpng16 -I/usr/include/harfbuzz -I/usr/include/glib-2.0 -I/usr/lib64/glib-2.0/include -I/usr/include/freetype2 -I/usr/include/libpng16 -I/usr/include/poppler',
-    'pkgconfig_libs': '-lfontconfig -lharfbuzz-icu -lharfbuzz -lfreetype -lgraphite2 -lpng16 -lz -licuuc -licudata -lpoppler',
+    # pkg-config --cflags fontconfig harfbuzz harfbuzz-icu freetype2 graphite2 libpng zlib icu-uc
+    'pkgconfig_cflags': '-I/usr/include/freetype2 -I/usr/include/libpng16 -I/usr/include/harfbuzz -I/usr/include/glib-2.0 -I/usr/lib64/glib-2.0/include -I/usr/include/freetype2 -I/usr/include/libpng16',
+    'pkgconfig_libs': '-lfontconfig -lharfbuzz-icu -lharfbuzz -lfreetype -lgraphite2 -lpng16 -lz -licuuc -licudata',
 }
 
 
@@ -149,6 +149,15 @@ def inner(src, build, w):
         sources = (src / 'libmd5').glob('*.c'),
         rule = 'cc',
         cflags = '-DHAVE_CONFIG_H -I%(src)s/libmd5 %(base_cflags)s' % config,
+    )
+
+    # pplib
+
+    pplib = staticlib(
+        basename = 'pplib',
+        sources = (src / 'pplib').glob('**/*.c'),
+        rule = 'cc',
+        cflags = '-I%(src)s/pplib -I%(src)s/pplib/util %(base_cflags)s' % config,
     )
 
     # lib / libbase
@@ -368,7 +377,7 @@ def inner(src, build, w):
 
     # xetex
 
-    cflags = '-DHAVE_CONFIG_H -D__SyncTeX__ -DPOPPLER_VERSION=\\\"x\\\" -I. -I%(src)s/xetexdir -I%(src)s -I%(src)s/libmd5 %(pkgconfig_cflags)s %(base_cflags)s' % config
+    cflags = '-DHAVE_CONFIG_H -D__SyncTeX__ -I. -I%(src)s/xetexdir -I%(src)s -I%(src)s/libmd5 -I%(src)s/pplib %(pkgconfig_cflags)s %(base_cflags)s' % config
     objs = []
 
     def xetex_c_sources():
@@ -406,7 +415,7 @@ def inner(src, build, w):
         )
         objs.append(str(obj))
 
-    objs += [str(x) for x in [libsynctex, libbase, libmd5, libtk, libkp]]
+    objs += [str(x) for x in [libsynctex, libbase, libmd5, pplib, libtk, libkp]]
     libs = '%(pkgconfig_libs)s -lz' % config
 
     w.build(str(build / 'xetex'), 'executable',

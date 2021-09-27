@@ -319,15 +319,17 @@ def inner(src, build, w):
 
         return outputs
 
-    # "tie"d xetex.ch file. Not sure if the ordering of changefiles matters so
-    # I'm being paranoid here and reproducing what the TeXLive build system
-    # uses.
+    # "tie"d xetex.ch file. The ordering matters here.
 
     xetex_ch = build / 'xetex.ch'
     tie(xetex_ch, [
                  src / 'xetexdir' / 'xetex.web',
                  src / 'xetexdir' / 'tex.ch0',
                  src / 'xetexdir' / 'tex.ch',
+                 src / 'xetexdir' / 'tracingstacklevels.ch',
+                 # Next two are for TeX Live 2022.
+                 # src / 'xetexdir' / 'partoken-102.ch',
+                 # src / 'xetexdir' / 'partoken.ch',
                  src / 'synctexdir' / 'synctex-xe-def.ch0',
                  src / 'synctexdir' / 'synctex-mem.ch0',
                  src / 'synctexdir' / 'synctex-e-mem.ch0',
@@ -336,6 +338,7 @@ def inner(src, build, w):
                  src / 'synctexdir' / 'synctex-e-rec.ch0',
                  src / 'xetexdir' / 'xetex.ch',
                  src / 'synctexdir' / 'synctex-xe-rec.ch3',
+                 src / 'xetexdir' / 'char-warning-xetex.ch',
                  src / 'xetexdir' / 'tex-binpool.ch',
     ])
 

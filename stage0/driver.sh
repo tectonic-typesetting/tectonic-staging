@@ -53,6 +53,21 @@ function builder_bash () {
 }
 
 
+function indent_inplace() {
+    [ -d $state_dir/repo ] || die "no such directory $state_dir/repo"
+
+    while [ "$#" -gt 0 ] ; do
+        file="$1"
+        shift
+
+        docker run -i --rm "${docker_args[@]}" $image_name bash -c \
+            "exec indent -linux -nut -i4 -l120 -st -" <"$file" >"$file.new" \
+            || die "indent of $file failed"
+        mv -f "$file.new" "$file" || die "mv of $file.new to $file failed"
+    done
+}
+
+
 function init_build() {
     [ -d $state_dir/repo ] || die "no such directory $state_dir/repo"
     [ ! -d $state_dir/rbuild ] || die "directory $state_dir/rbuild may not exist before starting build"
@@ -77,6 +92,8 @@ case "$command" in
         build_image "$@" ;;
     builder-bash)
         builder_bash "$@" ;;
+    indent-inplace)
+        indent_inplace "$@" ;;
     init-build)
         init_build "$@" ;;
     run-build)

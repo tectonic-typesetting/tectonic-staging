@@ -1,6 +1,6 @@
 /* This is dvipdfmx, an eXtended version of dvipdfm by Mark A. Wicks.
 
-    Copyright (C) 2007-2018 by Jin-Hwan Cho and Shunsaku Hirata,
+    Copyright (C) 2002-2020 by Jin-Hwan Cho and Shunsaku Hirata,
     the dvipdfmx project team.
     
     Copyright (C) 1998, 1999 by Mark A. Wicks <mwicks@kettering.edu>
@@ -309,6 +309,7 @@ pdf_copy_clip (FILE *image_file, int pageNo, double x_user, double y_user)
     pdf_close(pf);
     return -1;
   }
+
   contents = get_page_content(pf, page_tree);
   pdf_release_obj(page_tree);
   if (!contents) {

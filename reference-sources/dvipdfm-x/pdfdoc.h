@@ -1,6 +1,6 @@
 /* This is dvipdfmx, an eXtended version of dvipdfm by Mark A. Wicks.
 
-    Copyright (C) 2007-2018 by Jin-Hwan Cho and Shunsaku Hirata,
+    Copyright (C) 2002-2021 by Jin-Hwan Cho and Shunsaku Hirata,
     the dvipdfmx project team.
     
     Copyright (C) 1998, 1999 by Mark A. Wicks <mwicks@kettering.edu>
@@ -71,7 +71,8 @@ struct pdf_setting
 
 extern void pdf_open_document (const char *filename,
                                const char *creator,
-                               const unsigned char *id1, const unsigned char *id2,
+                               const unsigned char *id1,
+                               const unsigned char *id2,
                                struct pdf_setting settings);
 extern void pdf_close_document(void);
 

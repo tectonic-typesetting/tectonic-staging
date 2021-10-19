@@ -1,6 +1,6 @@
 /* This is dvipdfmx, an eXtended version of dvipdfm by Mark A. Wicks.
 
-    Copyright (C) 2002-2018 by Jin-Hwan Cho and Shunsaku Hirata,
+    Copyright (C) 2002-2020 by Jin-Hwan Cho and Shunsaku Hirata,
     the dvipdfmx project team.
     
     Copyright (C) 1998, 1999 by Mark A. Wicks <mwicks@kettering.edu>
@@ -725,8 +725,7 @@ INVERTIBLE_MATRIX (const pdf_tmatrix *M)
 
 /* rectfill, rectstroke, rectclip, recteoclip
  *
- * Draw isolated rectangle without actually doing
- * gsave/grestore operation.
+ * Draw isolated rectangle without actually doing gsave/grestore operation.
  * 
  * TODO:
  *  linestyle, fill-opacity, stroke-opacity,....

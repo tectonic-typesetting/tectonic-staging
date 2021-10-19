@@ -1,6 +1,6 @@
 /* This is dvipdfmx, an eXtended version of dvipdfm by Mark A. Wicks.
 
-    Copyright (C) 2002-2018 by Jin-Hwan Cho and Shunsaku Hirata,
+    Copyright (C) 2002-2020 by Jin-Hwan Cho and Shunsaku Hirata,
     the dvipdfmx project team.
 
     This program is free software; you can redistribute it and/or modify
@@ -488,7 +488,7 @@ CMap_match_codespace (CMap *cmap, const unsigned char *c, int dim)
       continue;
     for (pos = 0; pos < dim; pos++) {
       if (c[pos] > csr->codeHi[pos] || c[pos] < csr->codeLo[pos])
-	break;
+        break;
     }
     if (pos == dim)
       return 0; /* Valid */
@@ -576,7 +576,7 @@ CMap_add_notdefrange (CMap *cmap,
   for (c = srclo[srcdim-1]; c <= srchi[srcdim-1]; c++) {
     if (MAP_DEFINED(cur[c].flag)) {
       if (!__silent)
-	WARN("Trying to redefine already defined code mapping. (ignored)");
+        WARN("Trying to redefine already defined code mapping. (ignored)");
     } else {
       cur[c].flag = (MAP_LOOKUP_END|MAP_IS_NOTDEF);
       cur[c].code = get_mem(cmap, 2);
@@ -592,16 +592,16 @@ CMap_add_notdefrange (CMap *cmap,
 
 int
 CMap_add_bfchar (CMap *cmap,
-		 const unsigned char *src, int srcdim,
-		 const unsigned char *dst, int dstdim)
+                 const unsigned char *src, int srcdim,
+                 const unsigned char *dst, int dstdim)
 {
   return CMap_add_bfrange(cmap, src, src, srcdim, dst, dstdim);
 }
 
 int
 CMap_add_bfrange (CMap *cmap,
-		  const unsigned char *srclo, const unsigned char *srchi, int srcdim,
-		  const unsigned char *base, int dstdim)
+                  const unsigned char *srclo, const unsigned char *srchi, int srcdim,
+                  const unsigned char *base, int dstdim)
 {
   int     c, last_byte, i;
   mapDef *cur;
@@ -680,7 +680,7 @@ CMap_add_cidrange (CMap *cmap,
   for (c = srclo[srcdim-1]; c <= srchi[srcdim-1]; c++) {
     if (cur[c].flag != 0) {
       if (!__silent)
-	WARN("Trying to redefine already defined CID mapping. (ignored)");
+        WARN("Trying to redefine already defined CID mapping. (ignored)");
     } else {
       cur[c].flag = (MAP_LOOKUP_END|MAP_IS_CID);
       cur[c].len  = 2;
@@ -783,7 +783,7 @@ bytes_consumed (CMap *cmap, const unsigned char *instr, int inbytes)
     rangeDef *csr = cmap->codespace.ranges + i;
     for (pos = 0; pos < MIN(csr->dim, inbytes); pos++) {
       if (instr[pos] > csr->codeHi[pos] || instr[pos] < csr->codeLo[pos])
-	break;
+        break;
     }
     if (pos == csr->dim) /* part of instr is totally valid in this codespace. */
       return csr->dim;
@@ -798,7 +798,7 @@ bytes_consumed (CMap *cmap, const unsigned char *instr, int inbytes)
     for (i = 0; i< cmap->codespace.num; i++) {
       rangeDef *csr = cmap->codespace.ranges + i;
       if (csr->dim > longest && csr->dim < bytesconsumed)
-	bytesconsumed = csr->dim;
+        bytesconsumed = csr->dim;
     }
   }
 
@@ -807,8 +807,8 @@ bytes_consumed (CMap *cmap, const unsigned char *instr, int inbytes)
 
 static int
 check_range (CMap *cmap,
-	     const unsigned char *srclo, const unsigned char *srchi, int srcdim,
-	     const unsigned char *dst, int dstdim)
+             const unsigned char *srclo, const unsigned char *srchi, int srcdim,
+             const unsigned char *dst, int dstdim)
 {
   if ((srcdim < 1 || dstdim < 1) ||
       (!srclo || !srchi || !dst) ||

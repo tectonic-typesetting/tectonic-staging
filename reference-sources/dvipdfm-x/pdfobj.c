@@ -1,6 +1,6 @@
 /* This is dvipdfmx, an eXtended version of dvipdfm by Mark A. Wicks.
 
-    Copyright (C) 2007-2020 by Jin-Hwan Cho and Shunsaku Hirata,
+    Copyright (C) 2002-2020 by Jin-Hwan Cho and Shunsaku Hirata,
     the dvipdfmx project team.
     
     Copyright (C) 1998, 1999 by Mark A. Wicks <mwicks@kettering.edu>
@@ -35,6 +35,7 @@
 #include "mfileio.h"
 #include "dpxconf.h"
 #include "dpxutil.h"
+
 #include "pdflimits.h"
 #include "pdfencrypt.h"
 #include "pdfparse.h"
@@ -81,7 +82,7 @@ static int cur_obj_id = 0;
 
 struct pdf_boolean
 {
-  char  value;
+  char   value;
 };
 
 struct pdf_number

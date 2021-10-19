@@ -125,6 +125,11 @@ main Tectonic repository][tt-main].
 
 [tt-main]: https://github.com/tectonic-typesetting/tectonic
 
+The script `./validate.sh` will validate that this repo is self-consistent,
+rerunning all of the stages from scratch. It requires that your `stage0` ...
+`stageN` branches are all properly updated and sequenced. Read the script
+implementation in `common/validate_impl.sh` to understand what it does.
+
 
 ### Copyright and Licensing
 

@@ -24,8 +24,6 @@ libmpfr-dev
 libpaper-dev
 libpixman-1-dev
 libpng-dev
-libpoppler-dev
-libpoppler-private-dev
 libpotrace-dev
 libzzip-dev
 ninja-build

@@ -66,6 +66,10 @@ function update_exports() {
                 ;;
         esac
     done
+
+    cp $topdir/state/rbuild/texk/web2c/otangle.c $stage1dir/exports/otangle.c
+    indent -linux -nut -i4 -l120 $stage1dir/exports/otangle.c
+    rm -f $stage1dir/exports/otangle.c~
 }
 
 

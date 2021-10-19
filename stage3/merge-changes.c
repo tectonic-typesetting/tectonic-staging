@@ -1,3 +1,7 @@
+/* Tectonic: This is a hacked version of otangle that merely emits a WEB file
+ * with changefiles merged in. It is used in the process of generating the XeTeX
+ * book PDF. */
+
 #define OTANGLE
 #define PKGW
 
@@ -203,8 +207,9 @@ ASCIIcode xord[256];
 ASCIIcode xchr[256];
 textfile webfile;
 textfile changefile;
-textfile Pascalfile;
-textfile pool;
+/* Tectonic: Make sure we're not clobbering these files in this hacked merge-changes tool */
+/*textfile Pascalfile;*/
+/*textfile pool;*/
 ASCIIcode buffer[bufsize + 1];
 boolean phaseone;
 ASCIIcode bytemem[3][maxbytes + 1];
@@ -591,7 +596,7 @@ void initialize(void)
             while (i++ < for_end);
     }
     xord[' '] = SPACE;
-    rewrite(Pascalfile, pascalname);
+    /*rewrite(Pascalfile, pascalname);*/
     {
         register integer for_end;
         wi = 0;
@@ -893,7 +898,7 @@ found:
 
                     if (stringptr == NUMBER_CHARS) {
                         poolname = basenamechangesuffix(webname, ".web", ".pool");
-                        rewrite(pool, poolname);
+                        /*rewrite(pool, poolname);*/
                     }
 
                     equiv[p] = stringptr + 0x40000000;
@@ -912,7 +917,7 @@ found:
 #endif
 
                     stringptr = stringptr + 1;
-                    fprintf(pool, "%c%c", xchr[ASCII_0 + l / 10], xchr[ASCII_0 + l % 10]);
+                    /*fprintf(pool, "%c%c", xchr[ASCII_0 + l / 10], xchr[ASCII_0 + l % 10]);*/
 
                     poolchecksum = poolchecksum + poolchecksum + l;
                     while (poolchecksum > 0x1FFFFFB7)
@@ -921,7 +926,7 @@ found:
                     i = idfirst + 1;
 
                     while (i < idloc) {
-                        putc(xchr[buffer[i]], pool);
+                        /*putc(xchr[buffer[i]], pool);*/
 #ifdef PKGW
 			pkgw_string_values[p][pkgw_idx++] = xchr[buffer[i]];
 #endif
@@ -936,7 +941,7 @@ found:
                             i = i + 1;
                     }
 
-                    putc('\n', pool);
+                    /*putc('\n', pool);*/
                 }
             }
         }
@@ -1463,11 +1468,12 @@ void flushbuffer(void)
         k = 1;
         for_end = breakptr;
         if (k <= for_end)
-            do
-                putc(xchr[outbuf[k - 1]], Pascalfile);
-            while (k++ < for_end);
+            do {
+                /*No Pascal in hacked merge-changes program */
+                /*putc(xchr[outbuf[k - 1]], Pascalfile);*/
+            } while (k++ < for_end);
     }
-    putc('\n', Pascalfile);
+    /*putc('\n', Pascalfile);*/
     line = line + 1;
     if (line % 100 == 0) {
         putc('.', stdout);

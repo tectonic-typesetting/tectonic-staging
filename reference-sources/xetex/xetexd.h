@@ -311,6 +311,7 @@ integer max_nest_stack;
 list_state_record cur_list;
 short /*mmode */ shown_mode;
 unsigned char /*max_selector */ old_setting;
+integer sys_time, sys_day, sys_month, sys_year;
 memory_word *zeqtb;
 quarterword
 #define xeq_level (zzzaa -8939240)
@@ -359,7 +360,6 @@ integer base_ptr;
 halfword par_loc;
 halfword par_token;
 boolean force_eof;
-integer expand_depth_count;
 boolean is_in_csname;
 halfword cur_mark[5];
 unsigned char /*long_outer_call */ long_state;
@@ -650,6 +650,7 @@ c_int_type restrictedshell;
 char *output_comment;
 unsigned char k, l;
 boolean debug_format_file;
+integer expand_depth_count;
 boolean mltex_p;
 boolean mltex_enabled_p;
 integer native_font_type_flag;

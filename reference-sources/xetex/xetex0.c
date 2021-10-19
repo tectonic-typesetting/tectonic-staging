@@ -538,7 +538,9 @@ void error(void)
     if (interaction == 3 /*error_stop_mode */ ) //87:
         while (true) {
 
- lab22:                        /*continue */ clear_for_error_prompt();
+ lab22:    /*continue */ if (interaction != 3 /*error_stop_mode */ )
+                return;
+            clear_for_error_prompt();
             {
                 ;
                 print(65546L /*"? " */ );
@@ -605,12 +607,15 @@ void error(void)
 #endif                          // TEXMF_DEBUG
             case 69:
                 if (base_ptr > 0) {
-                    edit_name_start = str_start[(input_stack[base_ptr].name_field) - 65536L];
-                    edit_name_length =
-                        str_start[(input_stack[base_ptr].name_field + 1) - 65536L] -
-                        str_start[(input_stack[base_ptr].name_field) - 65536L];
-                    edit_line = line;
-                    jump_out();
+
+                    if (input_stack[base_ptr].name_field >= 256) {
+                        edit_name_start = str_start[(input_stack[base_ptr].name_field) - 65536L];
+                        edit_name_length =
+                            str_start[(input_stack[base_ptr].name_field + 1) - 65536L] -
+                            str_start[(input_stack[base_ptr].name_field) - 65536L];
+                        edit_line = line;
+                        jump_out();
+                    }
                 }
                 break;
             case 72:
@@ -702,8 +707,11 @@ void error(void)
                 print(65547L /*"Type <return> to proceed, S to scroll future error messages," */ );
                 print_nl(65548L /*"R to run without stopping, Q to run quietly," */ );
                 print_nl(65549L /*"I to insert something, " */ );
-                if (base_ptr > 0)
-                    print(65550L /*"E to edit your file," */ );
+                if (base_ptr > 0) {
+
+                    if (input_stack[base_ptr].name_field >= 256)
+                        print(65550L /*"E to edit your file," */ );
+                }
                 if (deletions_allowed)
                     print_nl(65551L /*"1 or ... or 9 to ignore the next 1 to 9 tokens of input," */ );
                 print_nl(65552L /*"H for help, X to quit." */ );
@@ -4156,79 +4164,91 @@ void zprint_param(integer n)
     case 57:
         print_esc(65777L /*"tracingcharsubdef" */ );
         break;
-    case 69:
-        print_esc(65778L /*"XeTeXlinebreakpenalty" */ );
+    case 58:
+        print_esc(65778L /*"tracingstacklevels" */ );
         break;
     case 70:
-        print_esc(65779L /*"XeTeXprotrudechars" */ );
-        break;
-    case 83:
-        print_esc(66966L /*"synctex" */ );
-        break;
-    case 58:
-        print_esc(66852L /*"tracingassigns" */ );
-        break;
-    case 59:
-        print_esc(66853L /*"tracinggroups" */ );
-        break;
-    case 60:
-        print_esc(66854L /*"tracingifs" */ );
-        break;
-    case 61:
-        print_esc(66855L /*"tracingscantokens" */ );
-        break;
-    case 62:
-        print_esc(66856L /*"tracingnesting" */ );
-        break;
-    case 63:
-        print_esc(66857L /*"predisplaydirection" */ );
-        break;
-    case 64:
-        print_esc(66858L /*"lastlinefit" */ );
-        break;
-    case 65:
-        print_esc(66859L /*"savingvdiscards" */ );
-        break;
-    case 66:
-        print_esc(66860L /*"savinghyphcodes" */ );
-        break;
-    case 67:
-        print_esc(66899L /*"suppressfontnotfounderror" */ );
+        print_esc(65779L /*"XeTeXlinebreakpenalty" */ );
         break;
     case 71:
-        print_esc(66900L /*"TeXXeTstate" */ );
+        print_esc(65780L /*"XeTeXprotrudechars" */ );
         break;
-    case 73:
-        print_esc(66901L /*"XeTeXupwardsmode" */ );
+    case 84:
+        print_esc(66970L /*"synctex" */ );
         break;
-    case 74:
-        print_esc(66902L /*"XeTeXuseglyphmetrics" */ );
+    case 59:
+        print_esc(66856L /*"tracingassigns" */ );
         break;
-    case 75:
-        print_esc(66903L /*"XeTeXinterchartokenstate" */ );
+    case 60:
+        print_esc(66857L /*"tracinggroups" */ );
+        break;
+    case 61:
+        print_esc(66858L /*"tracingifs" */ );
+        break;
+    case 62:
+        print_esc(66859L /*"tracingscantokens" */ );
+        break;
+    case 63:
+        print_esc(66860L /*"tracingnesting" */ );
+        break;
+    case 64:
+        print_esc(66861L /*"predisplaydirection" */ );
+        break;
+    case 65:
+        print_esc(66862L /*"lastlinefit" */ );
+        break;
+    case 66:
+        print_esc(66863L /*"savingvdiscards" */ );
+        break;
+    case 67:
+        print_esc(66864L /*"savinghyphcodes" */ );
+        break;
+    case 68:
+        print_esc(66903L /*"suppressfontnotfounderror" */ );
         break;
     case 72:
-        print_esc(66904L /*"XeTeXdashbreakstate" */ );
+        print_esc(66904L /*"TeXXeTstate" */ );
+        break;
+    case 74:
+        print_esc(66905L /*"XeTeXupwardsmode" */ );
+        break;
+    case 75:
+        print_esc(66906L /*"XeTeXuseglyphmetrics" */ );
         break;
     case 76:
-        print_esc(66905L /*"XeTeXinputnormalization" */ );
+        print_esc(66907L /*"XeTeXinterchartokenstate" */ );
         break;
-    case 79:
-        print_esc(66906L /*"XeTeXtracingfonts" */ );
+    case 73:
+        print_esc(66908L /*"XeTeXdashbreakstate" */ );
+        break;
+    case 77:
+        print_esc(66909L /*"XeTeXinputnormalization" */ );
         break;
     case 80:
-        print_esc(66907L /*"XeTeXinterwordspaceshaping" */ );
+        print_esc(66910L /*"XeTeXtracingfonts" */ );
         break;
     case 81:
-        print_esc(66908L /*"XeTeXgenerateactualtext" */ );
+        print_esc(66911L /*"XeTeXinterwordspaceshaping" */ );
         break;
     case 82:
-        print_esc(66909L /*"XeTeXhyphenatablelength" */ );
+        print_esc(66912L /*"XeTeXgenerateactualtext" */ );
+        break;
+    case 83:
+        print_esc(66913L /*"XeTeXhyphenatablelength" */ );
         break;
     default:
         print(65781L /*"[unknown integer parameter!]" */ );
         break;
     }
+}
+
+void fix_date_and_time(void)
+{
+    fix_date_and_time_regmem date_and_time(sys_time, sys_day, sys_month, sys_year);
+    eqtb[8939260L /*int_base 20 */ ].cint = sys_time;
+    eqtb[8939261L /*int_base 21 */ ].cint = sys_day;
+    eqtb[8939262L /*int_base 22 */ ].cint = sys_month;
+    eqtb[8939263L /*int_base 23 */ ].cint = sys_year;
 }
 
 void begin_diagnostic(void)
@@ -8279,9 +8299,31 @@ void macro_call(void)
     if (eqtb[8939270L /*int_base 30 */ ].cint > 0)      //435:
     {
         begin_diagnostic();
-        print_ln();
-        print_cs(warning_index);
-        token_show(ref_count);
+        if (eqtb[8939298L /*int_base 58 */ ].cint > 0) {
+
+            if (input_ptr < eqtb[8939298L /*int_base 58 */ ].cint) {
+                v = input_ptr;
+                print_ln();
+                print_char(126 /*"~" */ );
+                while (v > 0) {
+
+                    print_char(46 /*"." */ );
+                    decr(v);
+                }
+                print_cs(warning_index);
+                token_show(ref_count);
+            } else {
+
+                print_char(126 /*"~" */ );
+                print_char(126 /*"~" */ );
+                print_cs(warning_index);
+            }
+        } else {
+
+            print_ln();
+            print_cs(warning_index);
+            token_show(ref_count);
+        }
         end_diagnostic(false);
     }
     if (mem[r].hh.v.LH == 29360129L /*protected_token */ )
@@ -8553,9 +8595,9 @@ void macro_call(void)
             if (mem[r].hh.v.LH < 27262976L /*match_token */ )
                 goto lab22;
  lab40:                                        /*found */ if (s != -268435455L)
-                                                //437:
+                                                //434:
             {
-                if ((m == 1) && (mem[p].hh.v.LH < 6291456L /*right_brace_limit */ ) && (p != mem_top - 3)) {
+                if ((m == 1) && (mem[p].hh.v.LH < 6291456L /*right_brace_limit */ )) {
                     mem[rbrace_ptr].hh.v.RH = -268435455L;
                     {
                         mem[p].hh.v.RH = avail;
@@ -8583,12 +8625,16 @@ void macro_call(void)
                     pstack[n] = mem[mem_top - 3].hh.v.RH;
                 incr(n);
                 if (eqtb[8939270L /*int_base 30 */ ].cint > 0) {
-                    begin_diagnostic();
-                    print_nl(match_chr);
-                    print_int(n);
-                    print(65983L /*"<-" */ );
-                    show_token_list(pstack[n - 1], -268435455L, 1000);
-                    end_diagnostic(false);
+
+                    if ((eqtb[8939298L /*int_base 58 */ ].cint == 0)
+                        || (input_ptr < eqtb[8939298L /*int_base 58 */ ].cint)) {
+                        begin_diagnostic();
+                        print_nl(match_chr);
+                        print_int(n);
+                        print(65984L /*"<-" */ );
+                        show_token_list(pstack[n - 1], -268435455L, 1000);
+                        end_diagnostic(false);
+                    }
                 }
             }
         } while (!(mem[r].hh.v.LH == 29360128L /*end_match_token */ ));
@@ -11511,6 +11557,9 @@ void scan_expr(void)
     a = arith_error;
     b = false;
     p = -268435455L;
+    incr(expand_depth_count);
+    if (expand_depth_count >= expand_depth)
+        overflow(65946L /*"expansion depth" */ , expand_depth);
  lab20:/*restart */ r = 0 /*expr_none */ ;
     e = 0;
     s = 0 /*expr_none */ ;
@@ -11701,6 +11750,7 @@ void scan_expr(void)
         free_node(q, 4 /*expr_node_size */ );
         goto lab40;
     }
+    decr(expand_depth_count);
     if (b) {
         {
             if (interaction == 3 /*error_stop_mode */ ) ;
@@ -11906,7 +11956,7 @@ void pseudo_start(void)
     line = 0;
     cur_input.limit_field = cur_input.start_field;
     cur_input.loc_field = cur_input.limit_field + 1;
-    if (eqtb[8939301L /*int_base 61 */ ].cint > 0) {
+    if (eqtb[8939302L /*int_base 62 */ ].cint > 0) {
         if (term_offset > max_print_line - 3)
             print_ln();
         else if ((term_offset > 0) || (file_offset > 0))
@@ -12149,6 +12199,16 @@ void conv_toks(void)
             warning_index = save_warning_index;
             scanner_status = save_scanner_status;
             begin_token_list(mem[def_ref].hh.v.RH, 5 /*inserted */ );
+            {
+                mem[def_ref].hh.v.RH = avail;
+                avail = def_ref;
+                ;
+
+#ifdef STAT
+                decr(dyn_used);
+
+#endif                          // STAT
+            }
             def_ref = save_def_ref;
             if (u != 0)
                 decr(str_ptr);
@@ -12594,7 +12654,7 @@ void conv_toks(void)
         print_char(cur_val);
         break;
     case 33:
-        print(65537L /*".999992" */ );
+        print(65537L /*".999993" */ );
         break;
     case 34:
         if ((font_area[fnt] == 65535L /*aat_font_flag */ ))
@@ -12643,14 +12703,14 @@ halfword zscan_toks(boolean macro_def, boolean xpand)
     {
         while (true) {
 
-            get_token();
+ lab22:                        /*continue */ get_token();
             if (cur_tok < 6291456L /*right_brace_limit */ )
                 goto lab31;
             if (cur_cmd == 6 /*mac_param */ )   //511:
             {
                 s = 27262976L /*match_token */  + cur_chr;
                 get_token();
-                if (cur_cmd == 1 /*left_brace */ ) {
+                if (cur_tok < 4194304L /*left_brace_limit */ ) {
                     hash_brace = cur_tok;
                     {
                         q = get_avail();
@@ -12676,10 +12736,12 @@ halfword zscan_toks(boolean macro_def, boolean xpand)
                         print(66128L /*"You already have nine parameters" */ );
                     }
                     {
-                        help_ptr = 1;
-                        help_line[0] = 66128L /*"I'm going to ignore the # sign you just used." */ ;
+                        help_ptr = 2;
+                        help_line[1] = 66129L /*"I'm going to ignore the # sign you just used," */ ;
+                        help_line[0] = 66130L /*"as well as the token that followed it." */ ;
                     }
                     error();
+                    goto lab22;
                 } else {
 
                     incr(t);
@@ -12909,6 +12971,7 @@ void zread_toks(integer n, halfword r, halfword j)
                         help_line[0] = 66140L /*"This \read has unbalanced braces." */ ;
                     }
                     align_state = 1000000L;
+                    cur_input.limit_field = 0;
                     error();
                 }
             }
@@ -12985,7 +13048,7 @@ void pass_text(void)
             incr(l);
     }
  lab30:                        /*done */ scanner_status = save_scanner_status;
-    if (eqtb[8939300L /*int_base 60 */ ].cint > 0)
+    if (eqtb[8939301L /*int_base 61 */ ].cint > 0)
         show_cur_cmd_chr();
 }
 
@@ -13021,7 +13084,7 @@ void conditional(void)
     halfword save_cond_ptr;
     small_number this_if;
     boolean is_unless;
-    if (eqtb[8939300L /*int_base 60 */ ].cint > 0) {
+    if (eqtb[8939301L /*int_base 61 */ ].cint > 0) {
 
         if (eqtb[8939276L /*int_base 36 */ ].cint <= 1)
             show_cur_cmd_chr();
@@ -13825,45 +13888,6 @@ void scan_file_name(void)
     warning_index = save_warning_index;
 }
 
-void scan_file_name_braced(void)
-{
-    scan_file_name_braced_regmem small_number save_scanner_status;
-    halfword save_def_ref;
-    halfword save_cur_cs;
-    str_number s;
-    halfword p;
-    integer i;
-    boolean save_stop_at_space;
-    boolean dummy;
-    save_scanner_status = scanner_status;
-    save_def_ref = def_ref;
-    save_cur_cs = cur_cs;
-    cur_cs = warning_index;
-    if (scan_toks(false, true) != 0) ;
-    old_setting = selector;
-    selector = 21 /*new_string */ ;
-    show_token_list(mem[def_ref].hh.v.RH, -268435455L, pool_size - pool_ptr);
-    selector = old_setting;
-    s = make_string();
-    delete_token_ref(def_ref);
-    def_ref = save_def_ref;
-    cur_cs = save_cur_cs;
-    scanner_status = save_scanner_status;
-    save_stop_at_space = stop_at_space;
-    stop_at_space = false;
-    begin_name();
-    {
-        register integer for_end;
-        i = str_start[(s) - 65536L];
-        for_end = str_start[(s + 1) - 65536L] - 1;
-        if (i <= for_end)
-            do
-                dummy = more_name(str_pool[i]);
-            while (i++ < for_end);
-    }
-    stop_at_space = save_stop_at_space;
-}
-
 void zpack_job_name(str_number s)
 {
     pack_job_name_regmem cur_area = 65626L /*"" */ ;
@@ -13966,30 +13990,30 @@ void open_log_file(void)
     log_opened = true;
     {
         if (src_specials_p || file_line_error_style_p || parse_first_line_p)
-            fprintf(log_file, "%s%s%s", "This is XeTeX, Version 3.14159265", "-2.6", "-0.999992");
+            fprintf(log_file, "%s%s%s", "This is XeTeX, Version 3.141592653", "-2.6", "-0.999993");
         else
-            fprintf(log_file, "%s%s%s", "This is XeTeX, Version 3.14159265", "-2.6", "-0.999992");
+            fprintf(log_file, "%s%s%s", "This is XeTeX, Version 3.141592653", "-2.6", "-0.999993");
         Fputs(log_file, version_string);
         print(format_ident);
-        print(66185L /*"  " */ );
-        print_int(eqtb[8939261L /*int_base 21 */ ].cint);
+        print(66187L /*"  " */ );
+        print_int(sys_day);
         print_char(32 /*" " */ );
         months = " JANFEBMARAPRMAYJUNJULAUGSEPOCTNOVDEC";
         {
             register integer for_end;
-            k = 3 * eqtb[8939262L /*int_base 22 */ ].cint - 2;
-            for_end = 3 * eqtb[8939262L /*int_base 22 */ ].cint;
+            k = 3 * sys_month - 2;
+            for_end = 3 * sys_month;
             if (k <= for_end)
                 do
                     putc(months[k], log_file);
                 while (k++ < for_end);
         }
         print_char(32 /*" " */ );
-        print_int(eqtb[8939263L /*int_base 23 */ ].cint);
+        print_int(sys_year);
         print_char(32 /*" " */ );
-        print_two(eqtb[8939260L /*int_base 20 */ ].cint / 60);
+        print_two(sys_time / 60);
         print_char(58 /*":" */ );
-        print_two(eqtb[8939260L /*int_base 20 */ ].cint % 60);
+        print_two(sys_time % 60);
         if ((eTeX_mode == 1)) {
             ;
             putc('\n', log_file);
@@ -14047,6 +14071,7 @@ void open_log_file(void)
 void start_input(void)
 {
     start_input_regmem str_number temp_str;
+    halfword v;
     integer k;
     scan_file_name();
     pack_file_name(cur_name, cur_area, cur_ext);
@@ -14097,6 +14122,24 @@ void start_input(void)
     incr(open_parens);
     print(full_source_filename_stack[in_open]);
     fflush(stdout);
+    if (eqtb[8939298L /*int_base 58 */ ].cint > 0) {
+        begin_diagnostic();
+        print_ln();
+        print_char(126 /*"~" */ );
+        v = input_ptr - 1;
+        if (v < eqtb[8939298L /*int_base 58 */ ].cint)
+            while (v > 0) {
+
+                print_char(46 /*"." */ );
+                decr(v);
+        } else
+            print_char(126 /*"~" */ );
+        print(66188L /*"INPUT " */ );
+        print(cur_name);
+        print(cur_ext);
+        print_ln();
+        end_diagnostic(false);
+    }
     cur_input.state_field = 33 /*new_line */ ;
     synctex_start_input();
     {
@@ -14157,6 +14200,24 @@ four_quarters zeffective_char_info(internal_font_number f, quarterword c)
     return Result;
 }
 
+void zprint_ucs_code(UnicodeScalar n)
+{
+    print_ucs_code_regmem unsigned char k;
+    k = 0;
+    print(66216L /*"U+" */ );
+    do {
+        dig[k] = n % 16;
+        n = n / 16;
+        incr(k);
+    } while (!(n == 0));
+    while (k < 4) {
+
+        dig[k] = 0;
+        incr(k);
+    }
+    print_the_digs(k);
+}
+
 void zchar_warning(internal_font_number f, integer c)
 {
     char_warning_regmem integer old_setting;
@@ -14164,19 +14225,38 @@ void zchar_warning(internal_font_number f, integer c)
         old_setting = eqtb[8939269L /*int_base 29 */ ].cint;
         if ((eTeX_mode == 1) && (eqtb[8939275L /*int_base 35 */ ].cint > 1))
             eqtb[8939269L /*int_base 29 */ ].cint = 1;
-        {
-            begin_diagnostic();
-            print_nl(66213L /*"Missing character: There is no " */ );
-            if (c < 65536L)
-                print(c);
+        if (eqtb[8939275L /*int_base 35 */ ].cint > 2) {
+            if (interaction == 3 /*error_stop_mode */ ) ;
+            if (file_line_error_style_p)
+                print_file_line();
             else
-                print_char(c);
-            print(66214L /*" in font " */ );
-            print(font_name[f]);
-            print_char(33 /*"!" */ );
-            end_diagnostic(false);
+                print_nl(65544L /*"! " */ );
+            print(66217L /*"Missing character: There is no " */ );
+        } else {
+
+            begin_diagnostic();
+            print_nl(66217L /*"Missing character: There is no " */ );
         }
+        if (c < 65536L)
+            print(c);
+        else
+            print_char(c);
+        print(65566L /*" (" */ );
+        if (((font_area[f] == 65535L /*aat_font_flag */ ) || (font_area[f] == 65534L /*otgr_font_flag */ )))
+            print_ucs_code(c);
+        else
+            print_hex(c);
+        print(41 /*")" */ );
+        print(66218L /*" in font " */ );
+        print(font_name[f]);
+        if (eqtb[8939275L /*int_base 35 */ ].cint < 3)
+            print_char(33 /*"!" */ );
         eqtb[8939269L /*int_base 29 */ ].cint = old_setting;
+        if (eqtb[8939275L /*int_base 35 */ ].cint > 2) {
+            help_ptr = 0;
+            error();
+        } else
+            end_diagnostic(false);
     }
 }
 
@@ -14539,7 +14619,7 @@ void zdo_locale_linebreaks(integer s, integer len)
 {
     do_locale_linebreaks_regmem integer offs, prevOffs, i;
     boolean use_penalty, use_skip;
-    if ((eqtb[8939308L /*int_base 68 */ ].cint == 0) || (len == 1)) {
+    if ((eqtb[8939309L /*int_base 69 */ ].cint == 0) || (len == 1)) {
         mem[cur_list.tail_field].hh.v.RH = new_native_word_node(main_f, len);
         cur_list.tail_field = mem[cur_list.tail_field].hh.v.RH;
         {
@@ -14551,7 +14631,7 @@ void zdo_locale_linebreaks(integer s, integer len)
                     set_native_char(cur_list.tail_field, i, native_text[s + i]);
                 while (i++ < for_end);
         }
-        set_native_metrics(cur_list.tail_field, (eqtb[8939314L /*eTeX_state_base 3 */ ].cint > 0));
+        set_native_metrics(cur_list.tail_field, (eqtb[8939315L /*eTeX_state_base 3 */ ].cint > 0));
     } else {
 
         use_skip = eqtb[2252755L /*glue_base 15 */ ].hh.v.RH != mem_bot;
@@ -14564,7 +14644,7 @@ void zdo_locale_linebreaks(integer s, integer len)
             if (offs > 0) {
                 if (prevOffs != 0) {
                     if (use_penalty) {
-                        mem[cur_list.tail_field].hh.v.RH = new_penalty(eqtb[8939309L /*int_base 69 */ ].cint);
+                        mem[cur_list.tail_field].hh.v.RH = new_penalty(eqtb[8939310L /*int_base 70 */ ].cint);
                         cur_list.tail_field = mem[cur_list.tail_field].hh.v.RH;
                     }
                     if (use_skip) {
@@ -19817,6 +19897,7 @@ void zfetch(halfword a)
         if (!((cur_i.b0 > 0 /*min_quarterword */ ))) {
             char_warning(cur_f, cur_c);
             mem[a].hh.v.RH = 0 /*empty */ ;
+            cur_i = null_character;
         }
     }
 }
@@ -20467,8 +20548,16 @@ void zmake_scripts(halfword q, scaled delta)
     halfword script_c;
     quarterword script_g;
     internal_font_number script_f;
+    quarterword sup_g;
+    internal_font_number sup_f;
+    quarterword sub_g;
+    internal_font_number sub_f;
     integer t;
     internal_font_number save_f;
+    halfword script_head;
+    halfword script_ptr;
+    small_number saved_math_style;
+    small_number this_math_style;
     p = mem[q + 1].cint;
     script_c = -268435455L;
     script_g = 0;
@@ -20492,12 +20581,101 @@ void zmake_scripts(halfword q, scaled delta)
         shift_down = mem[z + 2].cint + sub_drop(t);
         free_node(z, 8 /*box_node_size */ );
     }
-    if (mem[q + 2].hh.v.RH == 0 /*empty */ )    //805:
+    if (mem[q + 2].hh.v.RH == 0 /*empty */ )    //801:
     {
+        script_head = q + 3;
+        script_c = -268435455L;
+        script_g = 0;
+        script_f = 0 /*font_base */ ;
+        this_math_style = 2 * (cur_style / 4) + 5;
+        if (mem[script_head].hh.v.RH == 3 /*sub_mlist */ ) {
+            script_ptr = mem[script_head].hh.v.LH;
+            script_head = -268435455L;
+            while (((script_ptr >= mem_min) && (script_ptr <= mem_end))) {
+
+                switch (mem[script_ptr].hh.b0) {
+                case 11:
+                case 10:
+                    ;
+                    break;
+                case 14:
+                    {
+                        this_math_style = mem[script_ptr].hh.b1;
+                    }
+                    break;
+                case 15:
+                    ;
+                    break;
+                case 16:
+                case 17:
+                case 18:
+                case 19:
+                case 20:
+                case 21:
+                case 22:
+                    {
+                        script_head = script_ptr + 1;
+                        script_ptr = -268435455L;
+                    }
+                    break;
+                default:
+                    script_ptr = -268435455L;
+                    break;
+                }
+                if (((script_ptr >= mem_min) && (script_ptr <= mem_end))) {
+
+                    if (mem[script_ptr].hh.b0 == 15 /*choice_node */ )
+                        switch (this_math_style / 2) {
+                        case 0:
+                            script_ptr = mem[script_ptr + 1].hh.v.LH;
+                            break;
+                        case 1:
+                            script_ptr = mem[script_ptr + 1].hh.v.RH;
+                            break;
+                        case 2:
+                            script_ptr = mem[script_ptr + 2].hh.v.LH;
+                            break;
+                        case 3:
+                            script_ptr = mem[script_ptr + 2].hh.v.RH;
+                            break;
+                    } else
+                        script_ptr = mem[script_ptr].hh.v.RH;
+                }
+            }
+        }
+        if (((script_head >= mem_min) && (script_head <= mem_end)) && mem[script_head].hh.v.RH == 1 /*math_char */ ) {
+            save_f = cur_f;
+            saved_math_style = cur_style;
+            cur_style = this_math_style;
+            {
+                if (cur_style < 4 /*script_style */ )
+                    cur_size = 0 /*text_size */ ;
+                else
+                    cur_size = 256 /*script_size */  * ((cur_style - 2) / 2);
+                cur_mu = x_over_n(math_quad(cur_size), 18);
+            }
+            fetch(script_head);
+            if (((font_area[cur_f] == 65534L /*otgr_font_flag */ ) && (isOpenTypeMathFont(font_layout_engine[cur_f])))) {
+                script_c = new_native_character(cur_f, cur_c);
+                script_g = get_native_glyph(script_c, 0);
+                script_f = cur_f;
+            }
+            cur_f = save_f;
+            cur_style = saved_math_style;
+            {
+                if (cur_style < 4 /*script_style */ )
+                    cur_size = 0 /*text_size */ ;
+                else
+                    cur_size = 256 /*script_size */  * ((cur_style - 2) / 2);
+                cur_mu = x_over_n(math_quad(cur_size), 18);
+            }
+        }
+        sub_g = script_g;
+        sub_f = script_f;
         save_f = cur_f;
         x = clean_box(q + 3, 2 * (cur_style / 4) + 5);
         cur_f = save_f;
-        mem[x + 1].cint = mem[x + 1].cint + eqtb[10053704L /*dimen_base 12 */ ].cint;
+        mem[x + 1].cint = mem[x + 1].cint + eqtb[10053705L /*dimen_base 12 */ ].cint;
         if (shift_down < sub1(cur_size))
             shift_down = sub1(cur_size);
         if (((font_area[cur_f] == 65534L /*otgr_font_flag */ ) && (isOpenTypeMathFont(font_layout_engine[cur_f]))))
@@ -20507,38 +20685,113 @@ void zmake_scripts(halfword q, scaled delta)
         if (shift_down < clr)
             shift_down = clr;
         mem[x + 4].cint = shift_down;
-        if (((font_area[cur_f] == 65534L /*otgr_font_flag */ ) && (isOpenTypeMathFont(font_layout_engine[cur_f]))))     //808:
+        if (((font_area[cur_f] == 65534L /*otgr_font_flag */ ) && (isOpenTypeMathFont(font_layout_engine[cur_f]))))     //806:
         {
-            if (mem[q + 3].hh.v.RH == 1 /*math_char */ ) {
+            if ((((p) != -268435455L && (!(p >= hi_mem_min)) && (mem[p].hh.b0 == 8 /*whatsit_node */ )
+                  && (mem[p].hh.b1 == 42 /*glyph_node */ )))) {
+                sub_kern =
+                    get_ot_math_kern(mem[p + 4].qqqq.b1, mem[p + 4].qqqq.b2, sub_f, sub_g, 1 /*sub_cmd */ , shift_down);
+                if (sub_kern != 0)
+                    p = attach_hkern_to_new_hlist(q, sub_kern);
+            }
+        }
+    } else {
+
+        {
+            script_head = q + 2;
+            script_c = -268435455L;
+            script_g = 0;
+            script_f = 0 /*font_base */ ;
+            this_math_style = 2 * (cur_style / 4) + 5;
+            if (mem[script_head].hh.v.RH == 3 /*sub_mlist */ ) {
+                script_ptr = mem[script_head].hh.v.LH;
+                script_head = -268435455L;
+                while (((script_ptr >= mem_min) && (script_ptr <= mem_end))) {
+
+                    switch (mem[script_ptr].hh.b0) {
+                    case 11:
+                    case 10:
+                        ;
+                        break;
+                    case 14:
+                        {
+                            this_math_style = mem[script_ptr].hh.b1;
+                        }
+                        break;
+                    case 15:
+                        ;
+                        break;
+                    case 16:
+                    case 17:
+                    case 18:
+                    case 19:
+                    case 20:
+                    case 21:
+                    case 22:
+                        {
+                            script_head = script_ptr + 1;
+                            script_ptr = -268435455L;
+                        }
+                        break;
+                    default:
+                        script_ptr = -268435455L;
+                        break;
+                    }
+                    if (((script_ptr >= mem_min) && (script_ptr <= mem_end))) {
+
+                        if (mem[script_ptr].hh.b0 == 15 /*choice_node */ )
+                            switch (this_math_style / 2) {
+                            case 0:
+                                script_ptr = mem[script_ptr + 1].hh.v.LH;
+                                break;
+                            case 1:
+                                script_ptr = mem[script_ptr + 1].hh.v.RH;
+                                break;
+                            case 2:
+                                script_ptr = mem[script_ptr + 2].hh.v.LH;
+                                break;
+                            case 3:
+                                script_ptr = mem[script_ptr + 2].hh.v.RH;
+                                break;
+                        } else
+                            script_ptr = mem[script_ptr].hh.v.RH;
+                    }
+                }
+            }
+            if (((script_head >= mem_min) && (script_head <= mem_end)) && mem[script_head].hh.v.RH == 1 /*math_char */ ) {
                 save_f = cur_f;
-                fetch(q + 3);
+                saved_math_style = cur_style;
+                cur_style = this_math_style;
+                {
+                    if (cur_style < 4 /*script_style */ )
+                        cur_size = 0 /*text_size */ ;
+                    else
+                        cur_size = 256 /*script_size */  * ((cur_style - 2) / 2);
+                    cur_mu = x_over_n(math_quad(cur_size), 18);
+                }
+                fetch(script_head);
                 if (((font_area[cur_f] == 65534L /*otgr_font_flag */ )
                      && (isOpenTypeMathFont(font_layout_engine[cur_f])))) {
                     script_c = new_native_character(cur_f, cur_c);
                     script_g = get_native_glyph(script_c, 0);
                     script_f = cur_f;
-                } else {
-
-                    script_g = 0;
-                    script_f = 0;
                 }
                 cur_f = save_f;
+                cur_style = saved_math_style;
+                {
+                    if (cur_style < 4 /*script_style */ )
+                        cur_size = 0 /*text_size */ ;
+                    else
+                        cur_size = 256 /*script_size */  * ((cur_style - 2) / 2);
+                    cur_mu = x_over_n(math_quad(cur_size), 18);
+                }
             }
-            if ((((p) != -268435455L && (!(p >= hi_mem_min)) && (mem[p].hh.b0 == 8 /*whatsit_node */ )
-                  && (mem[p].hh.b1 == 42 /*glyph_node */ ))))
-                sub_kern =
-                    get_ot_math_kern(mem[p + 4].qqqq.b1, mem[p + 4].qqqq.b2, script_f, script_g, 1 /*sub_cmd */ ,
-                                     shift_down);
-            if (sub_kern != 0)
-                p = attach_hkern_to_new_hlist(q, sub_kern);
-        }
-    } else {
-
-        {
+            sup_g = script_g;
+            sup_f = script_f;
             save_f = cur_f;
             x = clean_box(q + 2, 2 * (cur_style / 4) + 4 + (cur_style % 2));
             cur_f = save_f;
-            mem[x + 1].cint = mem[x + 1].cint + eqtb[10053704L /*dimen_base 12 */ ].cint;
+            mem[x + 1].cint = mem[x + 1].cint + eqtb[10053705L /*dimen_base 12 */ ].cint;
             if (odd(cur_style))
                 clr = sup3(cur_size);
             else if (cur_style < 2 /*text_style */ )
@@ -20553,40 +20806,119 @@ void zmake_scripts(halfword q, scaled delta)
                 clr = mem[x + 2].cint + (abs(math_x_height(cur_size)) / 4);
             if (shift_up < clr)
                 shift_up = clr;
-            if (((font_area[cur_f] == 65534L /*otgr_font_flag */ ) && (isOpenTypeMathFont(font_layout_engine[cur_f])))) //809:
+            if (((font_area[cur_f] == 65534L /*otgr_font_flag */ ) && (isOpenTypeMathFont(font_layout_engine[cur_f])))) //807:
             {
-                if (mem[q + 2].hh.v.RH == 1 /*math_char */ ) {
-                    save_f = cur_f;
-                    fetch(q + 2);
-                    if (((font_area[cur_f] == 65534L /*otgr_font_flag */ )
-                         && (isOpenTypeMathFont(font_layout_engine[cur_f])))) {
-                        script_c = new_native_character(cur_f, cur_c);
-                        script_g = get_native_glyph(script_c, 0);
-                        script_f = cur_f;
-                    } else {
+                if (mem[q + 3].hh.v.RH == 0 /*empty */ ) {
 
-                        script_g = 0;
-                        script_f = 0;
+                    if ((((p) != -268435455L && (!(p >= hi_mem_min)) && (mem[p].hh.b0 == 8 /*whatsit_node */ )
+                          && (mem[p].hh.b1 == 42 /*glyph_node */ )))) {
+                        sup_kern =
+                            get_ot_math_kern(mem[p + 4].qqqq.b1, mem[p + 4].qqqq.b2, sup_f, sup_g, 0 /*sup_cmd */ ,
+                                             shift_up);
+                        if (sup_kern != 0)
+                            p = attach_hkern_to_new_hlist(q, sup_kern);
                     }
-                    cur_f = save_f;
                 }
-                if ((((p) != -268435455L && (!(p >= hi_mem_min)) && (mem[p].hh.b0 == 8 /*whatsit_node */ )
-                      && (mem[p].hh.b1 == 42 /*glyph_node */ ))))
-                    sup_kern =
-                        get_ot_math_kern(mem[p + 4].qqqq.b1, mem[p + 4].qqqq.b2, script_f, script_g, 0 /*sup_cmd */ ,
-                                         shift_up);
-                if ((sup_kern != 0) && (mem[q + 3].hh.v.RH == 0 /*empty */ ))
-                    p = attach_hkern_to_new_hlist(q, sup_kern);
             }
         }
         if (mem[q + 3].hh.v.RH == 0 /*empty */ )
             mem[x + 4].cint = -(integer) shift_up;
-        else {                  //807:
+        else {                  //803:
 
             save_f = cur_f;
+            script_head = q + 3;
+            script_c = -268435455L;
+            script_g = 0;
+            script_f = 0 /*font_base */ ;
+            this_math_style = 2 * (cur_style / 4) + 5;
+            if (mem[script_head].hh.v.RH == 3 /*sub_mlist */ ) {
+                script_ptr = mem[script_head].hh.v.LH;
+                script_head = -268435455L;
+                while (((script_ptr >= mem_min) && (script_ptr <= mem_end))) {
+
+                    switch (mem[script_ptr].hh.b0) {
+                    case 11:
+                    case 10:
+                        ;
+                        break;
+                    case 14:
+                        {
+                            this_math_style = mem[script_ptr].hh.b1;
+                        }
+                        break;
+                    case 15:
+                        ;
+                        break;
+                    case 16:
+                    case 17:
+                    case 18:
+                    case 19:
+                    case 20:
+                    case 21:
+                    case 22:
+                        {
+                            script_head = script_ptr + 1;
+                            script_ptr = -268435455L;
+                        }
+                        break;
+                    default:
+                        script_ptr = -268435455L;
+                        break;
+                    }
+                    if (((script_ptr >= mem_min) && (script_ptr <= mem_end))) {
+
+                        if (mem[script_ptr].hh.b0 == 15 /*choice_node */ )
+                            switch (this_math_style / 2) {
+                            case 0:
+                                script_ptr = mem[script_ptr + 1].hh.v.LH;
+                                break;
+                            case 1:
+                                script_ptr = mem[script_ptr + 1].hh.v.RH;
+                                break;
+                            case 2:
+                                script_ptr = mem[script_ptr + 2].hh.v.LH;
+                                break;
+                            case 3:
+                                script_ptr = mem[script_ptr + 2].hh.v.RH;
+                                break;
+                        } else
+                            script_ptr = mem[script_ptr].hh.v.RH;
+                    }
+                }
+            }
+            if (((script_head >= mem_min) && (script_head <= mem_end)) && mem[script_head].hh.v.RH == 1 /*math_char */ ) {
+                save_f = cur_f;
+                saved_math_style = cur_style;
+                cur_style = this_math_style;
+                {
+                    if (cur_style < 4 /*script_style */ )
+                        cur_size = 0 /*text_size */ ;
+                    else
+                        cur_size = 256 /*script_size */  * ((cur_style - 2) / 2);
+                    cur_mu = x_over_n(math_quad(cur_size), 18);
+                }
+                fetch(script_head);
+                if (((font_area[cur_f] == 65534L /*otgr_font_flag */ )
+                     && (isOpenTypeMathFont(font_layout_engine[cur_f])))) {
+                    script_c = new_native_character(cur_f, cur_c);
+                    script_g = get_native_glyph(script_c, 0);
+                    script_f = cur_f;
+                }
+                cur_f = save_f;
+                cur_style = saved_math_style;
+                {
+                    if (cur_style < 4 /*script_style */ )
+                        cur_size = 0 /*text_size */ ;
+                    else
+                        cur_size = 256 /*script_size */  * ((cur_style - 2) / 2);
+                    cur_mu = x_over_n(math_quad(cur_size), 18);
+                }
+            }
+            sub_g = script_g;
+            sub_f = script_f;
             y = clean_box(q + 3, 2 * (cur_style / 4) + 5);
             cur_f = save_f;
-            mem[y + 1].cint = mem[y + 1].cint + eqtb[10053704L /*dimen_base 12 */ ].cint;
+            mem[y + 1].cint = mem[y + 1].cint + eqtb[10053705L /*dimen_base 12 */ ].cint;
             if (shift_down < sub2(cur_size))
                 shift_down = sub2(cur_size);
             if (((font_area[cur_f] == 65534L /*otgr_font_flag */ ) && (isOpenTypeMathFont(font_layout_engine[cur_f]))))
@@ -20612,53 +20944,32 @@ void zmake_scripts(halfword q, scaled delta)
             }
             if (((font_area[cur_f] == 65534L /*otgr_font_flag */ ) && (isOpenTypeMathFont(font_layout_engine[cur_f])))) {
                 {
-                    if (mem[q + 3].hh.v.RH == 1 /*math_char */ ) {
-                        save_f = cur_f;
-                        fetch(q + 3);
-                        if (((font_area[cur_f] == 65534L /*otgr_font_flag */ )
-                             && (isOpenTypeMathFont(font_layout_engine[cur_f])))) {
-                            script_c = new_native_character(cur_f, cur_c);
-                            script_g = get_native_glyph(script_c, 0);
-                            script_f = cur_f;
-                        } else {
-
-                            script_g = 0;
-                            script_f = 0;
-                        }
-                        cur_f = save_f;
-                    }
                     if ((((p) != -268435455L && (!(p >= hi_mem_min)) && (mem[p].hh.b0 == 8 /*whatsit_node */ )
-                          && (mem[p].hh.b1 == 42 /*glyph_node */ ))))
+                          && (mem[p].hh.b1 == 42 /*glyph_node */ )))) {
                         sub_kern =
-                            get_ot_math_kern(mem[p + 4].qqqq.b1, mem[p + 4].qqqq.b2, script_f, script_g,
-                                             1 /*sub_cmd */ , shift_down);
-                    if (sub_kern != 0)
-                        p = attach_hkern_to_new_hlist(q, sub_kern);
+                            get_ot_math_kern(mem[p + 4].qqqq.b1, mem[p + 4].qqqq.b2, sub_f, sub_g, 1 /*sub_cmd */ ,
+                                             shift_down);
+                        if (sub_kern != 0)
+                            p = attach_hkern_to_new_hlist(q, sub_kern);
+                    }
                 }
                 {
-                    if (mem[q + 2].hh.v.RH == 1 /*math_char */ ) {
-                        save_f = cur_f;
-                        fetch(q + 2);
-                        if (((font_area[cur_f] == 65534L /*otgr_font_flag */ )
-                             && (isOpenTypeMathFont(font_layout_engine[cur_f])))) {
-                            script_c = new_native_character(cur_f, cur_c);
-                            script_g = get_native_glyph(script_c, 0);
-                            script_f = cur_f;
-                        } else {
+                    if (mem[q + 3].hh.v.RH == 0 /*empty */ ) {
 
-                            script_g = 0;
-                            script_f = 0;
+                        if ((((p) != -268435455L && (!(p >= hi_mem_min)) && (mem[p].hh.b0 == 8 /*whatsit_node */ )
+                              && (mem[p].hh.b1 == 42 /*glyph_node */ )))) {
+                            sup_kern =
+                                get_ot_math_kern(mem[p + 4].qqqq.b1, mem[p + 4].qqqq.b2, sup_f, sup_g, 0 /*sup_cmd */ ,
+                                                 shift_up);
+                            if (sup_kern != 0)
+                                p = attach_hkern_to_new_hlist(q, sup_kern);
                         }
-                        cur_f = save_f;
                     }
-                    if ((((p) != -268435455L && (!(p >= hi_mem_min)) && (mem[p].hh.b0 == 8 /*whatsit_node */ )
-                          && (mem[p].hh.b1 == 42 /*glyph_node */ ))))
-                        sup_kern =
-                            get_ot_math_kern(mem[p + 4].qqqq.b1, mem[p + 4].qqqq.b2, script_f, script_g,
-                                             0 /*sup_cmd */ , shift_up);
-                    if ((sup_kern != 0) && (mem[q + 3].hh.v.RH == 0 /*empty */ ))
-                        p = attach_hkern_to_new_hlist(q, sup_kern);
                 }
+            } else {
+
+                sup_kern = 0;
+                sub_kern = 0;
             }
             mem[x + 4].cint = sup_kern + delta - sub_kern;
             p = new_kern((shift_up - mem[x + 2].cint) - (mem[y + 3].cint - shift_down));
@@ -21056,10 +21367,7 @@ void mlist_to_hlist(void)
             s = 5 /*accent_noad_size */ ;
             break;
         case 25:
-            {
-                t = 23 /*inner_noad */ ;
-                s = 6 /*fraction_noad_size */ ;
-            }
+            s = 6 /*fraction_noad_size */ ;
             break;
         case 30:
         case 31:
@@ -21477,6 +21785,7 @@ boolean fin_col(void)
             mem[p + 2].cint = mem[mem_top - 4].hh.v.RH /*:842 */ ;
             cur_loop = mem[cur_loop].hh.v.RH;
             mem[p].hh.v.RH = new_glue(mem[cur_loop + 1].hh.v.LH);
+            mem[mem[p].hh.v.RH].hh.b1 = 12 /*tab_skip_code 1 */ ;
         } else {
 
             {
@@ -21963,6 +22272,13 @@ halfword zfinite_shrink(halfword p)
     finite_shrink_regmem halfword q;
     if (no_shrink_error_yet) {
         no_shrink_error_yet = false;
+        ;
+
+#ifdef STAT
+        if (eqtb[8939272L /*int_base 32 */ ].cint > 0)
+            end_diagnostic(true);
+
+#endif                          // STAT
         {
             if (interaction == 3 /*error_stop_mode */ ) ;
             if (file_line_error_style_p)
@@ -21980,6 +22296,13 @@ halfword zfinite_shrink(halfword p)
             help_line[0] = 66343L /*"since the offensive shrinkability has been made finite." */ ;
         }
         error();
+        ;
+
+#ifdef STAT
+        if (eqtb[8939272L /*int_base 32 */ ].cint > 0)
+            begin_diagnostic();
+
+#endif                          // STAT
     }
     q = new_spec(p);
     mem[q].hh.b1 = 0 /*normal */ ;
@@ -26911,9 +27234,9 @@ void init_math(void)
         eq_word_define(10053706L /*dimen_base 13 */ , w);
         cur_list.eTeX_aux_field = j;
         if ((eTeX_mode == 1))
-            eq_word_define(8939303L /*int_base 63 */ , x);
-        eq_word_define(10053706L /*dimen_base 14 */ , l);
-        eq_word_define(10053707L /*dimen_base 15 */ , s);
+            eq_word_define(8939304L /*int_base 64 */ , x);
+        eq_word_define(10053707L /*dimen_base 14 */ , l);
+        eq_word_define(10053708L /*dimen_base 15 */ , s);
         if (eqtb[2253275L /*every_display_loc */ ].hh.v.RH != -268435455L)
             begin_token_list(eqtb[2253275L /*every_display_loc */ ].hh.v.RH, 10 /*every_display_text */ );
         if (nest_ptr == 1)
@@ -27515,8 +27838,8 @@ void zapp_display(halfword j, halfword b, scaled d)
     scaled e;
     integer x;
     halfword p, q, r, t, u;
-    s = eqtb[10053707L /*dimen_base 15 */ ].cint;
-    x = eqtb[8939303L /*int_base 63 */ ].cint;
+    s = eqtb[10053708L /*dimen_base 15 */ ].cint;
+    x = eqtb[8939304L /*int_base 64 */ ].cint;
     if (x == 0)
         mem[b + 4].cint = s + d;
     else {
@@ -31212,6 +31535,7 @@ void close_files_and_terminate(void)
                     a_close(write_file[k]);
             while (k++ < for_end) ;
     }
+    eqtb[8939289L /*int_base 49 */ ].cint = -1;
     ;
 
 #ifdef STAT
@@ -31478,6 +31802,45 @@ void compare_strings(void)
  lab30:                        /*done */ flush_str(s2);
     flush_str(s1);
     cur_val_level = 0 /*int_val */ ;
+}
+
+void scan_file_name_braced(void)
+{
+    scan_file_name_braced_regmem small_number save_scanner_status;
+    halfword save_def_ref;
+    halfword save_cur_cs;
+    str_number s;
+    halfword p;
+    integer i;
+    boolean save_stop_at_space;
+    boolean dummy;
+    save_scanner_status = scanner_status;
+    save_def_ref = def_ref;
+    save_cur_cs = cur_cs;
+    cur_cs = warning_index;
+    if (scan_toks(false, true) != 0) ;
+    old_setting = selector;
+    selector = 21 /*new_string */ ;
+    show_token_list(mem[def_ref].hh.v.RH, -268435455L, pool_size - pool_ptr);
+    selector = old_setting;
+    s = make_string();
+    delete_token_ref(def_ref);
+    def_ref = save_def_ref;
+    cur_cs = save_cur_cs;
+    scanner_status = save_scanner_status;
+    save_stop_at_space = stop_at_space;
+    stop_at_space = false;
+    begin_name();
+    {
+        register integer for_end;
+        i = str_start[(s) - 65536L];
+        for_end = str_start[(s + 1) - 65536L] - 1;
+        if (i <= for_end)
+            do
+                dummy = more_name(str_pool[i]);
+            while (i++ < for_end);
+    }
+    stop_at_space = save_stop_at_space;
 }
 
 str_number get_nullstr(void)

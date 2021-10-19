@@ -74,7 +74,7 @@
 #define IS_upTeX 1
 #include <euptexdir/euptexextra.h>
 #else
-#define BANNER "This is TeX, Version 3.14159265"
+#define BANNER "This is TeX, Version 3.141592653"
 #define COPYRIGHT_HOLDER "D.E. Knuth"
 #define AUTHOR NULL
 #define PROGRAM_HELP TEXHELP
@@ -95,7 +95,7 @@
 #elif defined(MFLuaJIT)
 #include <mfluajitdir/mfluajitextra.h>
 #else
-#define BANNER "This is Metafont, Version 2.7182818"
+#define BANNER "This is Metafont, Version 2.71828182"
 #define COPYRIGHT_HOLDER "D.E. Knuth"
 #define AUTHOR NULL
 #define PROGRAM_HELP MFHELP
@@ -610,8 +610,18 @@ runsystem (const char *cmd)
 
   if (allow == 1)
     status = system (cmd);
-  else if (allow == 2)
+  else if (allow == 2) {
+/*
+  command including a character '|' is not allowed in
+  restricted mode for security.
+*/
+    size_t k;
+    for (k = 0; k < strlen (safecmd); k++) {
+      if (safecmd[k] == '|')
+        return 0;
+    }
     status =  system (safecmd);
+  }
 
   /* Not really meaningful, but we have to manage the return value of system. */
   if (status != 0)
@@ -2498,13 +2508,33 @@ input_line (FILE *f)
       }
     }
   }
-#endif
+#endif /* WIN32 */
   last = first;
-  while (last < buf_size && (i = getc (f)) != EOF && i != '\n' && i != '\r')
-    buffer[last++] = i;
-#endif
+  do {
+    errno = 0; /* otherwise EINTR might wrongly persist */
+    while (last < buf_size && (i = getc (f)) != EOF && i != '\n' && i != '\r')
+      buffer[last++] = i;
 
-  if (i == EOF && errno != EINTR && last == first)
+    /* The story on EINTR: because we tell libc to pass interrupts
+       through (see SA_INTERRUPT above), we have to make sure that we
+       check for and ignore EINTR when getc reads an EOF; hence the
+       outer do..while loop here (and a similar loop below).
+       
+       On the other hand, we have to make sure that we detect a real
+       EOF. Otherwise, for example, typing CTRL-C and then CTRL-D to the
+       ** prompt results in an infinite loop, because we
+       (input_line) would never return false. On glibc 2.28-10 (Debian
+       10/buster), and probably other versions, errno is evidently not
+       cleared as a side effect of getc (and this is allowed).
+       Therefore we clear errno before calling getc above.
+       
+       Original report (thread following has many irrelevant diversions):
+       https://tug.org/pipermail/tex-k/2020-August/003297.html  */
+
+  } while (i == EOF && errno == EINTR);
+#endif /* not IS_pTeX */
+
+  if (i == EOF && last == first)
     return false;
 
   /* We didn't get the whole line because our buffer was too small.  */
@@ -2568,7 +2598,7 @@ call_edit (packedASCIIcode *filename,
 {
   char *temp, *command, *fullcmd;
   char c;
-  int sdone, ddone, i;
+  int sdone, ddone;
 
 #ifdef WIN32
   char *fp, *ffp, *env, editorname[256], buffer[256];
@@ -2579,13 +2609,76 @@ call_edit (packedASCIIcode *filename,
   sdone = ddone = 0;
   filename += fnstart;
 
-  /* Close any open input files, since we're going to kill the job.  */
-  for (i = 1; i <= in_open; i++)
+  /* Close any open input files, since we're going to kill the job and
+     the editor might well want to open them for writing.  On Windows,
+     at least, that would not be allowed when the file is still open.
+     
+     Unfortunately, the input_file array contains both the open files
+     that we want to close, and junk references to non-files for
+     terminal interaction that we must not try to close.  For example,
+     consider this input sequence:
+       \input test % contains a single line \bla, that is, any undefined cs
+       i\bum x     % insert another undefined control sequence
+       e           % invoke the editor
+     At this point input_file will have an open file for test.tex,
+     and a non-file for the insert. https://tex.stackexchange.com/q/552113 
+     
+     Therefore, we have to traverse down input_stack (not input_file),
+     looking for name_field values >17, which correspond to open
+     files, and then the index_field value of that entry tells us the
+     corresponding element of input_file, which is what we need to close.
+
+     We test for >17 because name_field=0 means the terminal,
+     name_field=1..16 means \openin stream n - 1,
+     name_field=17 means an invalid stream number (for read_toks).
+     Although ... seems like we should close any opened \openin files also.
+     Whoever is reading this, please implement that? Sigh.
+     
+     Description in modules 300--304 of tex.web: "Input stacks and states."
+     
+     Here, we do not have to look at cur_input, the global variable
+     which is effectively the top of input_stack, because it will always
+     be a terminal (non-file) interaction -- the one where the user
+     typed "e" to start the edit.  */
+ {  
+  int is_ptr; /* element of input_stack, 0 < input_ptr */  
+  for (is_ptr = 0; is_ptr < input_ptr; is_ptr++) {
+    if (input_stack[is_ptr].name_field <= 17) {
+        ; /* fprintf (stderr, "call_edit: skipped input_stack[%d], ", is_ptr);
+             fprintf (stderr, "name_field=%d <= 17\n",
+                      input_stack[is_ptr].name_field); */
+    } else {
+      FILE *f;
+      /* when name_field > 17, index_field specifies the element of
+         the input_file array, 1 <= in_open */
+      int if_ptr = input_stack[is_ptr].index_field;
+      if (if_ptr < 1 || if_ptr > in_open) {
+      fprintf (stderr, "%s:call_edit: unexpected if_ptr=%d not in range 1..%d,",
+                 argv[0], if_ptr, in_open);
+        fprintf (stderr, "from input_stack[%d].name_field=%d\n",
+                 is_ptr, input_stack[is_ptr].name_field);
+        exit (1);
+      }
+      
 #ifdef XeTeX
-    xfclose (input_file[i]->f, "input_file");
+      f = input_file[if_ptr]->f;
 #else
-    xfclose (input_file[i], "input_file");
+      f = input_file[if_ptr];
 #endif
+       /* fprintf (stderr,"call_edit: input_stack #%d -> input_file #%d = %x\n",
+                   is_ptr, if_ptr, f); */
+      /* Although it should never happen, if the file value happens to
+         be zero, let's not gratuitously abort.  */
+      if (f) {
+        xfclose (f, "input_file");
+      } else {
+        fprintf (stderr, "%s:call_edit: not closing unexpected zero", argv[0]);
+        fprintf (stderr, " input_file[%d] from input_stack[%d].name_field=%d\n",
+                 if_ptr, is_ptr, input_stack[is_ptr].name_field);        
+      }
+    } /* end name_field > 17 */
+  }   /* end for loop for input_stack */
+ }    /* end block for variable declarations */
 
   /* Replace the default with the value of the appropriate environment
      variable or config file value, if it's set.  */
@@ -2594,7 +2687,7 @@ call_edit (packedASCIIcode *filename,
     edit_value = temp;
 
   /* Construct the command string.  The `11' is the maximum length an
-     integer might be.  */
+     integer might be (64 bits).  */
   command = xmalloc (strlen (edit_value) + fnlength + 11);
 
   /* So we can construct it as we go.  */
@@ -2615,6 +2708,7 @@ call_edit (packedASCIIcode *filename,
     {
       if (c == '%')
         {
+          int i;
           switch (c = *edit_value++)
             {
 	    case 'd':
@@ -3219,6 +3313,9 @@ find_input_file(integer s)
         }
         xfree (pathname);
     }
+    if (! kpse_in_name_ok(filename)) {
+       return NULL;                /* no permission */
+    }
     return kpse_find_tex(filename);
 }
 
@@ -3313,9 +3410,6 @@ getfilemoddate(integer s)
     if (file_name == NULL) {
         return;                 /* empty string */
     }
-    if (! kpse_in_name_ok(file_name)) {
-       return;                  /* no permission */
-    }
 
     recorder_record_input(file_name);
     /* get file status */
@@ -3357,9 +3451,6 @@ getfilesize(integer s)
     char *file_name = find_input_file(s);
     if (file_name == NULL) {
         return;                 /* empty string */
-    }
-    if (! kpse_in_name_ok(file_name)) {
-       return;                  /* no permission */
     }
 
     recorder_record_input(file_name);
@@ -3425,9 +3516,6 @@ getfiledump(integer s, int offset, int length)
     file_name = find_input_file(s);
     if (file_name == NULL) {
         return;                 /* empty string */
-    }
-    if (! kpse_in_name_ok(file_name)) {
-       return;                  /* no permission */
     }
 
     /* read file data */
@@ -3517,9 +3605,6 @@ getmd5sum(str_number s, boolean file)
         file_name = find_input_file(s);
         if (file_name == NULL) {
             return;             /* empty string */
-        }
-        if (! kpse_in_name_ok(file_name)) {
-           return;              /* no permission */
         }
 
         /* in case of error the empty string is returned,

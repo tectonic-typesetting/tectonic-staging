@@ -19,7 +19,7 @@ moved to [tectonic-texlive-bundles].
 
 On the `master` branch, the reference sources currently correspond to
 
-#### TeXLive 2020.0 = SVN r54631
+#### TeXLive 2021.3 = SVN r59745
 
 
 ## Background
@@ -124,6 +124,11 @@ The diffs to the reference sources can then be used to inform updates to [the
 main Tectonic repository][tt-main].
 
 [tt-main]: https://github.com/tectonic-typesetting/tectonic
+
+The script `./validate.sh` will validate that this repo is self-consistent,
+rerunning all of the stages from scratch. It requires that your `stage0` ...
+`stageN` branches are all properly updated and sequenced. Read the script
+implementation in `common/validate_impl.sh` to understand what it does.
 
 
 ### Copyright and Licensing

@@ -83,7 +83,7 @@ void initialize(void)
     {
         register integer for_end;
         k = 8939240L /*int_base */ ;
-        for_end = 10053970L /*eqtb_size */ ;
+        for_end = 10053971L /*eqtb_size */ ;
         if (k <= for_end)
             do
                 xeq_level[k] = 1 /*level_one */ ;
@@ -107,7 +107,6 @@ void initialize(void)
     cur_boundary = 0;
     max_save_stack = 0;
     mag_set = 0;
-    expand_depth_count = 0;
     is_in_csname = false;
     cur_mark[0 /*top_mark_code */ ] = -268435455L;
     cur_mark[1 /*first_mark_code */ ] = -268435455L;
@@ -219,6 +218,7 @@ void initialize(void)
     disc_ptr[3 /*vsplit_code */ ] = -268435455L;
     edit_name_start = 0;
     stop_at_space = true;
+    expand_depth_count = 0;
     mltex_enabled_p = false;
     ;
 
@@ -416,7 +416,7 @@ void initialize(void)
         {
             register integer for_end;
             k = 8939240L /*int_base */ ;
-            for_end = 8939579L /*del_code_base -1 */ ;
+            for_end = 8939580L /*del_code_base -1 */ ;
             if (k <= for_end)
                 do
                     eqtb[k].cint = 0;
@@ -436,14 +436,14 @@ void initialize(void)
             for_end = 1114111L /*number_usvs -1 */ ;
             if (k <= for_end)
                 do
-                    eqtb[8939580L /*del_code_base */  + k].cint = -1;
+                    eqtb[8939581L /*del_code_base */  + k].cint = -1;
                 while (k++ < for_end);
         }
-        eqtb[8939626L /*del_code_base 46 */ ].cint = 0;
+        eqtb[8939627L /*del_code_base 46 */ ].cint = 0;
         {
             register integer for_end;
-            k = 10053692L /*dimen_base */ ;
-            for_end = 10053970L /*eqtb_size */ ;
+            k = 10053693L /*dimen_base */ ;
+            for_end = 10053971L /*eqtb_size */ ;
             if (k <= for_end)
                 do
                     eqtb[k].cint = 0;
@@ -454,11 +454,11 @@ void initialize(void)
         hash_high = 0;
         cs_count = 0;
         eqtb[2243235L /*frozen_dont_expand */ ].hh.b0 = 118 /*dont_expand */ ;
-        hash[2243235L /*frozen_dont_expand */ ].v.RH = 65809L /*"notexpanded:" */ ;
+        hash[2243235L /*frozen_dont_expand */ ].v.RH = 65810L /*"notexpanded:" */ ;
         eqtb[2243237L /*frozen_primitive */ ].hh.b0 = 39 /*ignore_spaces */ ;
         eqtb[2243237L /*frozen_primitive */ ].hh.v.RH = 1;
         eqtb[2243237L /*frozen_primitive */ ].hh.b1 = 1 /*level_one */ ;
-        hash[2243237L /*frozen_primitive */ ].v.RH = 65810L /*"primitive" */ ;
+        hash[2243237L /*frozen_primitive */ ].v.RH = 65811L /*"primitive" */ ;
         {
             register integer for_end;
             k = -(integer) trie_op_size;
@@ -480,16 +480,16 @@ void initialize(void)
         max_op_used = min_trie_op;
         trie_op_ptr = 0;
         trie_not_ready = true;
-        hash[2243226L /*frozen_protection */ ].v.RH = 66621L /*"inaccessible" */ ;
+        hash[2243226L /*frozen_protection */ ].v.RH = 66625L /*"inaccessible" */ ;
         if (ini_version)
-            format_ident = 66703L /*" (INITEX)" */ ;
-        hash[2243234L /*end_write */ ].v.RH = 66761L /*"endwrite" */ ;
+            format_ident = 66707L /*" (INITEX)" */ ;
+        hash[2243234L /*end_write */ ].v.RH = 66765L /*"endwrite" */ ;
         eqtb[2243234L /*end_write */ ].hh.b1 = 1 /*level_one */ ;
         eqtb[2243234L /*end_write */ ].hh.b0 = 115 /*outer_call */ ;
         eqtb[2243234L /*end_write */ ].hh.v.RH = -268435455L;
         eTeX_mode = 0;
         max_reg_num = 255;
-        max_reg_help_line = 66953L /*"A register number must be between 0 and 255." */ ;
+        max_reg_help_line = 66957L /*"A register number must be between 0 and 255." */ ;
         {
             register integer for_end;
             i = 0 /*int_val */ ;
@@ -499,11 +499,11 @@ void initialize(void)
                     sa_root[i] = -268435455L;
                 while (i++ < for_end);
         }
-        eqtb[8939322L /*eTeX_state_base 11 */ ].cint = 63;
+        eqtb[8939323L /*eTeX_state_base 11 */ ].cint = 63;
     }
 
 #endif                          // INITEX
-    synctexoffset = 8939323L /*int_base 83 */ ;
+    synctexoffset = 8939324L /*int_base 84 */ ;
 }
 
 void print_ln(void)
@@ -540,7 +540,7 @@ void print_ln(void)
     }
 }
 
-//:1688
+//:1686
 #ifdef INITEX
 boolean get_strings_started(void)
 {
@@ -645,7 +645,7 @@ void zprimitive(str_number s, quarterword c, halfword o)
 }
 
 #endif                          // INITEX
-        /*:946*///998:
+        /*:944*///996:
 #ifdef INITEX
 trie_opcode znew_trie_op(small_number d, small_number n, trie_opcode v)
 {
@@ -659,10 +659,10 @@ trie_opcode znew_trie_op(small_number d, small_number n, trie_opcode v)
         l = trie_op_hash[h];
         if (l == 0) {
             if (trie_op_ptr == trie_op_size)
-                overflow(66374L /*"pattern memory ops" */ , trie_op_size);
+                overflow(66378L /*"pattern memory ops" */ , trie_op_size);
             u = trie_used[cur_lang];
             if (u == max_trie_op)
-                overflow(66375L /*"pattern memory ops per language" */ , max_trie_op - min_trie_op);
+                overflow(66379L /*"pattern memory ops per language" */ , max_trie_op - min_trie_op);
             incr(trie_op_ptr);
             incr(u);
             trie_used[cur_lang] = u;
@@ -745,7 +745,7 @@ void zfirst_fit(trie_pointer p)
         h = z - c;
         if (trie_max < h + max_hyph_char) {
             if (trie_size <= h + max_hyph_char)
-                overflow(66376L /*"pattern memory" */ , trie_size);
+                overflow(66380L /*"pattern memory" */ , trie_size);
             do {
                 incr(trie_max);
                 trie_taken[trie_max] = false;
@@ -765,7 +765,7 @@ void zfirst_fit(trie_pointer p)
         goto lab40;
  lab45:                        /*not_found */ z = trie_trl[z];
     }
- lab40:                        /*found *//*1012: */ trie_taken[h] = true;
+ lab40:                        /*found *//*1010: */ trie_taken[h] = true;
     trie_hash[p] = h;
     q = p;
     do {
@@ -786,7 +786,7 @@ void zfirst_fit(trie_pointer p)
             } while (!(l == ll));
         }
         q = trie_r[q];
-    } while (!(q == 0 /*:1012 */ ));
+    } while (!(q == 0 /*:1010 */ ));
 }
 
 void ztrie_pack(trie_pointer p)
@@ -858,11 +858,11 @@ void new_patterns(void)
                                     print_file_line();
                                 else
                                     print_nl(65544L /*"! " */ );
-                                print(66382L /*"Nonletter" */ );
+                                print(66386L /*"Nonletter" */ );
                             }
                             {
                                 help_ptr = 1;
-                                help_line[0] = 66381L /*"(See Appendix H.)" */ ;
+                                help_line[0] = 66385L /*"(See Appendix H.)" */ ;
                             }
                             error();
                         }
@@ -883,7 +883,7 @@ void new_patterns(void)
             case 10:
             case 2:
                 {
-                    if (k > 0)  //1019:
+                    if (k > 0)  //1017:
                     {
                         if (hc[1] == 0)
                             hyf[0] = 0;
@@ -900,7 +900,7 @@ void new_patterns(void)
                             else
                                 goto lab31;
                         }
- lab31:                        /*done1 *//*:1021 */ ;
+ lab31:                        /*done1 *//*:1019 */ ;
                         q = 0;
                         hc[0] = cur_lang;
                         while (l <= k) {
@@ -915,10 +915,10 @@ void new_patterns(void)
                                 p = trie_r[q];
                                 first_child = false;
                             }
-                            if ((p == 0) || (c < trie_c[p]))    //1020:
+                            if ((p == 0) || (c < trie_c[p]))    //1018:
                             {
                                 if (trie_ptr == trie_size)
-                                    overflow(66376L /*"pattern memory" */ , trie_size);
+                                    overflow(66380L /*"pattern memory" */ , trie_size);
                                 incr(trie_ptr);
                                 trie_r[trie_ptr] = p;
                                 p = trie_ptr;
@@ -939,11 +939,11 @@ void new_patterns(void)
                                     print_file_line();
                                 else
                                     print_nl(65544L /*"! " */ );
-                                print(66383L /*"Duplicate pattern" */ );
+                                print(66387L /*"Duplicate pattern" */ );
                             }
                             {
                                 help_ptr = 1;
-                                help_line[0] = 66381L /*"(See Appendix H.)" */ ;
+                                help_line[0] = 66385L /*"(See Appendix H.)" */ ;
                             }
                             error();
                         }
@@ -964,20 +964,20 @@ void new_patterns(void)
                             print_file_line();
                         else
                             print_nl(65544L /*"! " */ );
-                        print(66380L /*"Bad " */ );
+                        print(66384L /*"Bad " */ );
                     }
-                    print_esc(66378L /*"patterns" */ );
+                    print_esc(66382L /*"patterns" */ );
                     {
                         help_ptr = 1;
-                        help_line[0] = 66381L /*"(See Appendix H.)" */ ;
+                        help_line[0] = 66385L /*"(See Appendix H.)" */ ;
                     }
                     error();
                 }
                 break;
             }
         }
- lab30:                        /*done *//*:1017 */ ;
-        if (eqtb[8939306L /*int_base 66 */ ].cint > 0)  //1668:
+ lab30:                        /*done *//*:1015 */ ;
+        if (eqtb[8939307L /*int_base 67 */ ].cint > 0)  //1666:
         {
             c = cur_lang;
             first_child = false;
@@ -986,10 +986,10 @@ void new_patterns(void)
                 q = p;
                 p = trie_r[q];
             } while (!((p == 0) || (c <= trie_c[p])));
-            if ((p == 0) || (c < trie_c[p]))    //1020:
+            if ((p == 0) || (c < trie_c[p]))    //1018:
             {
                 if (trie_ptr == trie_size)
-                    overflow(66376L /*"pattern memory" */ , trie_size);
+                    overflow(66380L /*"pattern memory" */ , trie_size);
                 incr(trie_ptr);
                 trie_r[trie_ptr] = p;
                 p = trie_ptr;
@@ -1011,10 +1011,10 @@ void new_patterns(void)
                 if (c <= for_end)
                     do
                         if ((eqtb[3368680L /*lc_code_base */  + c].hh.v.RH > 0) || ((c == 255) && first_child)) {
-                            if (p == 0) //1020:
+                            if (p == 0) //1018:
                             {
                                 if (trie_ptr == trie_size)
-                                    overflow(66376L /*"pattern memory" */ , trie_size);
+                                    overflow(66380L /*"pattern memory" */ , trie_size);
                                 incr(trie_ptr);
                                 trie_r[trie_ptr] = p;
                                 p = trie_ptr;
@@ -1037,7 +1037,7 @@ void new_patterns(void)
             if (first_child)
                 trie_l[q] = 0;
             else
-                trie_r[q] = 0 /*:1669 */ ;
+                trie_r[q] = 0 /*:1667 */ ;
         }
     } else {
 
@@ -1047,12 +1047,12 @@ void new_patterns(void)
                 print_file_line();
             else
                 print_nl(65544L /*"! " */ );
-            print(66377L /*"Too late for " */ );
+            print(66381L /*"Too late for " */ );
         }
-        print_esc(66378L /*"patterns" */ );
+        print_esc(66382L /*"patterns" */ );
         {
             help_ptr = 1;
-            help_line[0] = 66379L /*"All patterns must be given before typesetting begins." */ ;
+            help_line[0] = 66383L /*"All patterns must be given before typesetting begins." */ ;
         }
         error();
         mem[mem_top - 12].hh.v.RH = scan_toks(false, false);
@@ -1138,12 +1138,12 @@ void init_trie(void)
             while (p++ < for_end);
     }
     trie_trl[0] = 1;
-    trie_max = 0 /*:1008 */ ;
+    trie_max = 0 /*:1006 */ ;
     if (trie_l[0] != 0) {
         first_fit(trie_l[0]);
         trie_pack(trie_l[0]);
     }
-    if (trie_r[0] != 0)         //1670:
+    if (trie_r[0] != 0)         //1668:
     {
         if (trie_l[0] == 0) {
             register integer for_end;
@@ -1193,7 +1193,7 @@ void init_trie(void)
     trie_not_ready = false;
 }
 
-//:1022
+//:1020
 #endif                          // INITEX
 void zline_break(boolean d)
 {
@@ -1247,7 +1247,7 @@ void zline_break(boolean d)
     background[6] = mem[q + 3].cint + mem[r + 3].cint;
     do_last_line_fit = false;
     active_node_size = 3 /*active_node_size_normal */ ;
-    if (eqtb[8939304L /*int_base 64 */ ].cint > 0) {
+    if (eqtb[8939305L /*int_base 65 */ ].cint > 0) {
         q = mem[last_line_fill + 1].hh.v.LH;
         if ((mem[q + 2].cint > 0) && (mem[q].hh.b0 > 0 /*normal */ )) {
 
@@ -1268,28 +1268,28 @@ void zline_break(boolean d)
     minimal_demerits[0 /*very_loose_fit */ ] = 1073741823L;
     if (eqtb[2253271L /*par_shape_loc */ ].hh.v.RH == -268435455L) {
 
-        if (eqtb[10053709L /*dimen_base 17 */ ].cint == 0) {
+        if (eqtb[10053710L /*dimen_base 17 */ ].cint == 0) {
             last_special_line = 0;
-            second_width = eqtb[10053695L /*dimen_base 3 */ ].cint;
+            second_width = eqtb[10053696L /*dimen_base 3 */ ].cint;
             second_indent = 0;
-        } else {                //899:
+        } else {                //897:
 
             last_special_line = abs(eqtb[8939281L /*int_base 41 */ ].cint);
             if (eqtb[8939281L /*int_base 41 */ ].cint < 0) {
-                first_width = eqtb[10053695L /*dimen_base 3 */ ].cint - abs(eqtb[10053709L /*dimen_base 17 */ ].cint);
-                if (eqtb[10053709L /*dimen_base 17 */ ].cint >= 0)
-                    first_indent = eqtb[10053709L /*dimen_base 17 */ ].cint;
+                first_width = eqtb[10053696L /*dimen_base 3 */ ].cint - abs(eqtb[10053710L /*dimen_base 17 */ ].cint);
+                if (eqtb[10053710L /*dimen_base 17 */ ].cint >= 0)
+                    first_indent = eqtb[10053710L /*dimen_base 17 */ ].cint;
                 else
                     first_indent = 0;
-                second_width = eqtb[10053695L /*dimen_base 3 */ ].cint;
+                second_width = eqtb[10053696L /*dimen_base 3 */ ].cint;
                 second_indent = 0;
             } else {
 
-                first_width = eqtb[10053695L /*dimen_base 3 */ ].cint;
+                first_width = eqtb[10053696L /*dimen_base 3 */ ].cint;
                 first_indent = 0;
-                second_width = eqtb[10053695L /*dimen_base 3 */ ].cint - abs(eqtb[10053709L /*dimen_base 17 */ ].cint);
-                if (eqtb[10053709L /*dimen_base 17 */ ].cint >= 0)
-                    second_indent = eqtb[10053709L /*dimen_base 17 */ ].cint;
+                second_width = eqtb[10053696L /*dimen_base 3 */ ].cint - abs(eqtb[10053710L /*dimen_base 17 */ ].cint);
+                if (eqtb[10053710L /*dimen_base 17 */ ].cint >= 0)
+                    second_indent = eqtb[10053710L /*dimen_base 17 */ ].cint;
                 else
                     second_indent = 0;
             }
@@ -1303,7 +1303,7 @@ void zline_break(boolean d)
     if (eqtb[8939259L /*int_base 19 */ ].cint == 0)
         easy_line = last_special_line;
     else
-        easy_line = 1073741823L /*:898 */ ;
+        easy_line = 1073741823L /*:896 */ ;
     threshold = eqtb[8939240L /*int_base 0 */ ].cint;
     if (threshold >= 0) {
         ;
@@ -1311,7 +1311,7 @@ void zline_break(boolean d)
 #ifdef STAT
         if (eqtb[8939272L /*int_base 32 */ ].cint > 0) {
             begin_diagnostic();
-            print_nl(66356L /*"@firstpass" */ );
+            print_nl(66360L /*"@firstpass" */ );
         }
 
 #endif                          // STAT
@@ -1321,7 +1321,7 @@ void zline_break(boolean d)
 
         threshold = eqtb[8939241L /*int_base 1 */ ].cint;
         second_pass = true;
-        final_pass = (eqtb[10053712L /*dimen_base 20 */ ].cint <= 0);
+        final_pass = (eqtb[10053713L /*dimen_base 20 */ ].cint <= 0);
         ;
 
 #ifdef STAT
@@ -1334,7 +1334,7 @@ void zline_break(boolean d)
 
         if (threshold > 10000 /*inf_bad */ )
             threshold = 10000 /*inf_bad */ ;
-        if (second_pass)        //941:
+        if (second_pass)        //939:
         {
             ;
 
@@ -1359,7 +1359,7 @@ void zline_break(boolean d)
         mem[q + 1].hh.v.LH = cur_list.pg_field + 1;
         mem[q + 2].cint = 0;
         mem[mem_top - 7].hh.v.RH = q;
-        if (do_last_line_fit)   //1658:
+        if (do_last_line_fit)   //1656:
         {
             mem[q + 3].cint = 0;
             mem[q + 4].cint = 0;
@@ -1373,7 +1373,7 @@ void zline_break(boolean d)
         passive = -268435455L;
         printed_node = mem_top - 3;
         pass_number = 0;
-        font_in_short_display = 0 /*font_base *//*:914 */ ;
+        font_in_short_display = 0 /*font_base *//*:912 */ ;
         cur_p = mem[mem_top - 3].hh.v.RH;
         auto_breaking = true;
         {
@@ -1381,9 +1381,9 @@ void zline_break(boolean d)
             global_prev_p = cur_p;
         }
         first_p = cur_p;
-        while ((cur_p != -268435455L) && (mem[mem_top - 7].hh.v.RH != mem_top - 7)) {   //916:
+        while ((cur_p != -268435455L) && (mem[mem_top - 7].hh.v.RH != mem_top - 7)) {   //914:
 
-            if ((cur_p >= hi_mem_min))  //917:
+            if ((cur_p >= hi_mem_min))  //915:
             {
                 {
                     prev_p = cur_p;
@@ -1438,8 +1438,8 @@ void zline_break(boolean d)
                     q = mem[cur_p + 1].hh.v.LH;
                     active_width[1] = active_width[1] + mem[q + 1].cint;
                     active_width[2 + mem[q].hh.b0] = active_width[2 + mem[q].hh.b0] + mem[q + 2].cint;
-                    active_width[6] = active_width[6] + mem[q + 3].cint /*:918 */ ;
-                    if (second_pass && auto_breaking)   //945:
+                    active_width[6] = active_width[6] + mem[q + 3].cint /*:916 */ ;
+                    if (second_pass && auto_breaking)   //943:
                     {
                         prev_s = cur_p;
                         s = mem[prev_s].hh.v.RH;
@@ -1521,7 +1521,7 @@ void zline_break(boolean d)
                                 goto lab31;
                             if (hyf_char > 65535L /*biggest_char */ )
                                 goto lab31;
-                            ha = /*:951 */ prev_s;
+                            ha = /*:949 */ prev_s;
                             if (l_hyf + r_hyf > max_hyphenatable_length())
                                 goto lab31;
                             if ((((ha) != -268435455L) && (!(ha >= hi_mem_min))
@@ -1555,7 +1555,7 @@ void zline_break(boolean d)
                                         }
                                     s = mem[s].hh.v.RH;
                                 }
- lab36:                        /*done6 *//*:947 */ ;
+ lab36:                        /*done6 *//*:945 */ ;
                                 hn = 0;
  lab20:                        {       //restart
                                     register integer for_end;
@@ -1584,13 +1584,13 @@ void zline_break(boolean d)
                                                             while (i++ < for_end);
                                                     }
                                                     set_native_metrics(q,
-                                                                       (eqtb[8939314L /*eTeX_state_base 3 */ ].cint >
+                                                                       (eqtb[8939315L /*eTeX_state_base 3 */ ].cint >
                                                                         0));
                                                     mem[q].hh.v.RH = mem[ha].hh.v.RH;
                                                     mem[ha].hh.v.RH = q;
                                                     mem[ha + 4].qqqq.b2 = l;
                                                     set_native_metrics(ha,
-                                                                       (eqtb[8939314L /*eTeX_state_base 3 */ ].cint >
+                                                                       (eqtb[8939315L /*eTeX_state_base 3 */ ].cint >
                                                                         0));
                                                     goto lab33;
                                                 }
@@ -1607,12 +1607,12 @@ void zline_break(boolean d)
                                                         while (i++ < for_end);
                                                 }
                                                 set_native_metrics(q,
-                                                                   (eqtb[8939314L /*eTeX_state_base 3 */ ].cint > 0));
+                                                                   (eqtb[8939315L /*eTeX_state_base 3 */ ].cint > 0));
                                                 mem[q].hh.v.RH = mem[ha].hh.v.RH;
                                                 mem[ha].hh.v.RH = q;
                                                 mem[ha + 4].qqqq.b2 = l;
                                                 set_native_metrics(ha,
-                                                                   (eqtb[8939314L /*eTeX_state_base 3 */ ].cint > 0));
+                                                                   (eqtb[8939315L /*eTeX_state_base 3 */ ].cint > 0));
                                                 ha = mem[ha].hh.v.RH;
                                                 goto lab20;
                                             } else if ((hn == max_hyphenatable_length()))
@@ -1664,7 +1664,7 @@ void zline_break(boolean d)
                                         hu[hn] = c;
                                         hc[hn] = hc[0];
                                         hyf_bchar = 65536L /*too_big_char */ ;
-                                    } else if (mem[s].hh.b0 == 6 /*ligature_node */ )   //953:
+                                    } else if (mem[s].hh.b0 == 6 /*ligature_node */ )   //951:
                                     {
                                         if (mem[s + 1].hh.b0 != hf)
                                             goto lab33;
@@ -1705,7 +1705,7 @@ void zline_break(boolean d)
                                         goto lab33;
                                     s = mem[s].hh.v.RH;
                                 }
- lab33:                        /*done3 *//*:952 */ ;
+ lab33:                        /*done3 *//*:950 */ ;
                             }
                             if (hn < l_hyf + r_hyf)
                                 goto lab31;
@@ -1740,7 +1740,7 @@ void zline_break(boolean d)
                                     }
                                 s = mem[s].hh.v.RH;
                             }
- lab34:                        /*done4 *//*:954 */ ;
+ lab34:                        /*done4 *//*:952 */ ;
                             hyphenate();
                         }
  lab31:                        /*done1 */ ;
@@ -1778,7 +1778,7 @@ void zline_break(boolean d)
                     else {
 
                         do {
-                            /*920: */ if ((s >= hi_mem_min)) {
+                            /*918: */ if ((s >= hi_mem_min)) {
                                 f = mem[s].hh.b0;
                                 disc_width =
                                     disc_width + font_info[width_base[f] +
@@ -1813,10 +1813,10 @@ void zline_break(boolean d)
                                         || (mem[s].hh.b1 == 44 /*pdf_node */ ))
                                         disc_width = disc_width + mem[s + 1].cint;
                                     else
-                                        confusion(66360L /*"disc3a" */ );
+                                        confusion(66364L /*"disc3a" */ );
                                     break;
                                 default:
-                                    confusion(66361L /*"disc3" */ );
+                                    confusion(66365L /*"disc3" */ );
                                     break;
                                 }
                             s = mem[s].hh.v.RH;
@@ -1864,10 +1864,10 @@ void zline_break(boolean d)
                                     || (mem[s].hh.b1 == 44 /*pdf_node */ ))
                                     active_width[1] = active_width[1] + mem[s + 1].cint;
                                 else
-                                    confusion(66362L /*"disc4a" */ );
+                                    confusion(66366L /*"disc4a" */ );
                                 break;
                             default:
-                                confusion(66363L /*"disc4" */ );
+                                confusion(66367L /*"disc4" */ );
                                 break;
                             }
                         decr(r);
@@ -1904,7 +1904,7 @@ void zline_break(boolean d)
                 ;
                 break;
             default:
-                confusion(66359L /*"paragraph" */ );
+                confusion(66363L /*"paragraph" */ );
                 break;
             }
             {
@@ -1914,7 +1914,7 @@ void zline_break(boolean d)
             cur_p = mem[cur_p].hh.v.RH;
  lab35:                        /*done5 */ ;
         }
-        if (cur_p == -268435455L)       //923:
+        if (cur_p == -268435455L)       //921:
         {
             try_break(-10000 /*eject_penalty */ , 1 /*hyphenated */ );
             if (mem[mem_top - 7].hh.v.RH != mem_top - 7) {
@@ -1929,7 +1929,7 @@ void zline_break(boolean d)
                     }
                     r = mem[r].hh.v.RH;
                 } while (!(r == mem_top - 7));
-                best_line = mem[best_bet + 1].hh.v.LH /*:924 */ ;
+                best_line = mem[best_bet + 1].hh.v.LH /*:922 */ ;
                 if (eqtb[8939259L /*int_base 19 */ ].cint == 0)
                     goto lab30;
                 {
@@ -1979,22 +1979,22 @@ void zline_break(boolean d)
 
 #ifdef STAT
             if (eqtb[8939272L /*int_base 32 */ ].cint > 0)
-                print_nl(66357L /*"@secondpass" */ );
+                print_nl(66361L /*"@secondpass" */ );
 
 #endif                          // STAT
             threshold = eqtb[8939241L /*int_base 1 */ ].cint;
             second_pass = true;
-            final_pass = (eqtb[10053712L /*dimen_base 20 */ ].cint <= 0);
+            final_pass = (eqtb[10053713L /*dimen_base 20 */ ].cint <= 0);
         } else {
 
             ;
 
 #ifdef STAT
             if (eqtb[8939272L /*int_base 32 */ ].cint > 0)
-                print_nl(66358L /*"@emergencypass" */ );
+                print_nl(66362L /*"@emergencypass" */ );
 
 #endif                          // STAT
-            background[2] = background[2] + eqtb[10053712L /*dimen_base 20 */ ].cint;
+            background[2] = background[2] + eqtb[10053713L /*dimen_base 20 */ ].cint;
             final_pass = true;
         }
     }
@@ -2008,7 +2008,7 @@ void zline_break(boolean d)
     }
 
 #endif                          // STAT
-    if (do_last_line_fit) {     //1666:
+    if (do_last_line_fit) {     //1664:
 
         if (mem[best_bet + 3].cint == 0)
             do_last_line_fit = false;
@@ -2072,7 +2072,7 @@ void new_hyph_exceptions(void)
         hyph_index = 0;
     else
         hyph_index = trie_trl[hyph_start + cur_lang];
- lab46:                        /*not_found1 *//*991: */ n = 0;
+ lab46:                        /*not_found1 *//*989: */ n = 0;
     p = -268435455L;
     while (true) {
 
@@ -2081,7 +2081,7 @@ void new_hyph_exceptions(void)
         case 11:
         case 12:
         case 68:
-            if (cur_chr == 45 /*"-" */ )        //994:
+            if (cur_chr == 45 /*"-" */ )        //992:
             {
                 if (n < max_hyphenatable_length()) {
                     q = get_avail();
@@ -2104,12 +2104,12 @@ void new_hyph_exceptions(void)
                             print_file_line();
                         else
                             print_nl(65544L /*"! " */ );
-                        print(66370L /*"Not a letter" */ );
+                        print(66374L /*"Not a letter" */ );
                     }
                     {
                         help_ptr = 2;
-                        help_line[1] = 66371L /*"Letters in \hyphenation words must have \lccode>0." */ ;
-                        help_line[0] = 66372L /*"Proceed; I'll ignore the character I just read." */ ;
+                        help_line[1] = 66375L /*"Letters in \hyphenation words must have \lccode>0." */ ;
+                        help_line[0] = 66376L /*"Proceed; I'll ignore the character I just read." */ ;
                     }
                     error();
                 } else if (n < max_hyphenatable_length()) {
@@ -2136,7 +2136,7 @@ void new_hyph_exceptions(void)
         case 10:
         case 2:
             {
-                if (n > 1)      //995:
+                if (n > 1)      //993:
                 {
                     incr(n);
                     hc[n] = cur_lang;
@@ -2164,7 +2164,7 @@ void new_hyph_exceptions(void)
                         while ((hyph_next > 0) && (hyph_word[hyph_next - 1] > 0))
                             decr(hyph_next);
                     if ((hyph_count == hyph_size) || (hyph_next == 0))
-                        overflow(66373L /*"exception dictionary" */ , hyph_size);
+                        overflow(66377L /*"exception dictionary" */ , hyph_size);
                     incr(hyph_count);
                     while (hyph_word[h] != 0) {
 
@@ -2186,7 +2186,7 @@ void new_hyph_exceptions(void)
                         s = hyph_word[h];
                         decr(hyph_count);
                         goto lab40;
- lab45:                        /*not_found *//*:997 */ ;
+ lab45:                        /*not_found *//*:995 */ ;
                         if (hyph_link[h] == 0) {
                             hyph_link[h] = hyph_next;
                             if (hyph_next >= hyph_size)
@@ -2197,7 +2197,7 @@ void new_hyph_exceptions(void)
                         h = hyph_link[h] - 1;
                     }
  lab40:                        /*found */ hyph_word[h] = s;
-                    hyph_list[h] = /*:996 */ p;
+                    hyph_list[h] = /*:994 */ p;
                 }
                 if (cur_cmd == 2 /*right_brace */ )
                     return;
@@ -2213,14 +2213,14 @@ void new_hyph_exceptions(void)
                         print_file_line();
                     else
                         print_nl(65544L /*"! " */ );
-                    print(66023L /*"Improper " */ );
+                    print(66024L /*"Improper " */ );
                 }
-                print_esc(66366L /*"hyphenation" */ );
-                print(66367L /*" will be flushed" */ );
+                print_esc(66370L /*"hyphenation" */ );
+                print(66371L /*" will be flushed" */ );
                 {
                     help_ptr = 2;
-                    help_line[1] = 66368L /*"Hyphenation exceptions must contain only letters" */ ;
-                    help_line[0] = 66369L /*"and hyphens. But continue; I'll forgive and forget." */ ;
+                    help_line[1] = 66372L /*"Hyphenation exceptions must contain only letters" */ ;
+                    help_line[0] = 66373L /*"and hyphens. But continue; I'll forgive and forget." */ ;
                 }
                 error();
             }
@@ -2279,7 +2279,7 @@ halfword zprune_page_top(halfword p, boolean s)
             }
             break;
         default:
-            confusion(66384L /*"pruning" */ );
+            confusion(66388L /*"pruning" */ );
             break;
         }
     Result = mem[mem_top - 3].hh.v.RH;
@@ -2320,7 +2320,7 @@ boolean zdo_marks(small_number a, small_number l, halfword q)
         }
     } else {
 
-        switch (a) {            /*1639: */
+        switch (a) {            /*1637: */
         case 0:
             if (mem[q + 2].hh.v.RH != -268435455L) {
                 delete_token_ref(mem[q + 2].hh.v.RH);
@@ -2405,8 +2405,8 @@ void prefixed_command(void)
             a = a + cur_chr;
         do {
             get_x_token();
-        } while (!((cur_cmd != 10 /*spacer */ ) && (cur_cmd != 0 /*relax */ ) /*:441 */ ));
-        if (cur_cmd <= 71 /*max_non_prefixed_command */ )       //1268:
+        } while (!((cur_cmd != 10 /*spacer */ ) && (cur_cmd != 0 /*relax */ ) /*:438 */ ));
+        if (cur_cmd <= 71 /*max_non_prefixed_command */ )       //1266:
         {
             {
                 if (interaction == 3 /*error_stop_mode */ ) ;
@@ -2414,16 +2414,16 @@ void prefixed_command(void)
                     print_file_line();
                 else
                     print_nl(65544L /*"! " */ );
-                print(66607L /*"You can't use a prefix with `" */ );
+                print(66611L /*"You can't use a prefix with `" */ );
             }
             print_cmd_chr(cur_cmd, cur_chr);
             print_char(39 /*"'" */ );
             {
                 help_ptr = 1;
-                help_line[0] = 66608L /*"I'll pretend you didn't say \long or \outer or \global." */ ;
+                help_line[0] = 66612L /*"I'll pretend you didn't say \long or \outer or \global." */ ;
             }
             if ((eTeX_mode == 1))
-                help_line[0] = 66609L /*"I'll pretend you didn't say \long or \outer or \global or \protected." */ ;
+                help_line[0] = 66613L /*"I'll pretend you didn't say \long or \outer or \global or \protected." */ ;
             back_error();
             return;
         }
@@ -2445,21 +2445,21 @@ void prefixed_command(void)
                 print_file_line();
             else
                 print_nl(65544L /*"! " */ );
-            print(66028L /*"You can't use `" */ );
+            print(66029L /*"You can't use `" */ );
         }
-        print_esc(66599L /*"long" */ );
-        print(66610L /*"' or `" */ );
-        print_esc(66600L /*"outer" */ );
+        print_esc(66603L /*"long" */ );
+        print(66614L /*"' or `" */ );
+        print_esc(66604L /*"outer" */ );
         {
             help_ptr = 1;
-            help_line[0] = 66611L /*"I'll pretend you didn't say \long or \outer here." */ ;
+            help_line[0] = 66615L /*"I'll pretend you didn't say \long or \outer here." */ ;
         }
         if ((eTeX_mode == 1)) {
-            help_line[0] = 66612L /*"I'll pretend you didn't say \long or \outer or \protected here." */ ;
-            print(66610L /*"' or `" */ );
-            print_esc(66613L /*"protected" */ );
+            help_line[0] = 66616L /*"I'll pretend you didn't say \long or \outer or \protected here." */ ;
+            print(66614L /*"' or `" */ );
+            print_esc(66617L /*"protected" */ );
         }
-        print(66614L /*"' with `" */ );
+        print(66618L /*"' with `" */ );
         print_cmd_chr(cur_cmd, cur_chr);
         print_char(39 /*"'" */ );
         error();
@@ -2475,7 +2475,7 @@ void prefixed_command(void)
                 a = a + 4;
         }
     }
-    switch (cur_cmd) {          /*1273: */
+    switch (cur_cmd) {          /*1271: */
     case 89:
         if ((a >= 4))
             geq_define(2253799L /*cur_font_loc */ , 122 /*data */ , cur_chr);
@@ -2548,9 +2548,9 @@ void prefixed_command(void)
             scan_char_num();
             if ((eqtb[8939297L /*int_base 57 */ ].cint > 0)) {
                 begin_diagnostic();
-                print_nl(66636L /*"New character substitution: " */ );
+                print_nl(66640L /*"New character substitution: " */ );
                 print(p - 7825128L);
-                print(66637L /*" = " */ );
+                print(66641L /*" = " */ );
                 print(n);
                 print_char(32 /*" " */ );
                 print(cur_val);
@@ -2648,15 +2648,15 @@ void prefixed_command(void)
                         switch (n) {
                         case 2:
                             if ((a >= 4))
-                                geq_define(p, 74 /*assign_int */ , 8939324L /*count_base */  + cur_val);
+                                geq_define(p, 74 /*assign_int */ , 8939325L /*count_base */  + cur_val);
                             else
-                                eq_define(p, 74 /*assign_int */ , 8939324L /*count_base */  + cur_val);
+                                eq_define(p, 74 /*assign_int */ , 8939325L /*count_base */  + cur_val);
                             break;
                         case 3:
                             if ((a >= 4))
-                                geq_define(p, 75 /*assign_dimen */ , 10053715L /*scaled_base */  + cur_val);
+                                geq_define(p, 75 /*assign_dimen */ , 10053716L /*scaled_base */  + cur_val);
                             else
-                                eq_define(p, 75 /*assign_dimen */ , 10053715L /*scaled_base */  + cur_val);
+                                eq_define(p, 75 /*assign_dimen */ , 10053716L /*scaled_base */  + cur_val);
                             break;
                         case 4:
                             if ((a >= 4))
@@ -2687,19 +2687,19 @@ void prefixed_command(void)
             j = cur_chr;
             scan_int();
             n = cur_val;
-            if (!scan_keyword(66240L /*"to" */ )) {
+            if (!scan_keyword(66244L /*"to" */ )) {
                 {
                     if (interaction == 3 /*error_stop_mode */ ) ;
                     if (file_line_error_style_p)
                         print_file_line();
                     else
                         print_nl(65544L /*"! " */ );
-                    print(66497L /*"Missing `to' inserted" */ );
+                    print(66501L /*"Missing `to' inserted" */ );
                 }
                 {
                     help_ptr = 2;
-                    help_line[1] = 66638L /*"You should have said `\read<number> to \cs'." */ ;
-                    help_line[0] = 66639L /*"I'm going to look for the \cs now." */ ;
+                    help_line[1] = 66642L /*"You should have said `\read<number> to \cs'." */ ;
+                    help_line[0] = 66643L /*"I'm going to look for the \cs now." */ ;
                 }
                 error();
             }
@@ -2741,8 +2741,8 @@ void prefixed_command(void)
             scan_optional_equals();
             do {
                 get_x_token();
-            } while (!((cur_cmd != 10 /*spacer */ ) && (cur_cmd != 0 /*relax */ ) /*:441 */ ));
-            if (cur_cmd != 1 /*left_brace */ ) {        //1283:
+            } while (!((cur_cmd != 10 /*spacer */ ) && (cur_cmd != 0 /*relax */ ) /*:438 */ ));
+            if (cur_cmd != 1 /*left_brace */ ) {        //1281:
 
                 if ((cur_cmd == 72 /*toks_register */ ) || (cur_cmd == 73 /*assign_toks */ )) {
                     if (cur_cmd == 72 /*toks_register */ ) {
@@ -2926,7 +2926,7 @@ void prefixed_command(void)
                     geq_define(p, 122 /*data */ , n);
                 else
                     eq_define(p, 122 /*data */ , n);
-            } else if (cur_chr == 8939580L /*del_code_base */ ) {
+            } else if (cur_chr == 8939581L /*del_code_base */ ) {
                 p = cur_chr;
                 scan_usv_num();
                 p = p + cur_val;
@@ -2962,33 +2962,33 @@ void prefixed_command(void)
                 n = 32768L;
             else if (cur_chr == 5596904L /*sf_code_base */ )
                 n = 32767;
-            else if (cur_chr == 8939580L /*del_code_base */ )
+            else if (cur_chr == 8939581L /*del_code_base */ )
                 n = 16777215L;
             else
-                n = 1114111L /*biggest_usv *//*:1289 */ ;
+                n = 1114111L /*biggest_usv *//*:1287 */ ;
             p = cur_chr;
             scan_usv_num();
             p = p + cur_val;
             scan_optional_equals();
             scan_int();
-            if (((cur_val < 0) && (p < 8939580L /*del_code_base */ )) || (cur_val > n)) {
+            if (((cur_val < 0) && (p < 8939581L /*del_code_base */ )) || (cur_val > n)) {
                 {
                     if (interaction == 3 /*error_stop_mode */ ) ;
                     if (file_line_error_style_p)
                         print_file_line();
                     else
                         print_nl(65544L /*"! " */ );
-                    print(66121L /*"Invalid code (" */ );
+                    print(66122L /*"Invalid code (" */ );
                 }
                 print_int(cur_val);
-                if (p < 8939580L /*del_code_base */ )
-                    print(66649L /*"), should be in the range 0.." */ );
+                if (p < 8939581L /*del_code_base */ )
+                    print(66653L /*"), should be in the range 0.." */ );
                 else
-                    print(66650L /*"), should be at most " */ );
+                    print(66654L /*"), should be at most " */ );
                 print_int(n);
                 {
                     help_ptr = 1;
-                    help_line[0] = 66651L /*"I'm going to use 0 instead of that illegal code value." */ ;
+                    help_line[0] = 66655L /*"I'm going to use 0 instead of that illegal code value." */ ;
                 }
                 error();
                 cur_val = 0;
@@ -3004,7 +3004,7 @@ void prefixed_command(void)
                     geq_define(p, 122 /*data */ , cur_val);
                 else
                     eq_define(p, 122 /*data */ , cur_val);
-            } else if (p < 8939580L /*del_code_base */ ) {
+            } else if (p < 8939581L /*del_code_base */ ) {
                 if (cur_val == 32768L)
                     cur_val = 2097151L /*active_math_char */ ;
                 else
@@ -3057,13 +3057,13 @@ void prefixed_command(void)
                         print_file_line();
                     else
                         print_nl(65544L /*"! " */ );
-                    print(66023L /*"Improper " */ );
+                    print(66024L /*"Improper " */ );
                 }
-                print_esc(65856L /*"setbox" */ );
+                print_esc(65857L /*"setbox" */ );
                 {
                     help_ptr = 2;
-                    help_line[1] = 66657L /*"Sorry, \setbox is not allowed after \halign in a display," */ ;
-                    help_line[0] = 66658L /*"or between \accent and an accented character." */ ;
+                    help_line[1] = 66661L /*"Sorry, \setbox is not allowed after \halign in a display," */ ;
+                    help_line[0] = 66662L /*"or between \accent and an accented character." */ ;
                 }
                 error();
             }
@@ -3152,7 +3152,7 @@ void prefixed_command(void)
                     print_file_line();
                 else
                     print_nl(65544L /*"! " */ );
-                print(66662L /*"Patterns can be loaded only by INITEX" */ );
+                print(66666L /*"Patterns can be loaded only by INITEX" */ );
             }
             help_ptr = 0;
             error();
@@ -3214,10 +3214,10 @@ void prefixed_command(void)
         new_interaction();
         break;
     default:
-        confusion(66606L /*"prefix" */ );
+        confusion(66610L /*"prefix" */ );
         break;
     }
- lab30:                        /*done *//*1325: */ if (after_token != 0) {
+ lab30:                        /*done *//*1323: */ if (after_token != 0) {
         cur_tok = after_token;
         back_input();
         after_token = 0;
@@ -3230,7 +3230,7 @@ void do_assignments(void)
 
         do {
             get_x_token();
-        } while (!((cur_cmd != 10 /*spacer */ ) && (cur_cmd != 0 /*relax */ ) /*:441 */ ));
+        } while (!((cur_cmd != 10 /*spacer */ ) && (cur_cmd != 0 /*relax */ ) /*:438 */ ));
         if (cur_cmd <= 71 /*max_non_prefixed_command */ )
             return;
         set_box_allowed = false;
@@ -3257,8 +3257,8 @@ void open_or_close_in(void)
         pack_file_name(cur_name, cur_area, cur_ext);
         tex_input_type = 0;
         if (kpse_in_name_ok(stringcast(name_of_file + 1))
-            && u_open_in(read_file[n], kpse_tex_format, eqtb[8939317L /*eTeX_state_base 6 */ ].cint,
-                         eqtb[8939318L /*eTeX_state_base 7 */ ].cint)) {
+            && u_open_in(read_file[n], kpse_tex_format, eqtb[8939318L /*eTeX_state_base 6 */ ].cint,
+                         eqtb[8939319L /*eTeX_state_base 7 */ ].cint)) {
             make_utf16_name();
             name_in_progress = true;
             begin_name();
@@ -3274,7 +3274,7 @@ void open_or_close_in(void)
     }
 }
 
-         /*:1349*///1358:
+         /*:1347*///1356:
 #ifdef INITEX
 void store_fmt_file(void)
 {
@@ -3289,11 +3289,11 @@ void store_fmt_file(void)
                 print_file_line();
             else
                 print_nl(65544L /*"! " */ );
-            print(66704L /*"You can't dump inside a group" */ );
+            print(66708L /*"You can't dump inside a group" */ );
         }
         {
             help_ptr = 1;
-            help_line[0] = 66705L /*"`_...\dump_' is a no-no." */ ;
+            help_line[0] = 66709L /*"`_...\dump_' is a no-no." */ ;
         }
         {
             if (interaction == 3 /*error_stop_mode */ )
@@ -3312,7 +3312,7 @@ void store_fmt_file(void)
         }
     }
     selector = 21 /*new_string */ ;
-    print(66725L /*" (preloaded format=" */ );
+    print(66729L /*" (preloaded format=" */ );
     print(job_name);
     print_char(32 /*" " */ );
     print_int(eqtb[8939263L /*int_base 23 */ ].cint);
@@ -3330,10 +3330,10 @@ void store_fmt_file(void)
             overflow(65539L /*"pool size" */ , pool_size - init_pool_ptr);
     }
     format_ident = make_string();
-    pack_job_name(66168L /*format_extension */ );
+    pack_job_name(66170L /*format_extension */ );
     while (!w_open_out(fmt_file))
-        prompt_file_name(66726L /*"format file name" */ , 66168L /*format_extension */ );
-    print_nl(66727L /*"Beginning to dump on file " */ );
+        prompt_file_name(66730L /*"format file name" */ , 66170L /*format_extension */ );
+    print_nl(66731L /*"Beginning to dump on file " */ );
     print(w_make_name_string(fmt_file));
     {
         decr(str_ptr);
@@ -3358,7 +3358,7 @@ void store_fmt_file(void)
     dump_int(x);
     dump_things(format_engine[0], x);
     libc_free(format_engine);
-    dump_int(97368348L);
+    dump_int(71942406L);
     dump_int(1073741823L);
     dump_int(hash_high);
     dump_int(eTeX_mode);
@@ -3366,7 +3366,7 @@ void store_fmt_file(void)
         pseudo_close();
     dump_int(mem_bot);
     dump_int(mem_top);
-    dump_int(10053970L /*eqtb_size */ );
+    dump_int(10053971L /*eqtb_size */ );
     dump_int(8501 /*hash_prime */ );
     dump_int(607 /*hyph_prime */ );
     dump_int(1296847960L);
@@ -3380,7 +3380,7 @@ void store_fmt_file(void)
     dump_things(str_pool[0], pool_ptr);
     print_ln();
     print_int(str_ptr);
-    print(66706L /*" strings of total length " */ );
+    print(66710L /*" strings of total length " */ );
     print_int(pool_ptr);
     sort_avail();
     var_used = 0;
@@ -3423,7 +3423,7 @@ void store_fmt_file(void)
     dump_int(dyn_used);
     print_ln();
     print_int(x);
-    print(66707L /*" memory locations dumped; current usage is " */ );
+    print(66711L /*" memory locations dumped; current usage is " */ );
     print_int(var_used);
     print_char(38 /*"&" */ );
     print_int(dyn_used);
@@ -3452,20 +3452,20 @@ void store_fmt_file(void)
         dump_things(eqtb[k], l - k);
         k = j + 1;
         dump_int(k - l);
-    } while (!(k == 8939240L /*int_base *//*:1371 */ ));
+    } while (!(k == 8939240L /*int_base *//*:1369 */ ));
     do {
         j = k;
-        while (j < 10053970L /*eqtb_size */ ) {
+        while (j < 10053971L /*eqtb_size */ ) {
 
             if (eqtb[j].cint == eqtb[j + 1].cint)
                 goto lab42;
             incr(j);
         }
-        l = 10053971L /*eqtb_size 1 */ ;
+        l = 10053972L /*eqtb_size 1 */ ;
         goto lab32;
  lab42:                        /*found2 */ incr(j);
         l = j;
-        while (j < 10053970L /*eqtb_size */ ) {
+        while (j < 10053971L /*eqtb_size */ ) {
 
             if (eqtb[j].cint != eqtb[j + 1].cint)
                 goto lab32;
@@ -3475,9 +3475,9 @@ void store_fmt_file(void)
         dump_things(eqtb[k], l - k);
         k = j + 1;
         dump_int(k - l);
-    } while (!(k > 10053970L /*eqtb_size */ ));
+    } while (!(k > 10053971L /*eqtb_size */ ));
     if (hash_high > 0)
-        dump_things(eqtb[10053971L /*eqtb_size 1 */ ], hash_high);
+        dump_things(eqtb[10053972L /*eqtb_size 1 */ ], hash_high);
     dump_int(par_loc);
     dump_int(write_loc);
     {
@@ -3506,11 +3506,11 @@ void store_fmt_file(void)
     }
     dump_things(hash[hash_used + 1], 2252738L /*undefined_control_sequence -1 */  - hash_used);
     if (hash_high > 0)
-        dump_things(hash[10053971L /*eqtb_size 1 */ ], hash_high);
+        dump_things(hash[10053972L /*eqtb_size 1 */ ], hash_high);
     dump_int(cs_count);
     print_ln();
     print_int(cs_count);
-    print(66708L /*" multiletter control sequences" */ );
+    print(66712L /*" multiletter control sequences" */ );
     dump_int(fmem_ptr);
     dump_things(font_info[0], fmem_ptr);
     dump_int(font_ptr);
@@ -3544,7 +3544,7 @@ void store_fmt_file(void)
             for_end = font_ptr;
             if (k <= for_end)
                 do {
-                    print_nl(66712L /*"\font" */ );
+                    print_nl(66716L /*"\font" */ );
                     print_esc(hash[2243738L /*font_id_base */  + k].v.RH);
                     print_char(61 /*"=" */ );
                     if (((font_area[k] == 65535L /*aat_font_flag */ ) || (font_area[k] == 65534L /*otgr_font_flag */ ))
@@ -3556,19 +3556,19 @@ void store_fmt_file(void)
                                 print_file_line();
                             else
                                 print_nl(65544L /*"! " */ );
-                            print(66713L /*"Can't \dump a format with native fonts or font-mappings" */ );
+                            print(66717L /*"Can't \dump a format with native fonts or font-mappings" */ );
                         }
                         {
                             help_ptr = 3;
-                            help_line[2] = 66714L /*"You really, really don't want to do this." */ ;
-                            help_line[1] = 66715L /*"It won't work, and only confuses me." */ ;
-                            help_line[0] = 66716L /*"(Load them at runtime, not as part of the format file.)" */ ;
+                            help_line[2] = 66718L /*"You really, really don't want to do this." */ ;
+                            help_line[1] = 66719L /*"It won't work, and only confuses me." */ ;
+                            help_line[0] = 66720L /*"(Load them at runtime, not as part of the format file.)" */ ;
                         }
                         error();
                     } else
                         print_file_name(font_name[k], font_area[k], 65626L /*"" */ );
                     if (font_size[k] != font_dsize[k]) {
-                        print(66124L /*" at " */ );
+                        print(66125L /*" at " */ );
                         print_scaled(font_size[k]);
                         print(65697L /*"pt" */ );
                     }
@@ -3578,12 +3578,12 @@ void store_fmt_file(void)
     }
     print_ln();
     print_int(fmem_ptr - 7);
-    print(66709L /*" words of font info for " */ );
+    print(66713L /*" words of font info for " */ );
     print_int(font_ptr - 0);
     if (font_ptr != 1 /*font_base 1 */ )
-        print(66710L /*" preloaded fonts" */ );
+        print(66714L /*" preloaded fonts" */ );
     else
-        print(66711L /*" preloaded font" */ );
+        print(66715L /*" preloaded font" */ );
     dump_int(hyph_count);
     if (hyph_next <= 607 /*hyph_prime */ )
         hyph_next = hyph_size;
@@ -3604,9 +3604,9 @@ void store_fmt_file(void)
     print_ln();
     print_int(hyph_count);
     if (hyph_count != 1)
-        print(66717L /*" hyphenation exceptions" */ );
+        print(66721L /*" hyphenation exceptions" */ );
     else
-        print(66718L /*" hyphenation exception" */ );
+        print(66722L /*" hyphenation exception" */ );
     if (trie_not_ready)
         init_trie();
     dump_int(trie_max);
@@ -3619,15 +3619,15 @@ void store_fmt_file(void)
     dump_things(hyf_distance[1], trie_op_ptr);
     dump_things(hyf_num[1], trie_op_ptr);
     dump_things(hyf_next[1], trie_op_ptr);
-    print_nl(66719L /*"Hyphenation trie of length " */ );
+    print_nl(66723L /*"Hyphenation trie of length " */ );
     print_int(trie_max);
-    print(66720L /*" has " */ );
+    print(66724L /*" has " */ );
     print_int(trie_op_ptr);
     if (trie_op_ptr != 1)
-        print(66721L /*" ops" */ );
+        print(66725L /*" ops" */ );
     else
-        print(66722L /*" op" */ );
-    print(66723L /*" out of " */ );
+        print(66726L /*" op" */ );
+    print(66727L /*" out of " */ );
     print_int(trie_op_size);
     {
         register integer for_end;
@@ -3636,9 +3636,9 @@ void store_fmt_file(void)
         if (k >= for_end)
             do
                 if (trie_used[k] > 0 /*min_quarterword */ ) {
-                    print_nl(66185L /*"  " */ );
+                    print_nl(66187L /*"  " */ );
                     print_int(trie_used[k]);
-                    print(66724L /*" for language " */ );
+                    print(66728L /*" for language " */ );
                     print_int(k);
                     dump_int(k);
                     dump_int(trie_used[k]);
@@ -3648,7 +3648,7 @@ void store_fmt_file(void)
     dump_int(interaction);
     dump_int(format_ident);
     dump_int(69069L);
-    eqtb[8939271L /*int_base 31 */ ].cint = 0 /*:1382 */ ;
+    eqtb[8939271L /*int_base 31 */ ].cint = 0 /*:1380 */ ;
     w_close(fmt_file);
 }
 
@@ -3712,7 +3712,7 @@ boolean load_fmt_file(void)
         fprintf(stderr, "%s%s", "fmtdebug:", "string pool checksum");
         fprintf(stderr, "%s%ld\n", " = ", (long)x);
     }
-    if (x != 97368348L) {
+    if (x != 71942406L) {
         ;
         fprintf(stdout, "%s%s%s\n", "---! ", stringcast(name_of_file + 1), " made by different executable version");
         goto lab6666;
@@ -3725,7 +3725,7 @@ boolean load_fmt_file(void)
         goto lab6666;
     if (hash_extra < hash_high)
         hash_extra = hash_high;
-    eqtb_top = 10053970L /*eqtb_size */  + hash_extra;
+    eqtb_top = 10053971L /*eqtb_size */  + hash_extra;
     if (hash_extra == 0)
         hash_top = 2252739L /*undefined_control_sequence */ ;
     else
@@ -3750,7 +3750,7 @@ boolean load_fmt_file(void)
     eqtb[2252739L /*undefined_control_sequence */ ].hh.b1 = 0 /*level_zero */ ;
     {
         register integer for_end;
-        x = 10053971L /*eqtb_size 1 */ ;
+        x = 10053972L /*eqtb_size 1 */ ;
         for_end = eqtb_top;
         if (x <= for_end)
             do
@@ -3766,11 +3766,11 @@ boolean load_fmt_file(void)
     }
     if ((eTeX_mode == 1)) {
         max_reg_num = 32767;
-        max_reg_help_line = 66954L /*"A register number must be between 0 and 32767." */ ;
+        max_reg_help_line = 66958L /*"A register number must be between 0 and 32767." */ ;
     } else {
 
         max_reg_num = 255;
-        max_reg_help_line = 66953L /*"A register number must be between 0 and 255." */ ;
+        max_reg_help_line = 66957L /*"A register number must be between 0 and 255." */ ;
     }
     undump_int(x);
     if (debug_format_file) {
@@ -3795,7 +3795,7 @@ boolean load_fmt_file(void)
     zmem = yzmem - mem_min;
     mem = zmem;
     undump_int(x);
-    if (x != 10053970L /*eqtb_size */ )
+    if (x != 10053971L /*eqtb_size */ )
         goto lab6666;
     undump_int(x);
     if (x != 8501 /*hash_prime */ )
@@ -3848,7 +3848,7 @@ boolean load_fmt_file(void)
     str_pool = xmalloc_array(packed_UTF16_code, pool_size);
     undump_things(str_pool[0], pool_ptr);
     init_str_ptr = str_ptr;
-    init_pool_ptr = /*:1366 */ pool_ptr;
+    init_pool_ptr = /*:1364 */ pool_ptr;
     {
         undump_int(x);
         if ((x < mem_bot + 1019) || (x > mem_top - 15))
@@ -3920,12 +3920,12 @@ boolean load_fmt_file(void)
     k = 1 /*active_base */ ;
     do {
         undump_int(x);
-        if ((x < 1) || (k + x > 10053971L /*eqtb_size 1 */ ))
+        if ((x < 1) || (k + x > 10053972L /*eqtb_size 1 */ ))
             goto lab6666;
         undump_things(eqtb[k], x);
         k = k + x;
         undump_int(x);
-        if ((x < 0) || (k + x > 10053971L /*eqtb_size 1 */ ))
+        if ((x < 0) || (k + x > 10053972L /*eqtb_size 1 */ ))
             goto lab6666;
         {
             register integer for_end;
@@ -3937,9 +3937,9 @@ boolean load_fmt_file(void)
                 while (j++ < for_end);
         }
         k = k + x;
-    } while (!(k > 10053970L /*eqtb_size */ ));
+    } while (!(k > 10053971L /*eqtb_size */ ));
     if (hash_high > 0)
-        undump_things(eqtb[10053971L /*eqtb_size 1 */ ], hash_high);
+        undump_things(eqtb[10053972L /*eqtb_size 1 */ ], hash_high);
     {
         undump_int(x);
         if ((x < 2228226L /*hash_base */ ) || (x > hash_top))
@@ -3987,9 +3987,9 @@ boolean load_fmt_file(void)
         print_csnames(2228226L /*hash_base */ , 2252738L /*undefined_control_sequence -1 */ );
     }
     if (hash_high > 0) {
-        undump_things(hash[10053971L /*eqtb_size 1 */ ], hash_high);
+        undump_things(hash[10053972L /*eqtb_size 1 */ ], hash_high);
         if (debug_format_file) {
-            print_csnames(10053971L /*eqtb_size 1 */ , hash_high - (10053971L /*eqtb_size 1 */ ));
+            print_csnames(10053972L /*eqtb_size 1 */ , hash_high - (10053972L /*eqtb_size 1 */ ));
         }
     }
     undump_int(cs_count);
@@ -4296,6 +4296,8 @@ void final_cleanup(void)
 {
     final_cleanup_regmem small_number c;
     c = cur_chr;
+    if (c != 1)
+        eqtb[8939289L /*int_base 49 */ ].cint = -1;
     if (job_name == 0)
         open_log_file();
     while (input_ptr > 0)
@@ -4305,13 +4307,13 @@ void final_cleanup(void)
             end_file_reading();
     while (open_parens > 0) {
 
-        print(66729L /*" )" */ );
+        print(66733L /*" )" */ );
         decr(open_parens);
     }
     if (cur_level > 1 /*level_one */ ) {
         print_nl(40 /*"(" */ );
-        print_esc(66730L /*"end occurred " */ );
-        print(66731L /*"inside a group at level " */ );
+        print_esc(66734L /*"end occurred " */ );
+        print(66735L /*"inside a group at level " */ );
         print_int(cur_level - 1);
         print_char(41 /*")" */ );
         if ((eTeX_mode == 1))
@@ -4320,14 +4322,14 @@ void final_cleanup(void)
     while (cond_ptr != -268435455L) {
 
         print_nl(40 /*"(" */ );
-        print_esc(66730L /*"end occurred " */ );
-        print(66732L /*"when " */ );
+        print_esc(66734L /*"end occurred " */ );
+        print(66736L /*"when " */ );
         print_cmd_chr(107 /*if_test */ , cur_if);
         if (if_line != 0) {
-            print(66733L /*" on line " */ );
+            print(66737L /*" on line " */ );
             print_int(if_line);
         }
-        print(66734L /*" was incomplete)" */ );
+        print(66738L /*" was incomplete)" */ );
         if_line = mem[cond_ptr + 1].cint;
         cur_if = mem[cond_ptr].hh.b1;
         temp_ptr = cond_ptr;
@@ -4340,7 +4342,7 @@ void final_cleanup(void)
 
             if (selector == 19 /*term_and_log */ ) {
                 selector = 17 /*term_only */ ;
-                print_nl(66735L /*"(see the transcript file for additional information)" */ );
+                print_nl(66739L /*"(see the transcript file for additional information)" */ );
                 selector = 19 /*term_and_log */ ;
             }
         }
@@ -4381,12 +4383,12 @@ void final_cleanup(void)
         }
 
 #endif                          // INITEX
-        print_nl(66736L /*"(\dump is performed only by INITEX)" */ );
+        print_nl(66740L /*"(\dump is performed only by INITEX)" */ );
         return;
     }
 }
 
-         /*:1391*///1392:
+         /*:1389*///1390:
 #ifdef INITEX
 void init_prim(void)
 {
@@ -4482,333 +4484,334 @@ void init_prim(void)
         primitive(65776L /*"charsubdefmax" */ , 74 /*assign_int */ , 8939296L /*int_base 56 */ );
         primitive(65777L /*"tracingcharsubdef" */ , 74 /*assign_int */ , 8939297L /*int_base 57 */ );
     }
-    primitive(65778L /*"XeTeXlinebreakpenalty" */ , 74 /*assign_int */ , 8939309L /*int_base 69 */ );
-    primitive(65779L /*"XeTeXprotrudechars" */ , 74 /*assign_int */ , 8939310L /*int_base 70 */ );
-    primitive(65783L /*"parindent" */ , 75 /*assign_dimen */ , 10053692L /*dimen_base 0 */ );
-    primitive(65784L /*"mathsurround" */ , 75 /*assign_dimen */ , 10053693L /*dimen_base 1 */ );
-    primitive(65785L /*"lineskiplimit" */ , 75 /*assign_dimen */ , 10053694L /*dimen_base 2 */ );
-    primitive(65786L /*"hsize" */ , 75 /*assign_dimen */ , 10053695L /*dimen_base 3 */ );
-    primitive(65787L /*"vsize" */ , 75 /*assign_dimen */ , 10053696L /*dimen_base 4 */ );
-    primitive(65788L /*"maxdepth" */ , 75 /*assign_dimen */ , 10053697L /*dimen_base 5 */ );
-    primitive(65789L /*"splitmaxdepth" */ , 75 /*assign_dimen */ , 10053698L /*dimen_base 6 */ );
-    primitive(65790L /*"boxmaxdepth" */ , 75 /*assign_dimen */ , 10053699L /*dimen_base 7 */ );
-    primitive(65791L /*"hfuzz" */ , 75 /*assign_dimen */ , 10053700L /*dimen_base 8 */ );
-    primitive(65792L /*"vfuzz" */ , 75 /*assign_dimen */ , 10053701L /*dimen_base 9 */ );
-    primitive(65793L /*"delimitershortfall" */ , 75 /*assign_dimen */ , 10053702L /*dimen_base 10 */ );
-    primitive(65794L /*"nulldelimiterspace" */ , 75 /*assign_dimen */ , 10053703L /*dimen_base 11 */ );
-    primitive(65795L /*"scriptspace" */ , 75 /*assign_dimen */ , 10053704L /*dimen_base 12 */ );
-    primitive(65796L /*"predisplaysize" */ , 75 /*assign_dimen */ , 10053705L /*dimen_base 13 */ );
-    primitive(65797L /*"displaywidth" */ , 75 /*assign_dimen */ , 10053706L /*dimen_base 14 */ );
-    primitive(65798L /*"displayindent" */ , 75 /*assign_dimen */ , 10053707L /*dimen_base 15 */ );
-    primitive(65799L /*"overfullrule" */ , 75 /*assign_dimen */ , 10053708L /*dimen_base 16 */ );
-    primitive(65800L /*"hangindent" */ , 75 /*assign_dimen */ , 10053709L /*dimen_base 17 */ );
-    primitive(65801L /*"hoffset" */ , 75 /*assign_dimen */ , 10053710L /*dimen_base 18 */ );
-    primitive(65802L /*"voffset" */ , 75 /*assign_dimen */ , 10053711L /*dimen_base 19 */ );
-    primitive(65803L /*"emergencystretch" */ , 75 /*assign_dimen */ , 10053712L /*dimen_base 20 */ );
-    primitive(65804L /*"pdfpagewidth" */ , 75 /*assign_dimen */ , 10053713L /*dimen_base 21 */ );
-    primitive(65805L /*"pdfpageheight" */ , 75 /*assign_dimen */ , 10053714L /*dimen_base 22 */ );
+    primitive(65778L /*"tracingstacklevels" */ , 74 /*assign_int */ , 8939298L /*int_base 58 */ );
+    primitive(65779L /*"XeTeXlinebreakpenalty" */ , 74 /*assign_int */ , 8939310L /*int_base 70 */ );
+    primitive(65780L /*"XeTeXprotrudechars" */ , 74 /*assign_int */ , 8939311L /*int_base 71 */ );
+    primitive(65784L /*"parindent" */ , 75 /*assign_dimen */ , 10053693L /*dimen_base 0 */ );
+    primitive(65785L /*"mathsurround" */ , 75 /*assign_dimen */ , 10053694L /*dimen_base 1 */ );
+    primitive(65786L /*"lineskiplimit" */ , 75 /*assign_dimen */ , 10053695L /*dimen_base 2 */ );
+    primitive(65787L /*"hsize" */ , 75 /*assign_dimen */ , 10053696L /*dimen_base 3 */ );
+    primitive(65788L /*"vsize" */ , 75 /*assign_dimen */ , 10053697L /*dimen_base 4 */ );
+    primitive(65789L /*"maxdepth" */ , 75 /*assign_dimen */ , 10053698L /*dimen_base 5 */ );
+    primitive(65790L /*"splitmaxdepth" */ , 75 /*assign_dimen */ , 10053699L /*dimen_base 6 */ );
+    primitive(65791L /*"boxmaxdepth" */ , 75 /*assign_dimen */ , 10053700L /*dimen_base 7 */ );
+    primitive(65792L /*"hfuzz" */ , 75 /*assign_dimen */ , 10053701L /*dimen_base 8 */ );
+    primitive(65793L /*"vfuzz" */ , 75 /*assign_dimen */ , 10053702L /*dimen_base 9 */ );
+    primitive(65794L /*"delimitershortfall" */ , 75 /*assign_dimen */ , 10053703L /*dimen_base 10 */ );
+    primitive(65795L /*"nulldelimiterspace" */ , 75 /*assign_dimen */ , 10053704L /*dimen_base 11 */ );
+    primitive(65796L /*"scriptspace" */ , 75 /*assign_dimen */ , 10053705L /*dimen_base 12 */ );
+    primitive(65797L /*"predisplaysize" */ , 75 /*assign_dimen */ , 10053706L /*dimen_base 13 */ );
+    primitive(65798L /*"displaywidth" */ , 75 /*assign_dimen */ , 10053707L /*dimen_base 14 */ );
+    primitive(65799L /*"displayindent" */ , 75 /*assign_dimen */ , 10053708L /*dimen_base 15 */ );
+    primitive(65800L /*"overfullrule" */ , 75 /*assign_dimen */ , 10053709L /*dimen_base 16 */ );
+    primitive(65801L /*"hangindent" */ , 75 /*assign_dimen */ , 10053710L /*dimen_base 17 */ );
+    primitive(65802L /*"hoffset" */ , 75 /*assign_dimen */ , 10053711L /*dimen_base 18 */ );
+    primitive(65803L /*"voffset" */ , 75 /*assign_dimen */ , 10053712L /*dimen_base 19 */ );
+    primitive(65804L /*"emergencystretch" */ , 75 /*assign_dimen */ , 10053713L /*dimen_base 20 */ );
+    primitive(65805L /*"pdfpagewidth" */ , 75 /*assign_dimen */ , 10053714L /*dimen_base 21 */ );
+    primitive(65806L /*"pdfpageheight" */ , 75 /*assign_dimen */ , 10053715L /*dimen_base 22 */ );
     primitive(32 /*" " */ , 64 /*ex_space */ , 0);
     primitive(47 /*"/" */ , 44 /*ital_corr */ , 0);
-    primitive(65817L /*"accent" */ , 45 /*accent */ , 0);
-    primitive(65818L /*"advance" */ , 92 /*advance */ , 0);
-    primitive(65819L /*"afterassignment" */ , 40 /*after_assignment */ , 0);
-    primitive(65820L /*"aftergroup" */ , 41 /*after_group */ , 0);
-    primitive(65821L /*"begingroup" */ , 61 /*begin_group */ , 0);
-    primitive(65822L /*"char" */ , 16 /*char_num */ , 0);
-    primitive(65813L /*"csname" */ , 109 /*cs_name */ , 0);
-    primitive(65823L /*"delimiter" */ , 15 /*delim_num */ , 0);
-    primitive(65824L /*"XeTeXdelimiter" */ , 15 /*delim_num */ , 1);
-    primitive(65825L /*"Udelimiter" */ , 15 /*delim_num */ , 1);
-    primitive(65826L /*"divide" */ , 94 /*divide */ , 0);
-    primitive(65814L /*"endcsname" */ , 67 /*end_cs_name */ , 0);
-    primitive(65827L /*"endgroup" */ , 62 /*end_group */ , 0);
-    hash[2243228L /*frozen_end_group */ ].v.RH = 65827L /*"endgroup" */ ;
+    primitive(65818L /*"accent" */ , 45 /*accent */ , 0);
+    primitive(65819L /*"advance" */ , 92 /*advance */ , 0);
+    primitive(65820L /*"afterassignment" */ , 40 /*after_assignment */ , 0);
+    primitive(65821L /*"aftergroup" */ , 41 /*after_group */ , 0);
+    primitive(65822L /*"begingroup" */ , 61 /*begin_group */ , 0);
+    primitive(65823L /*"char" */ , 16 /*char_num */ , 0);
+    primitive(65814L /*"csname" */ , 109 /*cs_name */ , 0);
+    primitive(65824L /*"delimiter" */ , 15 /*delim_num */ , 0);
+    primitive(65825L /*"XeTeXdelimiter" */ , 15 /*delim_num */ , 1);
+    primitive(65826L /*"Udelimiter" */ , 15 /*delim_num */ , 1);
+    primitive(65827L /*"divide" */ , 94 /*divide */ , 0);
+    primitive(65815L /*"endcsname" */ , 67 /*end_cs_name */ , 0);
+    primitive(65828L /*"endgroup" */ , 62 /*end_group */ , 0);
+    hash[2243228L /*frozen_end_group */ ].v.RH = 65828L /*"endgroup" */ ;
     eqtb[2243228L /*frozen_end_group */ ] = eqtb[cur_val];
-    primitive(65828L /*"expandafter" */ , 104 /*expand_after */ , 0);
-    primitive(65829L /*"font" */ , 90 /*def_font */ , 0);
-    primitive(65830L /*"fontdimen" */ , 78 /*assign_font_dimen */ , 0);
-    primitive(65831L /*"halign" */ , 32 /*halign */ , 0);
-    primitive(65832L /*"hrule" */ , 36 /*hrule */ , 0);
-    primitive(65833L /*"ignorespaces" */ , 39 /*ignore_spaces */ , 0);
+    primitive(65829L /*"expandafter" */ , 104 /*expand_after */ , 0);
+    primitive(65830L /*"font" */ , 90 /*def_font */ , 0);
+    primitive(65831L /*"fontdimen" */ , 78 /*assign_font_dimen */ , 0);
+    primitive(65832L /*"halign" */ , 32 /*halign */ , 0);
+    primitive(65833L /*"hrule" */ , 36 /*hrule */ , 0);
+    primitive(65834L /*"ignorespaces" */ , 39 /*ignore_spaces */ , 0);
     primitive(65618L /*"insert" */ , 37 /*insert */ , 0);
     primitive(65641L /*"mark" */ , 18 /*mark */ , 0);
-    primitive(65834L /*"mathaccent" */ , 46 /*math_accent */ , 0);
-    primitive(65835L /*"XeTeXmathaccent" */ , 46 /*math_accent */ , 1);
-    primitive(65836L /*"Umathaccent" */ , 46 /*math_accent */ , 1);
-    primitive(65837L /*"mathchar" */ , 17 /*math_char_num */ , 0);
-    primitive(65838L /*"XeTeXmathcharnum" */ , 17 /*math_char_num */ , 1);
-    primitive(65839L /*"Umathcharnum" */ , 17 /*math_char_num */ , 1);
-    primitive(65840L /*"XeTeXmathchar" */ , 17 /*math_char_num */ , 2);
-    primitive(65841L /*"Umathchar" */ , 17 /*math_char_num */ , 2);
-    primitive(65842L /*"mathchoice" */ , 54 /*math_choice */ , 0);
-    primitive(65843L /*"multiply" */ , 93 /*multiply */ , 0);
-    primitive(65844L /*"noalign" */ , 34 /*no_align */ , 0);
-    primitive(65845L /*"noboundary" */ , 65 /*no_boundary */ , 0);
-    primitive(65846L /*"noexpand" */ , 105 /*no_expand */ , 0);
-    primitive(65810L /*"primitive" */ , 105 /*no_expand */ , 1);
+    primitive(65835L /*"mathaccent" */ , 46 /*math_accent */ , 0);
+    primitive(65836L /*"XeTeXmathaccent" */ , 46 /*math_accent */ , 1);
+    primitive(65837L /*"Umathaccent" */ , 46 /*math_accent */ , 1);
+    primitive(65838L /*"mathchar" */ , 17 /*math_char_num */ , 0);
+    primitive(65839L /*"XeTeXmathcharnum" */ , 17 /*math_char_num */ , 1);
+    primitive(65840L /*"Umathcharnum" */ , 17 /*math_char_num */ , 1);
+    primitive(65841L /*"XeTeXmathchar" */ , 17 /*math_char_num */ , 2);
+    primitive(65842L /*"Umathchar" */ , 17 /*math_char_num */ , 2);
+    primitive(65843L /*"mathchoice" */ , 54 /*math_choice */ , 0);
+    primitive(65844L /*"multiply" */ , 93 /*multiply */ , 0);
+    primitive(65845L /*"noalign" */ , 34 /*no_align */ , 0);
+    primitive(65846L /*"noboundary" */ , 65 /*no_boundary */ , 0);
+    primitive(65847L /*"noexpand" */ , 105 /*no_expand */ , 0);
+    primitive(65811L /*"primitive" */ , 105 /*no_expand */ , 1);
     primitive(65623L /*"nonscript" */ , 55 /*non_script */ , 0);
-    primitive(65847L /*"omit" */ , 63 /*omit */ , 0);
-    primitive(65848L /*"parshape" */ , 85 /*set_shape */ , 2253271L /*par_shape_loc */ );
-    primitive(65849L /*"penalty" */ , 42 /*break_penalty */ , 0);
-    primitive(65850L /*"prevgraf" */ , 81 /*set_prev_graf */ , 0);
-    primitive(65851L /*"radical" */ , 66 /*radical */ , 0);
-    primitive(65852L /*"XeTeXradical" */ , 66 /*radical */ , 1);
-    primitive(65853L /*"Uradical" */ , 66 /*radical */ , 1);
-    primitive(65854L /*"read" */ , 98 /*read_to_cs */ , 0);
-    primitive(65855L /*"relax" */ , 0 /*relax */ , 1114112L /*too_big_usv */ );
-    hash[2243233L /*frozen_relax */ ].v.RH = 65855L /*"relax" */ ;
+    primitive(65848L /*"omit" */ , 63 /*omit */ , 0);
+    primitive(65849L /*"parshape" */ , 85 /*set_shape */ , 2253271L /*par_shape_loc */ );
+    primitive(65850L /*"penalty" */ , 42 /*break_penalty */ , 0);
+    primitive(65851L /*"prevgraf" */ , 81 /*set_prev_graf */ , 0);
+    primitive(65852L /*"radical" */ , 66 /*radical */ , 0);
+    primitive(65853L /*"XeTeXradical" */ , 66 /*radical */ , 1);
+    primitive(65854L /*"Uradical" */ , 66 /*radical */ , 1);
+    primitive(65855L /*"read" */ , 98 /*read_to_cs */ , 0);
+    primitive(65856L /*"relax" */ , 0 /*relax */ , 1114112L /*too_big_usv */ );
+    hash[2243233L /*frozen_relax */ ].v.RH = 65856L /*"relax" */ ;
     eqtb[2243233L /*frozen_relax */ ] = eqtb[cur_val];
-    primitive(65856L /*"setbox" */ , 100 /*set_box */ , 0);
-    primitive(65857L /*"the" */ , 111 /*the */ , 0);
+    primitive(65857L /*"setbox" */ , 100 /*set_box */ , 0);
+    primitive(65858L /*"the" */ , 111 /*the */ , 0);
     primitive(65707L /*"toks" */ , 72 /*toks_register */ , mem_bot);
     primitive(65642L /*"vadjust" */ , 38 /*vadjust */ , 0);
-    primitive(65858L /*"valign" */ , 33 /*valign */ , 0);
-    primitive(65859L /*"vcenter" */ , 56 /*vcenter */ , 0);
-    primitive(65860L /*"vrule" */ , 35 /*vrule */ , 0);
-    primitive(65921L /*"par" */ , 13 /*par_end */ , 1114112L /*too_big_usv */ );
+    primitive(65859L /*"valign" */ , 33 /*valign */ , 0);
+    primitive(65860L /*"vcenter" */ , 56 /*vcenter */ , 0);
+    primitive(65861L /*"vrule" */ , 35 /*vrule */ , 0);
+    primitive(65922L /*"par" */ , 13 /*par_end */ , 1114112L /*too_big_usv */ );
     par_loc = cur_val;
     par_token = 33554431L /*cs_token_flag */  + par_loc;
-    primitive(65956L /*"input" */ , 106 /*input */ , 0);
-    primitive(65957L /*"endinput" */ , 106 /*input */ , 1);
-    primitive(65958L /*"topmark" */ , 112 /*top_bot_mark */ , 0 /*top_mark_code */ );
-    primitive(65959L /*"firstmark" */ , 112 /*top_bot_mark */ , 1 /*first_mark_code */ );
-    primitive(65960L /*"botmark" */ , 112 /*top_bot_mark */ , 2 /*bot_mark_code */ );
-    primitive(65961L /*"splitfirstmark" */ , 112 /*top_bot_mark */ , 3 /*split_first_mark_code */ );
-    primitive(65962L /*"splitbotmark" */ , 112 /*top_bot_mark */ , 4 /*split_bot_mark_code */ );
-    primitive(65781L /*"count" */ , 91 /*register */ , mem_bot + 0);
-    primitive(65807L /*"dimen" */ , 91 /*register */ , mem_bot + 1);
+    primitive(65957L /*"input" */ , 106 /*input */ , 0);
+    primitive(65958L /*"endinput" */ , 106 /*input */ , 1);
+    primitive(65959L /*"topmark" */ , 112 /*top_bot_mark */ , 0 /*top_mark_code */ );
+    primitive(65960L /*"firstmark" */ , 112 /*top_bot_mark */ , 1 /*first_mark_code */ );
+    primitive(65961L /*"botmark" */ , 112 /*top_bot_mark */ , 2 /*bot_mark_code */ );
+    primitive(65962L /*"splitfirstmark" */ , 112 /*top_bot_mark */ , 3 /*split_first_mark_code */ );
+    primitive(65963L /*"splitbotmark" */ , 112 /*top_bot_mark */ , 4 /*split_bot_mark_code */ );
+    primitive(65782L /*"count" */ , 91 /*register */ , mem_bot + 0);
+    primitive(65808L /*"dimen" */ , 91 /*register */ , mem_bot + 1);
     primitive(65695L /*"skip" */ , 91 /*register */ , mem_bot + 2);
     primitive(65696L /*"muskip" */ , 91 /*register */ , mem_bot + 3);
-    primitive(66006L /*"spacefactor" */ , 80 /*set_aux */ , 104 /*hmode */ );
-    primitive(66007L /*"prevdepth" */ , 80 /*set_aux */ , 1 /*vmode */ );
-    primitive(66008L /*"deadcycles" */ , 83 /*set_page_int */ , 0);
-    primitive(66009L /*"insertpenalties" */ , 83 /*set_page_int */ , 1);
-    primitive(66010L /*"wd" */ , 84 /*set_box_dimen */ , 1 /*width_offset */ );
-    primitive(66011L /*"ht" */ , 84 /*set_box_dimen */ , 3 /*height_offset */ );
-    primitive(66012L /*"dp" */ , 84 /*set_box_dimen */ , 2 /*depth_offset */ );
-    primitive(66013L /*"lastpenalty" */ , 71 /*last_item */ , 0 /*int_val */ );
-    primitive(66014L /*"lastkern" */ , 71 /*last_item */ , 1 /*dimen_val */ );
-    primitive(66015L /*"lastskip" */ , 71 /*last_item */ , 2 /*glue_val */ );
-    primitive(66016L /*"inputlineno" */ , 71 /*last_item */ , 4 /*input_line_no_code */ );
-    primitive(66017L /*"badness" */ , 71 /*last_item */ , 5 /*badness_code */ );
-    primitive(66018L /*"pdflastxpos" */ , 71 /*last_item */ , 12 /*pdf_last_x_pos_code */ );
-    primitive(66019L /*"pdflastypos" */ , 71 /*last_item */ , 13 /*pdf_last_y_pos_code */ );
-    primitive(66020L /*"elapsedtime" */ , 71 /*last_item */ , 16 /*elapsed_time_code */ );
-    primitive(66021L /*"shellescape" */ , 71 /*last_item */ , 17 /*pdf_shell_escape_code */ );
-    primitive(66022L /*"randomseed" */ , 71 /*last_item */ , 18 /*random_seed_code */ );
-    primitive(66090L /*"number" */ , 110 /*convert */ , 0 /*number_code */ );
-    primitive(66091L /*"romannumeral" */ , 110 /*convert */ , 1 /*roman_numeral_code */ );
-    primitive(66092L /*"string" */ , 110 /*convert */ , 2 /*string_code */ );
-    primitive(66093L /*"meaning" */ , 110 /*convert */ , 3 /*meaning_code */ );
-    primitive(66094L /*"fontname" */ , 110 /*convert */ , 4 /*font_name_code */ );
-    primitive(66095L /*"expanded" */ , 110 /*convert */ , 6 /*expanded_code */ );
-    primitive(66096L /*"leftmarginkern" */ , 110 /*convert */ , 16 /*left_margin_kern_code */ );
-    primitive(66097L /*"rightmarginkern" */ , 110 /*convert */ , 17 /*right_margin_kern_code */ );
-    primitive(66098L /*"creationdate" */ , 110 /*convert */ , 22 /*pdf_creation_date_code */ );
-    primitive(66099L /*"filemoddate" */ , 110 /*convert */ , 23 /*pdf_file_mod_date_code */ );
-    primitive(66100L /*"filesize" */ , 110 /*convert */ , 24 /*pdf_file_size_code */ );
-    primitive(66101L /*"mdfivesum" */ , 110 /*convert */ , 25 /*pdf_mdfive_sum_code */ );
-    primitive(66102L /*"filedump" */ , 110 /*convert */ , 26 /*pdf_file_dump_code */ );
-    primitive(66103L /*"strcmp" */ , 110 /*convert */ , 18 /*pdf_strcmp_code */ );
-    primitive(66104L /*"uniformdeviate" */ , 110 /*convert */ , 29 /*uniform_deviate_code */ );
-    primitive(66105L /*"normaldeviate" */ , 110 /*convert */ , 30 /*normal_deviate_code */ );
-    primitive(66106L /*"jobname" */ , 110 /*convert */ , 40 /*job_name_code */ );
-    primitive(66107L /*"Uchar" */ , 110 /*convert */ , 38 /*XeTeX_Uchar_code */ );
-    primitive(66108L /*"Ucharcat" */ , 110 /*convert */ , 39 /*XeTeX_Ucharcat_code */ );
-    primitive(66139L /*"if" */ , 107 /*if_test */ , 0 /*if_char_code */ );
-    primitive(66140L /*"ifcat" */ , 107 /*if_test */ , 1 /*if_cat_code */ );
-    primitive(66141L /*"ifnum" */ , 107 /*if_test */ , 2 /*if_int_code */ );
-    primitive(66142L /*"ifdim" */ , 107 /*if_test */ , 3 /*if_dim_code */ );
-    primitive(66143L /*"ifodd" */ , 107 /*if_test */ , 4 /*if_odd_code */ );
-    primitive(66144L /*"ifvmode" */ , 107 /*if_test */ , 5 /*if_vmode_code */ );
-    primitive(66145L /*"ifhmode" */ , 107 /*if_test */ , 6 /*if_hmode_code */ );
-    primitive(66146L /*"ifmmode" */ , 107 /*if_test */ , 7 /*if_mmode_code */ );
-    primitive(66147L /*"ifinner" */ , 107 /*if_test */ , 8 /*if_inner_code */ );
-    primitive(66148L /*"ifvoid" */ , 107 /*if_test */ , 9 /*if_void_code */ );
-    primitive(66149L /*"ifhbox" */ , 107 /*if_test */ , 10 /*if_hbox_code */ );
-    primitive(66150L /*"ifvbox" */ , 107 /*if_test */ , 11 /*if_vbox_code */ );
-    primitive(66151L /*"ifx" */ , 107 /*if_test */ , 12 /*ifx_code */ );
-    primitive(66152L /*"ifeof" */ , 107 /*if_test */ , 13 /*if_eof_code */ );
-    primitive(66153L /*"iftrue" */ , 107 /*if_test */ , 14 /*if_true_code */ );
-    primitive(66154L /*"iffalse" */ , 107 /*if_test */ , 15 /*if_false_code */ );
-    primitive(66155L /*"ifcase" */ , 107 /*if_test */ , 16 /*if_case_code */ );
-    primitive(66156L /*"ifprimitive" */ , 107 /*if_test */ , 21 /*if_primitive_code */ );
-    primitive(66158L /*"fi" */ , 108 /*fi_or_else */ , 2 /*fi_code */ );
-    hash[2243230L /*frozen_fi */ ].v.RH = 66158L /*"fi" */ ;
+    primitive(66007L /*"spacefactor" */ , 80 /*set_aux */ , 104 /*hmode */ );
+    primitive(66008L /*"prevdepth" */ , 80 /*set_aux */ , 1 /*vmode */ );
+    primitive(66009L /*"deadcycles" */ , 83 /*set_page_int */ , 0);
+    primitive(66010L /*"insertpenalties" */ , 83 /*set_page_int */ , 1);
+    primitive(66011L /*"wd" */ , 84 /*set_box_dimen */ , 1 /*width_offset */ );
+    primitive(66012L /*"ht" */ , 84 /*set_box_dimen */ , 3 /*height_offset */ );
+    primitive(66013L /*"dp" */ , 84 /*set_box_dimen */ , 2 /*depth_offset */ );
+    primitive(66014L /*"lastpenalty" */ , 71 /*last_item */ , 0 /*int_val */ );
+    primitive(66015L /*"lastkern" */ , 71 /*last_item */ , 1 /*dimen_val */ );
+    primitive(66016L /*"lastskip" */ , 71 /*last_item */ , 2 /*glue_val */ );
+    primitive(66017L /*"inputlineno" */ , 71 /*last_item */ , 4 /*input_line_no_code */ );
+    primitive(66018L /*"badness" */ , 71 /*last_item */ , 5 /*badness_code */ );
+    primitive(66019L /*"pdflastxpos" */ , 71 /*last_item */ , 12 /*pdf_last_x_pos_code */ );
+    primitive(66020L /*"pdflastypos" */ , 71 /*last_item */ , 13 /*pdf_last_y_pos_code */ );
+    primitive(66021L /*"elapsedtime" */ , 71 /*last_item */ , 16 /*elapsed_time_code */ );
+    primitive(66022L /*"shellescape" */ , 71 /*last_item */ , 17 /*pdf_shell_escape_code */ );
+    primitive(66023L /*"randomseed" */ , 71 /*last_item */ , 18 /*random_seed_code */ );
+    primitive(66091L /*"number" */ , 110 /*convert */ , 0 /*number_code */ );
+    primitive(66092L /*"romannumeral" */ , 110 /*convert */ , 1 /*roman_numeral_code */ );
+    primitive(66093L /*"string" */ , 110 /*convert */ , 2 /*string_code */ );
+    primitive(66094L /*"meaning" */ , 110 /*convert */ , 3 /*meaning_code */ );
+    primitive(66095L /*"fontname" */ , 110 /*convert */ , 4 /*font_name_code */ );
+    primitive(66096L /*"expanded" */ , 110 /*convert */ , 6 /*expanded_code */ );
+    primitive(66097L /*"leftmarginkern" */ , 110 /*convert */ , 16 /*left_margin_kern_code */ );
+    primitive(66098L /*"rightmarginkern" */ , 110 /*convert */ , 17 /*right_margin_kern_code */ );
+    primitive(66099L /*"creationdate" */ , 110 /*convert */ , 22 /*pdf_creation_date_code */ );
+    primitive(66100L /*"filemoddate" */ , 110 /*convert */ , 23 /*pdf_file_mod_date_code */ );
+    primitive(66101L /*"filesize" */ , 110 /*convert */ , 24 /*pdf_file_size_code */ );
+    primitive(66102L /*"mdfivesum" */ , 110 /*convert */ , 25 /*pdf_mdfive_sum_code */ );
+    primitive(66103L /*"filedump" */ , 110 /*convert */ , 26 /*pdf_file_dump_code */ );
+    primitive(66104L /*"strcmp" */ , 110 /*convert */ , 18 /*pdf_strcmp_code */ );
+    primitive(66105L /*"uniformdeviate" */ , 110 /*convert */ , 29 /*uniform_deviate_code */ );
+    primitive(66106L /*"normaldeviate" */ , 110 /*convert */ , 30 /*normal_deviate_code */ );
+    primitive(66107L /*"jobname" */ , 110 /*convert */ , 40 /*job_name_code */ );
+    primitive(66108L /*"Uchar" */ , 110 /*convert */ , 38 /*XeTeX_Uchar_code */ );
+    primitive(66109L /*"Ucharcat" */ , 110 /*convert */ , 39 /*XeTeX_Ucharcat_code */ );
+    primitive(66141L /*"if" */ , 107 /*if_test */ , 0 /*if_char_code */ );
+    primitive(66142L /*"ifcat" */ , 107 /*if_test */ , 1 /*if_cat_code */ );
+    primitive(66143L /*"ifnum" */ , 107 /*if_test */ , 2 /*if_int_code */ );
+    primitive(66144L /*"ifdim" */ , 107 /*if_test */ , 3 /*if_dim_code */ );
+    primitive(66145L /*"ifodd" */ , 107 /*if_test */ , 4 /*if_odd_code */ );
+    primitive(66146L /*"ifvmode" */ , 107 /*if_test */ , 5 /*if_vmode_code */ );
+    primitive(66147L /*"ifhmode" */ , 107 /*if_test */ , 6 /*if_hmode_code */ );
+    primitive(66148L /*"ifmmode" */ , 107 /*if_test */ , 7 /*if_mmode_code */ );
+    primitive(66149L /*"ifinner" */ , 107 /*if_test */ , 8 /*if_inner_code */ );
+    primitive(66150L /*"ifvoid" */ , 107 /*if_test */ , 9 /*if_void_code */ );
+    primitive(66151L /*"ifhbox" */ , 107 /*if_test */ , 10 /*if_hbox_code */ );
+    primitive(66152L /*"ifvbox" */ , 107 /*if_test */ , 11 /*if_vbox_code */ );
+    primitive(66153L /*"ifx" */ , 107 /*if_test */ , 12 /*ifx_code */ );
+    primitive(66154L /*"ifeof" */ , 107 /*if_test */ , 13 /*if_eof_code */ );
+    primitive(66155L /*"iftrue" */ , 107 /*if_test */ , 14 /*if_true_code */ );
+    primitive(66156L /*"iffalse" */ , 107 /*if_test */ , 15 /*if_false_code */ );
+    primitive(66157L /*"ifcase" */ , 107 /*if_test */ , 16 /*if_case_code */ );
+    primitive(66158L /*"ifprimitive" */ , 107 /*if_test */ , 21 /*if_primitive_code */ );
+    primitive(66160L /*"fi" */ , 108 /*fi_or_else */ , 2 /*fi_code */ );
+    hash[2243230L /*frozen_fi */ ].v.RH = 66160L /*"fi" */ ;
     eqtb[2243230L /*frozen_fi */ ] = eqtb[cur_val];
-    primitive(66159L /*"or" */ , 108 /*fi_or_else */ , 4 /*or_code */ );
-    primitive(66160L /*"else" */ , 108 /*fi_or_else */ , 3 /*else_code */ );
-    primitive(66186L /*"nullfont" */ , 89 /*set_font */ , 0 /*font_base */ );
-    hash[2243738L /*frozen_null_font */ ].v.RH = 66186L /*"nullfont" */ ;
+    primitive(66161L /*"or" */ , 108 /*fi_or_else */ , 4 /*or_code */ );
+    primitive(66162L /*"else" */ , 108 /*fi_or_else */ , 3 /*else_code */ );
+    primitive(66189L /*"nullfont" */ , 89 /*set_font */ , 0 /*font_base */ );
+    hash[2243738L /*frozen_null_font */ ].v.RH = 66189L /*"nullfont" */ ;
     eqtb[2243738L /*frozen_null_font */ ] = eqtb[cur_val];
-    primitive(66315L /*"span" */ , 4 /*tab_mark */ , 1114113L /*span_code */ );
-    primitive(66316L /*"cr" */ , 5 /*car_ret */ , 1114114L /*cr_code */ );
-    hash[2243227L /*frozen_cr */ ].v.RH = 66316L /*"cr" */ ;
+    primitive(66319L /*"span" */ , 4 /*tab_mark */ , 1114113L /*span_code */ );
+    primitive(66320L /*"cr" */ , 5 /*car_ret */ , 1114114L /*cr_code */ );
+    hash[2243227L /*frozen_cr */ ].v.RH = 66320L /*"cr" */ ;
     eqtb[2243227L /*frozen_cr */ ] = eqtb[cur_val];
-    primitive(66317L /*"crcr" */ , 5 /*car_ret */ , 1114115L /*cr_cr_code */ );
-    hash[2243231L /*frozen_end_template */ ].v.RH = 66318L /*"endtemplate" */ ;
-    hash[2243232L /*frozen_endv */ ].v.RH = 66318L /*"endtemplate" */ ;
+    primitive(66321L /*"crcr" */ , 5 /*car_ret */ , 1114115L /*cr_cr_code */ );
+    hash[2243231L /*frozen_end_template */ ].v.RH = 66322L /*"endtemplate" */ ;
+    hash[2243232L /*frozen_endv */ ].v.RH = 66322L /*"endtemplate" */ ;
     eqtb[2243232L /*frozen_endv */ ].hh.b0 = 9 /*endv */ ;
     eqtb[2243232L /*frozen_endv */ ].hh.v.RH = mem_top - 11;
     eqtb[2243232L /*frozen_endv */ ].hh.b1 = 1 /*level_one */ ;
     eqtb[2243231L /*frozen_end_template */ ] = eqtb[2243232L /*frozen_endv */ ];
     eqtb[2243231L /*frozen_end_template */ ].hh.b0 = 117 /*end_template */ ;
-    primitive(66395L /*"pagegoal" */ , 82 /*set_page_dimen */ , 0);
-    primitive(66396L /*"pagetotal" */ , 82 /*set_page_dimen */ , 1);
-    primitive(66397L /*"pagestretch" */ , 82 /*set_page_dimen */ , 2);
-    primitive(66398L /*"pagefilstretch" */ , 82 /*set_page_dimen */ , 3);
-    primitive(66399L /*"pagefillstretch" */ , 82 /*set_page_dimen */ , 4);
-    primitive(66400L /*"pagefilllstretch" */ , 82 /*set_page_dimen */ , 5);
-    primitive(66401L /*"pageshrink" */ , 82 /*set_page_dimen */ , 6);
-    primitive(66402L /*"pagedepth" */ , 82 /*set_page_dimen */ , 7);
+    primitive(66399L /*"pagegoal" */ , 82 /*set_page_dimen */ , 0);
+    primitive(66400L /*"pagetotal" */ , 82 /*set_page_dimen */ , 1);
+    primitive(66401L /*"pagestretch" */ , 82 /*set_page_dimen */ , 2);
+    primitive(66402L /*"pagefilstretch" */ , 82 /*set_page_dimen */ , 3);
+    primitive(66403L /*"pagefillstretch" */ , 82 /*set_page_dimen */ , 4);
+    primitive(66404L /*"pagefilllstretch" */ , 82 /*set_page_dimen */ , 5);
+    primitive(66405L /*"pageshrink" */ , 82 /*set_page_dimen */ , 6);
+    primitive(66406L /*"pagedepth" */ , 82 /*set_page_dimen */ , 7);
     primitive(65631L /*"end" */ , 14 /*stop */ , 0);
-    primitive(66449L /*"dump" */ , 14 /*stop */ , 1);
-    primitive(66450L /*"hskip" */ , 26 /*hskip */ , 4 /*skip_code */ );
-    primitive(66451L /*"hfil" */ , 26 /*hskip */ , 0 /*fil_code */ );
-    primitive(66452L /*"hfill" */ , 26 /*hskip */ , 1 /*fill_code */ );
-    primitive(66453L /*"hss" */ , 26 /*hskip */ , 2 /*ss_code */ );
-    primitive(66454L /*"hfilneg" */ , 26 /*hskip */ , 3 /*fil_neg_code */ );
-    primitive(66455L /*"vskip" */ , 27 /*vskip */ , 4 /*skip_code */ );
-    primitive(66456L /*"vfil" */ , 27 /*vskip */ , 0 /*fil_code */ );
-    primitive(66457L /*"vfill" */ , 27 /*vskip */ , 1 /*fill_code */ );
-    primitive(66458L /*"vss" */ , 27 /*vskip */ , 2 /*ss_code */ );
-    primitive(66459L /*"vfilneg" */ , 27 /*vskip */ , 3 /*fil_neg_code */ );
+    primitive(66453L /*"dump" */ , 14 /*stop */ , 1);
+    primitive(66454L /*"hskip" */ , 26 /*hskip */ , 4 /*skip_code */ );
+    primitive(66455L /*"hfil" */ , 26 /*hskip */ , 0 /*fil_code */ );
+    primitive(66456L /*"hfill" */ , 26 /*hskip */ , 1 /*fill_code */ );
+    primitive(66457L /*"hss" */ , 26 /*hskip */ , 2 /*ss_code */ );
+    primitive(66458L /*"hfilneg" */ , 26 /*hskip */ , 3 /*fil_neg_code */ );
+    primitive(66459L /*"vskip" */ , 27 /*vskip */ , 4 /*skip_code */ );
+    primitive(66460L /*"vfil" */ , 27 /*vskip */ , 0 /*fil_code */ );
+    primitive(66461L /*"vfill" */ , 27 /*vskip */ , 1 /*fill_code */ );
+    primitive(66462L /*"vss" */ , 27 /*vskip */ , 2 /*ss_code */ );
+    primitive(66463L /*"vfilneg" */ , 27 /*vskip */ , 3 /*fil_neg_code */ );
     primitive(65624L /*"mskip" */ , 28 /*mskip */ , 5 /*mskip_code */ );
     primitive(65603L /*"kern" */ , 29 /*kern */ , 1 /*explicit */ );
     primitive(65630L /*"mkern" */ , 30 /*mkern */ , 99 /*mu_glue */ );
-    primitive(66477L /*"moveleft" */ , 21 /*hmove */ , 1);
-    primitive(66478L /*"moveright" */ , 21 /*hmove */ , 0);
-    primitive(66479L /*"raise" */ , 22 /*vmove */ , 1);
-    primitive(66480L /*"lower" */ , 22 /*vmove */ , 0);
+    primitive(66481L /*"moveleft" */ , 21 /*hmove */ , 1);
+    primitive(66482L /*"moveright" */ , 21 /*hmove */ , 0);
+    primitive(66483L /*"raise" */ , 22 /*vmove */ , 1);
+    primitive(66484L /*"lower" */ , 22 /*vmove */ , 0);
     primitive(65709L /*"box" */ , 20 /*make_box */ , 0 /*box_code */ );
-    primitive(66481L /*"copy" */ , 20 /*make_box */ , 1 /*copy_code */ );
-    primitive(66482L /*"lastbox" */ , 20 /*make_box */ , 2 /*last_box_code */ );
-    primitive(66390L /*"vsplit" */ , 20 /*make_box */ , 3 /*vsplit_code */ );
-    primitive(66483L /*"vtop" */ , 20 /*make_box */ , 4 /*vtop_code */ );
-    primitive(66392L /*"vbox" */ , 20 /*make_box */ , 5 /*vtop_code 1 */ );
-    primitive(66484L /*"hbox" */ , 20 /*make_box */ , 108 /*vtop_code 104 */ );
-    primitive(66485L /*"shipout" */ , 31 /*leader_ship */ , 99 /*a_leaders -1 */ );
-    primitive(66486L /*"leaders" */ , 31 /*leader_ship */ , 100 /*a_leaders */ );
-    primitive(66487L /*"cleaders" */ , 31 /*leader_ship */ , 101 /*c_leaders */ );
-    primitive(66488L /*"xleaders" */ , 31 /*leader_ship */ , 102 /*x_leaders */ );
-    primitive(66504L /*"indent" */ , 43 /*start_par */ , 1);
-    primitive(66505L /*"noindent" */ , 43 /*start_par */ , 0);
-    primitive(66515L /*"unpenalty" */ , 25 /*remove_item */ , 12 /*penalty_node */ );
-    primitive(66516L /*"unkern" */ , 25 /*remove_item */ , 11 /*kern_node */ );
-    primitive(66517L /*"unskip" */ , 25 /*remove_item */ , 10 /*glue_node */ );
-    primitive(66518L /*"unhbox" */ , 23 /*un_hbox */ , 0 /*box_code */ );
-    primitive(66519L /*"unhcopy" */ , 23 /*un_hbox */ , 1 /*copy_code */ );
-    primitive(66520L /*"unvbox" */ , 24 /*un_vbox */ , 0 /*box_code */ );
-    primitive(66521L /*"unvcopy" */ , 24 /*un_vbox */ , 1 /*copy_code */ );
+    primitive(66485L /*"copy" */ , 20 /*make_box */ , 1 /*copy_code */ );
+    primitive(66486L /*"lastbox" */ , 20 /*make_box */ , 2 /*last_box_code */ );
+    primitive(66394L /*"vsplit" */ , 20 /*make_box */ , 3 /*vsplit_code */ );
+    primitive(66487L /*"vtop" */ , 20 /*make_box */ , 4 /*vtop_code */ );
+    primitive(66396L /*"vbox" */ , 20 /*make_box */ , 5 /*vtop_code 1 */ );
+    primitive(66488L /*"hbox" */ , 20 /*make_box */ , 108 /*vtop_code 104 */ );
+    primitive(66489L /*"shipout" */ , 31 /*leader_ship */ , 99 /*a_leaders -1 */ );
+    primitive(66490L /*"leaders" */ , 31 /*leader_ship */ , 100 /*a_leaders */ );
+    primitive(66491L /*"cleaders" */ , 31 /*leader_ship */ , 101 /*c_leaders */ );
+    primitive(66492L /*"xleaders" */ , 31 /*leader_ship */ , 102 /*x_leaders */ );
+    primitive(66508L /*"indent" */ , 43 /*start_par */ , 1);
+    primitive(66509L /*"noindent" */ , 43 /*start_par */ , 0);
+    primitive(66519L /*"unpenalty" */ , 25 /*remove_item */ , 12 /*penalty_node */ );
+    primitive(66520L /*"unkern" */ , 25 /*remove_item */ , 11 /*kern_node */ );
+    primitive(66521L /*"unskip" */ , 25 /*remove_item */ , 10 /*glue_node */ );
+    primitive(66522L /*"unhbox" */ , 23 /*un_hbox */ , 0 /*box_code */ );
+    primitive(66523L /*"unhcopy" */ , 23 /*un_hbox */ , 1 /*copy_code */ );
+    primitive(66524L /*"unvbox" */ , 24 /*un_vbox */ , 0 /*box_code */ );
+    primitive(66525L /*"unvcopy" */ , 24 /*un_vbox */ , 1 /*copy_code */ );
     primitive(45 /*"-" */ , 47 /*discretionary */ , 1);
     primitive(65639L /*"discretionary" */ , 47 /*discretionary */ , 0);
-    primitive(66552L /*"eqno" */ , 48 /*eq_no */ , 0);
-    primitive(66553L /*"leqno" */ , 48 /*eq_no */ , 1);
-    primitive(66265L /*"mathord" */ , 50 /*math_comp */ , 16 /*ord_noad */ );
-    primitive(66266L /*"mathop" */ , 50 /*math_comp */ , 17 /*op_noad */ );
-    primitive(66267L /*"mathbin" */ , 50 /*math_comp */ , 18 /*bin_noad */ );
-    primitive(66268L /*"mathrel" */ , 50 /*math_comp */ , 19 /*rel_noad */ );
-    primitive(66269L /*"mathopen" */ , 50 /*math_comp */ , 20 /*open_noad */ );
-    primitive(66270L /*"mathclose" */ , 50 /*math_comp */ , 21 /*close_noad */ );
-    primitive(66271L /*"mathpunct" */ , 50 /*math_comp */ , 22 /*punct_noad */ );
-    primitive(66272L /*"mathinner" */ , 50 /*math_comp */ , 23 /*inner_noad */ );
-    primitive(66274L /*"underline" */ , 50 /*math_comp */ , 26 /*under_noad */ );
-    primitive(66273L /*"overline" */ , 50 /*math_comp */ , 27 /*over_noad */ );
-    primitive(66554L /*"displaylimits" */ , 51 /*limit_switch */ , 0 /*normal */ );
-    primitive(66278L /*"limits" */ , 51 /*limit_switch */ , 1 /*limits */ );
-    primitive(66279L /*"nolimits" */ , 51 /*limit_switch */ , 2 /*no_limits */ );
-    primitive(66260L /*"displaystyle" */ , 53 /*math_style */ , 0 /*display_style */ );
-    primitive(66261L /*"textstyle" */ , 53 /*math_style */ , 2 /*text_style */ );
-    primitive(66262L /*"scriptstyle" */ , 53 /*math_style */ , 4 /*script_style */ );
-    primitive(66263L /*"scriptscriptstyle" */ , 53 /*math_style */ , 6 /*script_script_style */ );
-    primitive(66574L /*"above" */ , 52 /*above */ , 0 /*above_code */ );
-    primitive(66575L /*"over" */ , 52 /*above */ , 1 /*over_code */ );
-    primitive(66576L /*"atop" */ , 52 /*above */ , 2 /*atop_code */ );
-    primitive(66577L /*"abovewithdelims" */ , 52 /*above */ , 3 /*delimited_code 0 */ );
-    primitive(66578L /*"overwithdelims" */ , 52 /*above */ , 4 /*delimited_code 1 */ );
-    primitive(66579L /*"atopwithdelims" */ , 52 /*above */ , 5 /*delimited_code 2 */ );
-    primitive(66275L /*"left" */ , 49 /*left_right */ , 30 /*left_noad */ );
-    primitive(66276L /*"right" */ , 49 /*left_right */ , 31 /*right_noad */ );
-    hash[2243229L /*frozen_right */ ].v.RH = 66276L /*"right" */ ;
+    primitive(66556L /*"eqno" */ , 48 /*eq_no */ , 0);
+    primitive(66557L /*"leqno" */ , 48 /*eq_no */ , 1);
+    primitive(66269L /*"mathord" */ , 50 /*math_comp */ , 16 /*ord_noad */ );
+    primitive(66270L /*"mathop" */ , 50 /*math_comp */ , 17 /*op_noad */ );
+    primitive(66271L /*"mathbin" */ , 50 /*math_comp */ , 18 /*bin_noad */ );
+    primitive(66272L /*"mathrel" */ , 50 /*math_comp */ , 19 /*rel_noad */ );
+    primitive(66273L /*"mathopen" */ , 50 /*math_comp */ , 20 /*open_noad */ );
+    primitive(66274L /*"mathclose" */ , 50 /*math_comp */ , 21 /*close_noad */ );
+    primitive(66275L /*"mathpunct" */ , 50 /*math_comp */ , 22 /*punct_noad */ );
+    primitive(66276L /*"mathinner" */ , 50 /*math_comp */ , 23 /*inner_noad */ );
+    primitive(66278L /*"underline" */ , 50 /*math_comp */ , 26 /*under_noad */ );
+    primitive(66277L /*"overline" */ , 50 /*math_comp */ , 27 /*over_noad */ );
+    primitive(66558L /*"displaylimits" */ , 51 /*limit_switch */ , 0 /*normal */ );
+    primitive(66282L /*"limits" */ , 51 /*limit_switch */ , 1 /*limits */ );
+    primitive(66283L /*"nolimits" */ , 51 /*limit_switch */ , 2 /*no_limits */ );
+    primitive(66264L /*"displaystyle" */ , 53 /*math_style */ , 0 /*display_style */ );
+    primitive(66265L /*"textstyle" */ , 53 /*math_style */ , 2 /*text_style */ );
+    primitive(66266L /*"scriptstyle" */ , 53 /*math_style */ , 4 /*script_style */ );
+    primitive(66267L /*"scriptscriptstyle" */ , 53 /*math_style */ , 6 /*script_script_style */ );
+    primitive(66578L /*"above" */ , 52 /*above */ , 0 /*above_code */ );
+    primitive(66579L /*"over" */ , 52 /*above */ , 1 /*over_code */ );
+    primitive(66580L /*"atop" */ , 52 /*above */ , 2 /*atop_code */ );
+    primitive(66581L /*"abovewithdelims" */ , 52 /*above */ , 3 /*delimited_code 0 */ );
+    primitive(66582L /*"overwithdelims" */ , 52 /*above */ , 4 /*delimited_code 1 */ );
+    primitive(66583L /*"atopwithdelims" */ , 52 /*above */ , 5 /*delimited_code 2 */ );
+    primitive(66279L /*"left" */ , 49 /*left_right */ , 30 /*left_noad */ );
+    primitive(66280L /*"right" */ , 49 /*left_right */ , 31 /*right_noad */ );
+    hash[2243229L /*frozen_right */ ].v.RH = 66280L /*"right" */ ;
     eqtb[2243229L /*frozen_right */ ] = eqtb[cur_val];
-    primitive(66599L /*"long" */ , 95 /*prefix */ , 1);
-    primitive(66600L /*"outer" */ , 95 /*prefix */ , 2);
-    primitive(66601L /*"global" */ , 95 /*prefix */ , 4);
-    primitive(66602L /*"def" */ , 99 /*def */ , 0);
-    primitive(66603L /*"gdef" */ , 99 /*def */ , 1);
-    primitive(66604L /*"edef" */ , 99 /*def */ , 2);
-    primitive(66605L /*"xdef" */ , 99 /*def */ , 3);
-    primitive(66622L /*"let" */ , 96 /*let */ , 0 /*normal */ );
-    primitive(66623L /*"futurelet" */ , 96 /*let */ , 1 /*normal 1 */ );
-    primitive(66624L /*"chardef" */ , 97 /*shorthand_def */ , 0 /*char_def_code */ );
-    primitive(66625L /*"mathchardef" */ , 97 /*shorthand_def */ , 1 /*math_char_def_code */ );
-    primitive(66626L /*"XeTeXmathcharnumdef" */ , 97 /*shorthand_def */ , 8 /*XeTeX_math_char_num_def_code */ );
-    primitive(66627L /*"Umathcharnumdef" */ , 97 /*shorthand_def */ , 8 /*XeTeX_math_char_num_def_code */ );
-    primitive(66628L /*"XeTeXmathchardef" */ , 97 /*shorthand_def */ , 9 /*XeTeX_math_char_def_code */ );
-    primitive(66629L /*"Umathchardef" */ , 97 /*shorthand_def */ , 9 /*XeTeX_math_char_def_code */ );
-    primitive(66630L /*"countdef" */ , 97 /*shorthand_def */ , 2 /*count_def_code */ );
-    primitive(66631L /*"dimendef" */ , 97 /*shorthand_def */ , 3 /*dimen_def_code */ );
-    primitive(66632L /*"skipdef" */ , 97 /*shorthand_def */ , 4 /*skip_def_code */ );
-    primitive(66633L /*"muskipdef" */ , 97 /*shorthand_def */ , 5 /*mu_skip_def_code */ );
-    primitive(66634L /*"toksdef" */ , 97 /*shorthand_def */ , 6 /*toks_def_code */ );
+    primitive(66603L /*"long" */ , 95 /*prefix */ , 1);
+    primitive(66604L /*"outer" */ , 95 /*prefix */ , 2);
+    primitive(66605L /*"global" */ , 95 /*prefix */ , 4);
+    primitive(66606L /*"def" */ , 99 /*def */ , 0);
+    primitive(66607L /*"gdef" */ , 99 /*def */ , 1);
+    primitive(66608L /*"edef" */ , 99 /*def */ , 2);
+    primitive(66609L /*"xdef" */ , 99 /*def */ , 3);
+    primitive(66626L /*"let" */ , 96 /*let */ , 0 /*normal */ );
+    primitive(66627L /*"futurelet" */ , 96 /*let */ , 1 /*normal 1 */ );
+    primitive(66628L /*"chardef" */ , 97 /*shorthand_def */ , 0 /*char_def_code */ );
+    primitive(66629L /*"mathchardef" */ , 97 /*shorthand_def */ , 1 /*math_char_def_code */ );
+    primitive(66630L /*"XeTeXmathcharnumdef" */ , 97 /*shorthand_def */ , 8 /*XeTeX_math_char_num_def_code */ );
+    primitive(66631L /*"Umathcharnumdef" */ , 97 /*shorthand_def */ , 8 /*XeTeX_math_char_num_def_code */ );
+    primitive(66632L /*"XeTeXmathchardef" */ , 97 /*shorthand_def */ , 9 /*XeTeX_math_char_def_code */ );
+    primitive(66633L /*"Umathchardef" */ , 97 /*shorthand_def */ , 9 /*XeTeX_math_char_def_code */ );
+    primitive(66634L /*"countdef" */ , 97 /*shorthand_def */ , 2 /*count_def_code */ );
+    primitive(66635L /*"dimendef" */ , 97 /*shorthand_def */ , 3 /*dimen_def_code */ );
+    primitive(66636L /*"skipdef" */ , 97 /*shorthand_def */ , 4 /*skip_def_code */ );
+    primitive(66637L /*"muskipdef" */ , 97 /*shorthand_def */ , 5 /*mu_skip_def_code */ );
+    primitive(66638L /*"toksdef" */ , 97 /*shorthand_def */ , 6 /*toks_def_code */ );
     if (mltex_p) {
-        primitive(66635L /*"charsubdef" */ , 97 /*shorthand_def */ , 7 /*char_sub_def_code */ );
+        primitive(66639L /*"charsubdef" */ , 97 /*shorthand_def */ , 7 /*char_sub_def_code */ );
     }
     primitive(65715L /*"catcode" */ , 86 /*def_code */ , 2254568L /*cat_code_base */ );
     primitive(65719L /*"mathcode" */ , 86 /*def_code */ , 6711016L /*math_code_base */ );
-    primitive(66640L /*"XeTeXmathcodenum" */ , 87 /*XeTeX_def_code */ , 6711016L /*math_code_base */ );
-    primitive(66641L /*"Umathcodenum" */ , 87 /*XeTeX_def_code */ , 6711016L /*math_code_base */ );
-    primitive(66642L /*"XeTeXmathcode" */ , 87 /*XeTeX_def_code */ , 6711017L /*math_code_base 1 */ );
-    primitive(66643L /*"Umathcode" */ , 87 /*XeTeX_def_code */ , 6711017L /*math_code_base 1 */ );
+    primitive(66644L /*"XeTeXmathcodenum" */ , 87 /*XeTeX_def_code */ , 6711016L /*math_code_base */ );
+    primitive(66645L /*"Umathcodenum" */ , 87 /*XeTeX_def_code */ , 6711016L /*math_code_base */ );
+    primitive(66646L /*"XeTeXmathcode" */ , 87 /*XeTeX_def_code */ , 6711017L /*math_code_base 1 */ );
+    primitive(66647L /*"Umathcode" */ , 87 /*XeTeX_def_code */ , 6711017L /*math_code_base 1 */ );
     primitive(65716L /*"lccode" */ , 86 /*def_code */ , 3368680L /*lc_code_base */ );
     primitive(65717L /*"uccode" */ , 86 /*def_code */ , 4482792L /*uc_code_base */ );
     primitive(65718L /*"sfcode" */ , 86 /*def_code */ , 5596904L /*sf_code_base */ );
-    primitive(66644L /*"XeTeXcharclass" */ , 87 /*XeTeX_def_code */ , 5596904L /*sf_code_base */ );
-    primitive(65782L /*"delcode" */ , 86 /*def_code */ , 8939580L /*del_code_base */ );
-    primitive(66645L /*"XeTeXdelcodenum" */ , 87 /*XeTeX_def_code */ , 8939580L /*del_code_base */ );
-    primitive(66646L /*"Udelcodenum" */ , 87 /*XeTeX_def_code */ , 8939580L /*del_code_base */ );
-    primitive(66647L /*"XeTeXdelcode" */ , 87 /*XeTeX_def_code */ , 8939581L /*del_code_base 1 */ );
-    primitive(66648L /*"Udelcode" */ , 87 /*XeTeX_def_code */ , 8939581L /*del_code_base 1 */ );
+    primitive(66648L /*"XeTeXcharclass" */ , 87 /*XeTeX_def_code */ , 5596904L /*sf_code_base */ );
+    primitive(65783L /*"delcode" */ , 86 /*def_code */ , 8939581L /*del_code_base */ );
+    primitive(66649L /*"XeTeXdelcodenum" */ , 87 /*XeTeX_def_code */ , 8939581L /*del_code_base */ );
+    primitive(66650L /*"Udelcodenum" */ , 87 /*XeTeX_def_code */ , 8939581L /*del_code_base */ );
+    primitive(66651L /*"XeTeXdelcode" */ , 87 /*XeTeX_def_code */ , 8939582L /*del_code_base 1 */ );
+    primitive(66652L /*"Udelcode" */ , 87 /*XeTeX_def_code */ , 8939582L /*del_code_base 1 */ );
     primitive(65712L /*"textfont" */ , 88 /*def_family */ , 2253800L /*math_font_base */ );
     primitive(65713L /*"scriptfont" */ , 88 /*def_family */ , 2254056L /*math_font_base 256 */ );
     primitive(65714L /*"scriptscriptfont" */ , 88 /*def_family */ , 2254312L /*math_font_base 512 */ );
-    primitive(66366L /*"hyphenation" */ , 101 /*hyph_data */ , 0);
-    primitive(66378L /*"patterns" */ , 101 /*hyph_data */ , 1);
-    primitive(66663L /*"hyphenchar" */ , 79 /*assign_font_int */ , 0);
-    primitive(66664L /*"skewchar" */ , 79 /*assign_font_int */ , 1);
-    primitive(66665L /*"lpcode" */ , 79 /*assign_font_int */ , 2);
-    primitive(66666L /*"rpcode" */ , 79 /*assign_font_int */ , 3);
+    primitive(66370L /*"hyphenation" */ , 101 /*hyph_data */ , 0);
+    primitive(66382L /*"patterns" */ , 101 /*hyph_data */ , 1);
+    primitive(66667L /*"hyphenchar" */ , 79 /*assign_font_int */ , 0);
+    primitive(66668L /*"skewchar" */ , 79 /*assign_font_int */ , 1);
+    primitive(66669L /*"lpcode" */ , 79 /*assign_font_int */ , 2);
+    primitive(66670L /*"rpcode" */ , 79 /*assign_font_int */ , 3);
     primitive(65554L /*"batchmode" */ , 102 /*set_interaction */ , 0 /*batch_mode */ );
     primitive(65555L /*"nonstopmode" */ , 102 /*set_interaction */ , 1 /*nonstop_mode */ );
     primitive(65556L /*"scrollmode" */ , 102 /*set_interaction */ , 2 /*scroll_mode */ );
-    primitive(66675L /*"errorstopmode" */ , 102 /*set_interaction */ , 3 /*error_stop_mode */ );
-    primitive(66676L /*"openin" */ , 60 /*in_stream */ , 1);
-    primitive(66677L /*"closein" */ , 60 /*in_stream */ , 0);
-    primitive(66678L /*"message" */ , 58 /*message */ , 0);
-    primitive(66679L /*"errmessage" */ , 58 /*message */ , 1);
-    primitive(66685L /*"lowercase" */ , 57 /*case_shift */ , 3368680L /*lc_code_base */ );
-    primitive(66686L /*"uppercase" */ , 57 /*case_shift */ , 4482792L /*uc_code_base */ );
-    primitive(66687L /*"show" */ , 19 /*xray */ , 0 /*show_code */ );
-    primitive(66688L /*"showbox" */ , 19 /*xray */ , 1 /*show_box_code */ );
-    primitive(66689L /*"showthe" */ , 19 /*xray */ , 2 /*show_the_code */ );
-    primitive(66690L /*"showlists" */ , 19 /*xray */ , 3 /*show_lists */ );
-    primitive(66738L /*"openout" */ , 59 /*extension */ , 0 /*open_node */ );
-    primitive(65918L /*"write" */ , 59 /*extension */ , 1 /*write_node */ );
+    primitive(66679L /*"errorstopmode" */ , 102 /*set_interaction */ , 3 /*error_stop_mode */ );
+    primitive(66680L /*"openin" */ , 60 /*in_stream */ , 1);
+    primitive(66681L /*"closein" */ , 60 /*in_stream */ , 0);
+    primitive(66682L /*"message" */ , 58 /*message */ , 0);
+    primitive(66683L /*"errmessage" */ , 58 /*message */ , 1);
+    primitive(66689L /*"lowercase" */ , 57 /*case_shift */ , 3368680L /*lc_code_base */ );
+    primitive(66690L /*"uppercase" */ , 57 /*case_shift */ , 4482792L /*uc_code_base */ );
+    primitive(66691L /*"show" */ , 19 /*xray */ , 0 /*show_code */ );
+    primitive(66692L /*"showbox" */ , 19 /*xray */ , 1 /*show_box_code */ );
+    primitive(66693L /*"showthe" */ , 19 /*xray */ , 2 /*show_the_code */ );
+    primitive(66694L /*"showlists" */ , 19 /*xray */ , 3 /*show_lists_code */ );
+    primitive(66742L /*"openout" */ , 59 /*extension */ , 0 /*open_node */ );
+    primitive(65919L /*"write" */ , 59 /*extension */ , 1 /*write_node */ );
     write_loc = cur_val;
-    primitive(66739L /*"closeout" */ , 59 /*extension */ , 2 /*close_node */ );
-    primitive(66740L /*"special" */ , 59 /*extension */ , 3 /*special_node */ );
-    hash[2243236L /*frozen_special */ ].v.RH = 66740L /*"special" */ ;
+    primitive(66743L /*"closeout" */ , 59 /*extension */ , 2 /*close_node */ );
+    primitive(66744L /*"special" */ , 59 /*extension */ , 3 /*special_node */ );
+    hash[2243236L /*frozen_special */ ].v.RH = 66744L /*"special" */ ;
     eqtb[2243236L /*frozen_special */ ] = eqtb[cur_val];
-    primitive(66741L /*"immediate" */ , 59 /*extension */ , 4 /*immediate_code */ );
-    primitive(66742L /*"setlanguage" */ , 59 /*extension */ , 5 /*set_language_code */ );
-    primitive(66743L /*"resettimer" */ , 59 /*extension */ , 31 /*pdftex_first_extension_code 25 */ );
-    primitive(66744L /*"setrandomseed" */ , 59 /*extension */ , 33 /*pdftex_first_extension_code 27 */ );
-    primitive(66966L /*"synctex" */ , 74 /*assign_int */ , 8939323L /*int_base 83 */ );
+    primitive(66745L /*"immediate" */ , 59 /*extension */ , 4 /*immediate_code */ );
+    primitive(66746L /*"setlanguage" */ , 59 /*extension */ , 5 /*set_language_code */ );
+    primitive(66747L /*"resettimer" */ , 59 /*extension */ , 31 /*pdftex_first_extension_code 25 */ );
+    primitive(66748L /*"setrandomseed" */ , 59 /*extension */ , 33 /*pdftex_first_extension_code 27 */ );
+    primitive(66970L /*"synctex" */ , 74 /*assign_int */ , 8939324L /*int_base 84 */ );
     no_new_control_sequence = true;
 }
 
 #endif                          // INITEX
-         /*:1392*///1394:
+         /*:1390*///1392:
 #ifdef TEXMF_DEBUG
 void debug_help(void)
 {
@@ -4816,7 +4819,7 @@ void debug_help(void)
     while (true) {
 
         ;
-        print_nl(66737L /*"debug # (-1 to exit):" */ );
+        print_nl(66741L /*"debug # (-1 to exit):" */ );
         fflush(stdout);
         read(term_in, m);
         if (m < 0)
@@ -4826,7 +4829,7 @@ void debug_help(void)
         else {
 
             read(term_in, n);
-            switch (m) {        /*1395: */
+            switch (m) {        /*1393: */
             case 1:
                 print_word(mem[n]);
                 break;
@@ -5144,7 +5147,7 @@ void main_body(void)
     if (ini_version) {
         yzmem = xmalloc_array(memory_word, mem_top - mem_bot + 1);
         zmem = yzmem - mem_bot;
-        eqtb_top = 10053970L /*eqtb_size */  + hash_extra;
+        eqtb_top = 10053971L /*eqtb_size */  + hash_extra;
         if (hash_extra == 0)
             hash_top = 2252739L /*undefined_control_sequence */ ;
         else
@@ -5215,7 +5218,7 @@ void main_body(void)
         bad = 18;
     if (65535L /*max_quarterword -0 */  < 65535L)
         bad = 19;
-    if (43608401L /*cs_token_flag 10053970 */  + hash_extra > 1073741823L)
+    if (43608402L /*cs_token_flag 10053971 */  + hash_extra > 1073741823L)
         bad = 21;
     if ((hash_offset < 0) || (hash_offset > 2228226L /*hash_base */ ))
         bad = 42;
@@ -5237,8 +5240,7 @@ void main_body(void)
         init_prim();
         init_str_ptr = str_ptr;
         init_pool_ptr = pool_ptr;
-        date_and_time(eqtb[8939260L /*int_base 20 */ ].cint, eqtb[8939261L /*int_base 21 */ ].cint,
-                      eqtb[8939262L /*int_base 22 */ ].cint, eqtb[8939263L /*int_base 23 */ ].cint);
+        fix_date_and_time();
     }
 
 #endif                          // INITEX
@@ -5248,9 +5250,9 @@ void main_body(void)
     term_offset = 0;
     file_offset = 0;
     if (src_specials_p || file_line_error_style_p || parse_first_line_p)
-        fprintf(stdout, "%s%s%s", "This is XeTeX, Version 3.14159265", "-2.6", "-0.999992");
+        fprintf(stdout, "%s%s%s", "This is XeTeX, Version 3.141592653", "-2.6", "-0.999993");
     else
-        fprintf(stdout, "%s%s%s", "This is XeTeX, Version 3.14159265", "-2.6", "-0.999992");
+        fprintf(stdout, "%s%s%s", "This is XeTeX, Version 3.141592653", "-2.6", "-0.999993");
     Fputs(stdout, version_string);
     if (format_ident == 0)
         fprintf(stdout, "%s%s%c\n", " (preloaded format=", dump_name, ')');
@@ -5280,9 +5282,9 @@ void main_body(void)
     log_opened = false;
     output_file_name = 0;
     if (no_pdf_output)
-        output_file_extension = 66178L /*".xdv" */ ;
+        output_file_extension = 66180L /*".xdv" */ ;
     else
-        output_file_extension = 66179L /*".pdf" */ ;
+        output_file_extension = 66181L /*".pdf" */ ;
     {
         {
             input_ptr = 0;
@@ -5319,147 +5321,147 @@ void main_body(void)
         ;
 
 #ifdef INITEX
-        if ((etex_p || (buffer[cur_input.loc_field] == 42 /*"*" */ )) && (format_ident == 66703L /*" (INITEX)" */ )) {
+        if ((etex_p || (buffer[cur_input.loc_field] == 42 /*"*" */ )) && (format_ident == 66707L /*" (INITEX)" */ )) {
             no_new_control_sequence = false;
-            primitive(66745L /*"XeTeXpicfile" */ , 59 /*extension */ , 41 /*pic_file_code */ );
-            primitive(66746L /*"XeTeXpdffile" */ , 59 /*extension */ , 42 /*pdf_file_code */ );
-            primitive(66747L /*"XeTeXglyph" */ , 59 /*extension */ , 43 /*glyph_code */ );
-            primitive(66748L /*"XeTeXlinebreaklocale" */ , 59 /*extension */ ,
+            primitive(66749L /*"XeTeXpicfile" */ , 59 /*extension */ , 41 /*pic_file_code */ );
+            primitive(66750L /*"XeTeXpdffile" */ , 59 /*extension */ , 42 /*pdf_file_code */ );
+            primitive(66751L /*"XeTeXglyph" */ , 59 /*extension */ , 43 /*glyph_code */ );
+            primitive(66752L /*"XeTeXlinebreaklocale" */ , 59 /*extension */ ,
                       46 /*XeTeX_linebreak_locale_extension_code */ );
-            primitive(66749L /*"XeTeXinterchartoks" */ , 73 /*assign_toks */ , 2253282L /*XeTeX_inter_char_loc */ );
-            primitive(66750L /*"pdfsavepos" */ , 59 /*extension */ , 21 /*pdftex_first_extension_code 15 */ );
-            primitive(66806L /*"lastnodetype" */ , 71 /*last_item */ , 3 /*last_node_type_code */ );
-            primitive(66807L /*"eTeXversion" */ , 71 /*last_item */ , 19 /*eTeX_version_code */ );
-            primitive(66109L /*"eTeXrevision" */ , 110 /*convert */ , 5 /*eTeX_revision_code */ );
-            primitive(66808L /*"XeTeXversion" */ , 71 /*last_item */ , 27 /*XeTeX_version_code */ );
-            primitive(66809L /*"XeTeXrevision" */ , 110 /*convert */ , 33 /*XeTeX_revision_code */ );
-            primitive(66810L /*"XeTeXcountglyphs" */ , 71 /*last_item */ , 28 /*XeTeX_count_glyphs_code */ );
-            primitive(66811L /*"XeTeXcountvariations" */ , 71 /*last_item */ , 29 /*XeTeX_count_variations_code */ );
-            primitive(66812L /*"XeTeXvariation" */ , 71 /*last_item */ , 30 /*XeTeX_variation_code */ );
-            primitive(66813L /*"XeTeXfindvariationbyname" */ , 71 /*last_item */ ,
+            primitive(66753L /*"XeTeXinterchartoks" */ , 73 /*assign_toks */ , 2253282L /*XeTeX_inter_char_loc */ );
+            primitive(66754L /*"pdfsavepos" */ , 59 /*extension */ , 21 /*pdftex_first_extension_code 15 */ );
+            primitive(66810L /*"lastnodetype" */ , 71 /*last_item */ , 3 /*last_node_type_code */ );
+            primitive(66811L /*"eTeXversion" */ , 71 /*last_item */ , 19 /*eTeX_version_code */ );
+            primitive(66110L /*"eTeXrevision" */ , 110 /*convert */ , 5 /*eTeX_revision_code */ );
+            primitive(66812L /*"XeTeXversion" */ , 71 /*last_item */ , 27 /*XeTeX_version_code */ );
+            primitive(66813L /*"XeTeXrevision" */ , 110 /*convert */ , 33 /*XeTeX_revision_code */ );
+            primitive(66814L /*"XeTeXcountglyphs" */ , 71 /*last_item */ , 28 /*XeTeX_count_glyphs_code */ );
+            primitive(66815L /*"XeTeXcountvariations" */ , 71 /*last_item */ , 29 /*XeTeX_count_variations_code */ );
+            primitive(66816L /*"XeTeXvariation" */ , 71 /*last_item */ , 30 /*XeTeX_variation_code */ );
+            primitive(66817L /*"XeTeXfindvariationbyname" */ , 71 /*last_item */ ,
                       31 /*XeTeX_find_variation_by_name_code */ );
-            primitive(66814L /*"XeTeXvariationmin" */ , 71 /*last_item */ , 32 /*XeTeX_variation_min_code */ );
-            primitive(66815L /*"XeTeXvariationmax" */ , 71 /*last_item */ , 33 /*XeTeX_variation_max_code */ );
-            primitive(66816L /*"XeTeXvariationdefault" */ , 71 /*last_item */ , 34 /*XeTeX_variation_default_code */ );
-            primitive(66817L /*"XeTeXcountfeatures" */ , 71 /*last_item */ , 35 /*XeTeX_count_features_code */ );
-            primitive(66818L /*"XeTeXfeaturecode" */ , 71 /*last_item */ , 36 /*XeTeX_feature_code_code */ );
-            primitive(66819L /*"XeTeXfindfeaturebyname" */ , 71 /*last_item */ ,
+            primitive(66818L /*"XeTeXvariationmin" */ , 71 /*last_item */ , 32 /*XeTeX_variation_min_code */ );
+            primitive(66819L /*"XeTeXvariationmax" */ , 71 /*last_item */ , 33 /*XeTeX_variation_max_code */ );
+            primitive(66820L /*"XeTeXvariationdefault" */ , 71 /*last_item */ , 34 /*XeTeX_variation_default_code */ );
+            primitive(66821L /*"XeTeXcountfeatures" */ , 71 /*last_item */ , 35 /*XeTeX_count_features_code */ );
+            primitive(66822L /*"XeTeXfeaturecode" */ , 71 /*last_item */ , 36 /*XeTeX_feature_code_code */ );
+            primitive(66823L /*"XeTeXfindfeaturebyname" */ , 71 /*last_item */ ,
                       37 /*XeTeX_find_feature_by_name_code */ );
-            primitive(66820L /*"XeTeXisexclusivefeature" */ , 71 /*last_item */ ,
+            primitive(66824L /*"XeTeXisexclusivefeature" */ , 71 /*last_item */ ,
                       38 /*XeTeX_is_exclusive_feature_code */ );
-            primitive(66821L /*"XeTeXcountselectors" */ , 71 /*last_item */ , 39 /*XeTeX_count_selectors_code */ );
-            primitive(66822L /*"XeTeXselectorcode" */ , 71 /*last_item */ , 40 /*XeTeX_selector_code_code */ );
-            primitive(66823L /*"XeTeXfindselectorbyname" */ , 71 /*last_item */ ,
+            primitive(66825L /*"XeTeXcountselectors" */ , 71 /*last_item */ , 39 /*XeTeX_count_selectors_code */ );
+            primitive(66826L /*"XeTeXselectorcode" */ , 71 /*last_item */ , 40 /*XeTeX_selector_code_code */ );
+            primitive(66827L /*"XeTeXfindselectorbyname" */ , 71 /*last_item */ ,
                       41 /*XeTeX_find_selector_by_name_code */ );
-            primitive(66824L /*"XeTeXisdefaultselector" */ , 71 /*last_item */ ,
+            primitive(66828L /*"XeTeXisdefaultselector" */ , 71 /*last_item */ ,
                       42 /*XeTeX_is_default_selector_code */ );
-            primitive(66825L /*"XeTeXvariationname" */ , 110 /*convert */ , 34 /*XeTeX_variation_name_code */ );
-            primitive(66826L /*"XeTeXfeaturename" */ , 110 /*convert */ , 35 /*XeTeX_feature_name_code */ );
-            primitive(66827L /*"XeTeXselectorname" */ , 110 /*convert */ , 36 /*XeTeX_selector_name_code */ );
-            primitive(66828L /*"XeTeXOTcountscripts" */ , 71 /*last_item */ , 43 /*XeTeX_OT_count_scripts_code */ );
-            primitive(66829L /*"XeTeXOTcountlanguages" */ , 71 /*last_item */ , 44 /*XeTeX_OT_count_languages_code */ );
-            primitive(66830L /*"XeTeXOTcountfeatures" */ , 71 /*last_item */ , 45 /*XeTeX_OT_count_features_code */ );
-            primitive(66831L /*"XeTeXOTscripttag" */ , 71 /*last_item */ , 46 /*XeTeX_OT_script_code */ );
-            primitive(66832L /*"XeTeXOTlanguagetag" */ , 71 /*last_item */ , 47 /*XeTeX_OT_language_code */ );
-            primitive(66833L /*"XeTeXOTfeaturetag" */ , 71 /*last_item */ , 48 /*XeTeX_OT_feature_code */ );
-            primitive(66834L /*"XeTeXcharglyph" */ , 71 /*last_item */ , 49 /*XeTeX_map_char_to_glyph_code */ );
-            primitive(66835L /*"XeTeXglyphindex" */ , 71 /*last_item */ , 50 /*XeTeX_glyph_index_code */ );
-            primitive(66836L /*"XeTeXglyphbounds" */ , 71 /*last_item */ , 55 /*XeTeX_glyph_bounds_code */ );
-            primitive(66837L /*"XeTeXglyphname" */ , 110 /*convert */ , 37 /*XeTeX_glyph_name_code */ );
-            primitive(66838L /*"XeTeXfonttype" */ , 71 /*last_item */ , 51 /*XeTeX_font_type_code */ );
-            primitive(66839L /*"XeTeXfirstfontchar" */ , 71 /*last_item */ , 52 /*XeTeX_first_char_code */ );
-            primitive(66840L /*"XeTeXlastfontchar" */ , 71 /*last_item */ , 53 /*XeTeX_last_char_code */ );
-            primitive(66841L /*"XeTeXpdfpagecount" */ , 71 /*last_item */ , 54 /*XeTeX_pdf_page_count_code */ );
-            primitive(66851L /*"everyeof" */ , 73 /*assign_toks */ , 2253281L /*every_eof_loc */ );
-            primitive(66852L /*"tracingassigns" */ , 74 /*assign_int */ , 8939298L /*int_base 58 */ );
-            primitive(66853L /*"tracinggroups" */ , 74 /*assign_int */ , 8939299L /*int_base 59 */ );
-            primitive(66854L /*"tracingifs" */ , 74 /*assign_int */ , 8939300L /*int_base 60 */ );
-            primitive(66855L /*"tracingscantokens" */ , 74 /*assign_int */ , 8939301L /*int_base 61 */ );
-            primitive(66856L /*"tracingnesting" */ , 74 /*assign_int */ , 8939302L /*int_base 62 */ );
-            primitive(66857L /*"predisplaydirection" */ , 74 /*assign_int */ , 8939303L /*int_base 63 */ );
-            primitive(66858L /*"lastlinefit" */ , 74 /*assign_int */ , 8939304L /*int_base 64 */ );
-            primitive(66859L /*"savingvdiscards" */ , 74 /*assign_int */ , 8939305L /*int_base 65 */ );
-            primitive(66860L /*"savinghyphcodes" */ , 74 /*assign_int */ , 8939306L /*int_base 66 */ );
-            primitive(66874L /*"currentgrouplevel" */ , 71 /*last_item */ , 20 /*current_group_level_code */ );
-            primitive(66875L /*"currentgrouptype" */ , 71 /*last_item */ , 21 /*current_group_type_code */ );
-            primitive(66876L /*"currentiflevel" */ , 71 /*last_item */ , 22 /*current_if_level_code */ );
-            primitive(66877L /*"currentiftype" */ , 71 /*last_item */ , 23 /*current_if_type_code */ );
-            primitive(66878L /*"currentifbranch" */ , 71 /*last_item */ , 24 /*current_if_branch_code */ );
-            primitive(66879L /*"fontcharwd" */ , 71 /*last_item */ , 56 /*font_char_wd_code */ );
-            primitive(66880L /*"fontcharht" */ , 71 /*last_item */ , 57 /*font_char_ht_code */ );
-            primitive(66881L /*"fontchardp" */ , 71 /*last_item */ , 58 /*font_char_dp_code */ );
-            primitive(66882L /*"fontcharic" */ , 71 /*last_item */ , 59 /*font_char_ic_code */ );
-            primitive(66883L /*"parshapelength" */ , 71 /*last_item */ , 60 /*par_shape_length_code */ );
-            primitive(66884L /*"parshapeindent" */ , 71 /*last_item */ , 61 /*par_shape_indent_code */ );
-            primitive(66885L /*"parshapedimen" */ , 71 /*last_item */ , 62 /*par_shape_dimen_code */ );
-            primitive(66886L /*"showgroups" */ , 19 /*xray */ , 4 /*show_groups */ );
-            primitive(66888L /*"showtokens" */ , 19 /*xray */ , 5 /*show_tokens */ );
-            primitive(66889L /*"unexpanded" */ , 111 /*the */ , 1);
-            primitive(66890L /*"detokenize" */ , 111 /*the */ , 5 /*show_tokens */ );
-            primitive(66891L /*"showifs" */ , 19 /*xray */ , 6 /*show_ifs */ );
-            primitive(66895L /*"interactionmode" */ , 83 /*set_page_int */ , 2);
-            primitive(66277L /*"middle" */ , 49 /*left_right */ , 1);
-            primitive(66899L /*"suppressfontnotfounderror" */ , 74 /*assign_int */ , 8939307L /*int_base 67 */ );
-            primitive(66900L /*"TeXXeTstate" */ , 74 /*assign_int */ , 8939311L /*eTeX_state_base 0 */ );
-            primitive(66901L /*"XeTeXupwardsmode" */ , 74 /*assign_int */ , 8939313L /*eTeX_state_base 2 */ );
-            primitive(66902L /*"XeTeXuseglyphmetrics" */ , 74 /*assign_int */ , 8939314L /*eTeX_state_base 3 */ );
-            primitive(66903L /*"XeTeXinterchartokenstate" */ , 74 /*assign_int */ , 8939315L /*eTeX_state_base 4 */ );
-            primitive(66904L /*"XeTeXdashbreakstate" */ , 74 /*assign_int */ , 8939312L /*eTeX_state_base 1 */ );
-            primitive(66905L /*"XeTeXinputnormalization" */ , 74 /*assign_int */ , 8939316L /*eTeX_state_base 5 */ );
-            primitive(66906L /*"XeTeXtracingfonts" */ , 74 /*assign_int */ , 8939319L /*eTeX_state_base 8 */ );
-            primitive(66907L /*"XeTeXinterwordspaceshaping" */ , 74 /*assign_int */ , 8939320L /*eTeX_state_base 9 */ );
-            primitive(66908L /*"XeTeXgenerateactualtext" */ , 74 /*assign_int */ , 8939321L /*eTeX_state_base 10 */ );
-            primitive(66909L /*"XeTeXhyphenatablelength" */ , 74 /*assign_int */ , 8939322L /*eTeX_state_base 11 */ );
-            primitive(66751L /*"XeTeXinputencoding" */ , 59 /*extension */ ,
+            primitive(66829L /*"XeTeXvariationname" */ , 110 /*convert */ , 34 /*XeTeX_variation_name_code */ );
+            primitive(66830L /*"XeTeXfeaturename" */ , 110 /*convert */ , 35 /*XeTeX_feature_name_code */ );
+            primitive(66831L /*"XeTeXselectorname" */ , 110 /*convert */ , 36 /*XeTeX_selector_name_code */ );
+            primitive(66832L /*"XeTeXOTcountscripts" */ , 71 /*last_item */ , 43 /*XeTeX_OT_count_scripts_code */ );
+            primitive(66833L /*"XeTeXOTcountlanguages" */ , 71 /*last_item */ , 44 /*XeTeX_OT_count_languages_code */ );
+            primitive(66834L /*"XeTeXOTcountfeatures" */ , 71 /*last_item */ , 45 /*XeTeX_OT_count_features_code */ );
+            primitive(66835L /*"XeTeXOTscripttag" */ , 71 /*last_item */ , 46 /*XeTeX_OT_script_code */ );
+            primitive(66836L /*"XeTeXOTlanguagetag" */ , 71 /*last_item */ , 47 /*XeTeX_OT_language_code */ );
+            primitive(66837L /*"XeTeXOTfeaturetag" */ , 71 /*last_item */ , 48 /*XeTeX_OT_feature_code */ );
+            primitive(66838L /*"XeTeXcharglyph" */ , 71 /*last_item */ , 49 /*XeTeX_map_char_to_glyph_code */ );
+            primitive(66839L /*"XeTeXglyphindex" */ , 71 /*last_item */ , 50 /*XeTeX_glyph_index_code */ );
+            primitive(66840L /*"XeTeXglyphbounds" */ , 71 /*last_item */ , 55 /*XeTeX_glyph_bounds_code */ );
+            primitive(66841L /*"XeTeXglyphname" */ , 110 /*convert */ , 37 /*XeTeX_glyph_name_code */ );
+            primitive(66842L /*"XeTeXfonttype" */ , 71 /*last_item */ , 51 /*XeTeX_font_type_code */ );
+            primitive(66843L /*"XeTeXfirstfontchar" */ , 71 /*last_item */ , 52 /*XeTeX_first_char_code */ );
+            primitive(66844L /*"XeTeXlastfontchar" */ , 71 /*last_item */ , 53 /*XeTeX_last_char_code */ );
+            primitive(66845L /*"XeTeXpdfpagecount" */ , 71 /*last_item */ , 54 /*XeTeX_pdf_page_count_code */ );
+            primitive(66855L /*"everyeof" */ , 73 /*assign_toks */ , 2253281L /*every_eof_loc */ );
+            primitive(66856L /*"tracingassigns" */ , 74 /*assign_int */ , 8939299L /*int_base 59 */ );
+            primitive(66857L /*"tracinggroups" */ , 74 /*assign_int */ , 8939300L /*int_base 60 */ );
+            primitive(66858L /*"tracingifs" */ , 74 /*assign_int */ , 8939301L /*int_base 61 */ );
+            primitive(66859L /*"tracingscantokens" */ , 74 /*assign_int */ , 8939302L /*int_base 62 */ );
+            primitive(66860L /*"tracingnesting" */ , 74 /*assign_int */ , 8939303L /*int_base 63 */ );
+            primitive(66861L /*"predisplaydirection" */ , 74 /*assign_int */ , 8939304L /*int_base 64 */ );
+            primitive(66862L /*"lastlinefit" */ , 74 /*assign_int */ , 8939305L /*int_base 65 */ );
+            primitive(66863L /*"savingvdiscards" */ , 74 /*assign_int */ , 8939306L /*int_base 66 */ );
+            primitive(66864L /*"savinghyphcodes" */ , 74 /*assign_int */ , 8939307L /*int_base 67 */ );
+            primitive(66878L /*"currentgrouplevel" */ , 71 /*last_item */ , 20 /*current_group_level_code */ );
+            primitive(66879L /*"currentgrouptype" */ , 71 /*last_item */ , 21 /*current_group_type_code */ );
+            primitive(66880L /*"currentiflevel" */ , 71 /*last_item */ , 22 /*current_if_level_code */ );
+            primitive(66881L /*"currentiftype" */ , 71 /*last_item */ , 23 /*current_if_type_code */ );
+            primitive(66882L /*"currentifbranch" */ , 71 /*last_item */ , 24 /*current_if_branch_code */ );
+            primitive(66883L /*"fontcharwd" */ , 71 /*last_item */ , 56 /*font_char_wd_code */ );
+            primitive(66884L /*"fontcharht" */ , 71 /*last_item */ , 57 /*font_char_ht_code */ );
+            primitive(66885L /*"fontchardp" */ , 71 /*last_item */ , 58 /*font_char_dp_code */ );
+            primitive(66886L /*"fontcharic" */ , 71 /*last_item */ , 59 /*font_char_ic_code */ );
+            primitive(66887L /*"parshapelength" */ , 71 /*last_item */ , 60 /*par_shape_length_code */ );
+            primitive(66888L /*"parshapeindent" */ , 71 /*last_item */ , 61 /*par_shape_indent_code */ );
+            primitive(66889L /*"parshapedimen" */ , 71 /*last_item */ , 62 /*par_shape_dimen_code */ );
+            primitive(66890L /*"showgroups" */ , 19 /*xray */ , 4 /*show_groups */ );
+            primitive(66892L /*"showtokens" */ , 19 /*xray */ , 5 /*show_tokens */ );
+            primitive(66893L /*"unexpanded" */ , 111 /*the */ , 1);
+            primitive(66894L /*"detokenize" */ , 111 /*the */ , 5 /*show_tokens */ );
+            primitive(66895L /*"showifs" */ , 19 /*xray */ , 6 /*show_ifs */ );
+            primitive(66899L /*"interactionmode" */ , 83 /*set_page_int */ , 2);
+            primitive(66281L /*"middle" */ , 49 /*left_right */ , 1);
+            primitive(66903L /*"suppressfontnotfounderror" */ , 74 /*assign_int */ , 8939308L /*int_base 68 */ );
+            primitive(66904L /*"TeXXeTstate" */ , 74 /*assign_int */ , 8939312L /*eTeX_state_base 0 */ );
+            primitive(66905L /*"XeTeXupwardsmode" */ , 74 /*assign_int */ , 8939314L /*eTeX_state_base 2 */ );
+            primitive(66906L /*"XeTeXuseglyphmetrics" */ , 74 /*assign_int */ , 8939315L /*eTeX_state_base 3 */ );
+            primitive(66907L /*"XeTeXinterchartokenstate" */ , 74 /*assign_int */ , 8939316L /*eTeX_state_base 4 */ );
+            primitive(66908L /*"XeTeXdashbreakstate" */ , 74 /*assign_int */ , 8939313L /*eTeX_state_base 1 */ );
+            primitive(66909L /*"XeTeXinputnormalization" */ , 74 /*assign_int */ , 8939317L /*eTeX_state_base 5 */ );
+            primitive(66910L /*"XeTeXtracingfonts" */ , 74 /*assign_int */ , 8939320L /*eTeX_state_base 8 */ );
+            primitive(66911L /*"XeTeXinterwordspaceshaping" */ , 74 /*assign_int */ , 8939321L /*eTeX_state_base 9 */ );
+            primitive(66912L /*"XeTeXgenerateactualtext" */ , 74 /*assign_int */ , 8939322L /*eTeX_state_base 10 */ );
+            primitive(66913L /*"XeTeXhyphenatablelength" */ , 74 /*assign_int */ , 8939323L /*eTeX_state_base 11 */ );
+            primitive(66755L /*"XeTeXinputencoding" */ , 59 /*extension */ ,
                       44 /*XeTeX_input_encoding_extension_code */ );
-            primitive(66752L /*"XeTeXdefaultencoding" */ , 59 /*extension */ ,
+            primitive(66756L /*"XeTeXdefaultencoding" */ , 59 /*extension */ ,
                       45 /*XeTeX_default_encoding_extension_code */ );
-            primitive(66910L /*"beginL" */ , 33 /*valign */ , 6 /*begin_L_code */ );
-            primitive(66911L /*"endL" */ , 33 /*valign */ , 7 /*end_L_code */ );
-            primitive(66912L /*"beginR" */ , 33 /*valign */ , 10 /*begin_R_code */ );
-            primitive(66913L /*"endR" */ , 33 /*valign */ , 11 /*end_R_code */ );
-            primitive(66922L /*"scantokens" */ , 106 /*input */ , 2);
-            primitive(66924L /*"readline" */ , 98 /*read_to_cs */ , 1);
-            primitive(66157L /*"unless" */ , 104 /*expand_after */ , 1);
-            primitive(66925L /*"ifdefined" */ , 107 /*if_test */ , 17 /*if_def_code */ );
-            primitive(66926L /*"ifcsname" */ , 107 /*if_test */ , 18 /*if_cs_code */ );
-            primitive(66927L /*"iffontchar" */ , 107 /*if_test */ , 19 /*if_font_char_code */ );
-            primitive(66928L /*"ifincsname" */ , 107 /*if_test */ , 20 /*if_in_csname_code */ );
-            primitive(66613L /*"protected" */ , 95 /*prefix */ , 8);
-            primitive(66934L /*"numexpr" */ , 71 /*last_item */ , 67 /*eTeX_expr -0 0 */ );
-            primitive(66935L /*"dimexpr" */ , 71 /*last_item */ , 68 /*eTeX_expr -0 1 */ );
-            primitive(66936L /*"glueexpr" */ , 71 /*last_item */ , 69 /*eTeX_expr -0 2 */ );
-            primitive(66937L /*"muexpr" */ , 71 /*last_item */ , 70 /*eTeX_expr -0 3 */ );
-            primitive(66941L /*"gluestretchorder" */ , 71 /*last_item */ , 25 /*glue_stretch_order_code */ );
-            primitive(66942L /*"glueshrinkorder" */ , 71 /*last_item */ , 26 /*glue_shrink_order_code */ );
-            primitive(66943L /*"gluestretch" */ , 71 /*last_item */ , 63 /*glue_stretch_code */ );
-            primitive(66944L /*"glueshrink" */ , 71 /*last_item */ , 64 /*glue_shrink_code */ );
-            primitive(66945L /*"mutoglue" */ , 71 /*last_item */ , 65 /*mu_to_glue_code */ );
-            primitive(66946L /*"gluetomu" */ , 71 /*last_item */ , 66 /*glue_to_mu_code */ );
-            primitive(66947L /*"marks" */ , 18 /*mark */ , 5);
-            primitive(66948L /*"topmarks" */ , 112 /*top_bot_mark */ , 5 /*top_mark_code 5 */ );
-            primitive(66949L /*"firstmarks" */ , 112 /*top_bot_mark */ , 6 /*first_mark_code 5 */ );
-            primitive(66950L /*"botmarks" */ , 112 /*top_bot_mark */ , 7 /*bot_mark_code 5 */ );
-            primitive(66951L /*"splitfirstmarks" */ , 112 /*top_bot_mark */ , 8 /*split_first_mark_code 5 */ );
-            primitive(66952L /*"splitbotmarks" */ , 112 /*top_bot_mark */ , 9 /*split_bot_mark_code 5 */ );
-            primitive(66957L /*"pagediscards" */ , 24 /*un_vbox */ , 2 /*last_box_code */ );
-            primitive(66958L /*"splitdiscards" */ , 24 /*un_vbox */ , 3 /*vsplit_code */ );
-            primitive(66959L /*"interlinepenalties" */ , 85 /*set_shape */ , 2253539L /*inter_line_penalties_loc */ );
-            primitive(66960L /*"clubpenalties" */ , 85 /*set_shape */ , 2253540L /*club_penalties_loc */ );
-            primitive(66961L /*"widowpenalties" */ , 85 /*set_shape */ , 2253541L /*widow_penalties_loc */ );
-            primitive(66962L /*"displaywidowpenalties" */ , 85 /*set_shape */ ,
+            primitive(66914L /*"beginL" */ , 33 /*valign */ , 6 /*begin_L_code */ );
+            primitive(66915L /*"endL" */ , 33 /*valign */ , 7 /*end_L_code */ );
+            primitive(66916L /*"beginR" */ , 33 /*valign */ , 10 /*begin_R_code */ );
+            primitive(66917L /*"endR" */ , 33 /*valign */ , 11 /*end_R_code */ );
+            primitive(66926L /*"scantokens" */ , 106 /*input */ , 2);
+            primitive(66928L /*"readline" */ , 98 /*read_to_cs */ , 1);
+            primitive(66159L /*"unless" */ , 104 /*expand_after */ , 1);
+            primitive(66929L /*"ifdefined" */ , 107 /*if_test */ , 17 /*if_def_code */ );
+            primitive(66930L /*"ifcsname" */ , 107 /*if_test */ , 18 /*if_cs_code */ );
+            primitive(66931L /*"iffontchar" */ , 107 /*if_test */ , 19 /*if_font_char_code */ );
+            primitive(66932L /*"ifincsname" */ , 107 /*if_test */ , 20 /*if_in_csname_code */ );
+            primitive(66617L /*"protected" */ , 95 /*prefix */ , 8);
+            primitive(66938L /*"numexpr" */ , 71 /*last_item */ , 67 /*eTeX_expr -0 0 */ );
+            primitive(66939L /*"dimexpr" */ , 71 /*last_item */ , 68 /*eTeX_expr -0 1 */ );
+            primitive(66940L /*"glueexpr" */ , 71 /*last_item */ , 69 /*eTeX_expr -0 2 */ );
+            primitive(66941L /*"muexpr" */ , 71 /*last_item */ , 70 /*eTeX_expr -0 3 */ );
+            primitive(66945L /*"gluestretchorder" */ , 71 /*last_item */ , 25 /*glue_stretch_order_code */ );
+            primitive(66946L /*"glueshrinkorder" */ , 71 /*last_item */ , 26 /*glue_shrink_order_code */ );
+            primitive(66947L /*"gluestretch" */ , 71 /*last_item */ , 63 /*glue_stretch_code */ );
+            primitive(66948L /*"glueshrink" */ , 71 /*last_item */ , 64 /*glue_shrink_code */ );
+            primitive(66949L /*"mutoglue" */ , 71 /*last_item */ , 65 /*mu_to_glue_code */ );
+            primitive(66950L /*"gluetomu" */ , 71 /*last_item */ , 66 /*glue_to_mu_code */ );
+            primitive(66951L /*"marks" */ , 18 /*mark */ , 5);
+            primitive(66952L /*"topmarks" */ , 112 /*top_bot_mark */ , 5 /*top_mark_code 5 */ );
+            primitive(66953L /*"firstmarks" */ , 112 /*top_bot_mark */ , 6 /*first_mark_code 5 */ );
+            primitive(66954L /*"botmarks" */ , 112 /*top_bot_mark */ , 7 /*bot_mark_code 5 */ );
+            primitive(66955L /*"splitfirstmarks" */ , 112 /*top_bot_mark */ , 8 /*split_first_mark_code 5 */ );
+            primitive(66956L /*"splitbotmarks" */ , 112 /*top_bot_mark */ , 9 /*split_bot_mark_code 5 */ );
+            primitive(66961L /*"pagediscards" */ , 24 /*un_vbox */ , 2 /*last_box_code */ );
+            primitive(66962L /*"splitdiscards" */ , 24 /*un_vbox */ , 3 /*vsplit_code */ );
+            primitive(66963L /*"interlinepenalties" */ , 85 /*set_shape */ , 2253539L /*inter_line_penalties_loc */ );
+            primitive(66964L /*"clubpenalties" */ , 85 /*set_shape */ , 2253540L /*club_penalties_loc */ );
+            primitive(66965L /*"widowpenalties" */ , 85 /*set_shape */ , 2253541L /*widow_penalties_loc */ );
+            primitive(66966L /*"displaywidowpenalties" */ , 85 /*set_shape */ ,
                       2253542L /*display_widow_penalties_loc */ );
             if (buffer[cur_input.loc_field] == 42 /*"*" */ )
                 incr(cur_input.loc_field);
             eTeX_mode = 1;
             max_reg_num = 32767;
-            max_reg_help_line = 66954L /*"A register number must be between 0 and 32767." */ ;
+            max_reg_help_line = 66958L /*"A register number must be between 0 and 32767." */ ;
         }
 
 #endif                          // INITEX
         if (!no_new_control_sequence)
             no_new_control_sequence = true;
-        else /*:1453 */ if ((format_ident == 0) || (buffer[cur_input.loc_field] == 38 /*"&" */ ) || dump_line) {
+        else /*:1451 */ if ((format_ident == 0) || (buffer[cur_input.loc_field] == 38 /*"&" */ ) || dump_line) {
             if (format_ident != 0)
                 initialize();
             if (!open_fmt_file())
@@ -5482,8 +5484,7 @@ void main_body(void)
         if (mltex_enabled_p) {
             fprintf(stdout, "%s\n", "MLTeX v2.2 enabled");
         }
-        date_and_time(eqtb[8939260L /*int_base 20 */ ].cint, eqtb[8939261L /*int_base 21 */ ].cint,
-                      eqtb[8939262L /*int_base 22 */ ].cint, eqtb[8939263L /*int_base 23 */ ].cint);
+        fix_date_and_time();
         ;
 
 #ifdef INITEX
@@ -5531,7 +5532,7 @@ void main_body(void)
             param_base = xmalloc_array(integer, font_max);
             font_ptr = 0 /*font_base */ ;
             fmem_ptr = 7;
-            font_name[0 /*font_base */ ] = 66186L /*"nullfont" */ ;
+            font_name[0 /*font_base */ ] = 66189L /*"nullfont" */ ;
             font_area[0 /*font_base */ ] = 65626L /*"" */ ;
             hyphen_char[0 /*font_base */ ] = 45 /*"-" */ ;
             skew_char[0 /*font_base */ ] = -1;
@@ -5578,7 +5579,7 @@ void main_body(void)
         }
         random_seed = (microseconds * 1000) + (epochseconds % 1000000L);
         init_randoms(random_seed);
-        magic_offset = str_start[(66309L /*math_spacing */ ) - 65536L] - 9 * 16 /*ord_noad *//*:815 */ ;
+        magic_offset = str_start[(66313L /*math_spacing */ ) - 65536L] - 9 * 16 /*ord_noad *//*:813 */ ;
         if (interaction == 0 /*batch_mode */ )
             selector = 16 /*no_print */ ;
         else

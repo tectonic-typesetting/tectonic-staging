@@ -1,5 +1,8 @@
-# Copyright 2020 the Tectonic Project.
+# Copyright 2021 the Tectonic Project.
 # Licensed under the MIT License.
+
+# This script is run inside the Docker container. Keep the `indent` settings
+# consistent with those used in `stage0/driver.sh`.
 
 set -euo pipefail
 

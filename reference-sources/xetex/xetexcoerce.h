@@ -291,6 +291,8 @@ void show_activities(void);
 void zprint_param(integer n);
 #define print_param(n) zprint_param((integer) (n))
 #define print_param_regmem
+void fix_date_and_time(void);
+#define fix_date_and_time_regmem register memory_word *eqtb=zeqtb;
 void begin_diagnostic(void);
 #define begin_diagnostic_regmem register memory_word *eqtb=zeqtb;
 void zend_diagnostic(boolean blank_line);
@@ -588,8 +590,6 @@ str_number zzw_make_name_string(word_file * f);
 #define w_make_name_string_regmem
 void scan_file_name(void);
 #define scan_file_name_regmem
-void scan_file_name_braced(void);
-#define scan_file_name_braced_regmem register memory_word *mem=zmem;
 void zpack_job_name(str_number s);
 #define pack_job_name(s) zpack_job_name((str_number) (s))
 #define pack_job_name_regmem
@@ -603,6 +603,9 @@ void start_input(void);
 four_quarters zeffective_char_info(internal_font_number f, quarterword c);
 #define effective_char_info(f, c) zeffective_char_info((internal_font_number) (f), (quarterword) (c))
 #define effective_char_info_regmem register memory_word *eqtb=zeqtb;
+void zprint_ucs_code(UnicodeScalar n);
+#define print_ucs_code(n) zprint_ucs_code((UnicodeScalar) (n))
+#define print_ucs_code_regmem
 void zchar_warning(internal_font_number f, integer c);
 #define char_warning(f, c) zchar_warning((internal_font_number) (f), (integer) (c))
 #define char_warning_regmem register memory_word *eqtb=zeqtb;
@@ -883,7 +886,7 @@ void align_peek(void);
 #define align_peek_regmem
 halfword zfinite_shrink(halfword p);
 #define finite_shrink(p) zfinite_shrink((halfword) (p))
-#define finite_shrink_regmem register memory_word *mem=zmem;
+#define finite_shrink_regmem register memory_word *mem=zmem, *eqtb=zeqtb;
 void zpush_node(halfword p);
 #define push_node(p) zpush_node((halfword) (p))
 #define push_node_regmem
@@ -1161,7 +1164,7 @@ boolean load_fmt_file(void);
 void close_files_and_terminate(void);
 #define close_files_and_terminate_regmem register memory_word *eqtb=zeqtb;
 void final_cleanup(void);
-#define final_cleanup_regmem register memory_word *mem=zmem;
+#define final_cleanup_regmem register memory_word *mem=zmem, *eqtb=zeqtb;
 void init_prim(void);
 #define init_prim_regmem register memory_word *eqtb=zeqtb;
 void debug_help(void);
@@ -1178,6 +1181,8 @@ void scan_pdf_ext_toks(void);
 #define scan_pdf_ext_toks_regmem
 void compare_strings(void);
 #define compare_strings_regmem
+void scan_file_name_braced(void);
+#define scan_file_name_braced_regmem register memory_word *mem=zmem;
 str_number get_nullstr(void);
 #define get_nullstr_regmem
 /* Some definitions that get appended to the `coerce.h' file that web2c

@@ -55,4 +55,6 @@ stage0/driver.sh builder-bash -c "chown -R $(id -u):$(id -g) /state/outputs/stag
 
 # Copy back into the repo
 
+rm -rf reference-sources
+mkdir reference-sources
 cp -r state/outputs/stage99/* reference-sources/

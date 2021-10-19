@@ -75,8 +75,7 @@ function update_exports() {
 
         case $f in
             *.c|*.h)
-                indent -linux -nut -i4 -l120 $stage3dir/exports/$f
-                rm -f $stage3dir/exports/$f~
+                $topdir/stage0/driver.sh indent-inplace $stage3dir/exports/$f
                 ;;
         esac
     done

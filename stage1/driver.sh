@@ -61,11 +61,14 @@ function update_exports() {
 
         case $f in
             *.c|*.h)
-                indent -linux -nut -i4 -l120 $stage1dir/exports/$f
-                rm -f $stage1dir/exports/$f~
+                $topdir/stage0/driver.sh indent-inplace $stage1dir/exports/$f
                 ;;
         esac
     done
+
+    # For tracking changes that might feed into our hacked version of otangle:
+    cp $topdir/state/rbuild/texk/web2c/otangle.c $stage1dir/exports/otangle.c
+    $topdir/stage0/driver.sh indent-inplace $stage1dir/exports/otangle.c
 }
 
 

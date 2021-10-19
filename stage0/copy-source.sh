@@ -32,6 +32,10 @@ cp $src/texk/web2c/xetexdir/image/*.h $out/xetexdir/image/
 cp $src/texk/web2c/*.h $out/xetexdir/
 
 cp $src/texk/web2c/tex.ch $out/xetexdir/
+cp $src/texk/web2c/tracingstacklevels.ch $out/xetexdir/
+# Next two are for TeX Live 2022.
+# cp $src/texk/web2c/partoken.ch $out/xetexdir/
+# cp $src/texk/web2c/partoken-102.ch $out/xetexdir/
 cp $src/texk/web2c/tex-binpool.ch $out/xetexdir/
 cp $src/texk/web2c/xetexdir/*.web $out/xetexdir/
 cp $src/texk/web2c/xetexdir/*.ch* $out/xetexdir/
@@ -69,6 +73,12 @@ mkdir -p $out/libmd5
 cp $src/texk/web2c/libmd5/*.c $out/libmd5/
 cp $src/texk/web2c/libmd5/*.h $out/libmd5/
 rm $out/libmd5/md5main.c
+
+mkdir -p $out/pplib $out/pplib/util
+cp $src/libs/pplib/pplib-src/src/*.c $out/pplib
+cp $src/libs/pplib/pplib-src/src/*.h $out/pplib
+cp $src/libs/pplib/pplib-src/src/util/*.c $out/pplib/util
+cp $src/libs/pplib/pplib-src/src/util/*.h $out/pplib/util
 
 # kpathsea
 

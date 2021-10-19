@@ -314,7 +314,7 @@ unsigned char /*max_selector */ old_setting;
 memory_word *zeqtb;
 quarterword
 #define xeq_level (zzzaa -8939240)
-    zzzaa[1114731];
+    zzzaa[1114732];
 two_halves *hash;
 two_halves *yhash;
 halfword hash_used;
@@ -539,7 +539,7 @@ halfword *hyph_list;
 hyph_pointer *hyph_link;
 integer hyph_count;
 integer hyph_next;
-        /*:982*///999:
+        /*:980*///997:
 #ifdef INITEX
 integer
 #define trie_op_hash (zzzab - (int)(neg_trie_op_size))
@@ -552,7 +552,7 @@ integer trie_op_ptr;
 #endif                          // INITEX
 trie_opcode max_op_used;
 boolean small_op;
-        /*:999*///1003:
+        /*:997*///1001:
 #ifdef INITEX
 packed_UTF16_code *trie_c;
 trie_opcode *trie_o;
@@ -562,7 +562,7 @@ trie_pointer trie_ptr;
 trie_pointer *trie_hash;
 
 #endif                          // INITEX
-         /*:1003*///1006:
+         /*:1001*///1004:
 #ifdef INITEX
 boolean *trie_taken;
 trie_pointer trie_min[65536];
@@ -663,5 +663,5 @@ scaled accent_width, accent_height;
 scaled delta;
 integer synctexoption;
 integer synctexoffset;
-//:1708
+//:1709
 #include "xetexcoerce.h"

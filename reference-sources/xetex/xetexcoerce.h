@@ -1161,7 +1161,7 @@ boolean load_fmt_file(void);
 void close_files_and_terminate(void);
 #define close_files_and_terminate_regmem register memory_word *eqtb=zeqtb;
 void final_cleanup(void);
-#define final_cleanup_regmem register memory_word *mem=zmem;
+#define final_cleanup_regmem register memory_word *mem=zmem, *eqtb=zeqtb;
 void init_prim(void);
 #define init_prim_regmem register memory_word *eqtb=zeqtb;
 void debug_help(void);

@@ -112,9 +112,12 @@ init_screen
 init_start_time IMPL
 ini_version
 in_open
+index_field
 input_int
 input_file
 input_ln
+input_ptr
+input_stack
 insert_src_special_auto
 insert_src_special_every_cr
 insert_src_special_every_display
@@ -202,6 +205,7 @@ math_fam_field
 max_buf_stack
 memory_word
 mltex_p
+name_field
 name_length
 name_length16
 name_of_file

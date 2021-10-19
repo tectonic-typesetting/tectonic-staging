@@ -307,7 +307,7 @@ unsigned char /*bad_conversion */ conversion_type;
 boolean prev_colon;
 c_int_type verbose;
 integer min_crossrefs;
-               /*:473*//*12: *///3:
+               /*:472*//*12: *///3:
 #include "bibtex.h"
 void print_a_newline(void)
 {
@@ -879,7 +879,7 @@ void zprint_fn_class(hash_loc fn_loc)
     }
 }
 
-        /*:159*///160:
+        /*:158*///159:
 #ifdef TRACE
 void ztrace_pr_fn_class(hash_loc fn_loc)
 {
@@ -1544,7 +1544,7 @@ void trace_and_stat_printing(void)
                 {
                     out_pool_str(log_file, cite_list[cite_ptr]);
                 }
-                if ((read_performed))   //460:
+                if ((read_performed))   //459:
                 {
                     {
                         Fputs(log_file, ", entry-type ");
@@ -1723,7 +1723,7 @@ void trace_and_stat_printing(void)
             str_num = str_num + 1;
         }
     }
-//:465
+//:464
 #endif                          // TRACE
     ;
 
@@ -1768,7 +1768,7 @@ void trace_and_stat_printing(void)
             blt_in_ptr = blt_in_ptr + 1;
         }
     }
-//:466
+//:465
 #endif                          // not NO_BIBTEX_STAT
 }
 
@@ -2145,7 +2145,7 @@ void zquick_sort(cite_number left_end, cite_number right_end)
     }
 
 #endif                          // TRACE
-    if ((right_end - left_end < 10 /*short_list */ ))   //305:
+    if ((right_end - left_end < 10 /*short_list */ ))   //304:
     {
         {
             register integer for_end;
@@ -2740,7 +2740,7 @@ void zscan_fn_def(hash_loc fn_hash_loc)
                 if ((!hash_found)) {
                     skp_token_unknown_function_print();
                     goto lab25;
-                } else {        //194:
+                } else {        //193:
 
                     if ((fn_loc == wiz_loc)) {
                         print_recursion_illegal();
@@ -2984,7 +2984,7 @@ boolean scan_balanced_braces(void)
         }
     }
     bib_brace_level = 0;
-    if ((store_field))          //257:
+    if ((store_field))          //256:
     {
         while ((buffer[buf_ptr2] != right_str_delim))
             switch ((buffer[buf_ptr2])) {
@@ -3139,7 +3139,7 @@ boolean scan_balanced_braces(void)
                 }
                 break;
             }
-    } else {                    //255:
+    } else {                    //254:
 
         while ((buffer[buf_ptr2] != right_str_delim))
             if ((buffer[buf_ptr2] == 123 /*left_brace */ )) {
@@ -3151,7 +3151,7 @@ boolean scan_balanced_braces(void)
                         goto lab10;
                     }
                 }
-                while ((bib_brace_level > 0)) { //256:
+                while ((bib_brace_level > 0)) { //255:
 
                     if ((buffer[buf_ptr2] == 125 /*right_brace */ )) {
                         bib_brace_level = bib_brace_level - 1;
@@ -3317,7 +3317,7 @@ boolean scan_a_field_token_and_eat_white(void)
                         }
                     }
                 }
-                if ((store_token))      //261:
+                if ((store_token))      //260:
                 {
                     tmp_ptr = str_start[ilk_info[macro_name_loc]];
                     tmp_end_ptr = str_start[ilk_info[macro_name_loc] + 1];
@@ -3409,7 +3409,7 @@ boolean scan_and_store_the_field_value_and_eat_white(void)
         if ((!scan_a_field_token_and_eat_white()))
             goto lab10;
     }
-    if ((store_field))          //262:
+    if ((store_field))          //261:
     {
         if ((!at_bib_command)) {
 
@@ -3439,7 +3439,7 @@ boolean scan_and_store_the_field_value_and_eat_white(void)
         }
 
 #endif                          // TRACE
-        if ((at_bib_command))   //263:
+        if ((at_bib_command))   //262:
         {
             switch ((command_num)) {
             case 1:
@@ -3455,7 +3455,7 @@ boolean scan_and_store_the_field_value_and_eat_white(void)
                 bib_cmd_confusion();
                 break;
             }
-        } else {                //264:
+        } else {                //263:
 
             field_ptr = entry_cite_ptr * num_fields + ilk_info[field_name_loc];
             if ((field_ptr >= max_fields)) {
@@ -3487,7 +3487,7 @@ boolean scan_and_store_the_field_value_and_eat_white(void)
             } else {
 
                 field_info[field_ptr] = hash_text[field_val_loc];
-                if (((ilk_info[field_name_loc] == crossref_num) && (!all_entries)))     //265:
+                if (((ilk_info[field_name_loc] == crossref_num) && (!all_entries)))     //264:
                 {
                     tmp_ptr = ex_buf_xptr;
                     while ((tmp_ptr < ex_buf_ptr)) {
@@ -3544,7 +3544,7 @@ void zname_scan_for_and(str_number pop_lit_var)
         case 65:
             {
                 ex_buf_ptr = ex_buf_ptr + 1;
-                if ((preceding_white))  //387:
+                if ((preceding_white))  //386:
                 {
                     if ((ex_buf_ptr <= (ex_buf_length - 3))) {
 
@@ -3613,7 +3613,7 @@ boolean von_token_found(void)
         } else if ((sv_buffer[name_bf_ptr] == 123 /*left_brace */ )) {
             nm_brace_level = nm_brace_level + 1;
             name_bf_ptr = name_bf_ptr + 1;
-            if (((name_bf_ptr + 2 < name_bf_xptr) && (sv_buffer[name_bf_ptr] == 92 /*backslash */ )))   //399:
+            if (((name_bf_ptr + 2 < name_bf_xptr) && (sv_buffer[name_bf_ptr] == 92 /*backslash */ )))   //398:
             {
                 name_bf_ptr = name_bf_ptr + 1;
                 name_bf_yptr = name_bf_ptr;
@@ -3621,7 +3621,7 @@ boolean von_token_found(void)
                     name_bf_ptr = name_bf_ptr + 1;
                 control_seq_loc =
                     str_lookup(sv_buffer, name_bf_yptr, name_bf_ptr - name_bf_yptr, 14 /*control_seq_ilk */ , false);
-                if ((hash_found))       //400:
+                if ((hash_found))       //399:
                 {
                     switch ((ilk_info[control_seq_loc])) {
                     case 3:
@@ -3670,7 +3670,7 @@ boolean von_token_found(void)
                     name_bf_ptr = name_bf_ptr + 1;
                 }
                 goto lab10;
-            } else              /*401: */
+            } else              /*400: */
                 while (((nm_brace_level > 0) && (name_bf_ptr < name_bf_xptr))) {
 
                     if ((sv_buffer[name_bf_ptr] == 125 /*right_brace */ ))
@@ -3859,7 +3859,7 @@ void figure_out_the_formatted_name(void)
                             skip_stuff_at_sp_brace_level_greater_than_one();
                         } else
                             sp_ptr = sp_ptr + 1;
-                    if (((end_of_group) && (to_be_written)))    //412:
+                    if (((end_of_group) && (to_be_written)))    //411:
                     {
                         ex_buf_xptr = ex_buf_ptr;
                         sp_ptr = sp_xptr1;
@@ -3882,7 +3882,7 @@ void figure_out_the_formatted_name(void)
                                     }
                                     while ((cur_token < last_token)) {
 
-                                        if ((double_letter))    //415:
+                                        if ((double_letter))    //414:
                                         {
                                             name_bf_ptr = name_tok[cur_token];
                                             name_bf_xptr = name_tok[cur_token + 1];
@@ -3896,7 +3896,7 @@ void figure_out_the_formatted_name(void)
                                                 }
                                                 name_bf_ptr = name_bf_ptr + 1;
                                             }
-                                        } else {        //416:
+                                        } else {        //415:
 
                                             name_bf_ptr = name_tok[cur_token];
                                             name_bf_xptr = name_tok[cur_token + 1];
@@ -3916,7 +3916,7 @@ void figure_out_the_formatted_name(void)
                                                     if (((sv_buffer[name_bf_ptr] == 123 /*left_brace */ )
                                                          && (name_bf_ptr + 1 < name_bf_xptr))) {
 
-                                                    if ((sv_buffer[name_bf_ptr + 1] == 92 /*backslash */ ))     //417:
+                                                    if ((sv_buffer[name_bf_ptr + 1] == 92 /*backslash */ ))     //416:
                                                     {
                                                         if ((ex_buf_ptr + 2 > buf_size))
                                                             buffer_overflow();
@@ -3954,7 +3954,7 @@ void figure_out_the_formatted_name(void)
  lab15:                        /*loop_exit */ ;
                                         }
                                         cur_token = cur_token + 1;
-                                        if ((cur_token < last_token))   //418:
+                                        if ((cur_token < last_token))   //417:
                                         {
                                             if ((use_default)) {
                                                 if ((!double_letter)) {
@@ -4045,7 +4045,7 @@ void figure_out_the_formatted_name(void)
                             }
                         if ((ex_buf_ptr > 0)) {
 
-                            if ((ex_buf[ex_buf_ptr - 1] == 126 /*tie */ ))      //420:
+                            if ((ex_buf[ex_buf_ptr - 1] == 126 /*tie */ ))      //419:
                             {
                                 ex_buf_ptr = ex_buf_ptr - 1;
                                 if ((ex_buf[ex_buf_ptr - 1] == 126 /*tie */ )) ;
@@ -4366,14 +4366,14 @@ void zadd_out_pool(str_number p_str)
     }
     out_buf_length = out_buf_ptr;
     unbreakable_tail = false;
-    while (((out_buf_length > max_print_line) && (!unbreakable_tail))) {        //324:
+    while (((out_buf_length > max_print_line) && (!unbreakable_tail))) {        //323:
 
         end_ptr = out_buf_length;
         out_buf_ptr = max_print_line;
         break_pt_found = false;
         while (((lex_class[out_buf[out_buf_ptr]] != 1 /*white_space */ ) && (out_buf_ptr >= min_print_line)))
             out_buf_ptr = out_buf_ptr - 1;
-        if ((out_buf_ptr == min_print_line - 1))        //325:
+        if ((out_buf_ptr == min_print_line - 1))        //324:
         {
             out_buf_ptr = max_print_line + 1;
             while ((out_buf_ptr < end_ptr))
@@ -4530,7 +4530,7 @@ void x_concatenate(void)
     } else if ((pop_typ2 != 1 /*stk_str */ )) {
         print_wrong_stk_lit(pop_lit2, pop_typ2, 1 /*stk_str */ );
         push_lit_stk(s_null, 1 /*stk_str */ );
-    } else {                    //352:
+    } else {                    //351:
 
         if ((pop_lit2 >= cmd_str_ptr)) {
 
@@ -4562,7 +4562,7 @@ void x_concatenate(void)
                 }
                 push_lit_stk(make_string(), 1 /*stk_str */ );
             }
-        } else {                //353:
+        } else {                //352:
 
             if ((pop_lit1 >= cmd_str_ptr)) {
 
@@ -4605,7 +4605,7 @@ void x_concatenate(void)
                     pool_ptr = pool_ptr + sp_length;
                     push_lit_stk(make_string(), 1 /*stk_str */ );
                 }
-            } else {            //354:
+            } else {            //353:
 
                 if (((str_start[pop_lit1 + 1] - str_start[pop_lit1]) == 0))
                     lit_stk_ptr = lit_stk_ptr + 1;
@@ -4658,10 +4658,10 @@ void x_gets(void)
         switch ((fn_type[pop_lit1])) {
         case 5:
             /*
-               356: */ if ((pop_typ2 != 0 /*stk_int */ ))
+               355: */ if ((pop_typ2 != 0 /*stk_int */ ))
                 print_wrong_stk_lit(pop_lit2, pop_typ2, 0 /*stk_int */ );
             else
-                entry_ints[cite_ptr * num_ent_ints + ilk_info[pop_lit1]] = /*:356 */ pop_lit2;
+                entry_ints[cite_ptr * num_ent_ints + ilk_info[pop_lit1]] = /*:355 */ pop_lit2;
             break;
         case 6:
             {
@@ -4698,7 +4698,7 @@ void x_gets(void)
             if ((pop_typ2 != 0 /*stk_int */ ))
                 print_wrong_stk_lit(pop_lit2, pop_typ2, 0 /*stk_int */ );
             else
-                ilk_info[pop_lit1] = /*:359 */ pop_lit2;
+                ilk_info[pop_lit1] = /*:358 */ pop_lit2;
             break;
         case 8:
             {
@@ -4764,7 +4764,7 @@ void x_add_period(void)
         push_lit_stk(s_null, 1 /*stk_str */ );
     } else if (((str_start[pop_lit1 + 1] - str_start[pop_lit1]) == 0))
         push_lit_stk(s_null, 1 /*stk_str */ );
-    else {                      //362:
+    else {                      //361:
 
         sp_ptr = str_start[pop_lit1 + 1];
         sp_end = str_start[pop_lit1];
@@ -4897,7 +4897,7 @@ void x_change_case(void)
                             control_seq_loc =
                                 str_lookup(ex_buf, ex_buf_xptr, ex_buf_ptr - ex_buf_xptr, 14 /*control_seq_ilk */ ,
                                            false);
-                            if ((hash_found))   //373:
+                            if ((hash_found))   //372:
                             {
                                 switch ((conversion_type)) {
                                 case 0:
@@ -4995,7 +4995,7 @@ void x_change_case(void)
                 } else if ((ex_buf[ex_buf_ptr] == 125 /*right_brace */ )) {
                     decr_brace_level(pop_lit2);
                     prev_colon = false;
-                } else if ((brace_level == 0))  //377:
+                } else if ((brace_level == 0))  //376:
                 {
                     switch ((conversion_type)) {
                     case 0:
@@ -5526,7 +5526,7 @@ void x_purify(void)
                         brace_level = brace_level + 1;
                         if (((brace_level == 1) && (ex_buf_ptr + 1 < ex_buf_length))) {
 
-                            if ((ex_buf[ex_buf_ptr + 1] == 92 /*backslash */ )) //433:
+                            if ((ex_buf[ex_buf_ptr + 1] == 92 /*backslash */ )) //432:
                             {
                                 ex_buf_ptr = ex_buf_ptr + 1;
                                 while (((ex_buf_ptr < ex_buf_length) && (brace_level > 0))) {
@@ -5539,7 +5539,7 @@ void x_purify(void)
                                     control_seq_loc =
                                         str_lookup(ex_buf, ex_buf_yptr, ex_buf_ptr - ex_buf_yptr,
                                                    14 /*control_seq_ilk */ , false);
-                                    if ((hash_found))   //434:
+                                    if ((hash_found))   //433:
                                     {
                                         ex_buf[ex_buf_xptr] = ex_buf[ex_buf_yptr];
                                         ex_buf_xptr = ex_buf_xptr + 1;
@@ -5644,7 +5644,7 @@ void x_substring(void)
         if (((pop_lit1 <= 0) || (pop_lit2 == 0) || (pop_lit2 > sp_length) || (pop_lit2 < -(integer) sp_length))) {
             push_lit_stk(s_null, 1 /*stk_str */ );
             goto lab10;
-        } else {                //439:
+        } else {                //438:
 
             if ((pop_lit2 > 0)) {
                 if ((pop_lit1 > sp_length - (pop_lit2 - 1)))
@@ -5707,7 +5707,7 @@ void x_swap(void)
         }
         push_lit_stk(pop_lit1, 1 /*stk_str */ );
         push_lit_stk(pop_lit2, pop_typ2);
-    } else {                    //441:
+    } else {                    //440:
 
         ex_buf_length = 0;
         add_buf_pool(pop_lit2);
@@ -5783,7 +5783,7 @@ void x_text_prefix(void)
     } else if ((pop_lit1 <= 0)) {
         push_lit_stk(s_null, 1 /*stk_str */ );
         goto lab10;
-    } else {                    //445:
+    } else {                    //444:
 
         sp_ptr = str_start[pop_lit2];
         sp_end = str_start[pop_lit2 + 1];
@@ -5893,7 +5893,7 @@ void x_width(void)
                     brace_level = brace_level + 1;
                     if (((brace_level == 1) && (ex_buf_ptr + 1 < ex_buf_length))) {
 
-                        if ((ex_buf[ex_buf_ptr + 1] == 92 /*backslash */ ))     //453:
+                        if ((ex_buf[ex_buf_ptr + 1] == 92 /*backslash */ ))     //452:
                         {
                             ex_buf_ptr = ex_buf_ptr + 1;
                             while (((ex_buf_ptr < ex_buf_length) && (brace_level > 0))) {
@@ -5910,7 +5910,7 @@ void x_width(void)
                                     control_seq_loc =
                                         str_lookup(ex_buf, ex_buf_xptr, ex_buf_ptr - ex_buf_xptr,
                                                    14 /*control_seq_ilk */ , false);
-                                    if ((hash_found))   //454:
+                                    if ((hash_found))   //453:
                                     {
                                         switch ((ilk_info[control_seq_loc])) {
                                         case 12:
@@ -6602,7 +6602,7 @@ void aux_citation_command(void)
             }
             lower_case(ex_buf, buf_ptr1, (buf_ptr2 - buf_ptr1));
             lc_cite_loc = str_lookup(ex_buf, buf_ptr1, (buf_ptr2 - buf_ptr1), 10 /*lc_cite_ilk */ , true);
-            if ((hash_found))   //136:
+            if ((hash_found))   //135:
             {
                 ;
 
@@ -6630,7 +6630,7 @@ void aux_citation_command(void)
                         goto lab10;
                     }
                 }
-            } else {            //137:
+            } else {            //136:
 
                 ;
 
@@ -8113,7 +8113,7 @@ void get_bib_command_or_entry_and_process(void)
 #endif                          // TRACE
         lower_case(buffer, buf_ptr1, (buf_ptr2 - buf_ptr1));
         command_num = ilk_info[str_lookup(buffer, buf_ptr1, (buf_ptr2 - buf_ptr1), 12 /*bib_command_ilk */ , false)];
-        if ((hash_found))       //240:
+        if ((hash_found))       //239:
         {
             at_bib_command = true;
             switch ((command_num)) {
@@ -8394,7 +8394,7 @@ bib_warn_print;end;end;*/ }
                 }
             }
             store_entry = true;
-            if ((all_entries))  //273:
+            if ((all_entries))  //272:
             {
                 if ((hash_found)) {
                     if ((entry_cite_ptr < all_marker))
@@ -8415,7 +8415,7 @@ bib_warn_print;end;end;*/ }
  lab22:                        /*cite_already_set */ ;
             } else if ((!hash_found))
                 store_entry = false;
-            if ((store_entry))  //274:
+            if ((store_entry))  //273:
             {
 /*dummy_loc:=str_lookup(buffer,buf_ptr1,(buf_ptr2-buf_ptr1),9[cite_ilk],false);
 if(not hash_found)then begin begin write(log_file,'Warning--case mismatch, database key "');
@@ -8696,7 +8696,7 @@ void bst_read_command(void)
                             } else {
 
                                 field_parent_ptr = cite_parent_ptr * num_fields + crossref_num;
-                                if ((field_info[field_parent_ptr] != 0 /*missing */ ))  //283:
+                                if ((field_info[field_parent_ptr] != 0 /*missing */ ))  //282:
                                 {
                                     {
                                         Fputs(log_file, "Warning--you've nested cross references");
@@ -8725,7 +8725,7 @@ void bst_read_command(void)
                     if ((type_list[cite_ptr] == 0 /*empty */ ))
                         print_missing_entry(cite_list[cite_ptr]);
                     else if (((all_entries) || (cite_ptr < old_num_cites) || (cite_info[cite_ptr] >= min_crossrefs))) {
-                        if ((cite_ptr > cite_xptr))     //286:
+                        if ((cite_ptr > cite_xptr))     //285:
                         {
                             if (((cite_xptr + 1) * num_fields > max_fields)) {
                                 {
@@ -8757,7 +8757,7 @@ void bst_read_command(void)
                     cite_ptr = cite_ptr + 1;
                 }
                 num_cites = cite_xptr;
-                if ((all_entries))      //287:
+                if ((all_entries))      //286:
                 {
                     cite_ptr = all_marker;
                     while ((cite_ptr < old_num_cites)) {
@@ -9825,7 +9825,7 @@ void main_body(void)
     a_close(bst_file);
  lab9932:                      /*no_bst_file */ a_close(bbl_file);
  lab9998:                      /*close_up_shop */  {
-                                //456:
+                                //455:
 
         if (((read_performed) && (!reading_completed))) {
             {

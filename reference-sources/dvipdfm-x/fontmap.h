@@ -38,20 +38,20 @@
 /* Options */
 typedef struct fontmap_opt {
   /* Synthetic font */
-  double slant, extend, bold;
+  double    slant, extend, bold;
   /* comaptibility and other flags */
-  int    mapc,  flags;
+  int       mapc,  flags;
 
-  char  *otl_tags;    /* currently unused */
-  char  *tounicode;   /* not implemented yet */
+  char     *otl_tags;
+  char     *tounicode;   /* not implemented yet */
 
-  double design_size; /* unused */
+  double    design_size; /* unused */
 
-  char  *charcoll;    /* Adobe-Japan1-4, etc. */
-  int    index;       /* TTC index */
-  int    style;       /* ,Bold, etc. */
-  int    stemv;       /* StemV value especially for CJK fonts */
-  int    use_glyph_encoding; /* XeTeX support */
+  char     *charcoll;    /* Adobe-Japan1-4, etc. */
+  uint32_t  index;       /* TTC index */
+  int       style;       /* ,Bold, etc. */
+  int       stemv;       /* StemV value especially for CJK fonts */
+  int       use_glyph_encoding; /* XeTeX support */
 } fontmap_opt;
 
 typedef struct fontmap_rec {

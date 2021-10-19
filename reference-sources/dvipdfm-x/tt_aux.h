@@ -24,10 +24,8 @@
 #include "pdfobj.h"
 #include "sfnt.h"
 
-extern int always_embed; /* flag declared in dvipdfmx.c */
-
 /* TTC (TrueType Collection) */
-extern ULONG    ttc_read_offset (sfnt *sfont, int ttc_idx);
+extern ULONG    ttc_read_offset (sfnt *sfont, ULONG ttc_idx);
 
 /* FontDescriptor */
 extern pdf_obj *tt_get_fontdesc (sfnt *sfont, int *embed, int stemv, int type, const char* fontname);

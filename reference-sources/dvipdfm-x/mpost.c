@@ -831,7 +831,7 @@ do_show (void)
 		       (spt_t)(cp.y * dev_unit_dviunit()),
 		       ustr, length * 2,
 		       (spt_t)(text_width*dev_unit_dviunit()),
-		       font->font_id, 0);
+		       font->font_id);
     RELEASE(ustr);
   } else {
 #define FWBASE ((double) (1<<20))
@@ -843,7 +843,7 @@ do_show (void)
 		       (spt_t)(cp.y * dev_unit_dviunit()),
 		       strptr, length,
 		       (spt_t)(text_width*dev_unit_dviunit()),
-		       font->font_id, 0);
+		       font->font_id);
   }
 
   if (pdf_dev_get_font_wmode(font->font_id)) {
@@ -901,8 +901,7 @@ do_texfig_operator (int opcode, double x_user, double y_user)
       fig_p.flags   |= INFO_HAS_USER_BBOX;
 
       sprintf(resname, "__tf%d__", count);
-      xobj_id = pdf_doc_begin_grabbing(resname,
-				       fig_p.bbox.llx, fig_p.bbox.ury, &fig_p.bbox);
+      xobj_id = pdf_doc_begin_grabbing(resname, fig_p.bbox.llx, fig_p.bbox.ury, &fig_p.bbox);
       
       in_tfig = 1;
       count++;
@@ -913,7 +912,7 @@ do_texfig_operator (int opcode, double x_user, double y_user)
       ERROR("endTexFig without valid startTexFig!.");
 
     pdf_doc_end_grabbing(NULL);
-    pdf_dev_put_image(xobj_id, &fig_p, x_user, y_user);
+    pdf_dev_put_image(xobj_id, &fig_p, x_user, y_user, NULL); /* FIXME */
     in_tfig = 0;
     break;
   default:

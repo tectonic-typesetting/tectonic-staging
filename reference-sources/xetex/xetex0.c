@@ -1138,8 +1138,10 @@ void term_input(void)
 {
     term_input_regmem integer k;
     fflush(stdout);
-    if (!input_ln(term_in, true))
+    if (!input_ln(term_in, true)) {
+        cur_input.limit_field = 0;
         fatal_error(65543L /*"End of file on the terminal!" */ );
+    }
     term_offset = 0;
     decr(selector);
     if (last != first) {
@@ -6048,7 +6050,7 @@ halfword zprim_lookup(str_number s)
             p = 0 /*undefined_primitive */ ;
             goto lab40;
         } else
-            p = (s % 431 /*prim_prime */ ) + 1;
+            p = (s % 1777 /*prim_prime */ ) + 1;
     } else {
 
         j = str_start[(s) - 65536L];
@@ -6064,8 +6066,8 @@ halfword zprim_lookup(str_number s)
             if (k <= for_end)
                 do {
                     h = h + h + str_pool[k];
-                    while (h >= 431 /*prim_prime */ )
-                        h = h - 431;
+                    while (h >= 1777 /*prim_prime */ )
+                        h = h - 1777;
                 }
                 while (k++ < for_end);
         }
@@ -12654,7 +12656,7 @@ void conv_toks(void)
         print_char(cur_val);
         break;
     case 33:
-        print(65537L /*".999993" */ );
+        print(65537L /*".999994" */ );
         break;
     case 34:
         if ((font_area[fnt] == 65535L /*aat_font_flag */ ))
@@ -12939,8 +12941,11 @@ void zread_toks(integer n, halfword r, halfword j)
                     }
                     n = -1;
                 }
-            } else
+            } else {
+
+                cur_input.limit_field = 0;
                 fatal_error(66138L /*"*** (cannot \read from terminal in nonstop modes)" */ );
+            }
         } else if (read_open[m] == 1 /*just_open */ ) { //520:
 
             if (input_ln(read_file[m], false))
@@ -13990,9 +13995,9 @@ void open_log_file(void)
     log_opened = true;
     {
         if (src_specials_p || file_line_error_style_p || parse_first_line_p)
-            fprintf(log_file, "%s%s%s", "This is XeTeX, Version 3.141592653", "-2.6", "-0.999993");
+            fprintf(log_file, "%s%s%s", "This is XeTeX, Version 3.141592653", "-2.6", "-0.999994");
         else
-            fprintf(log_file, "%s%s%s", "This is XeTeX, Version 3.141592653", "-2.6", "-0.999993");
+            fprintf(log_file, "%s%s%s", "This is XeTeX, Version 3.141592653", "-2.6", "-0.999994");
         Fputs(log_file, version_string);
         print(format_ident);
         print(66187L /*"  " */ );

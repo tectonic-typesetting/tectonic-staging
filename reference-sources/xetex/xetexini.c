@@ -95,7 +95,7 @@ void initialize(void)
     {
         register integer for_end;
         k = 1;
-        for_end = 500 /*prim_size */ ;
+        for_end = 2100 /*prim_size */ ;
         if (k <= for_end)
             do
                 prim[k] = prim[0];
@@ -3358,7 +3358,7 @@ void store_fmt_file(void)
     dump_int(x);
     dump_things(format_engine[0], x);
     libc_free(format_engine);
-    dump_int(71942406L);
+    dump_int(461177208L);
     dump_int(1073741823L);
     dump_int(hash_high);
     dump_int(eTeX_mode);
@@ -3712,9 +3712,10 @@ boolean load_fmt_file(void)
         fprintf(stderr, "%s%s", "fmtdebug:", "string pool checksum");
         fprintf(stderr, "%s%ld\n", " = ", (long)x);
     }
-    if (x != 71942406L) {
+    if (x != 461177208L) {
         ;
-        fprintf(stdout, "%s%s%s\n", "---! ", stringcast(name_of_file + 1), " made by different executable version");
+        fprintf(stdout, "%s%s%s\n", "---! ", stringcast(name_of_file + 1),
+                " made by different executable version, strings are different");
         goto lab6666;
     }
     undump_int(x);
@@ -3958,7 +3959,7 @@ boolean load_fmt_file(void)
     {
         register integer for_end;
         p = 0;
-        for_end = 500 /*prim_size */ ;
+        for_end = 2100 /*prim_size */ ;
         if (p <= for_end)
             do
                 undump_hh(prim[p]);
@@ -5250,9 +5251,9 @@ void main_body(void)
     term_offset = 0;
     file_offset = 0;
     if (src_specials_p || file_line_error_style_p || parse_first_line_p)
-        fprintf(stdout, "%s%s%s", "This is XeTeX, Version 3.141592653", "-2.6", "-0.999993");
+        fprintf(stdout, "%s%s%s", "This is XeTeX, Version 3.141592653", "-2.6", "-0.999994");
     else
-        fprintf(stdout, "%s%s%s", "This is XeTeX, Version 3.141592653", "-2.6", "-0.999993");
+        fprintf(stdout, "%s%s%s", "This is XeTeX, Version 3.141592653", "-2.6", "-0.999994");
     Fputs(stdout, version_string);
     if (format_ident == 0)
         fprintf(stdout, "%s%s%c\n", " (preloaded format=", dump_name, ')');

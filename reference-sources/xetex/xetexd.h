@@ -111,7 +111,7 @@
 #define inf_param_size ( 60 )
 #define sup_param_size ( 32767 )
 #define inf_save_size ( 600 )
-#define sup_save_size ( 80000L )
+#define sup_save_size ( 30000000L )
 #define inf_stack_size ( 200 )
 #define sup_stack_size ( 30000 )
 #define inf_dvi_buf_size ( 800 )
@@ -325,7 +325,7 @@ halfword eqtb_top;
 halfword hash_high;
 boolean no_new_control_sequence;
 integer cs_count;
-two_halves prim[501];
+two_halves prim[2101];
 halfword prim_used;
 memory_word *save_stack;
 integer save_ptr;

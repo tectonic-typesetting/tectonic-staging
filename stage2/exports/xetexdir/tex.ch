@@ -1,3 +1,4 @@
+% $Id$
 % tex.ch for C compilation with web2c, derived from various other change files.
 % By Tim Morgan, UC Irvine ICS Department, and many others.
 %
@@ -259,7 +260,7 @@ versions of the program.
 @!sup_param_size = 32767;
 
 @!inf_save_size = 600;
-@!sup_save_size = 80000;
+@!sup_save_size = 30000000;
 
 @!inf_stack_size = 200;
 @!sup_stack_size = 30000;
@@ -783,6 +784,13 @@ if translate_filename then begin
   fputs(translate_filename, stdout);
   wterm_ln(')');
 end;
+@z
+
+@x [5.71] term_input: set limit when fatal_error
+if not input_ln(term_in,true) then fatal_error("End of file on the terminal!");
+@y
+if not input_ln(term_in,true) then begin
+  limit:=0; fatal_error("End of file on the terminal!"); end;
 @z
 
 @x [6.73] l.1732 - Add unspecified_mode.
@@ -1528,6 +1536,15 @@ cur_order:=co_backup; link(backup_head):=backup_backup;
 @y
 cur_order:=co_backup; link(backup_head):=backup_backup;
 decr(expand_depth_count);
+@z
+
+@x [27.484] set limit when fatal_error
+else fatal_error("*** (cannot \read from terminal in nonstop modes)")
+@y
+else begin
+  limit:=0;
+  fatal_error("*** (cannot \read from terminal in nonstop modes)");
+  end
 @z
 
 @x [28.501] l.9747 - \eof18
@@ -3506,7 +3523,7 @@ format_debug('string pool checksum')(x);
 if x<>@$ then begin {check that strings are the same}
   wake_up_terminal;
   wterm_ln('---! ', stringcast(name_of_file+1),
-           ' made by different executable version');
+           ' made by different executable version, strings are different');
   goto bad_fmt;
 end;
 @<Undump |xord|, |xchr|, and |xprn|@>;

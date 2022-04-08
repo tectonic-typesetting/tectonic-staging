@@ -13,11 +13,11 @@
 /* Define if you have zlib. */
 #define HAVE_LIBZ 1
 
-/* Define to 1 if you have the <memory.h> header file. */
-#define HAVE_MEMORY_H 1
-
 /* Define to 1 if you have the <stdint.h> header file. */
 #define HAVE_STDINT_H 1
+
+/* Define to 1 if you have the <stdio.h> header file. */
+#define HAVE_STDIO_H 1
 
 /* Define to 1 if you have the <stdlib.h> header file. */
 #define HAVE_STDLIB_H 1
@@ -50,7 +50,7 @@
 #define PACKAGE_NAME "TECkit (TeX Live)"
 
 /* Define to the full name and version of this package. */
-#define PACKAGE_STRING "TECkit (TeX Live) 2.5.10"
+#define PACKAGE_STRING "TECkit (TeX Live) 2.5.11"
 
 /* Define to the one symbol short name of this package. */
 #define PACKAGE_TARNAME "teckit--tex-live-"
@@ -59,13 +59,15 @@
 #define PACKAGE_URL ""
 
 /* Define to the version of this package. */
-#define PACKAGE_VERSION "2.5.10"
+#define PACKAGE_VERSION "2.5.11"
 
-/* Define to 1 if you have the ANSI C header files. */
+/* Define to 1 if all of the C90 standard headers exist (not just the ones
+   required in a freestanding environment). This macro is provided for
+   backward compatibility; new code need not use it. */
 #define STDC_HEADERS 1
 
 /* Version number of package */
-#define VERSION "2.5.10"
+#define VERSION "2.5.11"
 
 /* Define WORDS_BIGENDIAN to 1 if your processor stores words with the most
    significant byte first (like Motorola and SPARC, unlike Intel). */

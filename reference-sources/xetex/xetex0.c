@@ -73,7 +73,7 @@ void zprint_char(integer s)
             print_raw_char(s, true);
         return;
     }
-    if ( /*270: */ s == eqtb[8939289L /*int_base 49 */ ].cint /*:270 */ ) {
+    if ( /*270: */ s == eqtb[8940889L /*int_base 49 */ ].cint /*:270 */ ) {
 
         if (selector < 20 /*pseudo */ ) {
             print_ln();
@@ -143,17 +143,17 @@ void zprint(integer s)
                 print_char(s);
                 return;
             }
-            if (( /*270: */ s == eqtb[8939289L /*int_base 49 */ ].cint /*:270 */ )) {
+            if (( /*270: */ s == eqtb[8940889L /*int_base 49 */ ].cint /*:270 */ )) {
 
                 if (selector < 20 /*pseudo */ ) {
                     print_ln();
                     return;
                 }
             }
-            nl = eqtb[8939289L /*int_base 49 */ ].cint;
-            eqtb[8939289L /*int_base 49 */ ].cint = -1;
+            nl = eqtb[8940889L /*int_base 49 */ ].cint;
+            eqtb[8940889L /*int_base 49 */ ].cint = -1;
             print_char(s);
-            eqtb[8939289L /*int_base 49 */ ].cint = nl;
+            eqtb[8940889L /*int_base 49 */ ].cint = nl;
             return;
         }
     }
@@ -183,7 +183,7 @@ void zprint_nl(str_number s)
 void zprint_esc(str_number s)
 {
     print_esc_regmem integer c;
-    c = eqtb[8939285L /*int_base 45 */ ].cint /*:269 */ ;
+    c = eqtb[8940885L /*int_base 45 */ ].cint /*:269 */ ;
     if (c >= 0) {
 
         if (c <= 1114111L /*biggest_usv */ )
@@ -249,20 +249,20 @@ void zprint_cs(integer p)
             } else {
 
                 print_esc(p - 1114113L);
-                if (eqtb[2254568L /*cat_code_base */  + p - 1114113L].hh.v.RH == 11 /*letter */ )
+                if (eqtb[2256168L /*cat_code_base */  + p - 1114113L].hh.v.RH == 11 /*letter */ )
                     print_char(32 /*" " */ );
             }
         } else if (p < 1 /*active_base */ )
             print_esc(65816L /*"IMPOSSIBLE." */ );
         else
             print_char(p - 1);
-    } else if (((p >= 2252739L /*undefined_control_sequence */ ) && (p <= 10053971L /*eqtb_size */ )) || (p > eqtb_top))
+    } else if (((p >= 2254339L /*undefined_control_sequence */ ) && (p <= 10055571L /*eqtb_size */ )) || (p > eqtb_top))
         print_esc(65816L /*"IMPOSSIBLE." */ );
     else if ((hash[p].v.RH >= str_ptr))
         print_esc(65817L /*"NONEXISTENT." */ );
     else {
 
-        if ((p >= 2243238L /*prim_eqtb_base */ ) && (p < 2243738L /*frozen_null_font */ ))
+        if ((p >= 2243238L /*prim_eqtb_base */ ) && (p < 2245338L /*frozen_null_font */ ))
             print_esc(prim[p - 2243238L].v.RH - 1);
         else
             print_esc(hash[p].v.RH);
@@ -283,7 +283,7 @@ void zsprint_cs(halfword p)
             print_esc(65814L /*"csname" */ );
             print_esc(65815L /*"endcsname" */ );
         }
-    } else if ((p >= 2243238L /*prim_eqtb_base */ ) && (p < 2243738L /*frozen_null_font */ ))
+    } else if ((p >= 2243238L /*prim_eqtb_base */ ) && (p < 2245338L /*frozen_null_font */ ))
         print_esc(prim[p - 2243238L].v.RH - 1);
     else
         print_esc(hash[p].v.RH);
@@ -2142,7 +2142,7 @@ halfword znew_param_glue(small_number n)
     mem[p].hh.b0 = 10 /*glue_node */ ;
     mem[p].hh.b1 = n + 1;
     mem[p + 1].hh.v.RH = -268435455L;
-    q = /*250: */ eqtb[2252740L /*glue_base */  + n].hh.v.RH /*:250 */ ;
+    q = /*250: */ eqtb[2254340L /*glue_base */  + n].hh.v.RH /*:250 */ ;
     mem[p + 1].hh.v.LH = q;
     incr(mem[q].hh.v.RH);
     Result = p;
@@ -2167,7 +2167,7 @@ halfword znew_skip_param(small_number n)
 {
     register halfword Result;
     new_skip_param_regmem halfword p;
-    temp_ptr = new_spec( /*250: */ eqtb[2252740L /*glue_base */  + n].hh.v.RH /*:250 */ );
+    temp_ptr = new_spec( /*250: */ eqtb[2254340L /*glue_base */  + n].hh.v.RH /*:250 */ );
     p = new_glue(temp_ptr);
     mem[temp_ptr].hh.v.RH = -268435455L;
     mem[p].hh.b1 = n + 1;
@@ -2387,7 +2387,7 @@ void zsearch_mem(halfword p)
     {
         register integer for_end;
         q = 1 /*active_base */ ;
-        for_end = 2253798L /*box_base 255 */ ;
+        for_end = 2255398L /*box_base 255 */ ;
         if (q <= for_end)
             do {
                 if (eqtb[q].hh.v.RH == p) {
@@ -2538,7 +2538,7 @@ void zshort_display(integer p)
                     if ((mem[p].hh.b0 > font_max))
                         print_char(42 /*"*" */ );
                     else        /*297: */
-                        print_esc(hash[2243738L /*font_id_base */  + mem[p].hh.b0].v.RH);
+                        print_esc(hash[2245338L /*font_id_base */  + mem[p].hh.b0].v.RH);
                     print_char(32 /*" " */ );
                     font_in_short_display = mem[p].hh.b0;
                 }
@@ -2560,7 +2560,7 @@ void zshort_display(integer p)
                 case 41:
                     {
                         if (mem[p + 4].qqqq.b1 != font_in_short_display) {
-                            print_esc(hash[2243738L /*font_id_base */  + mem[p + 4].qqqq.b1].v.RH);
+                            print_esc(hash[2245338L /*font_id_base */  + mem[p + 4].qqqq.b1].v.RH);
                             print_char(32 /*" " */ );
                             font_in_short_display = mem[p + 4].qqqq.b1;
                         }
@@ -2618,7 +2618,7 @@ void zprint_font_and_char(integer p)
         if ((mem[p].hh.b0 > font_max))
             print_char(42 /*"*" */ );
         else                    /*297: */
-            print_esc(hash[2243738L /*font_id_base */  + mem[p].hh.b0].v.RH);
+            print_esc(hash[2245338L /*font_id_base */  + mem[p].hh.b0].v.RH);
         print_char(32 /*" " */ );
         print(mem[p].hh.b1);
     }
@@ -2996,14 +2996,14 @@ void zshow_node_list(integer p)
                 case 40:
                 case 41:
                     {
-                        print_esc(hash[2243738L /*font_id_base */  + mem[p + 4].qqqq.b1].v.RH);
+                        print_esc(hash[2245338L /*font_id_base */  + mem[p + 4].qqqq.b1].v.RH);
                         print_char(32 /*" " */ );
                         print_native_word(p);
                     }
                     break;
                 case 42:
                     {
-                        print_esc(hash[2243738L /*font_id_base */  + mem[p + 4].qqqq.b1].v.RH);
+                        print_esc(hash[2245338L /*font_id_base */  + mem[p + 4].qqqq.b1].v.RH);
                         print(66760L /*" glyph#" */ );
                         print_int(mem[p + 4].qqqq.b2);
                     }
@@ -3351,8 +3351,8 @@ void zshow_node_list(integer p)
 
 void zshow_box(halfword p)
 {
-    show_box_regmem depth_threshold = eqtb[8939265L /*int_base 25 */ ].cint;
-    breadth_max = eqtb[8939264L /*int_base 24 */ ].cint /*:262 */ ;
+    show_box_regmem depth_threshold = eqtb[8940865L /*int_base 25 */ ].cint;
+    breadth_max = eqtb[8940864L /*int_base 24 */ ].cint /*:262 */ ;
     if (breadth_max <= 0)
         breadth_max = 5;
     if (pool_ptr + depth_threshold >= pool_size)
@@ -3919,10 +3919,10 @@ void show_activities(void)
                                 t = mem[r].hh.b1;
                                 print_int(t);
                                 print(66413L /*" adds " */ );
-                                if (eqtb[8939325L /*count_base */  + t].cint == 1000)
+                                if (eqtb[8940925L /*count_base */  + t].cint == 1000)
                                     t = mem[r + 3].cint;
                                 else
-                                    t = x_over_n(mem[r + 3].cint, 1000) * eqtb[8939325L /*count_base */  + t].cint;
+                                    t = x_over_n(mem[r + 3].cint, 1000) * eqtb[8940925L /*count_base */  + t].cint;
                                 print_scaled(t);
                                 if (mem[r].hh.b0 == 1 /*split_up */ ) {
                                     q = mem_top - 2;
@@ -4245,16 +4245,16 @@ void zprint_param(integer n)
 void fix_date_and_time(void)
 {
     fix_date_and_time_regmem date_and_time(sys_time, sys_day, sys_month, sys_year);
-    eqtb[8939260L /*int_base 20 */ ].cint = sys_time;
-    eqtb[8939261L /*int_base 21 */ ].cint = sys_day;
-    eqtb[8939262L /*int_base 22 */ ].cint = sys_month;
-    eqtb[8939263L /*int_base 23 */ ].cint = sys_year;
+    eqtb[8940860L /*int_base 20 */ ].cint = sys_time;
+    eqtb[8940861L /*int_base 21 */ ].cint = sys_day;
+    eqtb[8940862L /*int_base 22 */ ].cint = sys_month;
+    eqtb[8940863L /*int_base 23 */ ].cint = sys_year;
 }
 
 void begin_diagnostic(void)
 {
     begin_diagnostic_regmem old_setting = selector;
-    if ((eqtb[8939269L /*int_base 29 */ ].cint <= 0) && (selector == 19 /*term_and_log */ )) {
+    if ((eqtb[8940869L /*int_base 29 */ ].cint <= 0) && (selector == 19 /*term_and_log */ )) {
         decr(selector);
         if (history == 0 /*spotless */ )
             history = 1 /*warning_issued */ ;
@@ -4439,51 +4439,51 @@ void zprint_cmd_chr(quarterword cmd, halfword chr_code)
         break;
     case 76:
     case 77:
-        if (chr_code < 2252759L /*skip_base */ )
-            print_skip_param(chr_code - 2252740L);
-        else if (chr_code < 2253015L /*mu_skip_base */ ) {
+        if (chr_code < 2254359L /*skip_base */ )
+            print_skip_param(chr_code - 2254340L);
+        else if (chr_code < 2254615L /*mu_skip_base */ ) {
             print_esc(65695L /*"skip" */ );
-            print_int(chr_code - 2252759L);
+            print_int(chr_code - 2254359L);
         } else {
 
             print_esc(65696L /*"muskip" */ );
-            print_int(chr_code - 2253015L);
+            print_int(chr_code - 2254615L);
         }
         break;
     case 73:
-        if (chr_code >= 2253283L /*toks_base */ ) {
+        if (chr_code >= 2254883L /*toks_base */ ) {
             print_esc(65707L /*"toks" */ );
-            print_int(chr_code - 2253283L);
+            print_int(chr_code - 2254883L);
         } else
             switch (chr_code) {
-            case 2253272:
+            case 2254872:
                 print_esc(65698L /*"output" */ );
                 break;
-            case 2253273:
+            case 2254873:
                 print_esc(65699L /*"everypar" */ );
                 break;
-            case 2253274:
+            case 2254874:
                 print_esc(65700L /*"everymath" */ );
                 break;
-            case 2253275:
+            case 2254875:
                 print_esc(65701L /*"everydisplay" */ );
                 break;
-            case 2253276:
+            case 2254876:
                 print_esc(65702L /*"everyhbox" */ );
                 break;
-            case 2253277:
+            case 2254877:
                 print_esc(65703L /*"everyvbox" */ );
                 break;
-            case 2253278:
+            case 2254878:
                 print_esc(65704L /*"everyjob" */ );
                 break;
-            case 2253279:
+            case 2254879:
                 print_esc(65705L /*"everycr" */ );
                 break;
-            case 2253281:
+            case 2254881:
                 print_esc(66855L /*"everyeof" */ );
                 break;
-            case 2253282:
+            case 2254882:
                 print_esc(66753L /*"XeTeXinterchartoks" */ );
                 break;
             default:
@@ -4492,21 +4492,21 @@ void zprint_cmd_chr(quarterword cmd, halfword chr_code)
             }
         break;
     case 74:
-        if (chr_code < 8939325L /*count_base */ )
-            print_param(chr_code - 8939240L);
+        if (chr_code < 8940925L /*count_base */ )
+            print_param(chr_code - 8940840L);
         else {
 
             print_esc(65782L /*"count" */ );
-            print_int(chr_code - 8939325L);
+            print_int(chr_code - 8940925L);
         }
         break;
     case 75:
-        if (chr_code < 10053716L /*scaled_base */ )
-            print_length_param(chr_code - 10053693L);
+        if (chr_code < 10055316L /*scaled_base */ )
+            print_length_param(chr_code - 10055293L);
         else {
 
             print_esc(65808L /*"dimen" */ );
-            print_int(chr_code - 10053716L);
+            print_int(chr_code - 10055316L);
         }
         break;
     case 45:
@@ -4649,19 +4649,19 @@ void zprint_cmd_chr(quarterword cmd, halfword chr_code)
         break;
     case 85:
         switch (chr_code) {
-        case 2253271:
+        case 2254871:
             print_esc(65849L /*"parshape" */ );
             break;
-        case 2253539:
+        case 2255139:
             print_esc(66963L /*"interlinepenalties" */ );
             break;
-        case 2253540:
+        case 2255140:
             print_esc(66964L /*"clubpenalties" */ );
             break;
-        case 2253541:
+        case 2255141:
             print_esc(66965L /*"widowpenalties" */ );
             break;
-        case 2253542:
+        case 2255142:
             print_esc(66966L /*"displaywidowpenalties" */ );
             break;
         }
@@ -5486,33 +5486,33 @@ void zprint_cmd_chr(quarterword cmd, halfword chr_code)
         }
         break;
     case 86:
-        if (chr_code == 2254568L /*cat_code_base */ )
+        if (chr_code == 2256168L /*cat_code_base */ )
             print_esc(65715L /*"catcode" */ );
-        else if (chr_code == 6711016L /*math_code_base */ )
+        else if (chr_code == 6712616L /*math_code_base */ )
             print_esc(65719L /*"mathcode" */ );
-        else if (chr_code == 3368680L /*lc_code_base */ )
+        else if (chr_code == 3370280L /*lc_code_base */ )
             print_esc(65716L /*"lccode" */ );
-        else if (chr_code == 4482792L /*uc_code_base */ )
+        else if (chr_code == 4484392L /*uc_code_base */ )
             print_esc(65717L /*"uccode" */ );
-        else if (chr_code == 5596904L /*sf_code_base */ )
+        else if (chr_code == 5598504L /*sf_code_base */ )
             print_esc(65718L /*"sfcode" */ );
         else
             print_esc(65783L /*"delcode" */ );
         break;
     case 87:
-        if (chr_code == 5596904L /*sf_code_base */ )
+        if (chr_code == 5598504L /*sf_code_base */ )
             print_esc(66648L /*"XeTeXcharclass" */ );
-        else if (chr_code == 6711016L /*math_code_base */ )
+        else if (chr_code == 6712616L /*math_code_base */ )
             print_esc(66645L /*"Umathcodenum" */ );
-        else if (chr_code == 6711017L /*math_code_base 1 */ )
+        else if (chr_code == 6712617L /*math_code_base 1 */ )
             print_esc(66647L /*"Umathcode" */ );
-        else if (chr_code == 8939581L /*del_code_base */ )
+        else if (chr_code == 8941181L /*del_code_base */ )
             print_esc(66650L /*"Udelcodenum" */ );
         else
             print_esc(66652L /*"Udelcode" */ );
         break;
     case 88:
-        print_size(chr_code - 2253800L);
+        print_size(chr_code - 2255400L);
         break;
     case 101:
         if (chr_code == 1)
@@ -5594,7 +5594,7 @@ void zprint_cmd_chr(quarterword cmd, halfword chr_code)
             print_esc(66683L /*"errmessage" */ );
         break;
     case 57:
-        if (chr_code == 3368680L /*lc_code_base */ )
+        if (chr_code == 3370280L /*lc_code_base */ )
             print_esc(66689L /*"lowercase" */ );
         else
             print_esc(66690L /*"uppercase" */ );
@@ -5781,7 +5781,7 @@ void zshow_eqtb(halfword n)
 {
     show_eqtb_regmem if (n < 1 /*active_base */ )
         print_char(63 /*"?" */ );
-    else if ((n < 2252740L /*glue_base */ ) || ((n > 10053971L /*eqtb_size */ ) && (n <= eqtb_top)))    //249:
+    else if ((n < 2254340L /*glue_base */ ) || ((n > 10055571L /*eqtb_size */ ) && (n <= eqtb_top)))    //249:
     {
         sprint_cs(n);
         print_char(61 /*"=" */ );
@@ -5790,57 +5790,57 @@ void zshow_eqtb(halfword n)
             print_char(58 /*":" */ );
             show_token_list(mem[eqtb[n].hh.v.RH].hh.v.RH, -268435455L, 32);
         }
-    } else if (n < 2253271L /*local_base */ ) { //255:
+    } else if (n < 2254871L /*local_base */ ) { //255:
 
-        if (n < 2252759L /*skip_base */ ) {
-            print_skip_param(n - 2252740L);
+        if (n < 2254359L /*skip_base */ ) {
+            print_skip_param(n - 2254340L);
             print_char(61 /*"=" */ );
-            if (n < 2252756L /*glue_base 16 */ )
+            if (n < 2254356L /*glue_base 16 */ )
                 print_spec(eqtb[n].hh.v.RH, 65697L /*"pt" */ );
             else
                 print_spec(eqtb[n].hh.v.RH, 65625L /*"mu" */ );
-        } else if (n < 2253015L /*mu_skip_base */ ) {
+        } else if (n < 2254615L /*mu_skip_base */ ) {
             print_esc(65695L /*"skip" */ );
-            print_int(n - 2252759L);
+            print_int(n - 2254359L);
             print_char(61 /*"=" */ );
             print_spec(eqtb[n].hh.v.RH, 65697L /*"pt" */ );
         } else {
 
             print_esc(65696L /*"muskip" */ );
-            print_int(n - 2253015L);
+            print_int(n - 2254615L);
             print_char(61 /*"=" */ );
             print_spec(eqtb[n].hh.v.RH, 65625L /*"mu" */ );
         }
-    } else if (n < 8939240L /*int_base */ ) {   //259:
+    } else if (n < 8940840L /*int_base */ ) {   //259:
 
-        if ((n == 2253271L /*par_shape_loc */ )
-            || ((n >= 2253539L /*etex_pen_base */ ) && (n < 2253543L /*etex_pens */ ))) {
+        if ((n == 2254871L /*par_shape_loc */ )
+            || ((n >= 2255139L /*etex_pen_base */ ) && (n < 2255143L /*etex_pens */ ))) {
             print_cmd_chr(85 /*set_shape */ , n);
             print_char(61 /*"=" */ );
             if (eqtb[n].hh.v.RH == -268435455L)
                 print_char(48 /*"0" */ );
-            else if (n > 2253271L /*par_shape_loc */ ) {
+            else if (n > 2254871L /*par_shape_loc */ ) {
                 print_int(mem[eqtb[n].hh.v.RH + 1].cint);
                 print_char(32 /*" " */ );
                 print_int(mem[eqtb[n].hh.v.RH + 2].cint);
                 if (mem[eqtb[n].hh.v.RH + 1].cint > 1)
                     print_esc(65708L /*"ETC." */ );
             } else
-                print_int(mem[eqtb[2253271L /*par_shape_loc */ ].hh.v.RH].hh.v.LH);
-        } else if (n < 2253283L /*toks_base */ ) {
+                print_int(mem[eqtb[2254871L /*par_shape_loc */ ].hh.v.RH].hh.v.LH);
+        } else if (n < 2254883L /*toks_base */ ) {
             print_cmd_chr(73 /*assign_toks */ , n);
             print_char(61 /*"=" */ );
             if (eqtb[n].hh.v.RH != -268435455L)
                 show_token_list(mem[eqtb[n].hh.v.RH].hh.v.RH, -268435455L, 32);
-        } else if (n < 2253543L /*box_base */ ) {
+        } else if (n < 2255143L /*box_base */ ) {
             print_esc(65707L /*"toks" */ );
-            print_int(n - 2253283L);
+            print_int(n - 2254883L);
             print_char(61 /*"=" */ );
             if (eqtb[n].hh.v.RH != -268435455L)
                 show_token_list(mem[eqtb[n].hh.v.RH].hh.v.RH, -268435455L, 32);
-        } else if (n < 2253799L /*cur_font_loc */ ) {
+        } else if (n < 2255399L /*cur_font_loc */ ) {
             print_esc(65709L /*"box" */ );
-            print_int(n - 2253543L);
+            print_int(n - 2255143L);
             print_char(61 /*"=" */ );
             if (eqtb[n].hh.v.RH == -268435455L)
                 print(65710L /*"void" */ );
@@ -5850,69 +5850,69 @@ void zshow_eqtb(halfword n)
                 breadth_max = 1;
                 show_node_list(eqtb[n].hh.v.RH);
             }
-        } else if (n < 2254568L /*cat_code_base */ )    //260:
+        } else if (n < 2256168L /*cat_code_base */ )    //260:
         {
-            if (n == 2253799L /*cur_font_loc */ )
+            if (n == 2255399L /*cur_font_loc */ )
                 print(65711L /*"current font" */ );
-            else if (n < 2254056L /*math_font_base 256 */ ) {
+            else if (n < 2255656L /*math_font_base 256 */ ) {
                 print_esc(65712L /*"textfont" */ );
-                print_int(n - 2253800L);
-            } else if (n < 2254312L /*math_font_base 512 */ ) {
+                print_int(n - 2255400L);
+            } else if (n < 2255912L /*math_font_base 512 */ ) {
                 print_esc(65713L /*"scriptfont" */ );
-                print_int(n - 2254056L);
+                print_int(n - 2255656L);
             } else {
 
                 print_esc(65714L /*"scriptscriptfont" */ );
-                print_int(n - 2254312L);
+                print_int(n - 2255912L);
             }
             print_char(61 /*"=" */ );
-            print_esc(hash[2243738L /*font_id_base */  + eqtb[n].hh.v.RH].v.RH);
-        } else /*261: */ if (n < 6711016L /*math_code_base */ ) {
-            if (n < 3368680L /*lc_code_base */ ) {
+            print_esc(hash[2245338L /*font_id_base */  + eqtb[n].hh.v.RH].v.RH);
+        } else /*261: */ if (n < 6712616L /*math_code_base */ ) {
+            if (n < 3370280L /*lc_code_base */ ) {
                 print_esc(65715L /*"catcode" */ );
-                print_int(n - 2254568L);
-            } else if (n < 4482792L /*uc_code_base */ ) {
+                print_int(n - 2256168L);
+            } else if (n < 4484392L /*uc_code_base */ ) {
                 print_esc(65716L /*"lccode" */ );
-                print_int(n - 3368680L);
-            } else if (n < 5596904L /*sf_code_base */ ) {
+                print_int(n - 3370280L);
+            } else if (n < 5598504L /*sf_code_base */ ) {
                 print_esc(65717L /*"uccode" */ );
-                print_int(n - 4482792L);
+                print_int(n - 4484392L);
             } else {
 
                 print_esc(65718L /*"sfcode" */ );
-                print_int(n - 5596904L);
+                print_int(n - 5598504L);
             }
             print_char(61 /*"=" */ );
             print_int(eqtb[n].hh.v.RH);
         } else {
 
             print_esc(65719L /*"mathcode" */ );
-            print_int(n - 6711016L);
+            print_int(n - 6712616L);
             print_char(61 /*"=" */ );
             print_int(eqtb[n].hh.v.RH);
         }
-    } else if (n < 10053693L /*dimen_base */ )  //268:
+    } else if (n < 10055293L /*dimen_base */ )  //268:
     {
-        if (n < 8939325L /*count_base */ )
-            print_param(n - 8939240L);
-        else if (n < 8939581L /*del_code_base */ ) {
+        if (n < 8940925L /*count_base */ )
+            print_param(n - 8940840L);
+        else if (n < 8941181L /*del_code_base */ ) {
             print_esc(65782L /*"count" */ );
-            print_int(n - 8939325L);
+            print_int(n - 8940925L);
         } else {
 
             print_esc(65783L /*"delcode" */ );
-            print_int(n - 8939581L);
+            print_int(n - 8941181L);
         }
         print_char(61 /*"=" */ );
         print_int(eqtb[n].cint);
-    } else if (n <= 10053971L /*eqtb_size */ )  //277:
+    } else if (n <= 10055571L /*eqtb_size */ )  //277:
     {
-        if (n < 10053716L /*scaled_base */ )
-            print_length_param(n - 10053693L);
+        if (n < 10055316L /*scaled_base */ )
+            print_length_param(n - 10055293L);
         else {
 
             print_esc(65808L /*"dimen" */ );
-            print_int(n - 10053716L);
+            print_int(n - 10055316L);
         }
         print_char(61 /*"=" */ );
         print_scaled(eqtb[n].cint);
@@ -5967,14 +5967,14 @@ halfword zid_lookup(integer j, integer l)
         }
         if (hash[p].v.LH == 0) {
             if (no_new_control_sequence)
-                p = 2252739L /*undefined_control_sequence */ ;
+                p = 2254339L /*undefined_control_sequence */ ;
             else {              //287:
 
                 if (hash[p].v.RH > 0) {
                     if (hash_high < hash_extra) {
                         incr(hash_high);
-                        hash[p].v.LH = hash_high + 10053971L;
-                        p = hash_high + 10053971L;
+                        hash[p].v.LH = hash_high + 10055571L;
+                        p = hash_high + 10055571L;
                     } else {
 
                         do {
@@ -6089,7 +6089,7 @@ halfword zprim_lookup(str_number s)
                 if (prim[p].v.RH > 0) {
                     do {
                         if ((prim_used == 1 /*prim_base */ ))
-                            overflow(65813L /*"primitive size" */ , 500 /*prim_size */ );
+                            overflow(65813L /*"primitive size" */ , 2100 /*prim_size */ );
                         decr(prim_used);
                     } while (!(prim[prim_used].v.RH == 0));
                     prim[p].v.LH = prim_used;
@@ -6294,7 +6294,7 @@ void group_warning(void)
     w = false;
     while ((grp_stack[i] == cur_boundary) && (i > 0)) {
 
-        if (eqtb[8939303L /*int_base 63 */ ].cint > 0) {
+        if (eqtb[8940903L /*int_base 63 */ ].cint > 0) {
             while ((input_stack[base_ptr].state_field == 0 /*token_list */ ) || (input_stack[base_ptr].index_field > i))
                 decr(base_ptr);
             if (input_stack[base_ptr].name_field > 17)
@@ -6308,7 +6308,7 @@ void group_warning(void)
         print_group(true);
         print(66935L /*" of a different file" */ );
         print_ln();
-        if (eqtb[8939303L /*int_base 63 */ ].cint > 1)
+        if (eqtb[8940903L /*int_base 63 */ ].cint > 1)
             show_context();
         if (history == 0 /*spotless */ )
             history = 1 /*warning_issued */ ;
@@ -6325,7 +6325,7 @@ void if_warning(void)
     w = false;
     while (if_stack[i] == cond_ptr) {
 
-        if (eqtb[8939303L /*int_base 63 */ ].cint > 0) {
+        if (eqtb[8940903L /*int_base 63 */ ].cint > 0) {
             while ((input_stack[base_ptr].state_field == 0 /*token_list */ ) || (input_stack[base_ptr].index_field > i))
                 decr(base_ptr);
             if (input_stack[base_ptr].name_field > 17)
@@ -6343,7 +6343,7 @@ void if_warning(void)
         }
         print(66935L /*" of a different file" */ );
         print_ln();
-        if (eqtb[8939303L /*int_base 63 */ ].cint > 1)
+        if (eqtb[8940903L /*int_base 63 */ ].cint > 1)
             show_context();
         if (history == 0 /*spotless */ )
             history = 1 /*warning_issued */ ;
@@ -6397,7 +6397,7 @@ void file_warning(void)
     cur_if = c;
     if_line = i;
     print_ln();
-    if (eqtb[8939303L /*int_base 63 */ ].cint > 1)
+    if (eqtb[8940903L /*int_base 63 */ ].cint > 1)
         show_context();
     if (history == 0 /*spotless */ )
         history = 1 /*warning_issued */ ;
@@ -6568,7 +6568,7 @@ void zsa_def(halfword p, halfword e)
         ;
 
 #ifdef STAT
-        if (eqtb[8939299L /*int_base 59 */ ].cint > 0)
+        if (eqtb[8940899L /*int_base 59 */ ].cint > 0)
             show_sa(p, 65864L /*"reassigning" */ );
 
 #endif                          // STAT
@@ -6578,7 +6578,7 @@ void zsa_def(halfword p, halfword e)
         ;
 
 #ifdef STAT
-        if (eqtb[8939299L /*int_base 59 */ ].cint > 0)
+        if (eqtb[8940899L /*int_base 59 */ ].cint > 0)
             show_sa(p, 65865L /*"changing" */ );
 
 #endif                          // STAT
@@ -6591,7 +6591,7 @@ void zsa_def(halfword p, halfword e)
         ;
 
 #ifdef STAT
-        if (eqtb[8939299L /*int_base 59 */ ].cint > 0)
+        if (eqtb[8940899L /*int_base 59 */ ].cint > 0)
             show_sa(p, 65866L /*"into" */ );
 
 #endif                          // STAT
@@ -6606,7 +6606,7 @@ void zsa_w_def(halfword p, integer w)
         ;
 
 #ifdef STAT
-        if (eqtb[8939299L /*int_base 59 */ ].cint > 0)
+        if (eqtb[8940899L /*int_base 59 */ ].cint > 0)
             show_sa(p, 65864L /*"reassigning" */ );
 
 #endif                          // STAT
@@ -6615,7 +6615,7 @@ void zsa_w_def(halfword p, integer w)
         ;
 
 #ifdef STAT
-        if (eqtb[8939299L /*int_base 59 */ ].cint > 0)
+        if (eqtb[8940899L /*int_base 59 */ ].cint > 0)
             show_sa(p, 65865L /*"changing" */ );
 
 #endif                          // STAT
@@ -6626,7 +6626,7 @@ void zsa_w_def(halfword p, integer w)
         ;
 
 #ifdef STAT
-        if (eqtb[8939299L /*int_base 59 */ ].cint > 0)
+        if (eqtb[8940899L /*int_base 59 */ ].cint > 0)
             show_sa(p, 65866L /*"into" */ );
 
 #endif                          // STAT
@@ -6640,7 +6640,7 @@ void zgsa_def(halfword p, halfword e)
     ;
 
 #ifdef STAT
-    if (eqtb[8939299L /*int_base 59 */ ].cint > 0)
+    if (eqtb[8940899L /*int_base 59 */ ].cint > 0)
         show_sa(p, 65867L /*"globally changing" */ );
 
 #endif                          // STAT
@@ -6650,7 +6650,7 @@ void zgsa_def(halfword p, halfword e)
     ;
 
 #ifdef STAT
-    if (eqtb[8939299L /*int_base 59 */ ].cint > 0)
+    if (eqtb[8940899L /*int_base 59 */ ].cint > 0)
         show_sa(p, 65866L /*"into" */ );
 
 #endif                          // STAT
@@ -6663,7 +6663,7 @@ void zgsa_w_def(halfword p, integer w)
     ;
 
 #ifdef STAT
-    if (eqtb[8939299L /*int_base 59 */ ].cint > 0)
+    if (eqtb[8940899L /*int_base 59 */ ].cint > 0)
         show_sa(p, 65867L /*"globally changing" */ );
 
 #endif                          // STAT
@@ -6672,7 +6672,7 @@ void zgsa_w_def(halfword p, integer w)
     ;
 
 #ifdef STAT
-    if (eqtb[8939299L /*int_base 59 */ ].cint > 0)
+    if (eqtb[8940899L /*int_base 59 */ ].cint > 0)
         show_sa(p, 65866L /*"into" */ );
 
 #endif                          // STAT
@@ -6690,7 +6690,7 @@ void sa_restore(void)
             ;
 
 #ifdef STAT
-            if (eqtb[8939277L /*int_base 37 */ ].cint > 0)
+            if (eqtb[8940877L /*int_base 37 */ ].cint > 0)
                 show_sa(p, 65869L /*"retaining" */ );
 
 #endif                          // STAT
@@ -6711,7 +6711,7 @@ void sa_restore(void)
             ;
 
 #ifdef STAT
-            if (eqtb[8939277L /*int_base 37 */ ].cint > 0)
+            if (eqtb[8940877L /*int_base 37 */ ].cint > 0)
                 show_sa(p, 65870L /*"restoring" */ );
 
 #endif                          // STAT
@@ -6747,7 +6747,7 @@ void znew_save_level(group_code c)
     ;
 
 #ifdef STAT
-    if (eqtb[8939300L /*int_base 60 */ ].cint > 0)
+    if (eqtb[8940900L /*int_base 60 */ ].cint > 0)
         group_trace(false);
 
 #endif                          // STAT
@@ -6815,7 +6815,7 @@ void zeq_define(halfword p, quarterword t, halfword e)
         ;
 
 #ifdef STAT
-        if (eqtb[8939299L /*int_base 59 */ ].cint > 0)
+        if (eqtb[8940899L /*int_base 59 */ ].cint > 0)
             restore_trace(p, 65864L /*"reassigning" */ );
 
 #endif                          // STAT
@@ -6824,7 +6824,7 @@ void zeq_define(halfword p, quarterword t, halfword e)
     };
 
 #ifdef STAT
-    if (eqtb[8939299L /*int_base 59 */ ].cint > 0)
+    if (eqtb[8940899L /*int_base 59 */ ].cint > 0)
         restore_trace(p, 65865L /*"changing" */ );
 
 #endif                          // STAT
@@ -6838,7 +6838,7 @@ void zeq_define(halfword p, quarterword t, halfword e)
     ;
 
 #ifdef STAT
-    if (eqtb[8939299L /*int_base 59 */ ].cint > 0)
+    if (eqtb[8940899L /*int_base 59 */ ].cint > 0)
         restore_trace(p, 65866L /*"into" */ );
 
 #endif                          // STAT
@@ -6850,7 +6850,7 @@ void zeq_word_define(halfword p, integer w)
         ;
 
 #ifdef STAT
-        if (eqtb[8939299L /*int_base 59 */ ].cint > 0)
+        if (eqtb[8940899L /*int_base 59 */ ].cint > 0)
             restore_trace(p, 65864L /*"reassigning" */ );
 
 #endif                          // STAT
@@ -6858,7 +6858,7 @@ void zeq_word_define(halfword p, integer w)
     };
 
 #ifdef STAT
-    if (eqtb[8939299L /*int_base 59 */ ].cint > 0)
+    if (eqtb[8940899L /*int_base 59 */ ].cint > 0)
         restore_trace(p, 65865L /*"changing" */ );
 
 #endif                          // STAT
@@ -6870,7 +6870,7 @@ void zeq_word_define(halfword p, integer w)
     ;
 
 #ifdef STAT
-    if (eqtb[8939299L /*int_base 59 */ ].cint > 0)
+    if (eqtb[8940899L /*int_base 59 */ ].cint > 0)
         restore_trace(p, 65866L /*"into" */ );
 
 #endif                          // STAT
@@ -6881,7 +6881,7 @@ void zgeq_define(halfword p, quarterword t, halfword e)
     geq_define_regmem;
 
 #ifdef STAT
-    if (eqtb[8939299L /*int_base 59 */ ].cint > 0)
+    if (eqtb[8940899L /*int_base 59 */ ].cint > 0)
         restore_trace(p, 65867L /*"globally changing" */ );
 
 #endif                          // STAT
@@ -6894,7 +6894,7 @@ void zgeq_define(halfword p, quarterword t, halfword e)
     ;
 
 #ifdef STAT
-    if (eqtb[8939299L /*int_base 59 */ ].cint > 0)
+    if (eqtb[8940899L /*int_base 59 */ ].cint > 0)
         restore_trace(p, 65866L /*"into" */ );
 
 #endif                          // STAT
@@ -6905,7 +6905,7 @@ void zgeq_word_define(halfword p, integer w)
     geq_word_define_regmem;
 
 #ifdef STAT
-    if (eqtb[8939299L /*int_base 59 */ ].cint > 0)
+    if (eqtb[8940899L /*int_base 59 */ ].cint > 0)
         restore_trace(p, 65867L /*"globally changing" */ );
 
 #endif                          // STAT
@@ -6916,7 +6916,7 @@ void zgeq_word_define(halfword p, integer w)
     ;
 
 #ifdef STAT
-    if (eqtb[8939299L /*int_base 59 */ ].cint > 0)
+    if (eqtb[8940899L /*int_base 59 */ ].cint > 0)
         restore_trace(p, 65866L /*"into" */ );
 
 #endif                          // STAT
@@ -6985,15 +6985,15 @@ void unsave(void)
                     l = save_stack[save_ptr].hh.b1;
                     decr(save_ptr);
                 } else
-                    save_stack[save_ptr] = eqtb[2252739L /*undefined_control_sequence */ ];
-                if ((p < 8939240L /*int_base */ ) || (p > 10053971L /*eqtb_size */ )) {
+                    save_stack[save_ptr] = eqtb[2254339L /*undefined_control_sequence */ ];
+                if ((p < 8940840L /*int_base */ ) || (p > 10055571L /*eqtb_size */ )) {
 
                     if (eqtb[p].hh.b1 == 1 /*level_one */ ) {
                         eq_destroy(save_stack[save_ptr]);
                         ;
 
 #ifdef STAT
-                        if (eqtb[8939277L /*int_base 37 */ ].cint > 0)
+                        if (eqtb[8940877L /*int_base 37 */ ].cint > 0)
                             restore_trace(p, 65869L /*"retaining" */ );
 
 #endif                          // STAT
@@ -7004,7 +7004,7 @@ void unsave(void)
                         ;
 
 #ifdef STAT
-                        if (eqtb[8939277L /*int_base 37 */ ].cint > 0)
+                        if (eqtb[8940877L /*int_base 37 */ ].cint > 0)
                             restore_trace(p, 65870L /*"restoring" */ );
 
 #endif                          // STAT
@@ -7015,7 +7015,7 @@ void unsave(void)
                     ;
 
 #ifdef STAT
-                    if (eqtb[8939277L /*int_base 37 */ ].cint > 0)
+                    if (eqtb[8940877L /*int_base 37 */ ].cint > 0)
                         restore_trace(p, 65870L /*"restoring" */ );
 
 #endif                          // STAT
@@ -7024,7 +7024,7 @@ void unsave(void)
                     ;
 
 #ifdef STAT
-                    if (eqtb[8939277L /*int_base 37 */ ].cint > 0)
+                    if (eqtb[8940877L /*int_base 37 */ ].cint > 0)
                         restore_trace(p, 65869L /*"retaining" */ );
 
 #endif                          // STAT
@@ -7035,7 +7035,7 @@ void unsave(void)
         ;
 
 #ifdef STAT
-        if (eqtb[8939300L /*int_base 60 */ ].cint > 0)
+        if (eqtb[8940900L /*int_base 60 */ ].cint > 0)
             group_trace(true);
 
 #endif                          // STAT
@@ -7051,7 +7051,7 @@ void unsave(void)
 
 void prepare_mag(void)
 {
-    prepare_mag_regmem if ((mag_set > 0) && (eqtb[8939257L /*int_base 17 */ ].cint != mag_set)) {
+    prepare_mag_regmem if ((mag_set > 0) && (eqtb[8940857L /*int_base 17 */ ].cint != mag_set)) {
         {
             if (interaction == 3 /*error_stop_mode */ ) ;
             if (file_line_error_style_p)
@@ -7060,7 +7060,7 @@ void prepare_mag(void)
                 print_nl(65544L /*"! " */ );
             print(65872L /*"Incompatible magnification (" */ );
         }
-        print_int(eqtb[8939257L /*int_base 17 */ ].cint);
+        print_int(eqtb[8940857L /*int_base 17 */ ].cint);
         print(65873L /*");" */ );
         print_nl(65874L /*" the previous value will be retained" */ );
         {
@@ -7069,9 +7069,9 @@ void prepare_mag(void)
             help_line[0] = 65876L /*"reverted to the magnification you used earlier on this run." */ ;
         }
         int_error(mag_set);
-        geq_word_define(8939257L /*int_base 17 */ , mag_set);
+        geq_word_define(8940857L /*int_base 17 */ , mag_set);
     }
-    if ((eqtb[8939257L /*int_base 17 */ ].cint <= 0) || (eqtb[8939257L /*int_base 17 */ ].cint > 32768L)) {
+    if ((eqtb[8940857L /*int_base 17 */ ].cint <= 0) || (eqtb[8940857L /*int_base 17 */ ].cint > 32768L)) {
         {
             if (interaction == 3 /*error_stop_mode */ ) ;
             if (file_line_error_style_p)
@@ -7084,10 +7084,10 @@ void prepare_mag(void)
             help_ptr = 1;
             help_line[0] = 65878L /*"The magnification ratio must be between 1 and 32768." */ ;
         }
-        int_error(eqtb[8939257L /*int_base 17 */ ].cint);
-        geq_word_define(8939257L /*int_base 17 */ , 1000);
+        int_error(eqtb[8940857L /*int_base 17 */ ].cint);
+        geq_word_define(8940857L /*int_base 17 */ , 1000);
     }
-    mag_set = eqtb[8939257L /*int_base 17 */ ].cint;
+    mag_set = eqtb[8940857L /*int_base 17 */ ].cint;
 }
 
 void ztoken_show(halfword p)
@@ -7123,7 +7123,7 @@ void show_cur_cmd_chr(void)
         shown_mode = cur_list.mode_field;
     }
     print_cmd_chr(cur_cmd, cur_chr);
-    if (eqtb[8939301L /*int_base 61 */ ].cint > 0) {
+    if (eqtb[8940901L /*int_base 61 */ ].cint > 0) {
 
         if (cur_cmd >= 107 /*if_test */ ) {
 
@@ -7183,7 +7183,7 @@ void show_context(void)
             if ((cur_input.name_field > 19) || (base_ptr == 0))
                 bottom_line = true;
         }
-        if ((base_ptr == input_ptr) || bottom_line || (nn < eqtb[8939294L /*int_base 54 */ ].cint))     //342:
+        if ((base_ptr == input_ptr) || bottom_line || (nn < eqtb[8940894L /*int_base 54 */ ].cint))     //342:
         {
             if ((base_ptr == input_ptr) || (cur_input.state_field != 0 /*token_list */ )
                 || (cur_input.index_field != 3 /*backed_up */ ) || (cur_input.loc_field != -268435455L)) {
@@ -7222,7 +7222,7 @@ void show_context(void)
                         selector = 20 /*pseudo */ ;
                         trick_count = 1000000L;
                     }
-                    if (buffer[cur_input.limit_field] == eqtb[8939288L /*int_base 48 */ ].cint)
+                    if (buffer[cur_input.limit_field] == eqtb[8940888L /*int_base 48 */ ].cint)
                         j = cur_input.limit_field;
                     else
                         j = cur_input.limit_field + 1;
@@ -7375,7 +7375,7 @@ void show_context(void)
                     print(65557L /*"..." */ );
                 incr(nn);
             }
-        } else if (nn == eqtb[8939294L /*int_base 54 */ ].cint) {
+        } else if (nn == eqtb[8940894L /*int_base 54 */ ].cint) {
             print_nl(65557L /*"..." */ );
             incr(nn);
         }
@@ -7407,7 +7407,7 @@ void zbegin_token_list(halfword p, quarterword t)
         else {
 
             cur_input.loc_field = mem[p].hh.v.RH;
-            if (eqtb[8939270L /*int_base 30 */ ].cint > 1) {
+            if (eqtb[8940870L /*int_base 30 */ ].cint > 1) {
                 begin_diagnostic();
                 print_nl(65626L /*"" */ );
                 switch (t) {
@@ -7418,7 +7418,7 @@ void zbegin_token_list(halfword p, quarterword t)
                     print_esc(65919L /*"write" */ );
                     break;
                 default:
-                    print_cmd_chr(73 /*assign_toks */ , t + 2253265L);
+                    print_cmd_chr(73 /*assign_toks */ , t + 2254865L);
                     break;
                 }
                 print(65880L /*"->" */ );
@@ -7695,7 +7695,7 @@ void get_next(void)
                 incr(cur_input.loc_field);
                 cur_chr = 65536L + (cur_chr - 55296L) * 1024 + lower;
             }
- lab21:    /*reswitch */ cur_cmd = eqtb[2254568L /*cat_code_base */  + cur_chr].hh.v.RH;
+ lab21:    /*reswitch */ cur_cmd = eqtb[2256168L /*cat_code_base */  + cur_chr].hh.v.RH;
             switch (cur_input.state_field + cur_cmd) {  /*375: */
             case 10:
             case 26:
@@ -7714,7 +7714,7 @@ void get_next(void)
 
  lab26:                        /*start_cs */ k = cur_input.loc_field;
                         cur_chr = buffer[k];
-                        cat = eqtb[2254568L /*cat_code_base */  + cur_chr].hh.v.RH;
+                        cat = eqtb[2256168L /*cat_code_base */  + cur_chr].hh.v.RH;
                         incr(k);
                         if (cat == 11 /*letter */ )
                             cur_input.state_field = 17 /*skip_blanks */ ;
@@ -7726,7 +7726,7 @@ void get_next(void)
                         {
                             do {
                                 cur_chr = buffer[k];
-                                cat = eqtb[2254568L /*cat_code_base */  + cur_chr].hh.v.RH;
+                                cat = eqtb[2256168L /*cat_code_base */  + cur_chr].hh.v.RH;
                                 incr(k);
                             } while (!((cat != 11 /*letter */ ) || (k > cur_input.limit_field)));
                             {
@@ -8068,11 +8068,11 @@ void get_next(void)
                     if (cur_input.name_field <= 19) {
                         if (pseudo_input())
                             firm_up_the_line();
-                        else if ((eqtb[2253281L /*every_eof_loc */ ].hh.v.RH != -268435455L)
+                        else if ((eqtb[2254881L /*every_eof_loc */ ].hh.v.RH != -268435455L)
                                  && !eof_seen[cur_input.index_field]) {
                             cur_input.limit_field = first - 1;
                             eof_seen[cur_input.index_field] = true;
-                            begin_token_list(eqtb[2253281L /*every_eof_loc */ ].hh.v.RH, 16 /*every_eof_text */ );
+                            begin_token_list(eqtb[2254881L /*every_eof_loc */ ].hh.v.RH, 16 /*every_eof_text */ );
                             goto lab20;
                         } else
                             force_eof = true;
@@ -8080,18 +8080,18 @@ void get_next(void)
 
                         if (input_ln(input_file[cur_input.index_field], true))
                             firm_up_the_line();
-                        else if ((eqtb[2253281L /*every_eof_loc */ ].hh.v.RH != -268435455L)
+                        else if ((eqtb[2254881L /*every_eof_loc */ ].hh.v.RH != -268435455L)
                                  && !eof_seen[cur_input.index_field]) {
                             cur_input.limit_field = first - 1;
                             eof_seen[cur_input.index_field] = true;
-                            begin_token_list(eqtb[2253281L /*every_eof_loc */ ].hh.v.RH, 16 /*every_eof_text */ );
+                            begin_token_list(eqtb[2254881L /*every_eof_loc */ ].hh.v.RH, 16 /*every_eof_text */ );
                             goto lab20;
                         } else
                             force_eof = true;
                     }
                 }
                 if (force_eof) {
-                    if (eqtb[8939303L /*int_base 63 */ ].cint > 0) {
+                    if (eqtb[8940903L /*int_base 63 */ ].cint > 0) {
 
                         if ((grp_stack[in_open] != cur_boundary) || (if_stack[in_open] != cond_ptr))
                             file_warning();
@@ -8106,10 +8106,10 @@ void get_next(void)
                     check_outer_validity();
                     goto lab20;
                 }
-                if ((eqtb[8939288L /*int_base 48 */ ].cint < 0) || (eqtb[8939288L /*int_base 48 */ ].cint > 255))
+                if ((eqtb[8940888L /*int_base 48 */ ].cint < 0) || (eqtb[8940888L /*int_base 48 */ ].cint > 255))
                     decr(cur_input.limit_field);
                 else
-                    buffer[cur_input.limit_field] = eqtb[8939288L /*int_base 48 */ ].cint;
+                    buffer[cur_input.limit_field] = eqtb[8940888L /*int_base 48 */ ].cint;
                 first = cur_input.limit_field + 1;
                 cur_input.loc_field = cur_input.start_field;
             } else {
@@ -8126,7 +8126,7 @@ void get_next(void)
                 if (selector < 18 /*log_only */ )
                     open_log_file();
                 if (interaction > 1 /*nonstop_mode */ ) {
-                    if ((eqtb[8939288L /*int_base 48 */ ].cint < 0) || (eqtb[8939288L /*int_base 48 */ ].cint > 255))
+                    if ((eqtb[8940888L /*int_base 48 */ ].cint < 0) || (eqtb[8940888L /*int_base 48 */ ].cint > 255))
                         incr(cur_input.limit_field);
                     if (cur_input.limit_field == cur_input.start_field)
                         print_nl(65943L /*"(Please type a command or say `\end')" */ );
@@ -8138,10 +8138,10 @@ void get_next(void)
                         term_input();
                     }
                     cur_input.limit_field = last;
-                    if ((eqtb[8939288L /*int_base 48 */ ].cint < 0) || (eqtb[8939288L /*int_base 48 */ ].cint > 255))
+                    if ((eqtb[8940888L /*int_base 48 */ ].cint < 0) || (eqtb[8940888L /*int_base 48 */ ].cint > 255))
                         decr(cur_input.limit_field);
                     else
-                        buffer[cur_input.limit_field] = eqtb[8939288L /*int_base 48 */ ].cint;
+                        buffer[cur_input.limit_field] = eqtb[8940888L /*int_base 48 */ ].cint;
                     first = cur_input.limit_field + 1;
                     cur_input.loc_field = cur_input.start_field;
                 } else
@@ -8227,7 +8227,7 @@ void firm_up_the_line(void)
 {
     firm_up_the_line_regmem integer k;
     cur_input.limit_field = last;
-    if (eqtb[8939268L /*int_base 28 */ ].cint > 0) {
+    if (eqtb[8940868L /*int_base 28 */ ].cint > 0) {
 
         if (interaction > 1 /*nonstop_mode */ ) {
             ;
@@ -8296,12 +8296,12 @@ void macro_call(void)
     ref_count = cur_chr;
     r = mem[ref_count].hh.v.RH;
     n = 0;
-    if (eqtb[8939270L /*int_base 30 */ ].cint > 0)      //435:
+    if (eqtb[8940870L /*int_base 30 */ ].cint > 0)      //435:
     {
         begin_diagnostic();
-        if (eqtb[8939298L /*int_base 58 */ ].cint > 0) {
+        if (eqtb[8940898L /*int_base 58 */ ].cint > 0) {
 
-            if (input_ptr < eqtb[8939298L /*int_base 58 */ ].cint) {
+            if (input_ptr < eqtb[8940898L /*int_base 58 */ ].cint) {
                 v = input_ptr;
                 print_ln();
                 print_char(126 /*"~" */ );
@@ -8624,10 +8624,10 @@ void macro_call(void)
                 } else
                     pstack[n] = mem[mem_top - 3].hh.v.RH;
                 incr(n);
-                if (eqtb[8939270L /*int_base 30 */ ].cint > 0) {
+                if (eqtb[8940870L /*int_base 30 */ ].cint > 0) {
 
-                    if ((eqtb[8939298L /*int_base 58 */ ].cint == 0)
-                        || (input_ptr < eqtb[8939298L /*int_base 58 */ ].cint)) {
+                    if ((eqtb[8940898L /*int_base 58 */ ].cint == 0)
+                        || (input_ptr < eqtb[8940898L /*int_base 58 */ ].cint)) {
                         begin_diagnostic();
                         print_nl(match_chr);
                         print_int(n);
@@ -8850,7 +8850,7 @@ void expand(void)
  lab21:/*reswitch */ if (cur_cmd < 113 /*call */ )
                                                 //399:
     {
-        if (eqtb[8939276L /*int_base 36 */ ].cint > 1)
+        if (eqtb[8940876L /*int_base 36 */ ].cint > 1)
             show_cur_cmd_chr();
         switch (cur_cmd) {
         case 112:
@@ -9036,9 +9036,9 @@ void expand(void)
             break;
         case 108:
             {
-                if (eqtb[8939301L /*int_base 61 */ ].cint > 0) {
+                if (eqtb[8940901L /*int_base 61 */ ].cint > 0) {
 
-                    if (eqtb[8939276L /*int_base 36 */ ].cint <= 1)
+                    if (eqtb[8940876L /*int_base 36 */ ].cint <= 1)
                         show_cur_cmd_chr();
                 }
                 if (cur_chr > if_limit) {
@@ -9636,12 +9636,12 @@ integer zeffective_char(boolean err_p, internal_font_number f, quarterword c)
                 goto lab40;
         }
     }
-    if (c >= eqtb[8939295L /*int_base 55 */ ].cint) {
+    if (c >= eqtb[8940895L /*int_base 55 */ ].cint) {
 
-        if (c <= eqtb[8939296L /*int_base 56 */ ].cint) {
+        if (c <= eqtb[8940896L /*int_base 56 */ ].cint) {
 
-            if ((eqtb[7825128L /*char_sub_code_base */  + c].hh.v.RH > 0)) {
-                base_c = (eqtb[7825128L /*char_sub_code_base */  + c].hh.v.RH % 256);
+            if ((eqtb[7826728L /*char_sub_code_base */  + c].hh.v.RH > 0)) {
+                base_c = (eqtb[7826728L /*char_sub_code_base */  + c].hh.v.RH % 256);
                 result = base_c;
                 if (!err_p)
                     goto lab40;
@@ -9679,7 +9679,7 @@ void scan_font_ident(void)
         get_x_token();
     } while (!(cur_cmd != 10 /*spacer *//*:440 */ ));
     if (cur_cmd == 90 /*def_font */ )
-        f = eqtb[2253799L /*cur_font_loc */ ].hh.v.RH;
+        f = eqtb[2255399L /*cur_font_loc */ ].hh.v.RH;
     else if (cur_cmd == 89 /*set_font */ )
         f = cur_chr;
     else if (cur_cmd == 88 /*def_family */ ) {
@@ -9750,7 +9750,7 @@ void zfind_font_dimen(boolean writing)
                 print_nl(65544L /*"! " */ );
             print(66194L /*"Font " */ );
         }
-        print_esc(hash[2243738L /*font_id_base */  + f].v.RH);
+        print_esc(hash[2245338L /*font_id_base */  + f].v.RH);
         print(66211L /*" has only " */ );
         print_int(font_params[f]);
         print(66212L /*" fontdimen parameters" */ );
@@ -9776,8 +9776,8 @@ void zscan_something_internal(small_number level, boolean negative)
     case 86:
         {
             scan_usv_num();
-            if (m == 6711016L /*math_code_base */ ) {
-                cur_val1 = eqtb[6711016L /*math_code_base */  + cur_val].hh.v.RH;
+            if (m == 6712616L /*math_code_base */ ) {
+                cur_val1 = eqtb[6712616L /*math_code_base */  + cur_val].hh.v.RH;
                 if (math_char_field(cur_val1) == 2097151L /*active_math_char */ )
                     cur_val1 = 32768L;
                 else if ((math_class_field(cur_val1) > 7) || (math_fam_field(cur_val1) > 15)
@@ -9804,8 +9804,8 @@ void zscan_something_internal(small_number level, boolean negative)
                     cur_val = cur_val1;
                     cur_val_level = 0 /*int_val */ ;
                 }
-            } else if (m == 8939581L /*del_code_base */ ) {
-                cur_val1 = eqtb[8939581L /*del_code_base */  + cur_val].cint;
+            } else if (m == 8941181L /*del_code_base */ ) {
+                cur_val1 = eqtb[8941181L /*del_code_base */  + cur_val].cint;
                 if (cur_val1 >= 1073741824L) {
                     {
                         if (interaction == 3 /*error_stop_mode */ ) ;
@@ -9832,10 +9832,10 @@ void zscan_something_internal(small_number level, boolean negative)
                         cur_val_level = 0 /*int_val */ ;
                     }
                 }
-            } else if (m < 5596904L /*sf_code_base */ ) {
+            } else if (m < 5598504L /*sf_code_base */ ) {
                 cur_val = eqtb[m + cur_val].hh.v.RH;
                 cur_val_level = 0 /*int_val */ ;
-            } else if (m < 6711016L /*math_code_base */ ) {
+            } else if (m < 6712616L /*math_code_base */ ) {
                 cur_val = eqtb[m + cur_val].hh.v.RH % 65536L;
                 cur_val_level = 0 /*int_val */ ;
             } else {
@@ -9848,17 +9848,17 @@ void zscan_something_internal(small_number level, boolean negative)
     case 87:
         {
             scan_usv_num();
-            if (m == 5596904L /*sf_code_base */ ) {
+            if (m == 5598504L /*sf_code_base */ ) {
                 {
-                    cur_val = eqtb[5596904L /*sf_code_base */  + cur_val].hh.v.RH / 65536L;
+                    cur_val = eqtb[5598504L /*sf_code_base */  + cur_val].hh.v.RH / 65536L;
                     cur_val_level = 0 /*int_val */ ;
                 }
-            } else if (m == 6711016L /*math_code_base */ ) {
+            } else if (m == 6712616L /*math_code_base */ ) {
                 {
-                    cur_val = eqtb[6711016L /*math_code_base */  + cur_val].hh.v.RH;
+                    cur_val = eqtb[6712616L /*math_code_base */  + cur_val].hh.v.RH;
                     cur_val_level = 0 /*int_val */ ;
                 }
-            } else if (m == 6711017L /*math_code_base 1 */ ) {
+            } else if (m == 6712617L /*math_code_base 1 */ ) {
                 {
                     if (interaction == 3 /*error_stop_mode */ ) ;
                     if (file_line_error_style_p)
@@ -9877,9 +9877,9 @@ void zscan_something_internal(small_number level, boolean negative)
                     cur_val = 0;
                     cur_val_level = 0 /*int_val */ ;
                 }
-            } else if (m == 8939581L /*del_code_base */ ) {
+            } else if (m == 8941181L /*del_code_base */ ) {
                 {
-                    cur_val = eqtb[8939581L /*del_code_base */  + cur_val].cint;
+                    cur_val = eqtb[8941181L /*del_code_base */  + cur_val].cint;
                     cur_val_level = 0 /*int_val */ ;
                 }
             } else {
@@ -9936,7 +9936,7 @@ void zscan_something_internal(small_number level, boolean negative)
                 if (m == mem_bot) {
                     scan_register_num();
                     if (cur_val < 256)
-                        cur_val = eqtb[2253283L /*toks_base */  + cur_val].hh.v.RH;
+                        cur_val = eqtb[2254883L /*toks_base */  + cur_val].hh.v.RH;
                     else {
 
                         find_sa_element(5 /*tok_val */ , cur_val, false);
@@ -9947,7 +9947,7 @@ void zscan_something_internal(small_number level, boolean negative)
                     }
                 } else
                     cur_val = mem[m + 1].hh.v.RH;
-            } else if (cur_chr == 2253282L /*XeTeX_inter_char_loc */ ) {
+            } else if (cur_chr == 2254882L /*XeTeX_inter_char_loc */ ) {
                 scan_char_class_not_ignored();
                 cur_ptr = cur_val;
                 scan_char_class_not_ignored();
@@ -9964,7 +9964,7 @@ void zscan_something_internal(small_number level, boolean negative)
             back_input();
             scan_font_ident();
             {
-                cur_val = 2243738L /*font_id_base */  + cur_val;
+                cur_val = 2245338L /*font_id_base */  + cur_val;
                 cur_val_level = 4 /*ident_val */ ;
             }
         }
@@ -10071,7 +10071,7 @@ void zscan_something_internal(small_number level, boolean negative)
         break;
     case 85:
         {
-            if (m > 2253271L /*par_shape_loc */ )       //1677:
+            if (m > 2254871L /*par_shape_loc */ )       //1677:
             {
                 scan_int();
                 if ((eqtb[m].hh.v.RH == -268435455L) || (cur_val < 0))
@@ -10082,10 +10082,10 @@ void zscan_something_internal(small_number level, boolean negative)
                         cur_val = mem[eqtb[m].hh.v.RH + 1].cint;
                     cur_val = mem[eqtb[m].hh.v.RH + cur_val + 1].cint;
                 }
-            } else if (eqtb[2253271L /*par_shape_loc */ ].hh.v.RH == -268435455L)
+            } else if (eqtb[2254871L /*par_shape_loc */ ].hh.v.RH == -268435455L)
                 cur_val = 0;
             else
-                cur_val = mem[eqtb[2253271L /*par_shape_loc */ ].hh.v.RH].hh.v.LH;
+                cur_val = mem[eqtb[2254871L /*par_shape_loc */ ].hh.v.RH].hh.v.LH;
             cur_val_level = 0 /*int_val */ ;
         }
         break;
@@ -10093,7 +10093,7 @@ void zscan_something_internal(small_number level, boolean negative)
         {
             scan_register_num();
             if (cur_val < 256)
-                q = eqtb[2253543L /*box_base */  + cur_val].hh.v.RH;
+                q = eqtb[2255143L /*box_base */  + cur_val].hh.v.RH;
             else {
 
                 find_sa_element(4, cur_val, false);
@@ -10188,16 +10188,16 @@ void zscan_something_internal(small_number level, boolean negative)
                 } else
                     switch (cur_val_level) {
                     case 0:
-                        cur_val = eqtb[8939325L /*count_base */  + cur_val].cint;
+                        cur_val = eqtb[8940925L /*count_base */  + cur_val].cint;
                         break;
                     case 1:
-                        cur_val = eqtb[10053716L /*scaled_base */  + cur_val].cint;
+                        cur_val = eqtb[10055316L /*scaled_base */  + cur_val].cint;
                         break;
                     case 2:
-                        cur_val = eqtb[2252759L /*skip_base */  + cur_val].hh.v.RH;
+                        cur_val = eqtb[2254359L /*skip_base */  + cur_val].hh.v.RH;
                         break;
                     case 3:
-                        cur_val = eqtb[2253015L /*mu_skip_base */  + cur_val].hh.v.RH;
+                        cur_val = eqtb[2254615L /*mu_skip_base */  + cur_val].hh.v.RH;
                         break;
                     }
             }
@@ -10256,8 +10256,8 @@ void zscan_something_internal(small_number level, boolean negative)
                 switch (m) {    /*1458: */
                 case 55:
                     {
-                        if (((font_area[eqtb[2253799L /*cur_font_loc */ ].hh.v.RH] == 65535L /*aat_font_flag */ )
-                             || (font_area[eqtb[2253799L /*cur_font_loc */ ].hh.v.RH] ==
+                        if (((font_area[eqtb[2255399L /*cur_font_loc */ ].hh.v.RH] == 65535L /*aat_font_flag */ )
+                             || (font_area[eqtb[2255399L /*cur_font_loc */ ].hh.v.RH] ==
                                  65534L /*otgr_font_flag */ ))) {
                             scan_int();
                             n = cur_val;
@@ -10277,11 +10277,11 @@ void zscan_something_internal(small_number level, boolean negative)
                             } else {
 
                                 scan_int();
-                                cur_val = get_glyph_bounds(eqtb[2253799L /*cur_font_loc */ ].hh.v.RH, n, cur_val);
+                                cur_val = get_glyph_bounds(eqtb[2255399L /*cur_font_loc */ ].hh.v.RH, n, cur_val);
                             }
                         } else {
 
-                            not_native_font_error(71 /*last_item */ , m, eqtb[2253799L /*cur_font_loc */ ].hh.v.RH);
+                            not_native_font_error(71 /*last_item */ , m, eqtb[2255399L /*cur_font_loc */ ].hh.v.RH);
                             cur_val = 0;
                         }
                     }
@@ -10339,7 +10339,7 @@ void zscan_something_internal(small_number level, boolean negative)
                     {
                         q = cur_chr - 60;
                         scan_int();
-                        if ((eqtb[2253271L /*par_shape_loc */ ].hh.v.RH == -268435455L) || (cur_val <= 0))
+                        if ((eqtb[2254871L /*par_shape_loc */ ].hh.v.RH == -268435455L) || (cur_val <= 0))
                             cur_val = 0;
                         else {
 
@@ -10347,9 +10347,9 @@ void zscan_something_internal(small_number level, boolean negative)
                                 q = cur_val % 2;
                                 cur_val = (cur_val + q) / 2;
                             }
-                            if (cur_val > mem[eqtb[2253271L /*par_shape_loc */ ].hh.v.RH].hh.v.LH)
-                                cur_val = mem[eqtb[2253271L /*par_shape_loc */ ].hh.v.RH].hh.v.LH;
-                            cur_val = mem[eqtb[2253271L /*par_shape_loc */ ].hh.v.RH + 2 * cur_val - q].cint;
+                            if (cur_val > mem[eqtb[2254871L /*par_shape_loc */ ].hh.v.RH].hh.v.LH)
+                                cur_val = mem[eqtb[2254871L /*par_shape_loc */ ].hh.v.RH].hh.v.LH;
+                            cur_val = mem[eqtb[2254871L /*par_shape_loc */ ].hh.v.RH + 2 * cur_val - q].cint;
                         }
                         cur_val_level = 1 /*dimen_val */ ;
                     }
@@ -10603,29 +10603,29 @@ void zscan_something_internal(small_number level, boolean negative)
                     break;
                 case 49:
                     {
-                        if (((font_area[eqtb[2253799L /*cur_font_loc */ ].hh.v.RH] == 65535L /*aat_font_flag */ )
-                             || (font_area[eqtb[2253799L /*cur_font_loc */ ].hh.v.RH] ==
+                        if (((font_area[eqtb[2255399L /*cur_font_loc */ ].hh.v.RH] == 65535L /*aat_font_flag */ )
+                             || (font_area[eqtb[2255399L /*cur_font_loc */ ].hh.v.RH] ==
                                  65534L /*otgr_font_flag */ ))) {
                             scan_int();
                             n = cur_val;
-                            cur_val = map_char_to_glyph(eqtb[2253799L /*cur_font_loc */ ].hh.v.RH, n);
+                            cur_val = map_char_to_glyph(eqtb[2255399L /*cur_font_loc */ ].hh.v.RH, n);
                         } else {
 
-                            not_native_font_error(71 /*last_item */ , m, eqtb[2253799L /*cur_font_loc */ ].hh.v.RH);
+                            not_native_font_error(71 /*last_item */ , m, eqtb[2255399L /*cur_font_loc */ ].hh.v.RH);
                             cur_val = 0;
                         }
                     }
                     break;
                 case 50:
                     {
-                        if (((font_area[eqtb[2253799L /*cur_font_loc */ ].hh.v.RH] == 65535L /*aat_font_flag */ )
-                             || (font_area[eqtb[2253799L /*cur_font_loc */ ].hh.v.RH] ==
+                        if (((font_area[eqtb[2255399L /*cur_font_loc */ ].hh.v.RH] == 65535L /*aat_font_flag */ )
+                             || (font_area[eqtb[2255399L /*cur_font_loc */ ].hh.v.RH] ==
                                  65534L /*otgr_font_flag */ ))) {
                             scan_and_pack_name();
-                            cur_val = map_glyph_to_index(eqtb[2253799L /*cur_font_loc */ ].hh.v.RH);
+                            cur_val = map_glyph_to_index(eqtb[2255399L /*cur_font_loc */ ].hh.v.RH);
                         } else {
 
-                            not_native_font_error(71 /*last_item */ , m, eqtb[2253799L /*cur_font_loc */ ].hh.v.RH);
+                            not_native_font_error(71 /*last_item */ , m, eqtb[2255399L /*cur_font_loc */ ].hh.v.RH);
                             cur_val = 0;
                         }
                     }
@@ -11183,10 +11183,10 @@ void zxetex_scan_dimen(boolean mu, boolean inf, boolean shortcut, boolean requir
         if (mu)
             goto lab45;
         if (scan_keyword(66064L /*"em" */ ))
-            v = ( /*593: */ font_info[6 /*quad_code */  + param_base[eqtb[2253799L /*cur_font_loc */ ].hh.v.RH]].
+            v = ( /*593: */ font_info[6 /*quad_code */  + param_base[eqtb[2255399L /*cur_font_loc */ ].hh.v.RH]].
                  cint /*:593 */ );
         else if (scan_keyword(66065L /*"ex" */ ))
-            v = ( /*594: */ font_info[5 /*x_height_code */  + param_base[eqtb[2253799L /*cur_font_loc */ ].hh.v.RH]].
+            v = ( /*594: */ font_info[5 /*x_height_code */  + param_base[eqtb[2255399L /*cur_font_loc */ ].hh.v.RH]].
                  cint /*:594 */ );
         else
             goto lab45;
@@ -11227,9 +11227,9 @@ void zxetex_scan_dimen(boolean mu, boolean inf, boolean shortcut, boolean requir
         if (scan_keyword(66060L /*"true" */ ))  //492:
         {
             prepare_mag();
-            if (eqtb[8939257L /*int_base 17 */ ].cint != 1000) {
-                cur_val = xn_over_d(cur_val, 1000, eqtb[8939257L /*int_base 17 */ ].cint);
-                f = (1000 * f + 65536L * tex_remainder) / eqtb[8939257L /*int_base 17 */ ].cint;
+            if (eqtb[8940857L /*int_base 17 */ ].cint != 1000) {
+                cur_val = xn_over_d(cur_val, 1000, eqtb[8940857L /*int_base 17 */ ].cint);
+                f = (1000 * f + 65536L * tex_remainder) / eqtb[8940857L /*int_base 17 */ ].cint;
                 cur_val = cur_val + (f / 65536L);
                 f = f % 65536L;
             }
@@ -11900,7 +11900,7 @@ void pseudo_start(void)
     s = make_string();
     str_pool[pool_ptr] = 32 /*" " */ ;
     l = str_start[(s) - 65536L];
-    nl = eqtb[8939289L /*int_base 49 */ ].cint;
+    nl = eqtb[8940889L /*int_base 49 */ ].cint;
     p = get_avail();
     q = p;
     while (l < pool_ptr) {
@@ -11956,7 +11956,7 @@ void pseudo_start(void)
     line = 0;
     cur_input.limit_field = cur_input.start_field;
     cur_input.loc_field = cur_input.limit_field + 1;
-    if (eqtb[8939302L /*int_base 62 */ ].cint > 0) {
+    if (eqtb[8940902L /*int_base 62 */ ].cint > 0) {
         if (term_offset > max_print_line - 3)
             print_ln();
         else if ((term_offset > 0) || (file_offset > 0))
@@ -12220,7 +12220,7 @@ void conv_toks(void)
         {
             scan_register_num();
             if (cur_val < 256)
-                p = eqtb[2253543L /*box_base */  + cur_val].hh.v.RH;
+                p = eqtb[2255143L /*box_base */  + cur_val].hh.v.RH;
             else {
 
                 find_sa_element(4, cur_val, false);
@@ -12977,10 +12977,10 @@ void zread_toks(integer n, halfword r, halfword j)
             }
         }
         cur_input.limit_field = last;
-        if ((eqtb[8939288L /*int_base 48 */ ].cint < 0) || (eqtb[8939288L /*int_base 48 */ ].cint > 255))
+        if ((eqtb[8940888L /*int_base 48 */ ].cint < 0) || (eqtb[8940888L /*int_base 48 */ ].cint > 255))
             decr(cur_input.limit_field);
         else
-            buffer[cur_input.limit_field] = eqtb[8939288L /*int_base 48 */ ].cint;
+            buffer[cur_input.limit_field] = eqtb[8940888L /*int_base 48 */ ].cint;
         first = cur_input.limit_field + 1;
         cur_input.loc_field = cur_input.start_field;
         cur_input.state_field = 33 /*new_line */ ;
@@ -13048,7 +13048,7 @@ void pass_text(void)
             incr(l);
     }
  lab30:                        /*done */ scanner_status = save_scanner_status;
-    if (eqtb[8939301L /*int_base 61 */ ].cint > 0)
+    if (eqtb[8940901L /*int_base 61 */ ].cint > 0)
         show_cur_cmd_chr();
 }
 
@@ -13084,9 +13084,9 @@ void conditional(void)
     halfword save_cond_ptr;
     small_number this_if;
     boolean is_unless;
-    if (eqtb[8939301L /*int_base 61 */ ].cint > 0) {
+    if (eqtb[8940901L /*int_base 61 */ ].cint > 0) {
 
-        if (eqtb[8939276L /*int_base 36 */ ].cint <= 1)
+        if (eqtb[8940876L /*int_base 36 */ ].cint <= 1)
             show_cur_cmd_chr();
     }
     {
@@ -13217,7 +13217,7 @@ void conditional(void)
         {
             scan_register_num();
             if (cur_val < 256)
-                p = eqtb[2253543L /*box_base */  + cur_val].hh.v.RH;
+                p = eqtb[2255143L /*box_base */  + cur_val].hh.v.RH;
             else {
 
                 find_sa_element(4, cur_val, false);
@@ -13377,7 +13377,7 @@ void conditional(void)
         {
             scan_int();
             n = cur_val;
-            if (eqtb[8939276L /*int_base 36 */ ].cint > 1) {
+            if (eqtb[8940876L /*int_base 36 */ ].cint > 1) {
                 begin_diagnostic();
                 print(66169L /*"_case " */ );
                 print_int(n);
@@ -13427,7 +13427,7 @@ void conditional(void)
     }
     if (is_unless)
         b = !b;
-    if (eqtb[8939276L /*int_base 36 */ ].cint > 1)      //537:
+    if (eqtb[8940876L /*int_base 36 */ ].cint > 1)      //537:
     {
         begin_diagnostic();
         if (b)
@@ -14053,7 +14053,7 @@ void open_log_file(void)
     input_stack[input_ptr] = cur_input;
     print_nl(66185L /*"**" */ );
     l = input_stack[0].limit_field;
-    if (buffer[l] == eqtb[8939288L /*int_base 48 */ ].cint)
+    if (buffer[l] == eqtb[8940888L /*int_base 48 */ ].cint)
         decr(l);
     {
         register integer for_end;
@@ -14081,7 +14081,7 @@ void start_input(void)
         tex_input_type = 1;
         if (kpse_in_name_ok(stringcast(name_of_file + 1))
             && u_open_in(input_file[cur_input.index_field], kpse_tex_format,
-                         eqtb[8939318L /*eTeX_state_base 6 */ ].cint, eqtb[8939319L /*eTeX_state_base 7 */ ].cint)) {
+                         eqtb[8940918L /*eTeX_state_base 6 */ ].cint, eqtb[8940919L /*eTeX_state_base 7 */ ].cint)) {
             make_utf16_name();
             name_in_progress = true;
             begin_name();
@@ -14122,12 +14122,12 @@ void start_input(void)
     incr(open_parens);
     print(full_source_filename_stack[in_open]);
     fflush(stdout);
-    if (eqtb[8939298L /*int_base 58 */ ].cint > 0) {
+    if (eqtb[8940898L /*int_base 58 */ ].cint > 0) {
         begin_diagnostic();
         print_ln();
         print_char(126 /*"~" */ );
         v = input_ptr - 1;
-        if (v < eqtb[8939298L /*int_base 58 */ ].cint)
+        if (v < eqtb[8940898L /*int_base 58 */ ].cint)
             while (v > 0) {
 
                 print_char(46 /*"." */ );
@@ -14146,10 +14146,10 @@ void start_input(void)
         line = 1;
         if (input_ln(input_file[cur_input.index_field], false)) ;
         firm_up_the_line();
-        if ((eqtb[8939288L /*int_base 48 */ ].cint < 0) || (eqtb[8939288L /*int_base 48 */ ].cint > 255))
+        if ((eqtb[8940888L /*int_base 48 */ ].cint < 0) || (eqtb[8940888L /*int_base 48 */ ].cint > 255))
             decr(cur_input.limit_field);
         else
-            buffer[cur_input.limit_field] = eqtb[8939288L /*int_base 48 */ ].cint;
+            buffer[cur_input.limit_field] = eqtb[8940888L /*int_base 48 */ ].cint;
         first = cur_input.limit_field + 1;
         cur_input.loc_field = cur_input.start_field;
     }
@@ -14177,12 +14177,12 @@ four_quarters zeffective_char_info(internal_font_number f, quarterword c)
             }
         }
     }
-    if (c >= eqtb[8939295L /*int_base 55 */ ].cint) {
+    if (c >= eqtb[8940895L /*int_base 55 */ ].cint) {
 
-        if (c <= eqtb[8939296L /*int_base 56 */ ].cint) {
+        if (c <= eqtb[8940896L /*int_base 56 */ ].cint) {
 
-            if ((eqtb[7825128L /*char_sub_code_base */  + c].hh.v.RH > 0)) {
-                base_c = (eqtb[7825128L /*char_sub_code_base */  + c].hh.v.RH % 256);
+            if ((eqtb[7826728L /*char_sub_code_base */  + c].hh.v.RH > 0)) {
+                base_c = (eqtb[7826728L /*char_sub_code_base */  + c].hh.v.RH % 256);
                 if (font_ec[f] >= base_c) {
 
                     if (font_bc[f] <= base_c) {
@@ -14221,11 +14221,11 @@ void zprint_ucs_code(UnicodeScalar n)
 void zchar_warning(internal_font_number f, integer c)
 {
     char_warning_regmem integer old_setting;
-    if (eqtb[8939275L /*int_base 35 */ ].cint > 0) {
-        old_setting = eqtb[8939269L /*int_base 29 */ ].cint;
-        if ((eTeX_mode == 1) && (eqtb[8939275L /*int_base 35 */ ].cint > 1))
-            eqtb[8939269L /*int_base 29 */ ].cint = 1;
-        if (eqtb[8939275L /*int_base 35 */ ].cint > 2) {
+    if (eqtb[8940875L /*int_base 35 */ ].cint > 0) {
+        old_setting = eqtb[8940869L /*int_base 29 */ ].cint;
+        if ((eTeX_mode == 1) && (eqtb[8940875L /*int_base 35 */ ].cint > 1))
+            eqtb[8940869L /*int_base 29 */ ].cint = 1;
+        if (eqtb[8940875L /*int_base 35 */ ].cint > 2) {
             if (interaction == 3 /*error_stop_mode */ ) ;
             if (file_line_error_style_p)
                 print_file_line();
@@ -14249,10 +14249,10 @@ void zchar_warning(internal_font_number f, integer c)
         print(41 /*")" */ );
         print(66218L /*" in font " */ );
         print(font_name[f]);
-        if (eqtb[8939275L /*int_base 35 */ ].cint < 3)
+        if (eqtb[8940875L /*int_base 35 */ ].cint < 3)
             print_char(33 /*"!" */ );
-        eqtb[8939269L /*int_base 29 */ ].cint = old_setting;
-        if (eqtb[8939275L /*int_base 35 */ ].cint > 2) {
+        eqtb[8940869L /*int_base 29 */ ].cint = old_setting;
+        if (eqtb[8940875L /*int_base 35 */ ].cint > 2) {
             help_ptr = 0;
             error();
         } else
@@ -14268,7 +14268,7 @@ halfword znew_native_word_node(internal_font_number f, integer n)
     l = 6 /*native_node_size */  + (n * sizeof(UTF16_code) + sizeof(memory_word) - 1) / sizeof(memory_word);
     q = get_node(l);
     mem[q].hh.b0 = 8 /*whatsit_node */ ;
-    if ((eqtb[8939322L /*eTeX_state_base 10 */ ].cint > 0))
+    if ((eqtb[8940922L /*eTeX_state_base 10 */ ].cint > 0))
         mem[q].hh.b1 = 41 /*native_word_node_AT */ ;
     else
         mem[q].hh.b1 = 40 /*native_word_node */ ;
@@ -14345,7 +14345,7 @@ halfword znew_native_character(internal_font_number f, UnicodeScalar c)
         }
     } else {
 
-        if (eqtb[8939275L /*int_base 35 */ ].cint > 0) {
+        if (eqtb[8940875L /*int_base 35 */ ].cint > 0) {
 
             if (map_char_to_glyph(f, c) == 0) {
                 char_warning(f, c);
@@ -14368,7 +14368,7 @@ halfword znew_native_character(internal_font_number f, UnicodeScalar c)
             set_native_char(p, 0, c);
         }
     }
-    set_native_metrics(p, (eqtb[8939315L /*eTeX_state_base 3 */ ].cint > 0));
+    set_native_metrics(p, (eqtb[8940915L /*eTeX_state_base 3 */ ].cint > 0));
     Result = p;
     return Result;
 }
@@ -14568,8 +14568,8 @@ internal_font_number zload_native_font(halfword u, str_number nom, str_number ai
     font_bc[font_ptr] = 0;
     font_ec[font_ptr] = 65535L;
     font_used[font_ptr] = false;
-    hyphen_char[font_ptr] = eqtb[8939286L /*int_base 46 */ ].cint;
-    skew_char[font_ptr] = eqtb[8939287L /*int_base 47 */ ].cint;
+    hyphen_char[font_ptr] = eqtb[8940886L /*int_base 46 */ ].cint;
+    skew_char[font_ptr] = eqtb[8940887L /*int_base 47 */ ].cint;
     param_base[font_ptr] = fmem_ptr - 1;
     font_layout_engine[font_ptr] = font_engine;
     font_mapping[font_ptr] = 0;
@@ -14619,7 +14619,7 @@ void zdo_locale_linebreaks(integer s, integer len)
 {
     do_locale_linebreaks_regmem integer offs, prevOffs, i;
     boolean use_penalty, use_skip;
-    if ((eqtb[8939309L /*int_base 69 */ ].cint == 0) || (len == 1)) {
+    if ((eqtb[8940909L /*int_base 69 */ ].cint == 0) || (len == 1)) {
         mem[cur_list.tail_field].hh.v.RH = new_native_word_node(main_f, len);
         cur_list.tail_field = mem[cur_list.tail_field].hh.v.RH;
         {
@@ -14631,12 +14631,12 @@ void zdo_locale_linebreaks(integer s, integer len)
                     set_native_char(cur_list.tail_field, i, native_text[s + i]);
                 while (i++ < for_end);
         }
-        set_native_metrics(cur_list.tail_field, (eqtb[8939315L /*eTeX_state_base 3 */ ].cint > 0));
+        set_native_metrics(cur_list.tail_field, (eqtb[8940915L /*eTeX_state_base 3 */ ].cint > 0));
     } else {
 
-        use_skip = eqtb[2252755L /*glue_base 15 */ ].hh.v.RH != mem_bot;
-        use_penalty = eqtb[8939310L /*int_base 70 */ ].cint != 0 || !use_skip;
-        linebreak_start(main_f, eqtb[8939309L /*int_base 69 */ ].cint, native_text + s, len);
+        use_skip = eqtb[2254355L /*glue_base 15 */ ].hh.v.RH != mem_bot;
+        use_penalty = eqtb[8940910L /*int_base 70 */ ].cint != 0 || !use_skip;
+        linebreak_start(main_f, eqtb[8940909L /*int_base 69 */ ].cint, native_text + s, len);
         offs = 0;
         do {
             prevOffs = offs;
@@ -14644,7 +14644,7 @@ void zdo_locale_linebreaks(integer s, integer len)
             if (offs > 0) {
                 if (prevOffs != 0) {
                     if (use_penalty) {
-                        mem[cur_list.tail_field].hh.v.RH = new_penalty(eqtb[8939310L /*int_base 70 */ ].cint);
+                        mem[cur_list.tail_field].hh.v.RH = new_penalty(eqtb[8940910L /*int_base 70 */ ].cint);
                         cur_list.tail_field = mem[cur_list.tail_field].hh.v.RH;
                     }
                     if (use_skip) {
@@ -14663,7 +14663,7 @@ void zdo_locale_linebreaks(integer s, integer len)
                             set_native_char(cur_list.tail_field, i - prevOffs, native_text[s + i]);
                         while (i++ < for_end);
                 }
-                set_native_metrics(cur_list.tail_field, (eqtb[8939315L /*eTeX_state_base 3 */ ].cint > 0));
+                set_native_metrics(cur_list.tail_field, (eqtb[8940915L /*eTeX_state_base 3 */ ].cint > 0));
             }
         } while (!(offs < 0));
     }
@@ -14690,14 +14690,14 @@ integer get_input_normalization_state(void)
     get_input_normalization_state_regmem if (eqtb == nil)
         Result = 0;
     else
-        Result = eqtb[8939317L /*eTeX_state_base 5 */ ].cint;
+        Result = eqtb[8940917L /*eTeX_state_base 5 */ ].cint;
     return Result;
 }
 
 integer get_tracing_fonts_state(void)
 {
     register integer Result;
-    get_tracing_fonts_state_regmem Result = eqtb[8939320L /*eTeX_state_base 8 */ ].cint;
+    get_tracing_fonts_state_regmem Result = eqtb[8940920L /*eTeX_state_base 8 */ ].cint;
     return Result;
 }
 
@@ -14721,7 +14721,7 @@ internal_font_number zread_font_info(halfword u, str_number nom, str_number aire
     g = 0 /*font_base */ ;
     file_opened = false;
     pack_file_name(nom, aire, cur_ext);
-    if (eqtb[8939320L /*eTeX_state_base 8 */ ].cint > 0) {
+    if (eqtb[8940920L /*eTeX_state_base 8 */ ].cint > 0) {
         begin_diagnostic();
         print_nl(66190L /*"Requested font "" */ );
         print_c_string(stringcast(name_of_file + 1));
@@ -15259,8 +15259,8 @@ internal_font_number zread_font_info(halfword u, str_number nom, str_number aire
             font_params[f] = np;
         else
             font_params[f] = 7;
-        hyphen_char[f] = eqtb[8939286L /*int_base 46 */ ].cint;
-        skew_char[f] = eqtb[8939287L /*int_base 47 */ ].cint;
+        hyphen_char[f] = eqtb[8940886L /*int_base 46 */ ].cint;
+        skew_char[f] = eqtb[8940887L /*int_base 47 */ ].cint;
         if (bch_label < nl)
             bchar_label[f] = bch_label + lig_kern_base[f];
         else
@@ -15299,7 +15299,7 @@ internal_font_number zread_font_info(halfword u, str_number nom, str_number aire
         if (g != 0 /*font_base */ )
             goto lab30;
     }
- lab11:/*bad_tfm */ if (eqtb[8939308L /*int_base 68 */ ].cint == 0) {
+ lab11:/*bad_tfm */ if (eqtb[8940908L /*int_base 68 */ ].cint == 0) {
         {
             if (interaction == 3 /*error_stop_mode */ ) ;
             if (file_line_error_style_p)
@@ -15341,7 +15341,7 @@ internal_font_number zread_font_info(halfword u, str_number nom, str_number aire
     }
  lab30:                        /*done */ if (file_opened)
         b_close(tfm_file);
-    if (eqtb[8939320L /*eTeX_state_base 8 */ ].cint > 0) {
+    if (eqtb[8940920L /*eTeX_state_base 8 */ ].cint > 0) {
         if (g == 0 /*font_base */ ) {
             begin_diagnostic();
             print_nl(66192L /*" -> font not found, using "nullfont"" */ );
@@ -15957,7 +15957,7 @@ void zwrite_out(halfword p)
     print_ln();
     flush_list(def_ref);
     if (j == 18) {
-        if ((eqtb[8939269L /*int_base 29 */ ].cint <= 0))
+        if ((eqtb[8940869L /*int_base 29 */ ].cint <= 0))
             selector = 18 /*log_only */ ;
         else
             selector = 19 /*term_and_log */ ;
@@ -16189,7 +16189,7 @@ void zout_what(halfword p)
                     write_open[j] = true;
                     if (log_opened && texmf_yesno("log_openout")) {
                         old_setting = selector;
-                        if ((eqtb[8939269L /*int_base 29 */ ].cint <= 0))
+                        if ((eqtb[8940869L /*int_base 29 */ ].cint <= 0))
                             selector = 18 /*log_only */ ;
                         else
                             selector = 19 /*term_and_log */ ;
@@ -16457,7 +16457,7 @@ void hlist_out(void)
     this_box = temp_ptr;
     g_order = mem[this_box + 5].hh.b1;
     g_sign = mem[this_box + 5].hh.b0;
-    if (eqtb[8939321L /*eTeX_state_base 9 */ ].cint > 1) {
+    if (eqtb[8940921L /*eTeX_state_base 9 */ ].cint > 1) {
         p = mem[this_box + 5].hh.v.RH;
         prev_p = this_box + 5;
         while (p != -268435455L) {
@@ -16758,13 +16758,13 @@ void hlist_out(void)
                 }
                 if (mltex_enabled_p)    //1695:
                 {
-                    if (c >= eqtb[8939295L /*int_base 55 */ ].cint) {
+                    if (c >= eqtb[8940895L /*int_base 55 */ ].cint) {
 
-                        if (c <= eqtb[8939296L /*int_base 56 */ ].cint) {
+                        if (c <= eqtb[8940896L /*int_base 56 */ ].cint) {
 
-                            if ((eqtb[7825128L /*char_sub_code_base */  + c].hh.v.RH > 0)) {
-                                base_c = (eqtb[7825128L /*char_sub_code_base */  + c].hh.v.RH % 256);
-                                accent_c = (eqtb[7825128L /*char_sub_code_base */  + c].hh.v.RH / 256);
+                            if ((eqtb[7826728L /*char_sub_code_base */  + c].hh.v.RH > 0)) {
+                                base_c = (eqtb[7826728L /*char_sub_code_base */  + c].hh.v.RH % 256);
+                                accent_c = (eqtb[7826728L /*char_sub_code_base */  + c].hh.v.RH / 256);
                                 if ((font_ec[f] >= base_c)) {
 
                                     if ((font_bc[f] <= base_c)) {
@@ -16807,7 +16807,7 @@ void hlist_out(void)
                     print_char(33 /*"!" */ );
                     end_diagnostic(false);
                     goto lab22;
- lab40:            /*found *//*1698: */ if (eqtb[8939275L /*int_base 35 */ ].cint > 99) {
+ lab40:            /*found *//*1698: */ if (eqtb[8940875L /*int_base 35 */ ].cint > 99) {
                         begin_diagnostic();
                         print_nl(66969L /*"Using character substitution: " */ );
                         print(c);
@@ -17765,11 +17765,11 @@ void zship_out(halfword p)
     unsigned char j, k;
     pool_pointer s;
     unsigned char /*max_selector */ old_setting;
-    synctex_sheet(eqtb[8939257L /*int_base 17 */ ].cint);
+    synctex_sheet(eqtb[8940857L /*int_base 17 */ ].cint);
     {
         if (job_name == 0)
             open_log_file();
-        if (eqtb[8939274L /*int_base 34 */ ].cint > 0) {
+        if (eqtb[8940874L /*int_base 34 */ ].cint > 0) {
             print_nl(65626L /*"" */ );
             print_ln();
             print(66222L /*"Completed box being shipped out" */ );
@@ -17780,7 +17780,7 @@ void zship_out(halfword p)
             print_char(32 /*" " */ );
         print_char(91 /*"[" */ );
         j = 9;
-        while ((eqtb[8939325L /*count_base */  + j].cint == 0) && (j > 0))
+        while ((eqtb[8940925L /*count_base */  + j].cint == 0) && (j > 0))
             decr(j);
         {
             register integer for_end;
@@ -17788,22 +17788,22 @@ void zship_out(halfword p)
             for_end = j;
             if (k <= for_end)
                 do {
-                    print_int(eqtb[8939325L /*count_base */  + k].cint);
+                    print_int(eqtb[8940925L /*count_base */  + k].cint);
                     if (k < j)
                         print_char(46 /*"." */ );
                 }
                 while (k++ < for_end);
         }
         fflush(stdout);
-        if (eqtb[8939274L /*int_base 34 */ ].cint > 0) {
+        if (eqtb[8940874L /*int_base 34 */ ].cint > 0) {
             print_char(93 /*"]" */ );
             begin_diagnostic();
             show_box(p);
             end_diagnostic(true);
         }
         if ((mem[p + 3].cint > 1073741823L) || (mem[p + 2].cint > 1073741823L)
-            || (mem[p + 3].cint + mem[p + 2].cint + eqtb[10053712L /*dimen_base 19 */ ].cint > 1073741823L)
-            || (mem[p + 1].cint + eqtb[10053711L /*dimen_base 18 */ ].cint > 1073741823L)) {
+            || (mem[p + 3].cint + mem[p + 2].cint + eqtb[10055312L /*dimen_base 19 */ ].cint > 1073741823L)
+            || (mem[p + 1].cint + eqtb[10055311L /*dimen_base 18 */ ].cint > 1073741823L)) {
             {
                 if (interaction == 3 /*error_stop_mode */ ) ;
                 if (file_line_error_style_p)
@@ -17818,7 +17818,7 @@ void zship_out(halfword p)
                 help_line[0] = 66230L /*"more than 18 feet wide, so I suspect something went wrong." */ ;
             }
             error();
-            if (eqtb[8939274L /*int_base 34 */ ].cint <= 0) {
+            if (eqtb[8940874L /*int_base 34 */ ].cint <= 0) {
                 begin_diagnostic();
                 print_nl(66231L /*"The following box has been deleted:" */ );
                 show_box(p);
@@ -17826,22 +17826,22 @@ void zship_out(halfword p)
             }
             goto lab30;
         }
-        if (mem[p + 3].cint + mem[p + 2].cint + eqtb[10053712L /*dimen_base 19 */ ].cint > max_v)
-            max_v = mem[p + 3].cint + mem[p + 2].cint + eqtb[10053712L /*dimen_base 19 */ ].cint;
-        if (mem[p + 1].cint + eqtb[10053711L /*dimen_base 18 */ ].cint > max_h)
-            max_h = mem[p + 1].cint + eqtb[10053711L /*dimen_base 18 */ ].cint /*:679 */ ;
+        if (mem[p + 3].cint + mem[p + 2].cint + eqtb[10055312L /*dimen_base 19 */ ].cint > max_v)
+            max_v = mem[p + 3].cint + mem[p + 2].cint + eqtb[10055312L /*dimen_base 19 */ ].cint;
+        if (mem[p + 1].cint + eqtb[10055311L /*dimen_base 18 */ ].cint > max_h)
+            max_h = mem[p + 1].cint + eqtb[10055311L /*dimen_base 18 */ ].cint /*:679 */ ;
         dvi_h = 0;
         dvi_v = 0;
-        cur_h = eqtb[10053711L /*dimen_base 18 */ ].cint;
+        cur_h = eqtb[10055311L /*dimen_base 18 */ ].cint;
         dvi_f = 0 /*font_base */ ;
-        cur_h_offset = eqtb[10053711L /*dimen_base 18 */ ].cint + (65536L * 7227) / ((double)100);
-        cur_v_offset = eqtb[10053712L /*dimen_base 19 */ ].cint + (65536L * 7227) / ((double)100);
-        if (eqtb[10053714L /*dimen_base 21 */ ].cint != 0)
-            cur_page_width = eqtb[10053714L /*dimen_base 21 */ ].cint;
+        cur_h_offset = eqtb[10055311L /*dimen_base 18 */ ].cint + (65536L * 7227) / ((double)100);
+        cur_v_offset = eqtb[10055312L /*dimen_base 19 */ ].cint + (65536L * 7227) / ((double)100);
+        if (eqtb[10055314L /*dimen_base 21 */ ].cint != 0)
+            cur_page_width = eqtb[10055314L /*dimen_base 21 */ ].cint;
         else
             cur_page_width = mem[p + 1].cint + 2 * cur_h_offset;
-        if (eqtb[10053715L /*dimen_base 22 */ ].cint != 0)
-            cur_page_height = eqtb[10053715L /*dimen_base 22 */ ].cint;
+        if (eqtb[10055315L /*dimen_base 22 */ ].cint != 0)
+            cur_page_height = eqtb[10055315L /*dimen_base 22 */ ].cint;
         else
             cur_page_height = mem[p + 3].cint + mem[p + 2].cint + 2 * /*:1428 */ cur_v_offset;
         if (output_file_name == 0) {
@@ -17868,7 +17868,7 @@ void zship_out(halfword p)
             dvi_four(25400000L);
             dvi_four(473628672L);
             prepare_mag();
-            dvi_four(eqtb[8939257L /*int_base 17 */ ].cint);
+            dvi_four(eqtb[8940857L /*int_base 17 */ ].cint);
             if (output_comment) {
                 l = strlen(output_comment);
                 {
@@ -17895,14 +17895,14 @@ void zship_out(halfword p)
                 old_setting = selector;
                 selector = 21 /*new_string */ ;
                 print(66220L /*" XeTeX output " */ );
-                print_int(eqtb[8939263L /*int_base 23 */ ].cint);
+                print_int(eqtb[8940863L /*int_base 23 */ ].cint);
                 print_char(46 /*"." */ );
-                print_two(eqtb[8939262L /*int_base 22 */ ].cint);
+                print_two(eqtb[8940862L /*int_base 22 */ ].cint);
                 print_char(46 /*"." */ );
-                print_two(eqtb[8939261L /*int_base 21 */ ].cint);
+                print_two(eqtb[8940861L /*int_base 21 */ ].cint);
                 print_char(58 /*":" */ );
-                print_two(eqtb[8939260L /*int_base 20 */ ].cint / 60);
-                print_two(eqtb[8939260L /*int_base 20 */ ].cint % 60);
+                print_two(eqtb[8940860L /*int_base 20 */ ].cint / 60);
+                print_two(eqtb[8940860L /*int_base 20 */ ].cint % 60);
                 selector = old_setting;
                 {
                     dvi_buf[dvi_ptr] = (pool_ptr - str_start[(str_ptr) - 65536L]);
@@ -17939,7 +17939,7 @@ void zship_out(halfword p)
             for_end = 9;
             if (k <= for_end)
                 do
-                    dvi_four(eqtb[8939325L /*count_base */  + k].cint);
+                    dvi_four(eqtb[8940925L /*count_base */  + k].cint);
                 while (k++ < for_end);
         }
         dvi_four(last_bop);
@@ -17947,15 +17947,15 @@ void zship_out(halfword p)
         old_setting = selector;
         selector = 21 /*new_string */ ;
         print(66226L /*"pdf:pagesize " */ );
-        if ((eqtb[10053714L /*dimen_base 21 */ ].cint > 0) && (eqtb[10053715L /*dimen_base 22 */ ].cint > 0)) {
+        if ((eqtb[10055314L /*dimen_base 21 */ ].cint > 0) && (eqtb[10055315L /*dimen_base 22 */ ].cint > 0)) {
             print(66088L /*"width" */ );
             print(32 /*" " */ );
-            print_scaled(eqtb[10053714L /*dimen_base 21 */ ].cint);
+            print_scaled(eqtb[10055314L /*dimen_base 21 */ ].cint);
             print(65697L /*"pt" */ );
             print(32 /*" " */ );
             print(66089L /*"height" */ );
             print(32 /*" " */ );
-            print_scaled(eqtb[10053715L /*dimen_base 22 */ ].cint);
+            print_scaled(eqtb[10055315L /*dimen_base 22 */ ].cint);
             print(65697L /*"pt" */ );
         } else
             print(66227L /*"default" */ );
@@ -17986,7 +17986,7 @@ void zship_out(halfword p)
                 while (s++ < for_end);
         }
         pool_ptr = str_start[(str_ptr) - 65536L];
-        cur_v = mem[p + 3].cint + eqtb[10053712L /*dimen_base 19 */ ].cint;
+        cur_v = mem[p + 3].cint + eqtb[10055312L /*dimen_base 19 */ ].cint;
         temp_ptr = p;
         if (mem[p].hh.b0 == 1 /*vlist_node */ )
             vlist_out();
@@ -18046,14 +18046,14 @@ void zship_out(halfword p)
             if ((LR_ptr != -268435455L) || (cur_dir != 0 /*left_to_right */ ))
                 confusion(66924L /*"LR3" */ );
         }
-        if (eqtb[8939274L /*int_base 34 */ ].cint <= 0)
+        if (eqtb[8940874L /*int_base 34 */ ].cint <= 0)
             print_char(93 /*"]" */ );
         dead_cycles = 0;
         fflush(stdout);
         ;
 
 #ifdef STAT
-        if (eqtb[8939271L /*int_base 31 */ ].cint > 1) {
+        if (eqtb[8940871L /*int_base 31 */ ].cint > 1) {
             print_nl(66223L /*"Memory usage before: " */ );
             print_int(var_used);
             print_char(38 /*"&" */ );
@@ -18066,7 +18066,7 @@ void zship_out(halfword p)
         ;
 
 #ifdef STAT
-        if (eqtb[8939271L /*int_base 31 */ ].cint > 1) {
+        if (eqtb[8940871L /*int_base 31 */ ].cint > 1) {
             print(66224L /*" after: " */ );
             print_int(var_used);
             print_char(38 /*"&" */ );
@@ -18204,7 +18204,7 @@ halfword zhpack(halfword p, scaled w, small_number m)
     total_shrink[2 /*fill */ ] = 0;
     total_stretch[3 /*filll */ ] = 0;
     total_shrink[3 /*filll */ ] = 0 /*:690 */ ;
-    if ((eqtb[8939312L /*eTeX_state_base 0 */ ].cint > 0))      //1520:
+    if ((eqtb[8940912L /*eTeX_state_base 0 */ ].cint > 0))      //1520:
     {
         temp_ptr = get_avail();
         mem[temp_ptr].hh.v.LH = 0 /*before */ ;
@@ -18353,7 +18353,7 @@ halfword zhpack(halfword p, scaled w, small_number m)
                                 } while (!((ppp == -268435455L)));
                                 flush_node_list(p);
                                 p = mem[q].hh.v.RH;
-                                set_native_metrics(p, (eqtb[8939315L /*eTeX_state_base 3 */ ].cint > 0));
+                                set_native_metrics(p, (eqtb[8940915L /*eTeX_state_base 3 */ ].cint > 0));
                             }
                             if (mem[p + 3].cint > h)
                                 h = mem[p + 3].cint;
@@ -18405,7 +18405,7 @@ halfword zhpack(halfword p, scaled w, small_number m)
             case 9:
                 {
                     x = x + mem[p + 1].cint;
-                    if ((eqtb[8939312L /*eTeX_state_base 0 */ ].cint > 0)) {    //1521:
+                    if ((eqtb[8940912L /*eTeX_state_base 0 */ ].cint > 0)) {    //1521:
 
                         if (odd(mem[p].hh.b1)) {
 
@@ -18493,7 +18493,7 @@ halfword zhpack(halfword p, scaled w, small_number m)
             if (mem[r + 5].hh.v.RH != -268435455L)      //702:
             {
                 last_badness = badness(x, total_stretch[0 /*normal */ ]);
-                if (last_badness > eqtb[8939266L /*int_base 26 */ ].cint) {
+                if (last_badness > eqtb[8940866L /*int_base 26 */ ].cint) {
                     print_ln();
                     if (last_badness > 100)
                         print_nl(66247L /*"Underfull" */ );
@@ -18528,14 +18528,14 @@ halfword zhpack(halfword p, scaled w, small_number m)
         if ((total_shrink[o] < -(integer) x) && (o == 0 /*normal */ ) && (mem[r + 5].hh.v.RH != -268435455L)) {
             last_badness = 1000000L;
             mem[r + 6].gr = 1.0;
-            if ((-(integer) x - total_shrink[0 /*normal */ ] > eqtb[10053701L /*dimen_base 8 */ ].cint)
-                || (eqtb[8939266L /*int_base 26 */ ].cint < 100)) {
-                if ((eqtb[10053709L /*dimen_base 16 */ ].cint > 0)
-                    && (-(integer) x - total_shrink[0 /*normal */ ] > eqtb[10053701L /*dimen_base 8 */ ].cint)) {
+            if ((-(integer) x - total_shrink[0 /*normal */ ] > eqtb[10055301L /*dimen_base 8 */ ].cint)
+                || (eqtb[8940866L /*int_base 26 */ ].cint < 100)) {
+                if ((eqtb[10055309L /*dimen_base 16 */ ].cint > 0)
+                    && (-(integer) x - total_shrink[0 /*normal */ ] > eqtb[10055301L /*dimen_base 8 */ ].cint)) {
                     while (mem[q].hh.v.RH != -268435455L)
                         q = mem[q].hh.v.RH;
                     mem[q].hh.v.RH = new_rule();
-                    mem[mem[q].hh.v.RH + 1].cint = eqtb[10053709L /*dimen_base 16 */ ].cint;
+                    mem[mem[q].hh.v.RH + 1].cint = eqtb[10055309L /*dimen_base 16 */ ].cint;
                 }
                 print_ln();
                 print_nl(66255L /*"Overfull \hbox (" */ );
@@ -18548,7 +18548,7 @@ halfword zhpack(halfword p, scaled w, small_number m)
             if (mem[r + 5].hh.v.RH != -268435455L)      //709:
             {
                 last_badness = badness(-(integer) x, total_shrink[0 /*normal */ ]);
-                if (last_badness > eqtb[8939266L /*int_base 26 */ ].cint) {
+                if (last_badness > eqtb[8940866L /*int_base 26 */ ].cint) {
                     print_ln();
                     print_nl(66257L /*"Tight \hbox (badness " */ );
                     print_int(last_badness);
@@ -18580,7 +18580,7 @@ halfword zhpack(halfword p, scaled w, small_number m)
     begin_diagnostic();
     show_box(r);
     end_diagnostic(true);
- lab10:/*exit */ if ((eqtb[8939312L /*eTeX_state_base 0 */ ].cint > 0))//1522:
+ lab10:/*exit */ if ((eqtb[8940912L /*eTeX_state_base 0 */ ].cint > 0))//1522:
     {
         if (mem[LR_ptr].hh.v.LH != 0 /*before */ ) {
             while (mem[q].hh.v.RH != -268435455L)
@@ -18650,7 +18650,7 @@ halfword zvpackage(halfword p, scaled h, small_number m, scaled l)
     last_badness = 0;
     r = get_node(8 /*box_node_size */ );
     mem[r].hh.b0 = 1 /*vlist_node */ ;
-    if ((eqtb[8939314L /*eTeX_state_base 2 */ ].cint > 0))
+    if ((eqtb[8940914L /*eTeX_state_base 2 */ ].cint > 0))
         mem[r].hh.b1 = 1 /*min_quarterword 1 */ ;
     else
         mem[r].hh.b1 = 0 /*min_quarterword */ ;
@@ -18766,7 +18766,7 @@ halfword zvpackage(halfword p, scaled h, small_number m, scaled l)
             if (mem[r + 5].hh.v.RH != -268435455L)      //716:
             {
                 last_badness = badness(x, total_stretch[0 /*normal */ ]);
-                if (last_badness > eqtb[8939267L /*int_base 27 */ ].cint) {
+                if (last_badness > eqtb[8940867L /*int_base 27 */ ].cint) {
                     print_ln();
                     if (last_badness > 100)
                         print_nl(66247L /*"Underfull" */ );
@@ -18801,8 +18801,8 @@ halfword zvpackage(halfword p, scaled h, small_number m, scaled l)
         if ((total_shrink[o] < -(integer) x) && (o == 0 /*normal */ ) && (mem[r + 5].hh.v.RH != -268435455L)) {
             last_badness = 1000000L;
             mem[r + 6].gr = 1.0;
-            if ((-(integer) x - total_shrink[0 /*normal */ ] > eqtb[10053702L /*dimen_base 9 */ ].cint)
-                || (eqtb[8939267L /*int_base 27 */ ].cint < 100)) {
+            if ((-(integer) x - total_shrink[0 /*normal */ ] > eqtb[10055302L /*dimen_base 9 */ ].cint)
+                || (eqtb[8940867L /*int_base 27 */ ].cint < 100)) {
                 print_ln();
                 print_nl(66260L /*"Overfull \vbox (" */ );
                 print_scaled(-(integer) x - total_shrink[0 /*normal */ ]);
@@ -18814,7 +18814,7 @@ halfword zvpackage(halfword p, scaled h, small_number m, scaled l)
             if (mem[r + 5].hh.v.RH != -268435455L)      //720:
             {
                 last_badness = badness(-(integer) x, total_shrink[0 /*normal */ ]);
-                if (last_badness > eqtb[8939267L /*int_base 27 */ ].cint) {
+                if (last_badness > eqtb[8940867L /*int_base 27 */ ].cint) {
                     print_ln();
                     print_nl(66262L /*"Tight \vbox (badness " */ );
                     print_int(last_badness);
@@ -18849,13 +18849,13 @@ void zappend_to_vlist(halfword b)
     append_to_vlist_regmem scaled d;
     halfword p;
     boolean upwards;
-    upwards = (eqtb[8939314L /*eTeX_state_base 2 */ ].cint > 0);
+    upwards = (eqtb[8940914L /*eTeX_state_base 2 */ ].cint > 0);
     if (cur_list.aux_field.cint > -65536000L) {
         if (upwards)
-            d = mem[eqtb[2252741L /*glue_base 1 */ ].hh.v.RH + 1].cint - cur_list.aux_field.cint - mem[b + 2].cint;
+            d = mem[eqtb[2254341L /*glue_base 1 */ ].hh.v.RH + 1].cint - cur_list.aux_field.cint - mem[b + 2].cint;
         else
-            d = mem[eqtb[2252741L /*glue_base 1 */ ].hh.v.RH + 1].cint - cur_list.aux_field.cint - mem[b + 3].cint;
-        if (d < eqtb[10053695L /*dimen_base 2 */ ].cint)
+            d = mem[eqtb[2254341L /*glue_base 1 */ ].hh.v.RH + 1].cint - cur_list.aux_field.cint - mem[b + 3].cint;
+        if (d < eqtb[10055295L /*dimen_base 2 */ ].cint)
             p = new_param_glue(0 /*line_skip_code */ );
         else {
 
@@ -18925,7 +18925,7 @@ scaled zmath_x_height(integer size_code)
     register scaled Result;
     math_x_height_regmem integer f;
     scaled rval;
-    f = eqtb[2253802L /*math_font_base 2 */  + size_code].hh.v.RH;
+    f = eqtb[2255402L /*math_font_base 2 */  + size_code].hh.v.RH;
     if (((font_area[f] == 65534L /*otgr_font_flag */ ) && (isOpenTypeMathFont(font_layout_engine[f]))))
         rval = get_native_mathsy_param(f, 5);
     else
@@ -18939,7 +18939,7 @@ scaled zmath_quad(integer size_code)
     register scaled Result;
     math_quad_regmem integer f;
     scaled rval;
-    f = eqtb[2253802L /*math_font_base 2 */  + size_code].hh.v.RH;
+    f = eqtb[2255402L /*math_font_base 2 */  + size_code].hh.v.RH;
     if (((font_area[f] == 65534L /*otgr_font_flag */ ) && (isOpenTypeMathFont(font_layout_engine[f]))))
         rval = get_native_mathsy_param(f, 6);
     else
@@ -18953,7 +18953,7 @@ scaled znum1(integer size_code)
     register scaled Result;
     num1_regmem integer f;
     scaled rval;
-    f = eqtb[2253802L /*math_font_base 2 */  + size_code].hh.v.RH;
+    f = eqtb[2255402L /*math_font_base 2 */  + size_code].hh.v.RH;
     if (((font_area[f] == 65534L /*otgr_font_flag */ ) && (isOpenTypeMathFont(font_layout_engine[f]))))
         rval = get_native_mathsy_param(f, 8);
     else
@@ -18967,7 +18967,7 @@ scaled znum2(integer size_code)
     register scaled Result;
     num2_regmem integer f;
     scaled rval;
-    f = eqtb[2253802L /*math_font_base 2 */  + size_code].hh.v.RH;
+    f = eqtb[2255402L /*math_font_base 2 */  + size_code].hh.v.RH;
     if (((font_area[f] == 65534L /*otgr_font_flag */ ) && (isOpenTypeMathFont(font_layout_engine[f]))))
         rval = get_native_mathsy_param(f, 9);
     else
@@ -18981,7 +18981,7 @@ scaled znum3(integer size_code)
     register scaled Result;
     num3_regmem integer f;
     scaled rval;
-    f = eqtb[2253802L /*math_font_base 2 */  + size_code].hh.v.RH;
+    f = eqtb[2255402L /*math_font_base 2 */  + size_code].hh.v.RH;
     if (((font_area[f] == 65534L /*otgr_font_flag */ ) && (isOpenTypeMathFont(font_layout_engine[f]))))
         rval = get_native_mathsy_param(f, 10);
     else
@@ -18995,7 +18995,7 @@ scaled zdenom1(integer size_code)
     register scaled Result;
     denom1_regmem integer f;
     scaled rval;
-    f = eqtb[2253802L /*math_font_base 2 */  + size_code].hh.v.RH;
+    f = eqtb[2255402L /*math_font_base 2 */  + size_code].hh.v.RH;
     if (((font_area[f] == 65534L /*otgr_font_flag */ ) && (isOpenTypeMathFont(font_layout_engine[f]))))
         rval = get_native_mathsy_param(f, 11);
     else
@@ -19009,7 +19009,7 @@ scaled zdenom2(integer size_code)
     register scaled Result;
     denom2_regmem integer f;
     scaled rval;
-    f = eqtb[2253802L /*math_font_base 2 */  + size_code].hh.v.RH;
+    f = eqtb[2255402L /*math_font_base 2 */  + size_code].hh.v.RH;
     if (((font_area[f] == 65534L /*otgr_font_flag */ ) && (isOpenTypeMathFont(font_layout_engine[f]))))
         rval = get_native_mathsy_param(f, 12);
     else
@@ -19023,7 +19023,7 @@ scaled zsup1(integer size_code)
     register scaled Result;
     sup1_regmem integer f;
     scaled rval;
-    f = eqtb[2253802L /*math_font_base 2 */  + size_code].hh.v.RH;
+    f = eqtb[2255402L /*math_font_base 2 */  + size_code].hh.v.RH;
     if (((font_area[f] == 65534L /*otgr_font_flag */ ) && (isOpenTypeMathFont(font_layout_engine[f]))))
         rval = get_native_mathsy_param(f, 13);
     else
@@ -19037,7 +19037,7 @@ scaled zsup2(integer size_code)
     register scaled Result;
     sup2_regmem integer f;
     scaled rval;
-    f = eqtb[2253802L /*math_font_base 2 */  + size_code].hh.v.RH;
+    f = eqtb[2255402L /*math_font_base 2 */  + size_code].hh.v.RH;
     if (((font_area[f] == 65534L /*otgr_font_flag */ ) && (isOpenTypeMathFont(font_layout_engine[f]))))
         rval = get_native_mathsy_param(f, 14);
     else
@@ -19051,7 +19051,7 @@ scaled zsup3(integer size_code)
     register scaled Result;
     sup3_regmem integer f;
     scaled rval;
-    f = eqtb[2253802L /*math_font_base 2 */  + size_code].hh.v.RH;
+    f = eqtb[2255402L /*math_font_base 2 */  + size_code].hh.v.RH;
     if (((font_area[f] == 65534L /*otgr_font_flag */ ) && (isOpenTypeMathFont(font_layout_engine[f]))))
         rval = get_native_mathsy_param(f, 15);
     else
@@ -19065,7 +19065,7 @@ scaled zsub1(integer size_code)
     register scaled Result;
     sub1_regmem integer f;
     scaled rval;
-    f = eqtb[2253802L /*math_font_base 2 */  + size_code].hh.v.RH;
+    f = eqtb[2255402L /*math_font_base 2 */  + size_code].hh.v.RH;
     if (((font_area[f] == 65534L /*otgr_font_flag */ ) && (isOpenTypeMathFont(font_layout_engine[f]))))
         rval = get_native_mathsy_param(f, 16);
     else
@@ -19079,7 +19079,7 @@ scaled zsub2(integer size_code)
     register scaled Result;
     sub2_regmem integer f;
     scaled rval;
-    f = eqtb[2253802L /*math_font_base 2 */  + size_code].hh.v.RH;
+    f = eqtb[2255402L /*math_font_base 2 */  + size_code].hh.v.RH;
     if (((font_area[f] == 65534L /*otgr_font_flag */ ) && (isOpenTypeMathFont(font_layout_engine[f]))))
         rval = get_native_mathsy_param(f, 17);
     else
@@ -19093,7 +19093,7 @@ scaled zsup_drop(integer size_code)
     register scaled Result;
     sup_drop_regmem integer f;
     scaled rval;
-    f = eqtb[2253802L /*math_font_base 2 */  + size_code].hh.v.RH;
+    f = eqtb[2255402L /*math_font_base 2 */  + size_code].hh.v.RH;
     if (((font_area[f] == 65534L /*otgr_font_flag */ ) && (isOpenTypeMathFont(font_layout_engine[f]))))
         rval = get_native_mathsy_param(f, 18);
     else
@@ -19107,7 +19107,7 @@ scaled zsub_drop(integer size_code)
     register scaled Result;
     sub_drop_regmem integer f;
     scaled rval;
-    f = eqtb[2253802L /*math_font_base 2 */  + size_code].hh.v.RH;
+    f = eqtb[2255402L /*math_font_base 2 */  + size_code].hh.v.RH;
     if (((font_area[f] == 65534L /*otgr_font_flag */ ) && (isOpenTypeMathFont(font_layout_engine[f]))))
         rval = get_native_mathsy_param(f, 19);
     else
@@ -19121,7 +19121,7 @@ scaled zdelim1(integer size_code)
     register scaled Result;
     delim1_regmem integer f;
     scaled rval;
-    f = eqtb[2253802L /*math_font_base 2 */  + size_code].hh.v.RH;
+    f = eqtb[2255402L /*math_font_base 2 */  + size_code].hh.v.RH;
     if (((font_area[f] == 65534L /*otgr_font_flag */ ) && (isOpenTypeMathFont(font_layout_engine[f]))))
         rval = get_native_mathsy_param(f, 20);
     else
@@ -19135,7 +19135,7 @@ scaled zdelim2(integer size_code)
     register scaled Result;
     delim2_regmem integer f;
     scaled rval;
-    f = eqtb[2253802L /*math_font_base 2 */  + size_code].hh.v.RH;
+    f = eqtb[2255402L /*math_font_base 2 */  + size_code].hh.v.RH;
     if (((font_area[f] == 65534L /*otgr_font_flag */ ) && (isOpenTypeMathFont(font_layout_engine[f]))))
         rval = get_native_mathsy_param(f, 21);
     else
@@ -19149,7 +19149,7 @@ scaled zaxis_height(integer size_code)
     register scaled Result;
     axis_height_regmem integer f;
     scaled rval;
-    f = eqtb[2253802L /*math_font_base 2 */  + size_code].hh.v.RH;
+    f = eqtb[2255402L /*math_font_base 2 */  + size_code].hh.v.RH;
     if (((font_area[f] == 65534L /*otgr_font_flag */ ) && (isOpenTypeMathFont(font_layout_engine[f]))))
         rval = get_native_mathsy_param(f, 22);
     else
@@ -19163,7 +19163,7 @@ scaled default_rule_thickness(void)
     register scaled Result;
     default_rule_thickness_regmem integer f;
     scaled rval;
-    f = eqtb[2253803L /*math_font_base 3 */  + cur_size].hh.v.RH;
+    f = eqtb[2255403L /*math_font_base 3 */  + cur_size].hh.v.RH;
     if (((font_area[f] == 65534L /*otgr_font_flag */ ) && (isOpenTypeMathFont(font_layout_engine[f]))))
         rval = get_native_mathex_param(f, 8);
     else
@@ -19177,7 +19177,7 @@ scaled big_op_spacing1(void)
     register scaled Result;
     big_op_spacing1_regmem integer f;
     scaled rval;
-    f = eqtb[2253803L /*math_font_base 3 */  + cur_size].hh.v.RH;
+    f = eqtb[2255403L /*math_font_base 3 */  + cur_size].hh.v.RH;
     if (((font_area[f] == 65534L /*otgr_font_flag */ ) && (isOpenTypeMathFont(font_layout_engine[f]))))
         rval = get_native_mathex_param(f, 9);
     else
@@ -19191,7 +19191,7 @@ scaled big_op_spacing2(void)
     register scaled Result;
     big_op_spacing2_regmem integer f;
     scaled rval;
-    f = eqtb[2253803L /*math_font_base 3 */  + cur_size].hh.v.RH;
+    f = eqtb[2255403L /*math_font_base 3 */  + cur_size].hh.v.RH;
     if (((font_area[f] == 65534L /*otgr_font_flag */ ) && (isOpenTypeMathFont(font_layout_engine[f]))))
         rval = get_native_mathex_param(f, 10);
     else
@@ -19205,7 +19205,7 @@ scaled big_op_spacing3(void)
     register scaled Result;
     big_op_spacing3_regmem integer f;
     scaled rval;
-    f = eqtb[2253803L /*math_font_base 3 */  + cur_size].hh.v.RH;
+    f = eqtb[2255403L /*math_font_base 3 */  + cur_size].hh.v.RH;
     if (((font_area[f] == 65534L /*otgr_font_flag */ ) && (isOpenTypeMathFont(font_layout_engine[f]))))
         rval = get_native_mathex_param(f, 11);
     else
@@ -19219,7 +19219,7 @@ scaled big_op_spacing4(void)
     register scaled Result;
     big_op_spacing4_regmem integer f;
     scaled rval;
-    f = eqtb[2253803L /*math_font_base 3 */  + cur_size].hh.v.RH;
+    f = eqtb[2255403L /*math_font_base 3 */  + cur_size].hh.v.RH;
     if (((font_area[f] == 65534L /*otgr_font_flag */ ) && (isOpenTypeMathFont(font_layout_engine[f]))))
         rval = get_native_mathex_param(f, 12);
     else
@@ -19233,7 +19233,7 @@ scaled big_op_spacing5(void)
     register scaled Result;
     big_op_spacing5_regmem integer f;
     scaled rval;
-    f = eqtb[2253803L /*math_font_base 3 */  + cur_size].hh.v.RH;
+    f = eqtb[2255403L /*math_font_base 3 */  + cur_size].hh.v.RH;
     if (((font_area[f] == 65534L /*otgr_font_flag */ ) && (isOpenTypeMathFont(font_layout_engine[f]))))
         rval = get_native_mathex_param(f, 13);
     else
@@ -19548,7 +19548,7 @@ halfword zvar_delimiter(halfword d, integer s, scaled v)
             z = z + s + 256;
             do {
                 z = z - 256;
-                g = eqtb[2253800L /*math_font_base */  + z].hh.v.RH;
+                g = eqtb[2255400L /*math_font_base */  + z].hh.v.RH;
                 if (g != 0 /*font_base */ ) {   //751:
 
                     if (((font_area[g] == 65534L /*otgr_font_flag */ ) && (usingOpenType(font_layout_engine[g])))) {
@@ -19693,7 +19693,7 @@ halfword zvar_delimiter(halfword d, integer s, scaled v)
     } else {
 
         b = new_null_box();
-        mem[b + 1].cint = eqtb[10053704L /*dimen_base 11 */ ].cint;
+        mem[b + 1].cint = eqtb[10055304L /*dimen_base 11 */ ].cint;
     }
     mem[b + 4].cint = half(mem[b + 3].cint - mem[b + 2].cint) - axis_height(s);
     free_ot_assembly(ot_assembly_ptr);
@@ -19858,7 +19858,7 @@ halfword zclean_box(halfword p, small_number s)
 void zfetch(halfword a)
 {
     fetch_regmem cur_c = cast_to_ushort(mem[a].hh.b1);
-    cur_f = eqtb[2253800L /*math_font_base */  + (mem[a].hh.b0 % 256) + cur_size].hh.v.RH;
+    cur_f = eqtb[2255400L /*math_font_base */  + (mem[a].hh.b0 % 256) + cur_size].hh.v.RH;
     cur_c = cur_c + (mem[a].hh.b0 / 256) * 65536L;
     if (cur_f == 0 /*font_base */ )     //766:
     {
@@ -19944,7 +19944,7 @@ void zmake_radical(halfword q)
     internal_font_number f;
     scaled rule_thickness;
     scaled delta, clr;
-    f = eqtb[2253800L /*math_font_base */  + (mem[q + 4].qqqq.b0 % 256) + cur_size].hh.v.RH;
+    f = eqtb[2255400L /*math_font_base */  + (mem[q + 4].qqqq.b0 % 256) + cur_size].hh.v.RH;
     if (((font_area[f] == 65534L /*otgr_font_flag */ ) && (isOpenTypeMathFont(font_layout_engine[f]))))
         rule_thickness = get_ot_math_constant(f, 51 /*radicalRuleThickness */ );
     else
@@ -20675,7 +20675,7 @@ void zmake_scripts(halfword q, scaled delta)
         save_f = cur_f;
         x = clean_box(q + 3, 2 * (cur_style / 4) + 5);
         cur_f = save_f;
-        mem[x + 1].cint = mem[x + 1].cint + eqtb[10053705L /*dimen_base 12 */ ].cint;
+        mem[x + 1].cint = mem[x + 1].cint + eqtb[10055305L /*dimen_base 12 */ ].cint;
         if (shift_down < sub1(cur_size))
             shift_down = sub1(cur_size);
         if (((font_area[cur_f] == 65534L /*otgr_font_flag */ ) && (isOpenTypeMathFont(font_layout_engine[cur_f]))))
@@ -20791,7 +20791,7 @@ void zmake_scripts(halfword q, scaled delta)
             save_f = cur_f;
             x = clean_box(q + 2, 2 * (cur_style / 4) + 4 + (cur_style % 2));
             cur_f = save_f;
-            mem[x + 1].cint = mem[x + 1].cint + eqtb[10053705L /*dimen_base 12 */ ].cint;
+            mem[x + 1].cint = mem[x + 1].cint + eqtb[10055305L /*dimen_base 12 */ ].cint;
             if (odd(cur_style))
                 clr = sup3(cur_size);
             else if (cur_style < 2 /*text_style */ )
@@ -20918,7 +20918,7 @@ void zmake_scripts(halfword q, scaled delta)
             sub_f = script_f;
             y = clean_box(q + 3, 2 * (cur_style / 4) + 5);
             cur_f = save_f;
-            mem[y + 1].cint = mem[y + 1].cint + eqtb[10053705L /*dimen_base 12 */ ].cint;
+            mem[y + 1].cint = mem[y + 1].cint + eqtb[10055305L /*dimen_base 12 */ ].cint;
             if (shift_down < sub2(cur_size))
                 shift_down = sub2(cur_size);
             if (((font_area[cur_f] == 65534L /*otgr_font_flag */ ) && (isOpenTypeMathFont(font_layout_engine[cur_f]))))
@@ -21006,8 +21006,8 @@ small_number zmake_left_right(halfword q, small_number style, scaled max_d, scal
     delta1 = max_h + max_d - delta2;
     if (delta2 > delta1)
         delta1 = delta2;
-    delta = (delta1 / 500) * eqtb[8939258L /*int_base 18 */ ].cint;
-    delta2 = delta1 + delta1 - eqtb[10053703L /*dimen_base 10 */ ].cint;
+    delta = (delta1 / 500) * eqtb[8940858L /*int_base 18 */ ].cint;
+    delta2 = delta1 + delta1 - eqtb[10055303L /*dimen_base 10 */ ].cint;
     if (delta < delta2)
         delta = delta2;
     mem[q + 1].cint = var_delimiter(q + 1, cur_size, delta);
@@ -21345,13 +21345,13 @@ void mlist_to_hlist(void)
         case 18:
             {
                 t = 18 /*bin_noad */ ;
-                pen = eqtb[8939249L /*int_base 9 */ ].cint;
+                pen = eqtb[8940849L /*int_base 9 */ ].cint;
             }
             break;
         case 19:
             {
                 t = 19 /*rel_noad */ ;
-                pen = eqtb[8939250L /*int_base 10 */ ].cint;
+                pen = eqtb[8940850L /*int_base 10 */ ].cint;
             }
             break;
         case 16:
@@ -21439,7 +21439,7 @@ void mlist_to_hlist(void)
                 break;
             }
             if (x != 0) {
-                y = math_glue(eqtb[2252740L /*glue_base */  + x].hh.v.RH, cur_mu);
+                y = math_glue(eqtb[2254340L /*glue_base */  + x].hh.v.RH, cur_mu);
                 z = new_glue(y);
                 mem[y].hh.v.RH = -268435455L;
                 mem[p].hh.v.RH = z;
@@ -21549,13 +21549,13 @@ void get_preamble_token(void)
     }
     if (cur_cmd == 9 /*endv */ )
         fatal_error(65920L /*"(interwoven alignment preambles are not allowed)" */ );
-    if ((cur_cmd == 76 /*assign_glue */ ) && (cur_chr == 2252751L /*glue_base 11 */ )) {
+    if ((cur_cmd == 76 /*assign_glue */ ) && (cur_chr == 2254351L /*glue_base 11 */ )) {
         scan_optional_equals();
         scan_glue(2 /*glue_val */ );
-        if (eqtb[8939283L /*int_base 43 */ ].cint > 0)
-            geq_define(2252751L /*glue_base 11 */ , 119 /*glue_ref */ , cur_val);
+        if (eqtb[8940883L /*int_base 43 */ ].cint > 0)
+            geq_define(2254351L /*glue_base 11 */ , 119 /*glue_ref */ , cur_val);
         else
-            eq_define(2252751L /*glue_base 11 */ , 119 /*glue_ref */ , cur_val);
+            eq_define(2254351L /*glue_base 11 */ , 119 /*glue_ref */ , cur_val);
         goto lab20;
     }
 }
@@ -21685,8 +21685,8 @@ void init_align(void)
     }
  lab30:/*done */ scanner_status = 0 /*normal *//*:825 */ ;
     new_save_level(6 /*align_group */ );
-    if (eqtb[2253279L /*every_cr_loc */ ].hh.v.RH != -268435455L)
-        begin_token_list(eqtb[2253279L /*every_cr_loc */ ].hh.v.RH, 14 /*every_cr_text */ );
+    if (eqtb[2254879L /*every_cr_loc */ ].hh.v.RH != -268435455L)
+        begin_token_list(eqtb[2254879L /*every_cr_loc */ ].hh.v.RH, 14 /*every_cr_text */ );
     align_peek();
 }
 
@@ -21920,8 +21920,8 @@ void fin_row(void)
     }
     mem[p].hh.b0 = 13 /*unset_node */ ;
     mem[p + 6].cint = 0;
-    if (eqtb[2253279L /*every_cr_loc */ ].hh.v.RH != -268435455L)
-        begin_token_list(eqtb[2253279L /*every_cr_loc */ ].hh.v.RH, 14 /*every_cr_text */ );
+    if (eqtb[2254879L /*every_cr_loc */ ].hh.v.RH != -268435455L)
+        begin_token_list(eqtb[2254879L /*every_cr_loc */ ].hh.v.RH, 14 /*every_cr_text */ );
     align_peek();
 }
 
@@ -21940,7 +21940,7 @@ void fin_align(void)
         confusion(66337L /*"align0" */ );
     unsave();
     if (nest[nest_ptr - 1].mode_field == 207 /*mmode */ )
-        o = eqtb[10053708L /*dimen_base 15 */ ].cint;
+        o = eqtb[10055308L /*dimen_base 15 */ ].cint;
     else
         o = 0;
     q = mem[mem[mem_top - 8].hh.v.RH].hh.v.RH;
@@ -22001,10 +22001,10 @@ void fin_align(void)
     save_ptr = save_ptr - 2;
     pack_begin_line = -(integer) cur_list.ml_field;
     if (cur_list.mode_field == -1) {
-        rule_save = eqtb[10053709L /*dimen_base 16 */ ].cint;
-        eqtb[10053709L /*dimen_base 16 */ ].cint = 0;
+        rule_save = eqtb[10055309L /*dimen_base 16 */ ].cint;
+        eqtb[10055309L /*dimen_base 16 */ ].cint = 0;
         p = hpack(mem[mem_top - 8].hh.v.RH, save_stack[save_ptr + 1].cint, save_stack[save_ptr + 0].cint);
-        eqtb[10053709L /*dimen_base 16 */ ].cint = rule_save;
+        eqtb[10055309L /*dimen_base 16 */ ].cint = rule_save;
     } else {
 
         q = mem[mem[mem_top - 8].hh.v.RH].hh.v.RH;
@@ -22213,7 +22213,7 @@ void fin_align(void)
         flush_node_list(cur_list.eTeX_aux_field);
         pop_nest();
         {
-            mem[cur_list.tail_field].hh.v.RH = new_penalty(eqtb[8939251L /*int_base 11 */ ].cint);
+            mem[cur_list.tail_field].hh.v.RH = new_penalty(eqtb[8940851L /*int_base 11 */ ].cint);
             cur_list.tail_field = mem[cur_list.tail_field].hh.v.RH;
         }
         {
@@ -22224,7 +22224,7 @@ void fin_align(void)
         if (p != -268435455L)
             cur_list.tail_field = q;
         {
-            mem[cur_list.tail_field].hh.v.RH = new_penalty(eqtb[8939252L /*int_base 12 */ ].cint);
+            mem[cur_list.tail_field].hh.v.RH = new_penalty(eqtb[8940852L /*int_base 12 */ ].cint);
             cur_list.tail_field = mem[cur_list.tail_field].hh.v.RH;
         }
         {
@@ -22275,7 +22275,7 @@ halfword zfinite_shrink(halfword p)
         ;
 
 #ifdef STAT
-        if (eqtb[8939272L /*int_base 32 */ ].cint > 0)
+        if (eqtb[8940872L /*int_base 32 */ ].cint > 0)
             end_diagnostic(true);
 
 #endif                          // STAT
@@ -22299,7 +22299,7 @@ halfword zfinite_shrink(halfword p)
         ;
 
 #ifdef STAT
-        if (eqtb[8939272L /*int_base 32 */ ].cint > 0)
+        if (eqtb[8940872L /*int_base 32 */ ].cint > 0)
             begin_diagnostic();
 
 #endif                          // STAT
@@ -22699,10 +22699,10 @@ void ztry_break(integer pi, small_number break_type)
                         prev_prev_r = prev_r;
                         prev_r = q;
                     }
-                    if (abs(eqtb[8939256L /*int_base 16 */ ].cint) >= 1073741823L - minimum_demerits)
+                    if (abs(eqtb[8940856L /*int_base 16 */ ].cint) >= 1073741823L - minimum_demerits)
                         minimum_demerits = 1073741822L;
                     else
-                        minimum_demerits = minimum_demerits + abs(eqtb[8939256L /*int_base 16 */ ].cint);
+                        minimum_demerits = minimum_demerits + abs(eqtb[8940856L /*int_base 16 */ ].cint);
                     {
                         register integer for_end;
                         fit_class = 0 /*very_loose_fit */ ;
@@ -22740,7 +22740,7 @@ void ztry_break(integer pi, small_number break_type)
                                     ;
 
 #ifdef STAT
-                                    if (eqtb[8939272L /*int_base 32 */ ].cint > 0)      //894:
+                                    if (eqtb[8940872L /*int_base 32 */ ].cint > 0)      //894:
                                     {
                                         print_nl(66352L /*"@@" */ );
                                         print_int(mem[passive].hh.v.LH);
@@ -22802,17 +22802,17 @@ void ztry_break(integer pi, small_number break_type)
                     old_l = l;
                     if (l > last_special_line)
                         line_width = second_width;
-                    else if (eqtb[2253271L /*par_shape_loc */ ].hh.v.RH == -268435455L)
+                    else if (eqtb[2254871L /*par_shape_loc */ ].hh.v.RH == -268435455L)
                         line_width = first_width;
                     else
-                        line_width = mem[eqtb[2253271L /*par_shape_loc */ ].hh.v.RH + 2 * l].cint;
+                        line_width = mem[eqtb[2254871L /*par_shape_loc */ ].hh.v.RH + 2 * l].cint;
                 }
             }
         }
         {
             artificial_demerits = false;
             shortfall = line_width - cur_active_width[1];
-            if (eqtb[8939311L /*int_base 71 */ ].cint > 1)
+            if (eqtb[8940911L /*int_base 71 */ ].cint > 1)
                 shortfall = shortfall + total_pw(r, cur_p);
             if (shortfall > 0) {        //900:
 
@@ -22833,8 +22833,8 @@ void ztry_break(integer pi, small_number break_type)
                                 goto lab45;
                             arith_error = false;
                             g = fract(g, mem[r + 3].cint, mem[r + 4].cint, 1073741823L);
-                            if (eqtb[8939305L /*int_base 65 */ ].cint < 1000)
-                                g = fract(g, eqtb[8939305L /*int_base 65 */ ].cint, 1000, 1073741823L);
+                            if (eqtb[8940905L /*int_base 65 */ ].cint < 1000)
+                                g = fract(g, eqtb[8940905L /*int_base 65 */ ].cint, 1000, 1073741823L);
                             if (arith_error) {
 
                                 if (mem[r + 3].cint > 0)
@@ -22943,7 +22943,7 @@ void ztry_break(integer pi, small_number break_type)
                 d = 0;
             else {              //907:
 
-                d = eqtb[8939242L /*int_base 2 */ ].cint + b;
+                d = eqtb[8940842L /*int_base 2 */ ].cint + b;
                 if (abs(d) >= 10000)
                     d = 100000000L;
                 else
@@ -22958,17 +22958,17 @@ void ztry_break(integer pi, small_number break_type)
                 if ((break_type == 1 /*hyphenated */ ) && (mem[r].hh.b0 == 1 /*hyphenated */ )) {
 
                     if (cur_p != -268435455L)
-                        d = d + eqtb[8939254L /*int_base 14 */ ].cint;
+                        d = d + eqtb[8940854L /*int_base 14 */ ].cint;
                     else
-                        d = d + eqtb[8939255L /*int_base 15 */ ].cint;
+                        d = d + eqtb[8940855L /*int_base 15 */ ].cint;
                 }
                 if (abs(fit_class - mem[r].hh.b1) > 1)
-                    d = d + eqtb[8939256L /*int_base 16 */ ].cint;
+                    d = d + eqtb[8940856L /*int_base 16 */ ].cint;
             }
             ;
 
 #ifdef STAT
-            if (eqtb[8939272L /*int_base 32 */ ].cint > 0)      //904:
+            if (eqtb[8940872L /*int_base 32 */ ].cint > 0)      //904:
             {
                 if (printed_node != cur_p)      //905:
                 {
@@ -23133,7 +23133,7 @@ void zpost_line_break(boolean d)
     } while (!(q == -268435455L /*:926 */ ));
     cur_line = cur_list.pg_field + 1;
     do {
-        /*928: */ if ((eqtb[8939312L /*eTeX_state_base 0 */ ].cint > 0))        //1517:
+        /*928: */ if ((eqtb[8940912L /*eTeX_state_base 0 */ ].cint > 0))        //1517:
         {
             q = mem[mem_top - 3].hh.v.RH;
             if (LR_ptr != -268435455L) {
@@ -23191,9 +23191,9 @@ void zpost_line_break(boolean d)
 
             if (mem[q].hh.b0 == 10 /*glue_node */ ) {
                 delete_glue_ref(mem[q + 1].hh.v.LH);
-                mem[q + 1].hh.v.LH = eqtb[2252748L /*glue_base 8 */ ].hh.v.RH;
+                mem[q + 1].hh.v.LH = eqtb[2254348L /*glue_base 8 */ ].hh.v.RH;
                 mem[q].hh.b1 = 9 /*right_skip_code 1 */ ;
-                incr(mem[eqtb[2252748L /*glue_base 8 */ ].hh.v.RH].hh.v.RH);
+                incr(mem[eqtb[2254348L /*glue_base 8 */ ].hh.v.RH].hh.v.RH);
                 glue_break = true;
                 goto lab30;
             } else {
@@ -23242,7 +23242,7 @@ void zpost_line_break(boolean d)
                     mem[q + 1].cint = 0;
                 else if (mem[q].hh.b0 == 9 /*math_node */ ) {
                     mem[q + 1].cint = 0;
-                    if ((eqtb[8939312L /*eTeX_state_base 0 */ ].cint > 0)) {    //1518:
+                    if ((eqtb[8940912L /*eTeX_state_base 0 */ ].cint > 0)) {    //1518:
 
                         if (odd(mem[q].hh.b1)) {
                             if (LR_ptr != -268435455L) {
@@ -23278,7 +23278,7 @@ void zpost_line_break(boolean d)
             while (mem[q].hh.v.RH != -268435455L)
                 q = mem[q].hh.v.RH;
         }
- lab30:/*done */ if (eqtb[8939311L /*int_base 71 */ ].cint > 0) {
+ lab30:/*done */ if (eqtb[8940911L /*int_base 71 */ ].cint > 0) {
             if (disc_break && ((q >= hi_mem_min) || (mem[q].hh.b0 != 7 /*disc_node */ ))) {
                 p = q;
                 ptmp = p;
@@ -23303,7 +23303,7 @@ void zpost_line_break(boolean d)
             mem[q].hh.v.RH = r;
             q = /*:934 */ r;
         }
-        if ((eqtb[8939312L /*eTeX_state_base 0 */ ].cint > 0)) {        //1519:
+        if ((eqtb[8940912L /*eTeX_state_base 0 */ ].cint > 0)) {        //1519:
 
             if (LR_ptr != -268435455L) {
                 s = mem_top - 3;
@@ -23328,7 +23328,7 @@ void zpost_line_break(boolean d)
         mem[q].hh.v.RH = -268435455L;
         q = mem[mem_top - 3].hh.v.RH;
         mem[mem_top - 3].hh.v.RH = r;
-        if (eqtb[8939311L /*int_base 71 */ ].cint > 0) {
+        if (eqtb[8940911L /*int_base 71 */ ].cint > 0) {
             p = q;
             p = find_protchar_left(p, false);
             w = char_pw(p, 0);
@@ -23338,7 +23338,7 @@ void zpost_line_break(boolean d)
                 q = k;
             }
         }
-        if (eqtb[2252747L /*glue_base 7 */ ].hh.v.RH != mem_bot) {
+        if (eqtb[2254347L /*glue_base 7 */ ].hh.v.RH != mem_bot) {
             r = new_param_glue(7 /*left_skip_code */ );
             mem[r].hh.v.RH = q;
             q = r;
@@ -23346,13 +23346,13 @@ void zpost_line_break(boolean d)
         if (cur_line > last_special_line) {
             cur_width = second_width;
             cur_indent = second_indent;
-        } else if (eqtb[2253271L /*par_shape_loc */ ].hh.v.RH == -268435455L) {
+        } else if (eqtb[2254871L /*par_shape_loc */ ].hh.v.RH == -268435455L) {
             cur_width = first_width;
             cur_indent = first_indent;
         } else {
 
-            cur_width = mem[eqtb[2253271L /*par_shape_loc */ ].hh.v.RH + 2 * cur_line].cint;
-            cur_indent = mem[eqtb[2253271L /*par_shape_loc */ ].hh.v.RH + 2 * cur_line - 1].cint;
+            cur_width = mem[eqtb[2254871L /*par_shape_loc */ ].hh.v.RH + 2 * cur_line].cint;
+            cur_indent = mem[eqtb[2254871L /*par_shape_loc */ ].hh.v.RH + 2 * cur_line - 1].cint;
         }
         adjust_tail = mem_top - 5;
         pre_adjust_tail = mem_top - 14;
@@ -23370,26 +23370,26 @@ void zpost_line_break(boolean d)
         }
         adjust_tail = -268435455L /*:936 */ ;
         if (cur_line + 1 != best_line) {
-            q = eqtb[2253539L /*inter_line_penalties_loc */ ].hh.v.RH;
+            q = eqtb[2255139L /*inter_line_penalties_loc */ ].hh.v.RH;
             if (q != -268435455L) {
                 r = cur_line;
                 if (r > mem[q + 1].cint)
                     r = mem[q + 1].cint;
                 pen = mem[q + r + 1].cint;
             } else
-                pen = eqtb[8939253L /*int_base 13 */ ].cint;
-            q = eqtb[2253540L /*club_penalties_loc */ ].hh.v.RH;
+                pen = eqtb[8940853L /*int_base 13 */ ].cint;
+            q = eqtb[2255140L /*club_penalties_loc */ ].hh.v.RH;
             if (q != -268435455L) {
                 r = cur_line - cur_list.pg_field;
                 if (r > mem[q + 1].cint)
                     r = mem[q + 1].cint;
                 pen = pen + mem[q + r + 1].cint;
             } else if (cur_line == cur_list.pg_field + 1)
-                pen = pen + eqtb[8939245L /*int_base 5 */ ].cint;
+                pen = pen + eqtb[8940845L /*int_base 5 */ ].cint;
             if (d)
-                q = eqtb[2253542L /*display_widow_penalties_loc */ ].hh.v.RH;
+                q = eqtb[2255142L /*display_widow_penalties_loc */ ].hh.v.RH;
             else
-                q = eqtb[2253541L /*widow_penalties_loc */ ].hh.v.RH;
+                q = eqtb[2255141L /*widow_penalties_loc */ ].hh.v.RH;
             if (q != -268435455L) {
                 r = best_line - cur_line - 1;
                 if (r > mem[q + 1].cint)
@@ -23398,12 +23398,12 @@ void zpost_line_break(boolean d)
             } else if (cur_line + 2 == best_line) {
 
                 if (d)
-                    pen = pen + eqtb[8939247L /*int_base 7 */ ].cint;
+                    pen = pen + eqtb[8940847L /*int_base 7 */ ].cint;
                 else
-                    pen = pen + eqtb[8939246L /*int_base 6 */ ].cint;
+                    pen = pen + eqtb[8940846L /*int_base 6 */ ].cint;
             }
             if (disc_break)
-                pen = pen + eqtb[8939248L /*int_base 8 */ ].cint;
+                pen = pen + eqtb[8940848L /*int_base 8 */ ].cint;
             if (pen != 0) {
                 r = new_penalty(pen);
                 mem[cur_list.tail_field].hh.v.RH = r;
@@ -23434,7 +23434,7 @@ void zpost_line_break(boolean d)
                     r = q;
                     if (mem[q].hh.b0 == 9 /*math_node */ ) {
 
-                        if ((eqtb[8939312L /*eTeX_state_base 0 */ ].cint > 0)) {        //1518:
+                        if ((eqtb[8940912L /*eTeX_state_base 0 */ ].cint > 0)) {        //1518:
 
                             if (odd(mem[q].hh.b1)) {
                                 if (LR_ptr != -268435455L) {
@@ -23924,7 +23924,7 @@ void hyphenate(void)
                                     set_native_char(q, i, get_native_char(ha, i + hyphen_passed));
                                 while (i++ < for_end);
                         }
-                        set_native_metrics(q, (eqtb[8939315L /*eTeX_state_base 3 */ ].cint > 0));
+                        set_native_metrics(q, (eqtb[8940915L /*eTeX_state_base 3 */ ].cint > 0));
                         mem[s].hh.v.RH = q;
                         s = q;
                         q = new_disc();
@@ -23948,7 +23948,7 @@ void hyphenate(void)
                     set_native_char(q, i, get_native_char(ha, i + hyphen_passed));
                 while (i++ < for_end);
         }
-        set_native_metrics(q, (eqtb[8939315L /*eTeX_state_base 3 */ ].cint > 0));
+        set_native_metrics(q, (eqtb[8940915L /*eTeX_state_base 3 */ ].cint > 0));
         mem[s].hh.v.RH = q;
         s = q;
         q = mem[ha].hh.v.RH;
@@ -24141,10 +24141,10 @@ integer max_hyphenatable_length(void)
 {
     register integer Result;
     max_hyphenatable_length_regmem
-        if (eqtb[8939323L /*eTeX_state_base 11 */ ].cint > 4095 /*hyphenatable_length_limit */ )
+        if (eqtb[8940923L /*eTeX_state_base 11 */ ].cint > 4095 /*hyphenatable_length_limit */ )
         Result = 4095 /*hyphenatable_length_limit */ ;
     else
-        Result = eqtb[8939323L /*eTeX_state_base 11 */ ].cint;
+        Result = eqtb[8940923L /*eTeX_state_base 11 */ ].cint;
     return Result;
 }
 
@@ -24528,7 +24528,7 @@ halfword zvsplit(halfword n, scaled h)
     halfword q;
     cur_val = n;
     if (cur_val < 256)
-        v = eqtb[2253543L /*box_base */  + cur_val].hh.v.RH;
+        v = eqtb[2255143L /*box_base */  + cur_val].hh.v.RH;
     else {
 
         find_sa_element(4, cur_val, false);
@@ -24575,7 +24575,7 @@ halfword zvsplit(halfword n, scaled h)
         Result = -268435455L;
         return Result;
     }
-    q = vert_break(mem[v + 5].hh.v.RH, h, eqtb[10053699L /*dimen_base 6 */ ].cint);
+    q = vert_break(mem[v + 5].hh.v.RH, h, eqtb[10055299L /*dimen_base 6 */ ].cint);
     p = mem[v + 5].hh.v.RH;
     if (p == q)
         mem[v + 5].hh.v.RH = -268435455L;
@@ -24613,13 +24613,13 @@ halfword zvsplit(halfword n, scaled h)
             p = mem[p].hh.v.RH;
         }
  lab30:                        /*done *//*:1033 */ ;
-    q = prune_page_top(q, eqtb[8939306L /*int_base 66 */ ].cint > 0);
+    q = prune_page_top(q, eqtb[8940906L /*int_base 66 */ ].cint > 0);
     p = mem[v + 5].hh.v.RH;
     free_node(v, 8 /*box_node_size */ );
     if (q != -268435455L)
         q = vpackage(q, 0, 1 /*additional */ , 1073741823L);
     if (cur_val < 256)
-        eqtb[2253543L /*box_base */  + cur_val].hh.v.RH = q;
+        eqtb[2255143L /*box_base */  + cur_val].hh.v.RH = q;
     else {
 
         find_sa_element(4, cur_val, false);
@@ -24629,7 +24629,7 @@ halfword zvsplit(halfword n, scaled h)
             delete_sa_ref(cur_ptr);
         }
     }
-    Result = vpackage(p, h, 0 /*exactly */ , eqtb[10053699L /*dimen_base 6 */ ].cint);
+    Result = vpackage(p, h, 0 /*exactly */ , eqtb[10055299L /*dimen_base 6 */ ].cint);
     return Result;
 }
 
@@ -24665,8 +24665,8 @@ void print_totals(void)
 void zfreeze_page_specs(small_number s)
 {
     freeze_page_specs_regmem page_contents = s;
-    page_so_far[0] = eqtb[10053697L /*dimen_base 4 */ ].cint;
-    page_max_depth = eqtb[10053698L /*dimen_base 5 */ ].cint;
+    page_so_far[0] = eqtb[10055297L /*dimen_base 4 */ ].cint;
+    page_max_depth = eqtb[10055298L /*dimen_base 5 */ ].cint;
     page_so_far[7] = 0;
     page_so_far[1] = 0;
     page_so_far[2] = 0;
@@ -24678,7 +24678,7 @@ void zfreeze_page_specs(small_number s)
     ;
 
 #ifdef STAT
-    if (eqtb[8939273L /*int_base 33 */ ].cint > 0) {
+    if (eqtb[8940873L /*int_base 33 */ ].cint > 0) {
         begin_diagnostic();
         print_nl(66416L /*"%% goal height=" */ );
         print_scaled(page_so_far[0]);
@@ -24695,16 +24695,16 @@ void zbox_error(eight_bits n)
     box_error_regmem error();
     begin_diagnostic();
     print_nl(66231L /*"The following box has been deleted:" */ );
-    show_box(eqtb[2253543L /*box_base */  + n].hh.v.RH);
+    show_box(eqtb[2255143L /*box_base */  + n].hh.v.RH);
     end_diagnostic(true);
-    flush_node_list(eqtb[2253543L /*box_base */  + n].hh.v.RH);
-    eqtb[2253543L /*box_base */  + n].hh.v.RH = -268435455L;
+    flush_node_list(eqtb[2255143L /*box_base */  + n].hh.v.RH);
+    eqtb[2255143L /*box_base */  + n].hh.v.RH = -268435455L;
 }
 
 void zensure_vbox(eight_bits n)
 {
     ensure_vbox_regmem halfword p;
-    p = eqtb[2253543L /*box_base */  + n].hh.v.RH;
+    p = eqtb[2255143L /*box_base */  + n].hh.v.RH;
     if (p != -268435455L) {
 
         if (mem[p].hh.b0 == 0 /*hlist_node */ ) {
@@ -24737,10 +24737,10 @@ void zfire_up(halfword c)
     scaled save_vfuzz;
     halfword save_split_top_skip;
     if (mem[best_page_break].hh.b0 == 12 /*penalty_node */ ) {
-        geq_word_define(8939279L /*int_base 39 */ , mem[best_page_break + 1].cint);
+        geq_word_define(8940879L /*int_base 39 */ , mem[best_page_break + 1].cint);
         mem[best_page_break + 1].cint = 10000 /*inf_penalty */ ;
     } else
-        geq_word_define(8939279L /*int_base 39 */ , 10000 /*inf_penalty */ );
+        geq_word_define(8940879L /*int_base 39 */ , 10000 /*inf_penalty */ );
     if (sa_root[7 /*mark_val */ ] != -268435455L) {
 
         if (do_marks(1, 0, sa_root[7 /*mark_val */ ]))
@@ -24756,7 +24756,7 @@ void zfire_up(halfword c)
     }
     if (c == best_page_break)
         best_page_break = -268435455L;
-    if (eqtb[2253798L /*box_base 255 */ ].hh.v.RH != -268435455L) {
+    if (eqtb[2255398L /*box_base 255 */ ].hh.v.RH != -268435455L) {
         {
             if (interaction == 3 /*error_stop_mode */ ) ;
             if (file_line_error_style_p)
@@ -24775,8 +24775,8 @@ void zfire_up(halfword c)
         box_error(255);
     }
     insert_penalties = 0;
-    save_split_top_skip = eqtb[2252750L /*glue_base 10 */ ].hh.v.RH;
-    if (eqtb[8939293L /*int_base 53 */ ].cint <= 0)     //1072:
+    save_split_top_skip = eqtb[2254350L /*glue_base 10 */ ].hh.v.RH;
+    if (eqtb[8940893L /*int_base 53 */ ].cint <= 0)     //1072:
     {
         r = mem[mem_top].hh.v.RH;
         while (r != mem_top) {
@@ -24784,9 +24784,9 @@ void zfire_up(halfword c)
             if (mem[r + 2].hh.v.LH != -268435455L) {
                 n = mem[r].hh.b1;
                 ensure_vbox(n);
-                if (eqtb[2253543L /*box_base */  + n].hh.v.RH == -268435455L)
-                    eqtb[2253543L /*box_base */  + n].hh.v.RH = new_null_box();
-                p = eqtb[2253543L /*box_base */  + n].hh.v.RH + 5;
+                if (eqtb[2255143L /*box_base */  + n].hh.v.RH == -268435455L)
+                    eqtb[2255143L /*box_base */  + n].hh.v.RH = new_null_box();
+                p = eqtb[2255143L /*box_base */  + n].hh.v.RH + 5;
                 while (mem[p].hh.v.RH != -268435455L)
                     p = mem[p].hh.v.RH;
                 mem[r + 2].hh.v.RH = p;
@@ -24801,7 +24801,7 @@ void zfire_up(halfword c)
     while (p != best_page_break) {
 
         if (mem[p].hh.b0 == 3 /*ins_node */ ) {
-            if (eqtb[8939293L /*int_base 53 */ ].cint <= 0)     //1074:
+            if (eqtb[8940893L /*int_base 53 */ ].cint <= 0)     //1074:
             {
                 r = mem[mem_top].hh.v.RH;
                 while (mem[r].hh.b1 != mem[p].hh.b1)
@@ -24821,7 +24821,7 @@ void zfire_up(halfword c)
                                 while (mem[s].hh.v.RH != mem[r + 1].hh.v.RH)
                                     s = mem[s].hh.v.RH;
                                 mem[s].hh.v.RH = -268435455L;
-                                eqtb[2252750L /*glue_base 10 */ ].hh.v.RH = mem[p + 4].hh.v.RH;
+                                eqtb[2254350L /*glue_base 10 */ ].hh.v.RH = mem[p + 4].hh.v.RH;
                                 mem[p + 4].hh.v.LH = prune_page_top(mem[r + 1].hh.v.RH, false);
                                 if (mem[p + 4].hh.v.LH != -268435455L) {
                                     temp_ptr = vpackage(mem[p + 4].hh.v.LH, 0, 1 /*additional */ , 1073741823L);
@@ -24833,9 +24833,9 @@ void zfire_up(halfword c)
                         }
                         mem[r + 2].hh.v.LH = -268435455L;
                         n = mem[r].hh.b1;
-                        temp_ptr = mem[eqtb[2253543L /*box_base */  + n].hh.v.RH + 5].hh.v.RH;
-                        free_node(eqtb[2253543L /*box_base */  + n].hh.v.RH, 8 /*box_node_size */ );
-                        eqtb[2253543L /*box_base */  + n].hh.v.RH =
+                        temp_ptr = mem[eqtb[2255143L /*box_base */  + n].hh.v.RH + 5].hh.v.RH;
+                        free_node(eqtb[2255143L /*box_base */  + n].hh.v.RH, 8 /*box_node_size */ );
+                        eqtb[2255143L /*box_base */  + n].hh.v.RH =
                             vpackage(temp_ptr, 0, 1 /*additional */ , 1073741823L);
                     } else {
 
@@ -24885,7 +24885,7 @@ void zfire_up(halfword c)
         prev_p = p;
         p = mem[prev_p].hh.v.RH;
     }
-    eqtb[2252750L /*glue_base 10 */ ].hh.v.RH = save_split_top_skip;
+    eqtb[2254350L /*glue_base 10 */ ].hh.v.RH = save_split_top_skip;
     if (p != -268435455L) {
         if (mem[mem_top - 1].hh.v.RH == -268435455L) {
 
@@ -24898,14 +24898,14 @@ void zfire_up(halfword c)
         mem[mem_top - 1].hh.v.RH = p;
         mem[prev_p].hh.v.RH = -268435455L;
     }
-    save_vbadness = eqtb[8939267L /*int_base 27 */ ].cint;
-    eqtb[8939267L /*int_base 27 */ ].cint = 10000 /*inf_bad */ ;
-    save_vfuzz = eqtb[10053702L /*dimen_base 9 */ ].cint;
-    eqtb[10053702L /*dimen_base 9 */ ].cint = 1073741823L;
-    eqtb[2253798L /*box_base 255 */ ].hh.v.RH =
+    save_vbadness = eqtb[8940867L /*int_base 27 */ ].cint;
+    eqtb[8940867L /*int_base 27 */ ].cint = 10000 /*inf_bad */ ;
+    save_vfuzz = eqtb[10055302L /*dimen_base 9 */ ].cint;
+    eqtb[10055302L /*dimen_base 9 */ ].cint = 1073741823L;
+    eqtb[2255398L /*box_base 255 */ ].hh.v.RH =
         vpackage(mem[mem_top - 2].hh.v.RH, best_size, 0 /*exactly */ , page_max_depth);
-    eqtb[8939267L /*int_base 27 */ ].cint = save_vbadness;
-    eqtb[10053702L /*dimen_base 9 */ ].cint = save_vfuzz;
+    eqtb[8940867L /*int_base 27 */ ].cint = save_vbadness;
+    eqtb[10055302L /*dimen_base 9 */ ].cint = save_vfuzz;
     if (last_glue != 1073741823L)
         delete_glue_ref(last_glue);
     page_contents = 0 /*empty */ ;
@@ -24938,9 +24938,9 @@ void zfire_up(halfword c)
         cur_mark[1 /*first_mark_code */ ] = cur_mark[0 /*top_mark_code */ ];
         incr(mem[cur_mark[0 /*top_mark_code */ ]].hh.v.LH);
     }
-    if (eqtb[2253272L /*output_routine_loc */ ].hh.v.RH != -268435455L) {
+    if (eqtb[2254872L /*output_routine_loc */ ].hh.v.RH != -268435455L) {
 
-        if (dead_cycles >= eqtb[8939280L /*int_base 40 */ ].cint)       //1078:
+        if (dead_cycles >= eqtb[8940880L /*int_base 40 */ ].cint)       //1078:
         {
             {
                 if (interaction == 3 /*error_stop_mode */ ) ;
@@ -24967,7 +24967,7 @@ void zfire_up(halfword c)
             cur_list.mode_field = -1;
             cur_list.aux_field.cint = -65536000L;
             cur_list.ml_field = -(integer) line;
-            begin_token_list(eqtb[2253272L /*output_routine_loc */ ].hh.v.RH, 7 /*output_text */ );
+            begin_token_list(eqtb[2254872L /*output_routine_loc */ ].hh.v.RH, 7 /*output_text */ );
             new_save_level(8 /*output_group */ );
             normal_paragraph();
             scan_left_brace();
@@ -24990,8 +24990,8 @@ void zfire_up(halfword c)
         }
         flush_node_list(disc_ptr[2 /*last_box_code */ ]);
         disc_ptr[2 /*last_box_code */ ] = -268435455L;
-        ship_out(eqtb[2253798L /*box_base 255 */ ].hh.v.RH);
-        eqtb[2253798L /*box_base 255 */ ].hh.v.RH = -268435455L;
+        ship_out(eqtb[2255398L /*box_base 255 */ ].hh.v.RH);
+        eqtb[2255398L /*box_base 255 */ ].hh.v.RH = -268435455L;
     }
 }
 
@@ -25102,18 +25102,18 @@ void build_page(void)
                     mem[r].hh.b1 = n;
                     mem[r].hh.b0 = 0 /*inserting */ ;
                     ensure_vbox(n);
-                    if (eqtb[2253543L /*box_base */  + n].hh.v.RH == -268435455L)
+                    if (eqtb[2255143L /*box_base */  + n].hh.v.RH == -268435455L)
                         mem[r + 3].cint = 0;
                     else
                         mem[r + 3].cint =
-                            mem[eqtb[2253543L /*box_base */  + n].hh.v.RH + 3].cint +
-                            mem[eqtb[2253543L /*box_base */  + n].hh.v.RH + 2].cint;
+                            mem[eqtb[2255143L /*box_base */  + n].hh.v.RH + 3].cint +
+                            mem[eqtb[2255143L /*box_base */  + n].hh.v.RH + 2].cint;
                     mem[r + 2].hh.v.LH = -268435455L;
-                    q = eqtb[2252759L /*skip_base */  + n].hh.v.RH;
-                    if (eqtb[8939325L /*count_base */  + n].cint == 1000)
+                    q = eqtb[2254359L /*skip_base */  + n].hh.v.RH;
+                    if (eqtb[8940925L /*count_base */  + n].cint == 1000)
                         h = mem[r + 3].cint;
                     else
-                        h = x_over_n(mem[r + 3].cint, 1000) * eqtb[8939325L /*count_base */  + n].cint;
+                        h = x_over_n(mem[r + 3].cint, 1000) * eqtb[8940925L /*count_base */  + n].cint;
                     page_so_far[0] = page_so_far[0] - h - mem[q + 1].cint;
                     page_so_far[2 + mem[q].hh.b0] = page_so_far[2 + mem[q].hh.b0] + mem[q + 2].cint;
                     page_so_far[6] = page_so_far[6] + mem[q + 3].cint;
@@ -25143,32 +25143,32 @@ void build_page(void)
 
                     mem[r + 2].hh.v.RH = p;
                     delta = page_so_far[0] - page_so_far[1] - page_so_far[7] + page_so_far[6];
-                    if (eqtb[8939325L /*count_base */  + n].cint == 1000)
+                    if (eqtb[8940925L /*count_base */  + n].cint == 1000)
                         h = mem[p + 3].cint;
                     else
-                        h = x_over_n(mem[p + 3].cint, 1000) * eqtb[8939325L /*count_base */  + n].cint;
+                        h = x_over_n(mem[p + 3].cint, 1000) * eqtb[8940925L /*count_base */  + n].cint;
                     if (((h <= 0) || (h <= delta))
-                        && (mem[p + 3].cint + mem[r + 3].cint <= eqtb[10053716L /*scaled_base */  + n].cint)) {
+                        && (mem[p + 3].cint + mem[r + 3].cint <= eqtb[10055316L /*scaled_base */  + n].cint)) {
                         page_so_far[0] = page_so_far[0] - h;
                         mem[r + 3].cint = mem[r + 3].cint + mem[p + 3].cint;
                     } else {    //1064:
 
-                        if (eqtb[8939325L /*count_base */  + n].cint <= 0)
+                        if (eqtb[8940925L /*count_base */  + n].cint <= 0)
                             w = 1073741823L;
                         else {
 
                             w = page_so_far[0] - page_so_far[1] - page_so_far[7];
-                            if (eqtb[8939325L /*count_base */  + n].cint != 1000)
-                                w = x_over_n(w, eqtb[8939325L /*count_base */  + n].cint) * 1000;
+                            if (eqtb[8940925L /*count_base */  + n].cint != 1000)
+                                w = x_over_n(w, eqtb[8940925L /*count_base */  + n].cint) * 1000;
                         }
-                        if (w > eqtb[10053716L /*scaled_base */  + n].cint - mem[r + 3].cint)
-                            w = eqtb[10053716L /*scaled_base */  + n].cint - mem[r + 3].cint;
+                        if (w > eqtb[10055316L /*scaled_base */  + n].cint - mem[r + 3].cint)
+                            w = eqtb[10055316L /*scaled_base */  + n].cint - mem[r + 3].cint;
                         q = vert_break(mem[p + 4].hh.v.LH, w, mem[p + 2].cint);
                         mem[r + 3].cint = mem[r + 3].cint + best_height_plus_depth;
                         ;
 
 #ifdef STAT
-                        if (eqtb[8939273L /*int_base 33 */ ].cint > 0)  //1065:
+                        if (eqtb[8940873L /*int_base 33 */ ].cint > 0)  //1065:
                         {
                             begin_diagnostic();
                             print_nl(66430L /*"% split" */ );
@@ -25188,9 +25188,9 @@ void build_page(void)
                         }
 //:1065
 #endif                          // STAT
-                        if (eqtb[8939325L /*count_base */  + n].cint != 1000)
+                        if (eqtb[8940925L /*count_base */  + n].cint != 1000)
                             best_height_plus_depth =
-                                x_over_n(best_height_plus_depth, 1000) * eqtb[8939325L /*count_base */  + n].cint;
+                                x_over_n(best_height_plus_depth, 1000) * eqtb[8940925L /*count_base */  + n].cint;
                         page_so_far[0] = page_so_far[0] - best_height_plus_depth;
                         mem[r].hh.b0 = 1 /*split_up */ ;
                         mem[r + 1].hh.v.RH = q;
@@ -25234,7 +25234,7 @@ void build_page(void)
             ;
 
 #ifdef STAT
-            if (eqtb[8939273L /*int_base 33 */ ].cint > 0)      //1060:
+            if (eqtb[8940873L /*int_base 33 */ ].cint > 0)      //1060:
             {
                 begin_diagnostic();
                 print_nl(37 /*"%" */ );
@@ -25324,7 +25324,7 @@ void build_page(void)
         goto lab30;
  lab31:                        /*done1 *//*1053: */ mem[mem_top - 1].hh.v.RH = mem[p].hh.v.RH;
         mem[p].hh.v.RH = -268435455L;
-        if (eqtb[8939306L /*int_base 66 */ ].cint > 0) {
+        if (eqtb[8940906L /*int_base 66 */ ].cint > 0) {
             if (disc_ptr[2 /*last_box_code */ ] == -268435455L)
                 disc_ptr[2 /*last_box_code */ ] = p;
             else
@@ -25343,29 +25343,29 @@ void build_page(void)
 void app_space(void)
 {
     app_space_regmem halfword q;
-    if ((cur_list.aux_field.hh.v.LH >= 2000) && (eqtb[2252753L /*glue_base 13 */ ].hh.v.RH != mem_bot))
+    if ((cur_list.aux_field.hh.v.LH >= 2000) && (eqtb[2254353L /*glue_base 13 */ ].hh.v.RH != mem_bot))
         q = new_param_glue(13 /*xspace_skip_code */ );
     else {
 
-        if (eqtb[2252752L /*glue_base 12 */ ].hh.v.RH != mem_bot)
-            main_p = eqtb[2252752L /*glue_base 12 */ ].hh.v.RH;
+        if (eqtb[2254352L /*glue_base 12 */ ].hh.v.RH != mem_bot)
+            main_p = eqtb[2254352L /*glue_base 12 */ ].hh.v.RH;
         else {                  //1096:
 
-            main_p = font_glue[eqtb[2253799L /*cur_font_loc */ ].hh.v.RH];
+            main_p = font_glue[eqtb[2255399L /*cur_font_loc */ ].hh.v.RH];
             if (main_p == -268435455L) {
                 main_p = new_spec(mem_bot);
-                main_k = param_base[eqtb[2253799L /*cur_font_loc */ ].hh.v.RH] + 2;
+                main_k = param_base[eqtb[2255399L /*cur_font_loc */ ].hh.v.RH] + 2;
                 mem[main_p + 1].cint = font_info[main_k].cint;
                 mem[main_p + 2].cint = font_info[main_k + 1].cint;
                 mem[main_p + 3].cint = font_info[main_k + 2].cint;
-                font_glue[eqtb[2253799L /*cur_font_loc */ ].hh.v.RH] = main_p;
+                font_glue[eqtb[2255399L /*cur_font_loc */ ].hh.v.RH] = main_p;
             }
         }
         main_p = new_spec(main_p);
         if (cur_list.aux_field.hh.v.LH >= 2000)
             mem[main_p + 1].cint =
                 mem[main_p + 1].cint + font_info[7 /*extra_space_code */  +
-                                                 param_base[eqtb[2253799L /*cur_font_loc */ ].hh.v.RH]].cint;
+                                                 param_base[eqtb[2255399L /*cur_font_loc */ ].hh.v.RH]].cint;
         mem[main_p + 2].cint = xn_over_d(mem[main_p + 2].cint, cur_list.aux_field.hh.v.LH, 1000);
         mem[main_p + 3].cint = xn_over_d(mem[main_p + 3].cint, 1000, cur_list.aux_field.hh.v.LH) /*:1098 */ ;
         q = new_glue(main_p);
@@ -25448,7 +25448,7 @@ boolean its_all_over(void)
             mem[cur_list.tail_field].hh.v.RH = new_null_box();
             cur_list.tail_field = mem[cur_list.tail_field].hh.v.RH;
         }
-        mem[cur_list.tail_field + 1].cint = eqtb[10053696L /*dimen_base 3 */ ].cint;
+        mem[cur_list.tail_field + 1].cint = eqtb[10055296L /*dimen_base 3 */ ].cint;
         {
             mem[cur_list.tail_field].hh.v.RH = new_glue(mem_bot + 8);
             cur_list.tail_field = mem[cur_list.tail_field].hh.v.RH;
@@ -25620,16 +25620,16 @@ void extra_right_brace(void)
 
 void normal_paragraph(void)
 {
-    normal_paragraph_regmem if (eqtb[8939259L /*int_base 19 */ ].cint != 0)
-        eq_word_define(8939259L /*int_base 19 */ , 0);
-    if (eqtb[10053710L /*dimen_base 17 */ ].cint != 0)
-        eq_word_define(10053710L /*dimen_base 17 */ , 0);
-    if (eqtb[8939281L /*int_base 41 */ ].cint != 1)
-        eq_word_define(8939281L /*int_base 41 */ , 1);
-    if (eqtb[2253271L /*par_shape_loc */ ].hh.v.RH != -268435455L)
-        eq_define(2253271L /*par_shape_loc */ , 120 /*shape_ref */ , -268435455L);
-    if (eqtb[2253539L /*inter_line_penalties_loc */ ].hh.v.RH != -268435455L)
-        eq_define(2253539L /*inter_line_penalties_loc */ , 120 /*shape_ref */ , -268435455L);
+    normal_paragraph_regmem if (eqtb[8940859L /*int_base 19 */ ].cint != 0)
+        eq_word_define(8940859L /*int_base 19 */ , 0);
+    if (eqtb[10055310L /*dimen_base 17 */ ].cint != 0)
+        eq_word_define(10055310L /*dimen_base 17 */ , 0);
+    if (eqtb[8940881L /*int_base 41 */ ].cint != 1)
+        eq_word_define(8940881L /*int_base 41 */ , 1);
+    if (eqtb[2254871L /*par_shape_loc */ ].hh.v.RH != -268435455L)
+        eq_define(2254871L /*par_shape_loc */ , 120 /*shape_ref */ , -268435455L);
+    if (eqtb[2255139L /*inter_line_penalties_loc */ ].hh.v.RH != -268435455L)
+        eq_define(2255139L /*inter_line_penalties_loc */ , 120 /*shape_ref */ , -268435455L);
 }
 
 void zbox_end(integer box_context)
@@ -25686,9 +25686,9 @@ void zbox_end(integer box_context)
         if (cur_val < 256) {
 
             if ((a >= 4))
-                geq_define(2253543L /*box_base */  + cur_val, 121 /*box_ref */ , cur_box);
+                geq_define(2255143L /*box_base */  + cur_val, 121 /*box_ref */ , cur_box);
             else
-                eq_define(2253543L /*box_base */  + cur_val, 121 /*box_ref */ , cur_box);
+                eq_define(2255143L /*box_base */  + cur_val, 121 /*box_ref */ , cur_box);
         } else {
 
             find_sa_element(4, cur_val, true);
@@ -25747,7 +25747,7 @@ void zbegin_box(integer box_context)
         {
             scan_register_num();
             if (cur_val < 256)
-                cur_box = eqtb[2253543L /*box_base */  + cur_val].hh.v.RH;
+                cur_box = eqtb[2255143L /*box_base */  + cur_val].hh.v.RH;
             else {
 
                 find_sa_element(4, cur_val, false);
@@ -25757,7 +25757,7 @@ void zbegin_box(integer box_context)
                     cur_box = mem[cur_ptr + 1].hh.v.RH;
             }
             if (cur_val < 256)
-                eqtb[2253543L /*box_base */  + cur_val].hh.v.RH = -268435455L;
+                eqtb[2255143L /*box_base */  + cur_val].hh.v.RH = -268435455L;
             else {
 
                 find_sa_element(4, cur_val, false);
@@ -25773,7 +25773,7 @@ void zbegin_box(integer box_context)
         {
             scan_register_num();
             if (cur_val < 256)
-                q = eqtb[2253543L /*box_base */  + cur_val].hh.v.RH;
+                q = eqtb[2255143L /*box_base */  + cur_val].hh.v.RH;
             else {
 
                 find_sa_element(4, cur_val, false);
@@ -25918,13 +25918,13 @@ void zbegin_box(integer box_context)
             cur_list.mode_field = -(integer) k;
             if (k == 1 /*vmode */ ) {
                 cur_list.aux_field.cint = -65536000L;
-                if (eqtb[2253277L /*every_vbox_loc */ ].hh.v.RH != -268435455L)
-                    begin_token_list(eqtb[2253277L /*every_vbox_loc */ ].hh.v.RH, 12 /*every_vbox_text */ );
+                if (eqtb[2254877L /*every_vbox_loc */ ].hh.v.RH != -268435455L)
+                    begin_token_list(eqtb[2254877L /*every_vbox_loc */ ].hh.v.RH, 12 /*every_vbox_text */ );
             } else {
 
                 cur_list.aux_field.hh.v.LH = 1000;
-                if (eqtb[2253276L /*every_hbox_loc */ ].hh.v.RH != -268435455L)
-                    begin_token_list(eqtb[2253276L /*every_hbox_loc */ ].hh.v.RH, 11 /*every_hbox_text */ );
+                if (eqtb[2254876L /*every_hbox_loc */ ].hh.v.RH != -268435455L)
+                    begin_token_list(eqtb[2254876L /*every_hbox_loc */ ].hh.v.RH, 11 /*every_hbox_text */ );
             }
             return;
         }
@@ -25970,12 +25970,12 @@ void zpackage(small_number c)
     halfword p;
     scaled d;
     integer u, v;
-    d = eqtb[10053700L /*dimen_base 7 */ ].cint;
-    u = eqtb[8939314L /*eTeX_state_base 2 */ ].cint;
+    d = eqtb[10055300L /*dimen_base 7 */ ].cint;
+    u = eqtb[8940914L /*eTeX_state_base 2 */ ].cint;
     unsave();
     save_ptr = save_ptr - 3;
-    v = eqtb[8939314L /*eTeX_state_base 2 */ ].cint;
-    eqtb[8939314L /*eTeX_state_base 2 */ ].cint = u;
+    v = eqtb[8940914L /*eTeX_state_base 2 */ ].cint;
+    eqtb[8940914L /*eTeX_state_base 2 */ ].cint = u;
     if (cur_list.mode_field == -104)
         cur_box = hpack(mem[cur_list.head_field].hh.v.RH, save_stack[save_ptr + 2].cint, save_stack[save_ptr + 1].cint);
     else {
@@ -25995,7 +25995,7 @@ void zpackage(small_number c)
             mem[cur_box + 3].cint = h;
         }
     }
-    eqtb[8939314L /*eTeX_state_base 2 */ ].cint = v;
+    eqtb[8940914L /*eTeX_state_base 2 */ ].cint = v;
     pop_nest();
     box_end(save_stack[save_ptr + 0].cint);
 }
@@ -26022,25 +26022,25 @@ void znew_graf(boolean indented)
     push_nest();
     cur_list.mode_field = 104 /*hmode */ ;
     cur_list.aux_field.hh.v.LH = 1000;
-    if (eqtb[8939290L /*int_base 50 */ ].cint <= 0)
+    if (eqtb[8940890L /*int_base 50 */ ].cint <= 0)
         cur_lang = 0;
-    else if (eqtb[8939290L /*int_base 50 */ ].cint > 255 /*biggest_lang */ )
+    else if (eqtb[8940890L /*int_base 50 */ ].cint > 255 /*biggest_lang */ )
         cur_lang = 0;
     else
-        cur_lang = eqtb[8939290L /*int_base 50 */ ].cint;
+        cur_lang = eqtb[8940890L /*int_base 50 */ ].cint;
     cur_list.aux_field.hh.v.RH = cur_lang;
     cur_list.pg_field =
-        (norm_min(eqtb[8939291L /*int_base 51 */ ].cint) * 64 +
-         norm_min(eqtb[8939292L /*int_base 52 */ ].cint)) * 65536L + cur_lang;
+        (norm_min(eqtb[8940891L /*int_base 51 */ ].cint) * 64 +
+         norm_min(eqtb[8940892L /*int_base 52 */ ].cint)) * 65536L + cur_lang;
     if (indented) {
         cur_list.tail_field = new_null_box();
         mem[cur_list.head_field].hh.v.RH = cur_list.tail_field;
-        mem[cur_list.tail_field + 1].cint = eqtb[10053693L /*dimen_base 0 */ ].cint;
+        mem[cur_list.tail_field + 1].cint = eqtb[10055293L /*dimen_base 0 */ ].cint;
         if ((insert_src_special_every_par))
             insert_src_special();
     }
-    if (eqtb[2253273L /*every_par_loc */ ].hh.v.RH != -268435455L)
-        begin_token_list(eqtb[2253273L /*every_par_loc */ ].hh.v.RH, 8 /*every_par_text */ );
+    if (eqtb[2254873L /*every_par_loc */ ].hh.v.RH != -268435455L)
+        begin_token_list(eqtb[2254873L /*every_par_loc */ ].hh.v.RH, 8 /*every_par_text */ );
     if (nest_ptr == 1)
         build_page();
 }
@@ -26050,7 +26050,7 @@ void indent_in_hmode(void)
     indent_in_hmode_regmem halfword p, q;
     if (cur_chr > 0) {
         p = new_null_box();
-        mem[p + 1].cint = eqtb[10053693L /*dimen_base 0 */ ].cint;
+        mem[p + 1].cint = eqtb[10055293L /*dimen_base 0 */ ].cint;
         if (abs(cur_list.mode_field) == 104 /*hmode */ )
             cur_list.aux_field.hh.v.LH = 1000;
         else {
@@ -26287,7 +26287,7 @@ void unpackage(void)
     c = cur_chr;
     scan_register_num();
     if (cur_val < 256)
-        p = eqtb[2253543L /*box_base */  + cur_val].hh.v.RH;
+        p = eqtb[2255143L /*box_base */  + cur_val].hh.v.RH;
     else {
 
         find_sa_element(4, cur_val, false);
@@ -26324,7 +26324,7 @@ void unpackage(void)
 
         mem[cur_list.tail_field].hh.v.RH = mem[p + 5].hh.v.RH;
         if (cur_val < 256)
-            eqtb[2253543L /*box_base */  + cur_val].hh.v.RH = -268435455L;
+            eqtb[2255143L /*box_base */  + cur_val].hh.v.RH = -268435455L;
         else {
 
             find_sa_element(4, cur_val, false);
@@ -26395,11 +26395,11 @@ void append_discretionary(void)
         cur_list.tail_field = mem[cur_list.tail_field].hh.v.RH;
     }
     if (cur_chr == 1) {
-        c = hyphen_char[eqtb[2253799L /*cur_font_loc */ ].hh.v.RH];
+        c = hyphen_char[eqtb[2255399L /*cur_font_loc */ ].hh.v.RH];
         if (c >= 0) {
 
             if (c <= 65535L /*biggest_char */ )
-                mem[cur_list.tail_field + 1].hh.v.LH = new_character(eqtb[2253799L /*cur_font_loc */ ].hh.v.RH, c);
+                mem[cur_list.tail_field + 1].hh.v.LH = new_character(eqtb[2255399L /*cur_font_loc */ ].hh.v.RH, c);
         }
     } else {
 
@@ -26539,7 +26539,7 @@ void make_accent(void)
     scaled a, h, x, w, delta, lsb, rsb;
     four_quarters i;
     scan_char_num();
-    f = eqtb[2253799L /*cur_font_loc */ ].hh.v.RH;
+    f = eqtb[2255399L /*cur_font_loc */ ].hh.v.RH;
     p = new_character(f, cur_val);
     if (p != -268435455L) {
         x = font_info[5 /*x_height_code */  + param_base[f]].cint;
@@ -26552,7 +26552,7 @@ void make_accent(void)
             a = font_info[width_base[f] + font_info[char_base[f] + effective_char(true, f, mem[p].hh.b1)].qqqq.b0].cint;
         do_assignments();
         q = -268435455L;
-        f = eqtb[2253799L /*cur_font_loc */ ].hh.v.RH;
+        f = eqtb[2255399L /*cur_font_loc */ ].hh.v.RH;
         if ((cur_cmd == 11 /*letter */ ) || (cur_cmd == 12 /*other_char */ ) || (cur_cmd == 68 /*char_given */ )) {
             q = new_character(f, cur_chr);
             cur_val = cur_chr;
@@ -27013,11 +27013,11 @@ void init_math(void)
             line_break(true);
             if ((eTeX_mode == 1))       //1551:
             {
-                if (eqtb[2252748L /*glue_base 8 */ ].hh.v.RH == mem_bot)
+                if (eqtb[2254348L /*glue_base 8 */ ].hh.v.RH == mem_bot)
                     j = new_kern(0);
                 else
                     j = new_param_glue(8 /*right_skip_code */ );
-                if (eqtb[2252747L /*glue_base 7 */ ].hh.v.RH == mem_bot)
+                if (eqtb[2254347L /*glue_base 7 */ ].hh.v.RH == mem_bot)
                     p = new_kern(0);
                 else
                     p = new_param_glue(7 /*left_skip_code */ );
@@ -27048,8 +27048,8 @@ void init_math(void)
                 just_copy(mem[just_box + 5].hh.v.RH, p, new_math(0, 7 /*end_L_code */ ));
                 cur_dir = 1 /*right_to_left */ ;
             }
-            v = v + 2 * font_info[6 /*quad_code */  + param_base[eqtb[2253799L /*cur_font_loc */ ].hh.v.RH]].cint;
-            if ((eqtb[8939312L /*eTeX_state_base 0 */ ].cint > 0))      //1520:
+            v = v + 2 * font_info[6 /*quad_code */  + param_base[eqtb[2255399L /*cur_font_loc */ ].hh.v.RH]].cint;
+            if ((eqtb[8940912L /*eTeX_state_base 0 */ ].cint > 0))      //1520:
             {
                 temp_ptr = get_avail();
                 mem[temp_ptr].hh.v.LH = 0 /*before */ ;
@@ -27091,7 +27091,7 @@ void init_math(void)
                 case 9:
                     {
                         d = mem[p + 1].cint;
-                        if ((eqtb[8939312L /*eTeX_state_base 0 */ ].cint > 0)) {        //1548:
+                        if ((eqtb[8940912L /*eTeX_state_base 0 */ ].cint > 0)) {        //1548:
 
                             if (odd(mem[p].hh.b1)) {
                                 if (mem[LR_ptr].hh.v.LH == (4 /*L_code */  * (mem[p].hh.b1 / 4 /*L_code */ ) + 3)) {
@@ -27177,7 +27177,7 @@ void init_math(void)
                 }
  lab45:                        /*not_found */ p = mem[p].hh.v.RH;
             }
- lab30:    /*done *//*1546: */ if ((eqtb[8939312L /*eTeX_state_base 0 */ ].cint > 0)) {
+ lab30:    /*done *//*1546: */ if ((eqtb[8940912L /*eTeX_state_base 0 */ ].cint > 0)) {
                 while (LR_ptr != -268435455L) {
 
                     temp_ptr = LR_ptr;
@@ -27201,44 +27201,44 @@ void init_math(void)
             cur_dir = 0 /*left_to_right */ ;
             flush_node_list(mem[mem_top - 3].hh.v.RH);
         }
-        if (eqtb[2253271L /*par_shape_loc */ ].hh.v.RH == -268435455L) {
+        if (eqtb[2254871L /*par_shape_loc */ ].hh.v.RH == -268435455L) {
 
-            if ((eqtb[10053710L /*dimen_base 17 */ ].cint != 0)
+            if ((eqtb[10055310L /*dimen_base 17 */ ].cint != 0)
                 &&
-                (((eqtb[8939281L /*int_base 41 */ ].cint >= 0)
-                  && (cur_list.pg_field + 2 > eqtb[8939281L /*int_base 41 */ ].cint))
-                 || (cur_list.pg_field + 1 < -(integer) eqtb[8939281L /*int_base 41 */ ].cint))) {
-                l = eqtb[10053696L /*dimen_base 3 */ ].cint - abs(eqtb[10053710L /*dimen_base 17 */ ].cint);
-                if (eqtb[10053710L /*dimen_base 17 */ ].cint > 0)
-                    s = eqtb[10053710L /*dimen_base 17 */ ].cint;
+                (((eqtb[8940881L /*int_base 41 */ ].cint >= 0)
+                  && (cur_list.pg_field + 2 > eqtb[8940881L /*int_base 41 */ ].cint))
+                 || (cur_list.pg_field + 1 < -(integer) eqtb[8940881L /*int_base 41 */ ].cint))) {
+                l = eqtb[10055296L /*dimen_base 3 */ ].cint - abs(eqtb[10055310L /*dimen_base 17 */ ].cint);
+                if (eqtb[10055310L /*dimen_base 17 */ ].cint > 0)
+                    s = eqtb[10055310L /*dimen_base 17 */ ].cint;
                 else
                     s = 0;
             } else {
 
-                l = eqtb[10053696L /*dimen_base 3 */ ].cint;
+                l = eqtb[10055296L /*dimen_base 3 */ ].cint;
                 s = 0;
             }
         } else {
 
-            n = mem[eqtb[2253271L /*par_shape_loc */ ].hh.v.RH].hh.v.LH;
+            n = mem[eqtb[2254871L /*par_shape_loc */ ].hh.v.RH].hh.v.LH;
             if (cur_list.pg_field + 2 >= n)
-                p = eqtb[2253271L /*par_shape_loc */ ].hh.v.RH + 2 * n;
+                p = eqtb[2254871L /*par_shape_loc */ ].hh.v.RH + 2 * n;
             else
-                p = eqtb[2253271L /*par_shape_loc */ ].hh.v.RH + 2 * (cur_list.pg_field + 2);
+                p = eqtb[2254871L /*par_shape_loc */ ].hh.v.RH + 2 * (cur_list.pg_field + 2);
             s = mem[p - 1].cint;
             l = mem[p].cint;
         }
         push_math(15 /*math_shift_group */ );
         cur_list.mode_field = 207 /*mmode */ ;
-        eq_word_define(8939284L /*int_base 44 */ , -1);
-        eq_word_define(10053706L /*dimen_base 13 */ , w);
+        eq_word_define(8940884L /*int_base 44 */ , -1);
+        eq_word_define(10055306L /*dimen_base 13 */ , w);
         cur_list.eTeX_aux_field = j;
         if ((eTeX_mode == 1))
-            eq_word_define(8939304L /*int_base 64 */ , x);
-        eq_word_define(10053707L /*dimen_base 14 */ , l);
-        eq_word_define(10053708L /*dimen_base 15 */ , s);
-        if (eqtb[2253275L /*every_display_loc */ ].hh.v.RH != -268435455L)
-            begin_token_list(eqtb[2253275L /*every_display_loc */ ].hh.v.RH, 10 /*every_display_text */ );
+            eq_word_define(8940904L /*int_base 64 */ , x);
+        eq_word_define(10055307L /*dimen_base 14 */ , l);
+        eq_word_define(10055308L /*dimen_base 15 */ , s);
+        if (eqtb[2254875L /*every_display_loc */ ].hh.v.RH != -268435455L)
+            begin_token_list(eqtb[2254875L /*every_display_loc */ ].hh.v.RH, 10 /*every_display_text */ );
         if (nest_ptr == 1)
             build_page();
     } else {
@@ -27246,11 +27246,11 @@ void init_math(void)
         back_input();
         {
             push_math(15 /*math_shift_group */ );
-            eq_word_define(8939284L /*int_base 44 */ , -1);
+            eq_word_define(8940884L /*int_base 44 */ , -1);
             if ((insert_src_special_every_math))
                 insert_src_special();
-            if (eqtb[2253274L /*every_math_loc */ ].hh.v.RH != -268435455L)
-                begin_token_list(eqtb[2253274L /*every_math_loc */ ].hh.v.RH, 9 /*every_math_text */ );
+            if (eqtb[2254874L /*every_math_loc */ ].hh.v.RH != -268435455L)
+                begin_token_list(eqtb[2254874L /*every_math_loc */ ].hh.v.RH, 9 /*every_math_text */ );
         }
     }
 }
@@ -27261,11 +27261,11 @@ void start_eq_no(void)
     incr(save_ptr);
     {
         push_math(15 /*math_shift_group */ );
-        eq_word_define(8939284L /*int_base 44 */ , -1);
+        eq_word_define(8940884L /*int_base 44 */ , -1);
         if ((insert_src_special_every_math))
             insert_src_special();
-        if (eqtb[2253274L /*every_math_loc */ ].hh.v.RH != -268435455L)
-            begin_token_list(eqtb[2253274L /*every_math_loc */ ].hh.v.RH, 9 /*every_math_text */ );
+        if (eqtb[2254874L /*every_math_loc */ ].hh.v.RH != -268435455L)
+            begin_token_list(eqtb[2254874L /*every_math_loc */ ].hh.v.RH, 9 /*every_math_text */ );
     }
 }
 
@@ -27281,7 +27281,7 @@ void zscan_math(halfword p)
     case 12:
     case 68:
         {
-            c = eqtb[6711016L /*math_code_base */  + cur_chr].hh.v.RH;
+            c = eqtb[6712616L /*math_code_base */  + cur_chr].hh.v.RH;
             if (math_char_field(c) == 2097151L /*active_math_char */ ) {
                 {
                     cur_cs = cur_chr + 1;
@@ -27358,9 +27358,9 @@ void zscan_math(halfword p)
     mem[p].hh.v.RH = 1 /*math_char */ ;
     mem[p].hh.b1 = c % 65536L;
     if ((math_class_field(c) == 7)
-        && ((eqtb[8939284L /*int_base 44 */ ].cint >= 0)
-            && (eqtb[8939284L /*int_base 44 */ ].cint < 256 /*number_math_families */ )))
-        mem[p].hh.b0 = eqtb[8939284L /*int_base 44 */ ].cint;
+        && ((eqtb[8940884L /*int_base 44 */ ].cint >= 0)
+            && (eqtb[8940884L /*int_base 44 */ ].cint < 256 /*number_math_families */ )))
+        mem[p].hh.b0 = eqtb[8940884L /*int_base 44 */ ].cint;
     else
         mem[p].hh.b0 = (math_fam_field(c));
     mem[p].hh.b0 = mem[p].hh.b0 + (math_char_field(c) / 65536L) * 256;
@@ -27385,9 +27385,9 @@ void zset_math_char(integer c)
         mem[p + 1].hh.b1 = ch % 65536L;
         mem[p + 1].hh.b0 = math_fam_field(c);
         if (math_class_field(c) == 7) {
-            if (((eqtb[8939284L /*int_base 44 */ ].cint >= 0)
-                 && (eqtb[8939284L /*int_base 44 */ ].cint < 256 /*number_math_families */ )))
-                mem[p + 1].hh.b0 = eqtb[8939284L /*int_base 44 */ ].cint;
+            if (((eqtb[8940884L /*int_base 44 */ ].cint >= 0)
+                 && (eqtb[8940884L /*int_base 44 */ ].cint < 256 /*number_math_families */ )))
+                mem[p + 1].hh.b0 = eqtb[8940884L /*int_base 44 */ ].cint;
             mem[p].hh.b0 = 16 /*ord_noad */ ;
         } else
             mem[p].hh.b0 = 16 /*ord_noad */  + math_class_field(c);
@@ -27441,7 +27441,7 @@ void zscan_delimiter(halfword p, boolean r)
         case 11:
         case 12:
             {
-                cur_val = eqtb[8939581L /*del_code_base */  + cur_chr].cint;
+                cur_val = eqtb[8941181L /*del_code_base */  + cur_chr].cint;
             }
             break;
         case 15:
@@ -27568,9 +27568,9 @@ void math_ac(void)
     }
     mem[cur_list.tail_field + 4].hh.b1 = cur_val % 65536L;
     if ((math_class_field(cur_val) == 7)
-        && ((eqtb[8939284L /*int_base 44 */ ].cint >= 0)
-            && (eqtb[8939284L /*int_base 44 */ ].cint < 256 /*number_math_families */ )))
-        mem[cur_list.tail_field + 4].hh.b0 = eqtb[8939284L /*int_base 44 */ ].cint;
+        && ((eqtb[8940884L /*int_base 44 */ ].cint >= 0)
+            && (eqtb[8940884L /*int_base 44 */ ].cint < 256 /*number_math_families */ )))
+        mem[cur_list.tail_field + 4].hh.b0 = eqtb[8940884L /*int_base 44 */ ].cint;
     else
         mem[cur_list.tail_field + 4].hh.b0 = math_fam_field(cur_val);
     mem[cur_list.tail_field + 4].hh.b0 = mem[cur_list.tail_field + 4].hh.b0 + (math_char_field(cur_val) / 65536L) * 256;
@@ -27838,13 +27838,13 @@ void zapp_display(halfword j, halfword b, scaled d)
     scaled e;
     integer x;
     halfword p, q, r, t, u;
-    s = eqtb[10053708L /*dimen_base 15 */ ].cint;
-    x = eqtb[8939304L /*int_base 64 */ ].cint;
+    s = eqtb[10055308L /*dimen_base 15 */ ].cint;
+    x = eqtb[8940904L /*int_base 64 */ ].cint;
     if (x == 0)
         mem[b + 4].cint = s + d;
     else {
 
-        z = eqtb[10053707L /*dimen_base 14 */ ].cint;
+        z = eqtb[10055307L /*dimen_base 14 */ ].cint;
         p = b;
         if (x > 0)
             e = z - d - mem[p + 1].cint;
@@ -27962,18 +27962,18 @@ void after_math(void)
     danger = false;
     if (cur_list.mode_field == 207 /*mmode */ )
         j = cur_list.eTeX_aux_field /*:1553 */ ;
-    if (((font_params[eqtb[2253802L /*math_font_base 2 0 */ ].hh.v.RH] < 22 /*total_mathsy_params */ )
+    if (((font_params[eqtb[2255402L /*math_font_base 2 0 */ ].hh.v.RH] < 22 /*total_mathsy_params */ )
          &&
-         (!((font_area[eqtb[2253802L /*math_font_base 2 0 */ ].hh.v.RH] == 65534L /*otgr_font_flag */ )
-            && (isOpenTypeMathFont(font_layout_engine[eqtb[2253802L /*math_font_base 2 0 */ ].hh.v.RH])))))
-        || ((font_params[eqtb[2254058L /*math_font_base 2 256 */ ].hh.v.RH] < 22 /*total_mathsy_params */ )
+         (!((font_area[eqtb[2255402L /*math_font_base 2 0 */ ].hh.v.RH] == 65534L /*otgr_font_flag */ )
+            && (isOpenTypeMathFont(font_layout_engine[eqtb[2255402L /*math_font_base 2 0 */ ].hh.v.RH])))))
+        || ((font_params[eqtb[2255658L /*math_font_base 2 256 */ ].hh.v.RH] < 22 /*total_mathsy_params */ )
             &&
-            (!((font_area[eqtb[2254058L /*math_font_base 2 256 */ ].hh.v.RH] == 65534L /*otgr_font_flag */ )
-               && (isOpenTypeMathFont(font_layout_engine[eqtb[2254058L /*math_font_base 2 256 */ ].hh.v.RH])))))
-        || ((font_params[eqtb[2254314L /*math_font_base 2 512 */ ].hh.v.RH] < 22 /*total_mathsy_params */ )
+            (!((font_area[eqtb[2255658L /*math_font_base 2 256 */ ].hh.v.RH] == 65534L /*otgr_font_flag */ )
+               && (isOpenTypeMathFont(font_layout_engine[eqtb[2255658L /*math_font_base 2 256 */ ].hh.v.RH])))))
+        || ((font_params[eqtb[2255914L /*math_font_base 2 512 */ ].hh.v.RH] < 22 /*total_mathsy_params */ )
             &&
-            (!((font_area[eqtb[2254314L /*math_font_base 2 512 */ ].hh.v.RH] == 65534L /*otgr_font_flag */ )
-               && (isOpenTypeMathFont(font_layout_engine[eqtb[2254314L /*math_font_base 2 512 */ ].hh.v.RH])))))) {
+            (!((font_area[eqtb[2255914L /*math_font_base 2 512 */ ].hh.v.RH] == 65534L /*otgr_font_flag */ )
+               && (isOpenTypeMathFont(font_layout_engine[eqtb[2255914L /*math_font_base 2 512 */ ].hh.v.RH])))))) {
         {
             if (interaction == 3 /*error_stop_mode */ ) ;
             if (file_line_error_style_p)
@@ -27992,18 +27992,18 @@ void after_math(void)
         flush_math();
         danger = true;
     } else
-        if (((font_params[eqtb[2253803L /*math_font_base 3 0 */ ].hh.v.RH] < 13 /*total_mathex_params */ )
+        if (((font_params[eqtb[2255403L /*math_font_base 3 0 */ ].hh.v.RH] < 13 /*total_mathex_params */ )
              &&
-             (!((font_area[eqtb[2253803L /*math_font_base 3 0 */ ].hh.v.RH] == 65534L /*otgr_font_flag */ )
-                && (isOpenTypeMathFont(font_layout_engine[eqtb[2253803L /*math_font_base 3 0 */ ].hh.v.RH])))))
-            || ((font_params[eqtb[2254059L /*math_font_base 3 256 */ ].hh.v.RH] < 13 /*total_mathex_params */ )
+             (!((font_area[eqtb[2255403L /*math_font_base 3 0 */ ].hh.v.RH] == 65534L /*otgr_font_flag */ )
+                && (isOpenTypeMathFont(font_layout_engine[eqtb[2255403L /*math_font_base 3 0 */ ].hh.v.RH])))))
+            || ((font_params[eqtb[2255659L /*math_font_base 3 256 */ ].hh.v.RH] < 13 /*total_mathex_params */ )
                 &&
-                (!((font_area[eqtb[2254059L /*math_font_base 3 256 */ ].hh.v.RH] == 65534L /*otgr_font_flag */ )
-                   && (isOpenTypeMathFont(font_layout_engine[eqtb[2254059L /*math_font_base 3 256 */ ].hh.v.RH])))))
-            || ((font_params[eqtb[2254315L /*math_font_base 3 512 */ ].hh.v.RH] < 13 /*total_mathex_params */ )
+                (!((font_area[eqtb[2255659L /*math_font_base 3 256 */ ].hh.v.RH] == 65534L /*otgr_font_flag */ )
+                   && (isOpenTypeMathFont(font_layout_engine[eqtb[2255659L /*math_font_base 3 256 */ ].hh.v.RH])))))
+            || ((font_params[eqtb[2255915L /*math_font_base 3 512 */ ].hh.v.RH] < 13 /*total_mathex_params */ )
                 &&
-                (!((font_area[eqtb[2254315L /*math_font_base 3 512 */ ].hh.v.RH] == 65534L /*otgr_font_flag */ )
-                   && (isOpenTypeMathFont(font_layout_engine[eqtb[2254315L /*math_font_base 3 512 */ ].hh.v.RH])))))) {
+                (!((font_area[eqtb[2255915L /*math_font_base 3 512 */ ].hh.v.RH] == 65534L /*otgr_font_flag */ )
+                   && (isOpenTypeMathFont(font_layout_engine[eqtb[2255915L /*math_font_base 3 512 */ ].hh.v.RH])))))) {
         {
             if (interaction == 3 /*error_stop_mode */ ) ;
             if (file_line_error_style_p)
@@ -28058,18 +28058,18 @@ void after_math(void)
         danger = false;
         if (cur_list.mode_field == 207 /*mmode */ )
             j = cur_list.eTeX_aux_field /*:1553 */ ;
-        if (((font_params[eqtb[2253802L /*math_font_base 2 0 */ ].hh.v.RH] < 22 /*total_mathsy_params */ )
+        if (((font_params[eqtb[2255402L /*math_font_base 2 0 */ ].hh.v.RH] < 22 /*total_mathsy_params */ )
              &&
-             (!((font_area[eqtb[2253802L /*math_font_base 2 0 */ ].hh.v.RH] == 65534L /*otgr_font_flag */ )
-                && (isOpenTypeMathFont(font_layout_engine[eqtb[2253802L /*math_font_base 2 0 */ ].hh.v.RH])))))
-            || ((font_params[eqtb[2254058L /*math_font_base 2 256 */ ].hh.v.RH] < 22 /*total_mathsy_params */ )
+             (!((font_area[eqtb[2255402L /*math_font_base 2 0 */ ].hh.v.RH] == 65534L /*otgr_font_flag */ )
+                && (isOpenTypeMathFont(font_layout_engine[eqtb[2255402L /*math_font_base 2 0 */ ].hh.v.RH])))))
+            || ((font_params[eqtb[2255658L /*math_font_base 2 256 */ ].hh.v.RH] < 22 /*total_mathsy_params */ )
                 &&
-                (!((font_area[eqtb[2254058L /*math_font_base 2 256 */ ].hh.v.RH] == 65534L /*otgr_font_flag */ )
-                   && (isOpenTypeMathFont(font_layout_engine[eqtb[2254058L /*math_font_base 2 256 */ ].hh.v.RH])))))
-            || ((font_params[eqtb[2254314L /*math_font_base 2 512 */ ].hh.v.RH] < 22 /*total_mathsy_params */ )
+                (!((font_area[eqtb[2255658L /*math_font_base 2 256 */ ].hh.v.RH] == 65534L /*otgr_font_flag */ )
+                   && (isOpenTypeMathFont(font_layout_engine[eqtb[2255658L /*math_font_base 2 256 */ ].hh.v.RH])))))
+            || ((font_params[eqtb[2255914L /*math_font_base 2 512 */ ].hh.v.RH] < 22 /*total_mathsy_params */ )
                 &&
-                (!((font_area[eqtb[2254314L /*math_font_base 2 512 */ ].hh.v.RH] == 65534L /*otgr_font_flag */ )
-                   && (isOpenTypeMathFont(font_layout_engine[eqtb[2254314L /*math_font_base 2 512 */ ].hh.v.RH])))))) {
+                (!((font_area[eqtb[2255914L /*math_font_base 2 512 */ ].hh.v.RH] == 65534L /*otgr_font_flag */ )
+                   && (isOpenTypeMathFont(font_layout_engine[eqtb[2255914L /*math_font_base 2 512 */ ].hh.v.RH])))))) {
             {
                 if (interaction == 3 /*error_stop_mode */ ) ;
                 if (file_line_error_style_p)
@@ -28088,19 +28088,19 @@ void after_math(void)
             flush_math();
             danger = true;
         } else
-            if (((font_params[eqtb[2253803L /*math_font_base 3 0 */ ].hh.v.RH] < 13 /*total_mathex_params */ )
+            if (((font_params[eqtb[2255403L /*math_font_base 3 0 */ ].hh.v.RH] < 13 /*total_mathex_params */ )
                  &&
-                 (!((font_area[eqtb[2253803L /*math_font_base 3 0 */ ].hh.v.RH] == 65534L /*otgr_font_flag */ )
-                    && (isOpenTypeMathFont(font_layout_engine[eqtb[2253803L /*math_font_base 3 0 */ ].hh.v.RH])))))
-                || ((font_params[eqtb[2254059L /*math_font_base 3 256 */ ].hh.v.RH] < 13 /*total_mathex_params */ )
+                 (!((font_area[eqtb[2255403L /*math_font_base 3 0 */ ].hh.v.RH] == 65534L /*otgr_font_flag */ )
+                    && (isOpenTypeMathFont(font_layout_engine[eqtb[2255403L /*math_font_base 3 0 */ ].hh.v.RH])))))
+                || ((font_params[eqtb[2255659L /*math_font_base 3 256 */ ].hh.v.RH] < 13 /*total_mathex_params */ )
                     &&
-                    (!((font_area[eqtb[2254059L /*math_font_base 3 256 */ ].hh.v.RH] == 65534L /*otgr_font_flag */ )
-                       && (isOpenTypeMathFont(font_layout_engine[eqtb[2254059L /*math_font_base 3 256 */ ].hh.v.RH])))))
-                || ((font_params[eqtb[2254315L /*math_font_base 3 512 */ ].hh.v.RH] < 13 /*total_mathex_params */ )
+                    (!((font_area[eqtb[2255659L /*math_font_base 3 256 */ ].hh.v.RH] == 65534L /*otgr_font_flag */ )
+                       && (isOpenTypeMathFont(font_layout_engine[eqtb[2255659L /*math_font_base 3 256 */ ].hh.v.RH])))))
+                || ((font_params[eqtb[2255915L /*math_font_base 3 512 */ ].hh.v.RH] < 13 /*total_mathex_params */ )
                     &&
-                    (!((font_area[eqtb[2254315L /*math_font_base 3 512 */ ].hh.v.RH] == 65534L /*otgr_font_flag */ )
+                    (!((font_area[eqtb[2255915L /*math_font_base 3 512 */ ].hh.v.RH] == 65534L /*otgr_font_flag */ )
                        &&
-                       (isOpenTypeMathFont(font_layout_engine[eqtb[2254315L /*math_font_base 3 512 */ ].hh.v.RH])))))) {
+                       (isOpenTypeMathFont(font_layout_engine[eqtb[2255915L /*math_font_base 3 512 */ ].hh.v.RH])))))) {
             {
                 if (interaction == 3 /*error_stop_mode */ ) ;
                 if (file_line_error_style_p)
@@ -28126,7 +28126,7 @@ void after_math(void)
     if (m < 0)                  //1250:
     {
         {
-            mem[cur_list.tail_field].hh.v.RH = new_math(eqtb[10053694L /*dimen_base 1 */ ].cint, 0 /*before */ );
+            mem[cur_list.tail_field].hh.v.RH = new_math(eqtb[10055294L /*dimen_base 1 */ ].cint, 0 /*before */ );
             cur_list.tail_field = mem[cur_list.tail_field].hh.v.RH;
         }
         cur_mlist = p;
@@ -28137,7 +28137,7 @@ void after_math(void)
         while (mem[cur_list.tail_field].hh.v.RH != -268435455L)
             cur_list.tail_field = mem[cur_list.tail_field].hh.v.RH;
         {
-            mem[cur_list.tail_field].hh.v.RH = new_math(eqtb[10053694L /*dimen_base 1 */ ].cint, 1 /*after */ );
+            mem[cur_list.tail_field].hh.v.RH = new_math(eqtb[10055294L /*dimen_base 1 */ ].cint, 1 /*after */ );
             cur_list.tail_field = mem[cur_list.tail_field].hh.v.RH;
         }
         cur_list.aux_field.hh.v.LH = 1000;
@@ -28178,9 +28178,9 @@ void after_math(void)
         pre_t = pre_adjust_tail;
         pre_adjust_tail = -268435455L;
         w = mem[b + 1].cint;
-        z = eqtb[10053707L /*dimen_base 14 */ ].cint;
-        s = eqtb[10053708L /*dimen_base 15 */ ].cint;
-        if (eqtb[8939304L /*int_base 64 */ ].cint < 0)
+        z = eqtb[10055307L /*dimen_base 14 */ ].cint;
+        s = eqtb[10055308L /*dimen_base 15 */ ].cint;
+        if (eqtb[8940904L /*int_base 64 */ ].cint < 0)
             s = -(integer) s - z;
         if ((a == -268435455L) || danger) {
             e = 0;
@@ -28221,10 +28221,10 @@ void after_math(void)
             }
         }
         {
-            mem[cur_list.tail_field].hh.v.RH = new_penalty(eqtb[8939251L /*int_base 11 */ ].cint);
+            mem[cur_list.tail_field].hh.v.RH = new_penalty(eqtb[8940851L /*int_base 11 */ ].cint);
             cur_list.tail_field = mem[cur_list.tail_field].hh.v.RH;
         }
-        if ((d + s <= eqtb[10053706L /*dimen_base 13 */ ].cint) || l) {
+        if ((d + s <= eqtb[10055306L /*dimen_base 13 */ ].cint) || l) {
             g1 = 3 /*above_display_skip_code */ ;
             g2 = 4 /*below_display_skip_code */ ;
         } else {
@@ -28275,7 +28275,7 @@ void after_math(void)
             cur_list.tail_field = pre_t;
         }
         {
-            mem[cur_list.tail_field].hh.v.RH = new_penalty(eqtb[8939252L /*int_base 12 */ ].cint);
+            mem[cur_list.tail_field].hh.v.RH = new_penalty(eqtb[8940852L /*int_base 12 */ ].cint);
             cur_list.tail_field = mem[cur_list.tail_field].hh.v.RH;
         }
         if (g2 > 0) {
@@ -28296,16 +28296,16 @@ void resume_after_display(void)
     push_nest();
     cur_list.mode_field = 104 /*hmode */ ;
     cur_list.aux_field.hh.v.LH = 1000;
-    if (eqtb[8939290L /*int_base 50 */ ].cint <= 0)
+    if (eqtb[8940890L /*int_base 50 */ ].cint <= 0)
         cur_lang = 0;
-    else if (eqtb[8939290L /*int_base 50 */ ].cint > 255 /*biggest_lang */ )
+    else if (eqtb[8940890L /*int_base 50 */ ].cint > 255 /*biggest_lang */ )
         cur_lang = 0;
     else
-        cur_lang = eqtb[8939290L /*int_base 50 */ ].cint;
+        cur_lang = eqtb[8940890L /*int_base 50 */ ].cint;
     cur_list.aux_field.hh.v.RH = cur_lang;
     cur_list.pg_field =
-        (norm_min(eqtb[8939291L /*int_base 51 */ ].cint) * 64 +
-         norm_min(eqtb[8939292L /*int_base 52 */ ].cint)) * 65536L + cur_lang;
+        (norm_min(eqtb[8940891L /*int_base 51 */ ].cint) * 64 +
+         norm_min(eqtb[8940892L /*int_base 52 */ ].cint)) * 65536L + cur_lang;
     {
         get_x_token();
         if (cur_cmd != 10 /*spacer */ )
@@ -28322,7 +28322,7 @@ void get_r_token(void)
         get_token();
     } while (!(cur_tok != 20971552L /*space_token */ ));
     if ((cur_cs == 0) || (cur_cs > eqtb_top)
-        || ((cur_cs > 2243226L /*frozen_control_sequence */ ) && (cur_cs <= 10053971L /*eqtb_size */ ))) {
+        || ((cur_cs > 2243226L /*frozen_control_sequence */ ) && (cur_cs <= 10055571L /*eqtb_size */ ))) {
         {
             if (interaction == 3 /*error_stop_mode */ ) ;
             if (file_line_error_style_p)
@@ -28408,16 +28408,16 @@ void zdo_register_command(small_number a)
             } else
                 switch (p) {
                 case 0:
-                    l = cur_val + 8939325L;
+                    l = cur_val + 8940925L;
                     break;
                 case 1:
-                    l = cur_val + 10053716L;
+                    l = cur_val + 10055316L;
                     break;
                 case 2:
-                    l = cur_val + 2252759L;
+                    l = cur_val + 2254359L;
                     break;
                 case 3:
-                    l = cur_val + 2253015L;
+                    l = cur_val + 2254615L;
                     break;
                 }
         }
@@ -28664,7 +28664,7 @@ void alter_box_dimen(void)
     c = cur_chr;
     scan_register_num();
     if (cur_val < 256)
-        b = eqtb[2253543L /*box_base */  + cur_val].hh.v.RH;
+        b = eqtb[2255143L /*box_base */  + cur_val].hh.v.RH;
     else {
 
         find_sa_element(4, cur_val, false);
@@ -28808,8 +28808,8 @@ void znew_font(small_number a)
         geq_define(u, 89 /*set_font */ , f);
     else
         eq_define(u, 89 /*set_font */ , f);
-    eqtb[2243738L /*font_id_base */  + f] = eqtb[u];
-    hash[2243738L /*font_id_base */  + f].v.RH = t;
+    eqtb[2245338L /*font_id_base */  + f] = eqtb[u];
+    hash[2245338L /*font_id_base */  + f].v.RH = t;
 }
 
 void new_interaction(void)
@@ -28864,7 +28864,7 @@ void issue_message(void)
             print(65626L /*"" */ );
         }
         print(s);
-        if (eqtb[2253280L /*err_help_loc */ ].hh.v.RH != -268435455L)
+        if (eqtb[2254880L /*err_help_loc */ ].hh.v.RH != -268435455L)
             use_err_help = true;
         else if (long_help_seen) {
             help_ptr = 1;
@@ -28940,7 +28940,7 @@ void show_whatever(void)
         {
             scan_register_num();
             if (cur_val < 256)
-                p = eqtb[2253543L /*box_base */  + cur_val].hh.v.RH;
+                p = eqtb[2255143L /*box_base */  + cur_val].hh.v.RH;
             else {
 
                 find_sa_element(4, cur_val, false);
@@ -29040,7 +29040,7 @@ void show_whatever(void)
     }
     if (selector == 19 /*term_and_log */ ) {
 
-        if (eqtb[8939269L /*int_base 29 */ ].cint <= 0) {
+        if (eqtb[8940869L /*int_base 29 */ ].cint <= 0) {
             selector = 17 /*term_only */ ;
             print(66706L /*" (see the transcript file)" */ );
             selector = 19 /*term_and_log */ ;
@@ -29049,7 +29049,7 @@ void show_whatever(void)
  lab50:/*common_ending */ if (interaction < 3 /*error_stop_mode */ ) {
         help_ptr = 0;
         decr(error_count);
-    } else if (eqtb[8939269L /*int_base 29 */ ].cint > 0) {
+    } else if (eqtb[8940869L /*int_base 29 */ ].cint > 0) {
         {
             help_ptr = 3;
             help_line[2] = 66695L /*"This isn't an error message; I'm just \showing something." */ ;
@@ -29506,8 +29506,8 @@ void do_extension(void)
             else
                 cur_list.aux_field.hh.v.RH = cur_val;
             mem[cur_list.tail_field + 1].hh.v.RH = cur_list.aux_field.hh.v.RH;
-            mem[cur_list.tail_field + 1].hh.b0 = norm_min(eqtb[8939291L /*int_base 51 */ ].cint);
-            mem[cur_list.tail_field + 1].hh.b1 = norm_min(eqtb[8939292L /*int_base 52 */ ].cint);
+            mem[cur_list.tail_field + 1].hh.b0 = norm_min(eqtb[8940891L /*int_base 51 */ ].cint);
+            mem[cur_list.tail_field + 1].hh.b1 = norm_min(eqtb[8940892L /*int_base 52 */ ].cint);
         }
         break;
     case 21:
@@ -29550,8 +29550,8 @@ void do_extension(void)
                 report_illegal_case();
             else {
 
-                if (((font_area[eqtb[2253799L /*cur_font_loc */ ].hh.v.RH] == 65535L /*aat_font_flag */ )
-                     || (font_area[eqtb[2253799L /*cur_font_loc */ ].hh.v.RH] == 65534L /*otgr_font_flag */ ))) {
+                if (((font_area[eqtb[2255399L /*cur_font_loc */ ].hh.v.RH] == 65535L /*aat_font_flag */ )
+                     || (font_area[eqtb[2255399L /*cur_font_loc */ ].hh.v.RH] == 65534L /*otgr_font_flag */ ))) {
                     new_whatsit(42 /*glyph_node */ , 5 /*glyph_node_size */ );
                     scan_int();
                     if ((cur_val < 0) || (cur_val > 65535L)) {
@@ -29571,12 +29571,12 @@ void do_extension(void)
                         int_error(cur_val);
                         cur_val = 0;
                     }
-                    mem[cur_list.tail_field + 4].qqqq.b1 = eqtb[2253799L /*cur_font_loc */ ].hh.v.RH;
+                    mem[cur_list.tail_field + 4].qqqq.b1 = eqtb[2255399L /*cur_font_loc */ ].hh.v.RH;
                     mem[cur_list.tail_field + 4].qqqq.b2 = cur_val;
-                    set_native_glyph_metrics(cur_list.tail_field, (eqtb[8939315L /*eTeX_state_base 3 */ ].cint > 0));
+                    set_native_glyph_metrics(cur_list.tail_field, (eqtb[8940915L /*eTeX_state_base 3 */ ].cint > 0));
                 } else
                     not_native_font_error(59 /*extension */ , 43 /*glyph_code */ ,
-                                          eqtb[2253799L /*cur_font_loc */ ].hh.v.RH);
+                                          eqtb[2255399L /*cur_font_loc */ ].hh.v.RH);
             }
         }
         break;
@@ -29607,17 +29607,17 @@ void do_extension(void)
         {
             scan_and_pack_name();
             i = get_encoding_mode_and_info(addressof(j));
-            eqtb[8939318L /*eTeX_state_base 6 */ ].cint = i;
-            eqtb[8939319L /*eTeX_state_base 7 */ ].cint = j;
+            eqtb[8940918L /*eTeX_state_base 6 */ ].cint = i;
+            eqtb[8940919L /*eTeX_state_base 7 */ ].cint = j;
         }
         break;
     case 46:
         {
             scan_file_name();
             if (length(cur_name) == 0)
-                eqtb[8939309L /*int_base 69 */ ].cint = 0;
+                eqtb[8940909L /*int_base 69 */ ].cint = 0;
             else
-                eqtb[8939309L /*int_base 69 */ ].cint = cur_name;
+                eqtb[8940909L /*int_base 69 */ ].cint = cur_name;
         }
         break;
     default:
@@ -29629,18 +29629,18 @@ void do_extension(void)
 void fix_language(void)
 {
     fix_language_regmem UTF16_code l;
-    if (eqtb[8939290L /*int_base 50 */ ].cint <= 0)
+    if (eqtb[8940890L /*int_base 50 */ ].cint <= 0)
         l = 0;
-    else if (eqtb[8939290L /*int_base 50 */ ].cint > 255)
+    else if (eqtb[8940890L /*int_base 50 */ ].cint > 255)
         l = 0;
     else
-        l = eqtb[8939290L /*int_base 50 */ ].cint;
+        l = eqtb[8940890L /*int_base 50 */ ].cint;
     if (l != cur_list.aux_field.hh.v.RH) {
         new_whatsit(4 /*language_node */ , 2 /*small_node_size */ );
         mem[cur_list.tail_field + 1].hh.v.RH = l;
         cur_list.aux_field.hh.v.RH = l;
-        mem[cur_list.tail_field + 1].hh.b0 = norm_min(eqtb[8939291L /*int_base 51 */ ].cint);
-        mem[cur_list.tail_field + 1].hh.b1 = norm_min(eqtb[8939292L /*int_base 52 */ ].cint);
+        mem[cur_list.tail_field + 1].hh.b0 = norm_min(eqtb[8940891L /*int_base 51 */ ].cint);
+        mem[cur_list.tail_field + 1].hh.b1 = norm_min(eqtb[8940892L /*int_base 52 */ ].cint);
     }
 }
 
@@ -29737,10 +29737,10 @@ void handle_right_brace(void)
     case 11:
         {
             end_graf();
-            q = eqtb[2252750L /*glue_base 10 */ ].hh.v.RH;
+            q = eqtb[2254350L /*glue_base 10 */ ].hh.v.RH;
             incr(mem[q].hh.v.RH);
-            d = eqtb[10053699L /*dimen_base 6 */ ].cint;
-            f = eqtb[8939282L /*int_base 42 */ ].cint;
+            d = eqtb[10055299L /*dimen_base 6 */ ].cint;
+            f = eqtb[8940882L /*int_base 42 */ ].cint;
             unsave();
             save_ptr = save_ptr - 2;
             p = vpackage(mem[cur_list.head_field].hh.v.RH, 0, 1 /*additional */ , 1073741823L);
@@ -29800,7 +29800,7 @@ void handle_right_brace(void)
             unsave();
             output_active = false;
             insert_penalties = 0;
-            if (eqtb[2253798L /*box_base 255 */ ].hh.v.RH != -268435455L) {
+            if (eqtb[2255398L /*box_base 255 */ ].hh.v.RH != -268435455L) {
                 {
                     if (interaction == 3 /*error_stop_mode */ ) ;
                     if (file_line_error_style_p)
@@ -29935,8 +29935,8 @@ void handle_right_brace(void)
 void main_control(void)
 {
     main_control_regmem integer t;
-    if (eqtb[2253278L /*every_job_loc */ ].hh.v.RH != -268435455L)
-        begin_token_list(eqtb[2253278L /*every_job_loc */ ].hh.v.RH, 13 /*every_job_text */ );
+    if (eqtb[2254878L /*every_job_loc */ ].hh.v.RH != -268435455L)
+        begin_token_list(eqtb[2254878L /*every_job_loc */ ].hh.v.RH, 13 /*every_job_text */ );
  lab60:                        /*big_switch */ get_x_token();
  lab21:                        /*reswitch *//*1085: */ if (interrupt != 0) {
 
@@ -29955,7 +29955,7 @@ void main_control(void)
         check_mem(false);
 
 #endif                          // TEXMF_DEBUG
-    if (eqtb[8939276L /*int_base 36 */ ].cint > 0)
+    if (eqtb[8940876L /*int_base 36 */ ].cint > 0)
         show_cur_cmd_chr();
     switch (abs(cur_list.mode_field) + cur_cmd) {
     case 115:
@@ -29983,7 +29983,7 @@ void main_control(void)
         {
             if (abs(cur_list.mode_field) == 104 /*hmode */ ) {
 
-                if ((eqtb[8939316L /*eTeX_state_base 4 */ ].cint > 0) && (space_class != 4096 /*char_class_limit */ )
+                if ((eqtb[8940916L /*eTeX_state_base 4 */ ].cint > 0) && (space_class != 4096 /*char_class_limit */ )
                     && (prev_class != (4095 /*char_class_limit -1 */ ))) {
                     prev_class = (4095 /*char_class_limit -1 */ );
                     find_sa_element(6 /*inter_char_val */ ,
@@ -30297,7 +30297,7 @@ void main_control(void)
                 break;
             case 137:
                 if (cur_chr > 0) {
-                    if (eTeX_enabled((eqtb[8939312L /*eTeX_state_base 0 */ ].cint > 0), cur_cmd, cur_chr)) {
+                    if (eTeX_enabled((eqtb[8940912L /*eTeX_state_base 0 */ ].cint > 0), cur_cmd, cur_chr)) {
                         mem[cur_list.tail_field].hh.v.RH = new_math(0, cur_chr);
                         cur_list.tail_field = mem[cur_list.tail_field].hh.v.RH;
                     }
@@ -30347,13 +30347,13 @@ void main_control(void)
             case 218:
             case 219:
             case 275:
-                set_math_char(eqtb[6711016L /*math_code_base */  + cur_chr].hh.v.RH);
+                set_math_char(eqtb[6712616L /*math_code_base */  + cur_chr].hh.v.RH);
                 break;
             case 223:
                 {
                     scan_char_num();
                     cur_chr = cur_val;
-                    set_math_char(eqtb[6711016L /*math_code_base */  + cur_chr].hh.v.RH);
+                    set_math_char(eqtb[6712616L /*math_code_base */  + cur_chr].hh.v.RH);
                 }
                 break;
             case 224:
@@ -30432,8 +30432,8 @@ void main_control(void)
                     cur_list.aux_field.cint = -65536000L;
                     if ((insert_src_special_every_vbox))
                         insert_src_special();
-                    if (eqtb[2253277L /*every_vbox_loc */ ].hh.v.RH != -268435455L)
-                        begin_token_list(eqtb[2253277L /*every_vbox_loc */ ].hh.v.RH, 12 /*every_vbox_text */ );
+                    if (eqtb[2254877L /*every_vbox_loc */ ].hh.v.RH != -268435455L)
+                        begin_token_list(eqtb[2254877L /*every_vbox_loc */ ].hh.v.RH, 12 /*every_vbox_text */ );
                 }
                 break;
             case 260:
@@ -30616,17 +30616,17 @@ void main_control(void)
             append_src_special();
     }
     prev_class = (4095 /*char_class_limit -1 */ );
-    if (((font_area[eqtb[2253799L /*cur_font_loc */ ].hh.v.RH] == 65535L /*aat_font_flag */ )
-         || (font_area[eqtb[2253799L /*cur_font_loc */ ].hh.v.RH] == 65534L /*otgr_font_flag */ ))) {
+    if (((font_area[eqtb[2255399L /*cur_font_loc */ ].hh.v.RH] == 65535L /*aat_font_flag */ )
+         || (font_area[eqtb[2255399L /*cur_font_loc */ ].hh.v.RH] == 65534L /*otgr_font_flag */ ))) {
         if (cur_list.mode_field > 0) {
 
-            if (eqtb[8939290L /*int_base 50 */ ].cint != cur_list.aux_field.hh.v.RH)
+            if (eqtb[8940890L /*int_base 50 */ ].cint != cur_list.aux_field.hh.v.RH)
                 fix_language();
         }
         main_h = 0;
-        main_f = eqtb[2253799L /*cur_font_loc */ ].hh.v.RH;
+        main_f = eqtb[2255399L /*cur_font_loc */ ].hh.v.RH;
         native_len = 0;
- lab71:/*collect_native */ main_s = eqtb[5596904L /*sf_code_base */  + cur_chr].hh.v.RH % 65536L;
+ lab71:/*collect_native */ main_s = eqtb[5598504L /*sf_code_base */  + cur_chr].hh.v.RH % 65536L;
         if (main_s == 1000)
             cur_list.aux_field.hh.v.LH = 1000;
         else if (main_s < 1000) {
@@ -30637,8 +30637,8 @@ void main_control(void)
         else
             cur_list.aux_field.hh.v.LH = main_s;
         cur_ptr = -268435455L;
-        space_class = eqtb[5596904L /*sf_code_base */  + cur_chr].hh.v.RH / 65536L;
-        if ((eqtb[8939316L /*eTeX_state_base 4 */ ].cint > 0) && space_class != 4096 /*char_class_limit */ ) {
+        space_class = eqtb[5598504L /*sf_code_base */  + cur_chr].hh.v.RH / 65536L;
+        if ((eqtb[8940916L /*eTeX_state_base 4 */ ].cint > 0) && space_class != 4096 /*char_class_limit */ ) {
             if (prev_class == (4095 /*char_class_limit -1 */ )) {
                 if ((cur_input.state_field != 0 /*token_list */ ) || (cur_input.index_field != 4 /*backed_up_char */ )) {
                     find_sa_element(6 /*inter_char_val */ ,
@@ -30696,7 +30696,7 @@ void main_control(void)
                 incr(native_len);
             }
         }
-        is_hyph = (cur_chr == hyphen_char[main_f]) || ((eqtb[8939313L /*eTeX_state_base 1 */ ].cint > 0)
+        is_hyph = (cur_chr == hyphen_char[main_f]) || ((eqtb[8940913L /*eTeX_state_base 1 */ ].cint > 0)
                                                        && ((cur_chr == 8212) || (cur_chr == 8211)));
         if ((main_h == 0) && is_hyph)
             main_h = native_len;
@@ -30711,7 +30711,7 @@ void main_control(void)
             cur_chr = cur_val;
             goto lab71;
         }
-        if ((eqtb[8939316L /*eTeX_state_base 4 */ ].cint > 0) && (space_class != 4096 /*char_class_limit */ )
+        if ((eqtb[8940916L /*eTeX_state_base 4 */ ].cint > 0) && (space_class != 4096 /*char_class_limit */ )
             && (prev_class != (4095 /*char_class_limit -1 */ ))) {
             prev_class = (4095 /*char_class_limit -1 */ );
             find_sa_element(6 /*inter_char_val */ ,
@@ -30749,14 +30749,14 @@ void main_control(void)
                         }
                         if ((main_h == 0)
                             && ((mapped_text[main_p] == hyphen_char[main_f])
-                                || ((eqtb[8939313L /*eTeX_state_base 1 */ ].cint > 0)
+                                || ((eqtb[8940913L /*eTeX_state_base 1 */ ].cint > 0)
                                     && ((mapped_text[main_p] == 8212) || (mapped_text[main_p] == 8211)))))
                             main_h = native_len;
                     }
                     while (main_p++ < for_end);
             }
         }
-        if (eqtb[8939275L /*int_base 35 */ ].cint > 0) {
+        if (eqtb[8940875L /*int_base 35 */ ].cint > 0) {
             temp_ptr = 0;
             while ((temp_ptr < native_len)) {
 
@@ -30838,7 +30838,7 @@ void main_control(void)
                     temp_ptr = main_h;
                     main_h = 0;
                     while ((main_h < main_k) && (native_text[temp_ptr + main_h] != hyphen_char[main_f])
-                           && ((!(eqtb[8939313L /*eTeX_state_base 1 */ ].cint > 0))
+                           && ((!(eqtb[8940913L /*eTeX_state_base 1 */ ].cint > 0))
                                || ((native_text[temp_ptr + main_h] != 8212)
                                    && (native_text[temp_ptr + main_h] != 8211))))
                         incr(main_h);
@@ -30857,7 +30857,7 @@ void main_control(void)
                     main_k = main_k - main_h;
                     main_h = 0;
                     while ((main_h < main_k) && (native_text[temp_ptr + main_h] != hyphen_char[main_f])
-                           && ((!(eqtb[8939313L /*eTeX_state_base 1 */ ].cint > 0))
+                           && ((!(eqtb[8940913L /*eTeX_state_base 1 */ ].cint > 0))
                                || ((native_text[temp_ptr + main_h] != 8212)
                                    && (native_text[temp_ptr + main_h] != 8211))))
                         incr(main_h);
@@ -30919,7 +30919,7 @@ void main_control(void)
                                             native_text[main_p]);
                         while (main_p++ < for_end);
                 }
-                set_native_metrics(cur_list.tail_field, (eqtb[8939315L /*eTeX_state_base 3 */ ].cint > 0));
+                set_native_metrics(cur_list.tail_field, (eqtb[8940915L /*eTeX_state_base 3 */ ].cint > 0));
                 main_p = cur_list.head_field;
                 if (main_p != main_pp)
                     while (mem[main_p].hh.v.RH != main_pp)
@@ -30940,10 +30940,10 @@ void main_control(void)
                             set_native_char(cur_list.tail_field, main_p, native_text[main_p]);
                         while (main_p++ < for_end);
                 }
-                set_native_metrics(cur_list.tail_field, (eqtb[8939315L /*eTeX_state_base 3 */ ].cint > 0));
+                set_native_metrics(cur_list.tail_field, (eqtb[8940915L /*eTeX_state_base 3 */ ].cint > 0));
             }
         }
-        if (eqtb[8939321L /*eTeX_state_base 9 */ ].cint > 0) {
+        if (eqtb[8940921L /*eTeX_state_base 9 */ ].cint > 0) {
             main_p = cur_list.head_field;
             main_pp = -268435455L;
             while (main_p != cur_list.tail_field) {
@@ -31003,7 +31003,7 @@ void main_control(void)
                                     }
                                     while (t++ < for_end);
                             }
-                            set_native_metrics(temp_ptr, (eqtb[8939315L /*eTeX_state_base 3 */ ].cint > 0));
+                            set_native_metrics(temp_ptr, (eqtb[8940915L /*eTeX_state_base 3 */ ].cint > 0));
                             t = mem[temp_ptr + 1].cint - mem[main_pp + 1].cint - mem[cur_list.tail_field + 1].cint;
                             free_node(temp_ptr, mem[temp_ptr + 4].qqqq.b0);
                             if (t != mem[font_glue[main_f] + 1].cint) {
@@ -31022,7 +31022,7 @@ void main_control(void)
         else
             goto lab21;
     }
-    main_s = eqtb[5596904L /*sf_code_base */  + cur_chr].hh.v.RH % 65536L;
+    main_s = eqtb[5598504L /*sf_code_base */  + cur_chr].hh.v.RH % 65536L;
     if (main_s == 1000)
         cur_list.aux_field.hh.v.LH = 1000;
     else if (main_s < 1000) {
@@ -31033,8 +31033,8 @@ void main_control(void)
     else
         cur_list.aux_field.hh.v.LH = main_s;
     cur_ptr = -268435455L;
-    space_class = eqtb[5596904L /*sf_code_base */  + cur_chr].hh.v.RH / 65536L;
-    if ((eqtb[8939316L /*eTeX_state_base 4 */ ].cint > 0) && space_class != 4096 /*char_class_limit */ ) {
+    space_class = eqtb[5598504L /*sf_code_base */  + cur_chr].hh.v.RH / 65536L;
+    if ((eqtb[8940916L /*eTeX_state_base 4 */ ].cint > 0) && space_class != 4096 /*char_class_limit */ ) {
         if (prev_class == (4095 /*char_class_limit -1 */ )) {
             if ((cur_input.state_field != 0 /*token_list */ ) || (cur_input.index_field != 4 /*backed_up_char */ )) {
                 find_sa_element(6 /*inter_char_val */ ,
@@ -31065,12 +31065,12 @@ void main_control(void)
         }
         prev_class = space_class;
     }
-    main_f = eqtb[2253799L /*cur_font_loc */ ].hh.v.RH;
+    main_f = eqtb[2255399L /*cur_font_loc */ ].hh.v.RH;
     bchar = font_bchar[main_f];
     false_bchar = font_false_bchar[main_f];
     if (cur_list.mode_field > 0) {
 
-        if (eqtb[8939290L /*int_base 50 */ ].cint != cur_list.aux_field.hh.v.RH)
+        if (eqtb[8940890L /*int_base 50 */ ].cint != cur_list.aux_field.hh.v.RH)
             fix_language();
     }
     {
@@ -31196,7 +31196,7 @@ void main_control(void)
     cur_r = bchar;
     lig_stack = -268435455L;
     goto lab110;
- lab101:/*main_loop_lookahead 1 */ main_s = eqtb[5596904L /*sf_code_base */  + cur_chr].hh.v.RH % 65536L;
+ lab101:/*main_loop_lookahead 1 */ main_s = eqtb[5598504L /*sf_code_base */  + cur_chr].hh.v.RH % 65536L;
     if (main_s == 1000)
         cur_list.aux_field.hh.v.LH = 1000;
     else if (main_s < 1000) {
@@ -31207,8 +31207,8 @@ void main_control(void)
     else
         cur_list.aux_field.hh.v.LH = main_s;
     cur_ptr = -268435455L;
-    space_class = eqtb[5596904L /*sf_code_base */  + cur_chr].hh.v.RH / 65536L;
-    if ((eqtb[8939316L /*eTeX_state_base 4 */ ].cint > 0) && space_class != 4096 /*char_class_limit */ ) {
+    space_class = eqtb[5598504L /*sf_code_base */  + cur_chr].hh.v.RH / 65536L;
+    if ((eqtb[8940916L /*eTeX_state_base 4 */ ].cint > 0) && space_class != 4096 /*char_class_limit */ ) {
         if (prev_class == (4095 /*char_class_limit -1 */ )) {
             if ((cur_input.state_field != 0 /*token_list */ ) || (cur_input.index_field != 4 /*backed_up_char */ )) {
                 find_sa_element(6 /*inter_char_val */ ,
@@ -31443,7 +31443,7 @@ void main_control(void)
     } else
         cur_r = mem[lig_stack].hh.b1;
     goto lab110;
- lab120:/*append_normal_space */ if ((eqtb[8939316L /*eTeX_state_base 4 */ ].cint > 0)
+ lab120:/*append_normal_space */ if ((eqtb[8940916L /*eTeX_state_base 4 */ ].cint > 0)
                                  && (space_class != 4096 /*char_class_limit */ )
                                  && (prev_class != (4095 /*char_class_limit -1 */ ))) {
         prev_class = (4095 /*char_class_limit -1 */ );
@@ -31461,16 +31461,16 @@ void main_control(void)
             goto lab60;
         }
     }
-    if (eqtb[2252752L /*glue_base 12 */ ].hh.v.RH == mem_bot) {
+    if (eqtb[2254352L /*glue_base 12 */ ].hh.v.RH == mem_bot) {
         {
-            main_p = font_glue[eqtb[2253799L /*cur_font_loc */ ].hh.v.RH];
+            main_p = font_glue[eqtb[2255399L /*cur_font_loc */ ].hh.v.RH];
             if (main_p == -268435455L) {
                 main_p = new_spec(mem_bot);
-                main_k = param_base[eqtb[2253799L /*cur_font_loc */ ].hh.v.RH] + 2;
+                main_k = param_base[eqtb[2255399L /*cur_font_loc */ ].hh.v.RH] + 2;
                 mem[main_p + 1].cint = font_info[main_k].cint;
                 mem[main_p + 2].cint = font_info[main_k + 1].cint;
                 mem[main_p + 3].cint = font_info[main_k + 2].cint;
-                font_glue[eqtb[2253799L /*cur_font_loc */ ].hh.v.RH] = main_p;
+                font_glue[eqtb[2255399L /*cur_font_loc */ ].hh.v.RH] = main_p;
             }
         }
         temp_ptr = new_glue(main_p);
@@ -31483,7 +31483,7 @@ void main_control(void)
 
 void give_err_help(void)
 {
-    give_err_help_regmem token_show(eqtb[2253280L /*err_help_loc */ ].hh.v.RH);
+    give_err_help_regmem token_show(eqtb[2254880L /*err_help_loc */ ].hh.v.RH);
 }
 
 boolean open_fmt_file(void)
@@ -31535,11 +31535,11 @@ void close_files_and_terminate(void)
                     a_close(write_file[k]);
             while (k++ < for_end) ;
     }
-    eqtb[8939289L /*int_base 49 */ ].cint = -1;
+    eqtb[8940889L /*int_base 49 */ ].cint = -1;
     ;
 
 #ifdef STAT
-    if (eqtb[8939271L /*int_base 31 */ ].cint > 0) {    //1388:
+    if (eqtb[8940871L /*int_base 31 */ ].cint > 0) {    //1388:
 
         if (log_opened) {
             {
@@ -31607,7 +31607,7 @@ void close_files_and_terminate(void)
         dvi_four(25400000L);
         dvi_four(473628672L);
         prepare_mag();
-        dvi_four(eqtb[8939257L /*int_base 17 */ ].cint);
+        dvi_four(eqtb[8940857L /*int_base 17 */ ].cint);
         dvi_four(max_v);
         dvi_four(max_h);
         {

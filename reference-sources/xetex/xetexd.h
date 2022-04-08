@@ -314,7 +314,7 @@ unsigned char /*max_selector */ old_setting;
 integer sys_time, sys_day, sys_month, sys_year;
 memory_word *zeqtb;
 quarterword
-#define xeq_level (zzzaa -8939240)
+#define xeq_level (zzzaa -8940840)
     zzzaa[1114732];
 two_halves *hash;
 two_halves *yhash;

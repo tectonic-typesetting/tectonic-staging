@@ -111,7 +111,7 @@ procedure initialize;
 @!long_buf_size=500; {|buf_size+longest_name|}
 @!line_length=80; {lines of \TeX\ output have at most this many characters,
 @y
-@!max_modules=10239; {greater than the total number of modules}
+@!max_modules=4000; {greater than the total number of modules}
 @!hash_size=8501; {should be prime}
 @!buf_size=1000; {maximum length of input line}
 @!longest_name=10000; {module names shouldn't be longer than this}
@@ -276,6 +276,28 @@ stat @<Print statistics about memory usage@>;@+tats@;@/
 end;
 @z
 
+@x [37] extend 'byte_mem' for "pdftex.web + pdftex-final.ch"
+there are programs that need more than 65536 bytes; \TeX\ is one of these.
+@y
+there are programs that need more than 65536 bytes; \TeX\ is one of these
+(and the pdf\TeX\ variant even requires more than twice that amount when
+its ``final'' change file is applied).
+@z
+
+@x
+is either 0 or 1. (For generality, the first index is actually allowed to
+run between 0 and |ww-1|, where |ww| is defined to be 2; the program will
+@y
+is either 0, 1 or 2. (For generality, the first index is actually allowed to
+run between 0 and |ww-1|, where |ww| is defined to be 3; the program will
+@z
+
+@x
+@d ww=2 {we multiply the byte capacity by approximately this amount}
+@y
+@d ww=3 {we multiply the byte capacity by approximately this amount}
+@z
+
 @x [50] don't enter xrefs if no_xref set
 @d append_xref(#)==if xref_ptr=max_refs then overflow('cross reference')
   else  begin incr(xref_ptr); num(xref_ptr):=#;
@@ -302,6 +324,18 @@ var q:xref_number; {pointer to previous cross-reference}
 @!m,@!n: sixteen_bits; {new and previous cross-reference value}
 begin if no_xref then return;
 if (reserved(p)or(byte_start[p]+1=byte_start[p+ww]))and
+@z
+
+@x [172] Fix spacing.
+@<Change |pp| to $\max(|scrap_base|,|pp+d|)$@>;
+@y
+@<Change |pp| to $\max(|scrap_base|,\,|pp+d|)$@>;
+@z
+
+@x [173] Fix spacing.
+@ @<Change |pp| to $\max(|scrap_base|,|pp+d|)$@>=
+@y
+@ @<Change |pp| to $\max(|scrap_base|,\,|pp+d|)$@>=
 @z
 
 @x [239] omit index and module names if no_xref set
@@ -406,19 +440,23 @@ begin
   until getopt_return_val = -1;
 
   {Now |optind| is the index of first non-option on the command line.}
-  if (optind + 1 <> argc) and (optind + 2 <> argc) then begin
-    write_ln (stderr, my_name, ': Need one or two file arguments.');
+  if (optind + 1 > argc) or (optind + 3 < argc) then begin
+    write_ln (stderr, my_name, ': Need one to three file arguments.');
     usage (my_name);
   end;
 
   {Supply |".web"| and |".ch"| extensions if necessary.}
   web_name := extend_filename (cmdline (optind), 'web');
-  if optind + 2 = argc then begin
-    chg_name := extend_filename (cmdline (optind + 1), 'ch');
+  if optind + 2 <= argc then begin
+    if strcmp(char_to_string('-'), cmdline (optind + 1)) <> 0 then
+      chg_name := extend_filename (cmdline (optind + 1), 'ch');
   end;
 
   {Change |".web"| to |".tex"| and use the current directory.}
-  tex_name := basename_change_suffix (web_name, '.web', '.tex');
+  if optind + 3 = argc then
+    tex_name := extend_filename (cmdline (optind + 2), 'tex')
+  else
+    tex_name := basename_change_suffix (web_name, '.web', '.tex');
 end;
 
 @ Here are the options we allow.  The first is one of the standard GNU options.

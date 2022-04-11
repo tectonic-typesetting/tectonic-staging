@@ -19,7 +19,7 @@ moved to [tectonic-texlive-bundles].
 
 On the `master` branch, the reference sources currently correspond to
 
-#### TeXLive 2021.3 = SVN r59745
+#### TeXLive 2022.0 = SVN r62885
 
 
 ## Background

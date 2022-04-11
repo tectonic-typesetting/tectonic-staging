@@ -239,6 +239,7 @@ typedef const unsigned char *const_w2custring;
 
 /* Tangle removes underscores from names.  Put them back for things that
    are defined in C with _'s.  */
+#define removesuffix	remove_suffix
 
 /* We need a new type for the argument parsing, too.  */
 typedef struct option getopt_struct;

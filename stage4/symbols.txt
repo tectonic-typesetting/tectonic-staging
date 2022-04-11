@@ -279,6 +279,7 @@ set_native_metrics
 set_paths
 setup_bound_variable
 src_specials_p
+state_field
 str_number
 str_pool
 str_start

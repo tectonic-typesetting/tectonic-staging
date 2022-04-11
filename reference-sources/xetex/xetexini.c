@@ -82,8 +82,8 @@ void initialize(void)
     page_max_depth = 0;
     {
         register integer for_end;
-        k = 8939240L /*int_base */ ;
-        for_end = 10053971L /*eqtb_size */ ;
+        k = 8940840L /*int_base */ ;
+        for_end = 10055571L /*eqtb_size */ ;
         if (k <= for_end)
             do
                 xeq_level[k] = 1 /*level_one */ ;
@@ -95,7 +95,7 @@ void initialize(void)
     {
         register integer for_end;
         k = 1;
-        for_end = 500 /*prim_size */ ;
+        for_end = 2100 /*prim_size */ ;
         if (k <= for_end)
             do
                 prim[k] = prim[0];
@@ -284,86 +284,86 @@ void initialize(void)
         hi_mem_min = mem_top - 14;
         var_used = mem_bot + 20 - mem_bot;
         dyn_used = 15 /*hi_mem_stat_usage */ ;
-        eqtb[2252739L /*undefined_control_sequence */ ].hh.b0 = 103 /*undefined_cs */ ;
-        eqtb[2252739L /*undefined_control_sequence */ ].hh.v.RH = -268435455L;
-        eqtb[2252739L /*undefined_control_sequence */ ].hh.b1 = 0 /*level_zero */ ;
+        eqtb[2254339L /*undefined_control_sequence */ ].hh.b0 = 103 /*undefined_cs */ ;
+        eqtb[2254339L /*undefined_control_sequence */ ].hh.v.RH = -268435455L;
+        eqtb[2254339L /*undefined_control_sequence */ ].hh.b1 = 0 /*level_zero */ ;
         {
             register integer for_end;
             k = 1 /*active_base */ ;
             for_end = eqtb_top;
             if (k <= for_end)
                 do
-                    eqtb[k] = eqtb[2252739L /*undefined_control_sequence */ ];
+                    eqtb[k] = eqtb[2254339L /*undefined_control_sequence */ ];
                 while (k++ < for_end);
         }
-        eqtb[2252740L /*glue_base */ ].hh.v.RH = mem_bot;
-        eqtb[2252740L /*glue_base */ ].hh.b1 = 1 /*level_one */ ;
-        eqtb[2252740L /*glue_base */ ].hh.b0 = 119 /*glue_ref */ ;
+        eqtb[2254340L /*glue_base */ ].hh.v.RH = mem_bot;
+        eqtb[2254340L /*glue_base */ ].hh.b1 = 1 /*level_one */ ;
+        eqtb[2254340L /*glue_base */ ].hh.b0 = 119 /*glue_ref */ ;
         {
             register integer for_end;
-            k = 2252741L /*glue_base 1 */ ;
-            for_end = 2253270L /*local_base -1 */ ;
+            k = 2254341L /*glue_base 1 */ ;
+            for_end = 2254870L /*local_base -1 */ ;
             if (k <= for_end)
                 do
-                    eqtb[k] = eqtb[2252740L /*glue_base */ ];
+                    eqtb[k] = eqtb[2254340L /*glue_base */ ];
                 while (k++ < for_end);
         }
         mem[mem_bot].hh.v.RH = mem[mem_bot].hh.v.RH + 531;
-        eqtb[2253271L /*par_shape_loc */ ].hh.v.RH = -268435455L;
-        eqtb[2253271L /*par_shape_loc */ ].hh.b0 = 120 /*shape_ref */ ;
-        eqtb[2253271L /*par_shape_loc */ ].hh.b1 = 1 /*level_one */ ;
+        eqtb[2254871L /*par_shape_loc */ ].hh.v.RH = -268435455L;
+        eqtb[2254871L /*par_shape_loc */ ].hh.b0 = 120 /*shape_ref */ ;
+        eqtb[2254871L /*par_shape_loc */ ].hh.b1 = 1 /*level_one */ ;
         {
             register integer for_end;
-            k = 2253539L /*etex_pen_base */ ;
-            for_end = 2253542L /*etex_pens -1 */ ;
+            k = 2255139L /*etex_pen_base */ ;
+            for_end = 2255142L /*etex_pens -1 */ ;
             if (k <= for_end)
                 do
-                    eqtb[k] = eqtb[2253271L /*par_shape_loc */ ];
+                    eqtb[k] = eqtb[2254871L /*par_shape_loc */ ];
                 while (k++ < for_end);
         }
         {
             register integer for_end;
-            k = 2253272L /*output_routine_loc */ ;
-            for_end = 2253538L /*toks_base 256 -1 */ ;
+            k = 2254872L /*output_routine_loc */ ;
+            for_end = 2255138L /*toks_base 256 -1 */ ;
             if (k <= for_end)
                 do
-                    eqtb[k] = eqtb[2252739L /*undefined_control_sequence */ ];
+                    eqtb[k] = eqtb[2254339L /*undefined_control_sequence */ ];
                 while (k++ < for_end);
         }
-        eqtb[2253543L /*box_base 0 */ ].hh.v.RH = -268435455L;
-        eqtb[2253543L /*box_base */ ].hh.b0 = 121 /*box_ref */ ;
-        eqtb[2253543L /*box_base */ ].hh.b1 = 1 /*level_one */ ;
+        eqtb[2255143L /*box_base 0 */ ].hh.v.RH = -268435455L;
+        eqtb[2255143L /*box_base */ ].hh.b0 = 121 /*box_ref */ ;
+        eqtb[2255143L /*box_base */ ].hh.b1 = 1 /*level_one */ ;
         {
             register integer for_end;
-            k = 2253544L /*box_base 1 */ ;
-            for_end = 2253798L /*box_base 256 -1 */ ;
+            k = 2255144L /*box_base 1 */ ;
+            for_end = 2255398L /*box_base 256 -1 */ ;
             if (k <= for_end)
                 do
-                    eqtb[k] = eqtb[2253543L /*box_base */ ];
+                    eqtb[k] = eqtb[2255143L /*box_base */ ];
                 while (k++ < for_end);
         }
-        eqtb[2253799L /*cur_font_loc */ ].hh.v.RH = 0 /*font_base */ ;
-        eqtb[2253799L /*cur_font_loc */ ].hh.b0 = 122 /*data */ ;
-        eqtb[2253799L /*cur_font_loc */ ].hh.b1 = 1 /*level_one */ ;
+        eqtb[2255399L /*cur_font_loc */ ].hh.v.RH = 0 /*font_base */ ;
+        eqtb[2255399L /*cur_font_loc */ ].hh.b0 = 122 /*data */ ;
+        eqtb[2255399L /*cur_font_loc */ ].hh.b1 = 1 /*level_one */ ;
         {
             register integer for_end;
-            k = 2253800L /*math_font_base */ ;
-            for_end = 2254567L /*math_font_base 768 -1 */ ;
+            k = 2255400L /*math_font_base */ ;
+            for_end = 2256167L /*math_font_base 768 -1 */ ;
             if (k <= for_end)
                 do
-                    eqtb[k] = eqtb[2253799L /*cur_font_loc */ ];
+                    eqtb[k] = eqtb[2255399L /*cur_font_loc */ ];
                 while (k++ < for_end);
         }
-        eqtb[2254568L /*cat_code_base */ ].hh.v.RH = 0;
-        eqtb[2254568L /*cat_code_base */ ].hh.b0 = 122 /*data */ ;
-        eqtb[2254568L /*cat_code_base */ ].hh.b1 = 1 /*level_one */ ;
+        eqtb[2256168L /*cat_code_base */ ].hh.v.RH = 0;
+        eqtb[2256168L /*cat_code_base */ ].hh.b0 = 122 /*data */ ;
+        eqtb[2256168L /*cat_code_base */ ].hh.b1 = 1 /*level_one */ ;
         {
             register integer for_end;
-            k = 2254569L /*cat_code_base 1 */ ;
-            for_end = 8939239L /*int_base -1 */ ;
+            k = 2256169L /*cat_code_base 1 */ ;
+            for_end = 8940839L /*int_base -1 */ ;
             if (k <= for_end)
                 do
-                    eqtb[k] = eqtb[2254568L /*cat_code_base */ ];
+                    eqtb[k] = eqtb[2256168L /*cat_code_base */ ];
                 while (k++ < for_end);
         }
         {
@@ -372,25 +372,25 @@ void initialize(void)
             for_end = 1114111L /*number_usvs -1 */ ;
             if (k <= for_end)
                 do {
-                    eqtb[2254568L /*cat_code_base */  + k].hh.v.RH = 12 /*other_char */ ;
-                    eqtb[6711016L /*math_code_base */  + k].hh.v.RH = k;
-                    eqtb[5596904L /*sf_code_base */  + k].hh.v.RH = 1000;
+                    eqtb[2256168L /*cat_code_base */  + k].hh.v.RH = 12 /*other_char */ ;
+                    eqtb[6712616L /*math_code_base */  + k].hh.v.RH = k;
+                    eqtb[5598504L /*sf_code_base */  + k].hh.v.RH = 1000;
                 }
                 while (k++ < for_end);
         }
-        eqtb[2254581L /*cat_code_base 13 */ ].hh.v.RH = 5 /*car_ret */ ;
-        eqtb[2254600L /*cat_code_base 32 */ ].hh.v.RH = 10 /*spacer */ ;
-        eqtb[2254660L /*cat_code_base 92 */ ].hh.v.RH = 0 /*escape */ ;
-        eqtb[2254605L /*cat_code_base 37 */ ].hh.v.RH = 14 /*comment */ ;
-        eqtb[2254695L /*cat_code_base 127 */ ].hh.v.RH = 15 /*invalid_char */ ;
-        eqtb[2254568L /*cat_code_base 0 */ ].hh.v.RH = 9 /*ignore */ ;
+        eqtb[2256181L /*cat_code_base 13 */ ].hh.v.RH = 5 /*car_ret */ ;
+        eqtb[2256200L /*cat_code_base 32 */ ].hh.v.RH = 10 /*spacer */ ;
+        eqtb[2256260L /*cat_code_base 92 */ ].hh.v.RH = 0 /*escape */ ;
+        eqtb[2256205L /*cat_code_base 37 */ ].hh.v.RH = 14 /*comment */ ;
+        eqtb[2256295L /*cat_code_base 127 */ ].hh.v.RH = 15 /*invalid_char */ ;
+        eqtb[2256168L /*cat_code_base 0 */ ].hh.v.RH = 9 /*ignore */ ;
         {
             register integer for_end;
             k = 48 /*"0" */ ;
             for_end = 57 /*"9" */ ;
             if (k <= for_end)
                 do
-                    eqtb[6711016L /*math_code_base */  + k].hh.v.RH = k + set_class_field(7 /*var_fam_class */ );
+                    eqtb[6712616L /*math_code_base */  + k].hh.v.RH = k + set_class_field(7 /*var_fam_class */ );
                 while (k++ < for_end);
         }
         {
@@ -399,57 +399,57 @@ void initialize(void)
             for_end = 90 /*"Z" */ ;
             if (k <= for_end)
                 do {
-                    eqtb[2254568L /*cat_code_base */  + k].hh.v.RH = 11 /*letter */ ;
-                    eqtb[2254568L /*cat_code_base */  + k + 32].hh.v.RH = 11 /*letter */ ;
-                    eqtb[6711016L /*math_code_base */  + k].hh.v.RH =
+                    eqtb[2256168L /*cat_code_base */  + k].hh.v.RH = 11 /*letter */ ;
+                    eqtb[2256168L /*cat_code_base */  + k + 32].hh.v.RH = 11 /*letter */ ;
+                    eqtb[6712616L /*math_code_base */  + k].hh.v.RH =
                         k + set_family_field(1) + set_class_field(7 /*var_fam_class */ );
-                    eqtb[6711016L /*math_code_base */  + k + 32].hh.v.RH =
+                    eqtb[6712616L /*math_code_base */  + k + 32].hh.v.RH =
                         k + 32 + set_family_field(1) + set_class_field(7 /*var_fam_class */ );
-                    eqtb[3368680L /*lc_code_base */  + k].hh.v.RH = k + 32;
-                    eqtb[3368680L /*lc_code_base */  + k + 32].hh.v.RH = k + 32;
-                    eqtb[4482792L /*uc_code_base */  + k].hh.v.RH = k;
-                    eqtb[4482792L /*uc_code_base */  + k + 32].hh.v.RH = k;
-                    eqtb[5596904L /*sf_code_base */  + k].hh.v.RH = 999;
+                    eqtb[3370280L /*lc_code_base */  + k].hh.v.RH = k + 32;
+                    eqtb[3370280L /*lc_code_base */  + k + 32].hh.v.RH = k + 32;
+                    eqtb[4484392L /*uc_code_base */  + k].hh.v.RH = k;
+                    eqtb[4484392L /*uc_code_base */  + k + 32].hh.v.RH = k;
+                    eqtb[5598504L /*sf_code_base */  + k].hh.v.RH = 999;
                 }
                 while (k++ < for_end);
         }
         {
             register integer for_end;
-            k = 8939240L /*int_base */ ;
-            for_end = 8939580L /*del_code_base -1 */ ;
+            k = 8940840L /*int_base */ ;
+            for_end = 8941180L /*del_code_base -1 */ ;
             if (k <= for_end)
                 do
                     eqtb[k].cint = 0;
                 while (k++ < for_end);
         }
-        eqtb[8939295L /*int_base 55 */ ].cint = 256;
-        eqtb[8939296L /*int_base 56 */ ].cint = -1;
-        eqtb[8939257L /*int_base 17 */ ].cint = 1000;
-        eqtb[8939241L /*int_base 1 */ ].cint = 10000;
-        eqtb[8939281L /*int_base 41 */ ].cint = 1;
-        eqtb[8939280L /*int_base 40 */ ].cint = 25;
-        eqtb[8939285L /*int_base 45 */ ].cint = 92 /*"\" */ ;
-        eqtb[8939288L /*int_base 48 */ ].cint = 13 /*carriage_return */ ;
+        eqtb[8940895L /*int_base 55 */ ].cint = 256;
+        eqtb[8940896L /*int_base 56 */ ].cint = -1;
+        eqtb[8940857L /*int_base 17 */ ].cint = 1000;
+        eqtb[8940841L /*int_base 1 */ ].cint = 10000;
+        eqtb[8940881L /*int_base 41 */ ].cint = 1;
+        eqtb[8940880L /*int_base 40 */ ].cint = 25;
+        eqtb[8940885L /*int_base 45 */ ].cint = 92 /*"\" */ ;
+        eqtb[8940888L /*int_base 48 */ ].cint = 13 /*carriage_return */ ;
         {
             register integer for_end;
             k = 0;
             for_end = 1114111L /*number_usvs -1 */ ;
             if (k <= for_end)
                 do
-                    eqtb[8939581L /*del_code_base */  + k].cint = -1;
+                    eqtb[8941181L /*del_code_base */  + k].cint = -1;
                 while (k++ < for_end);
         }
-        eqtb[8939627L /*del_code_base 46 */ ].cint = 0;
+        eqtb[8941227L /*del_code_base 46 */ ].cint = 0;
         {
             register integer for_end;
-            k = 10053693L /*dimen_base */ ;
-            for_end = 10053971L /*eqtb_size */ ;
+            k = 10055293L /*dimen_base */ ;
+            for_end = 10055571L /*eqtb_size */ ;
             if (k <= for_end)
                 do
                     eqtb[k].cint = 0;
                 while (k++ < for_end);
         }
-        prim_used = 500 /*prim_size */ ;
+        prim_used = 2100 /*prim_size */ ;
         hash_used = 2243226L /*frozen_control_sequence */ ;
         hash_high = 0;
         cs_count = 0;
@@ -499,11 +499,11 @@ void initialize(void)
                     sa_root[i] = -268435455L;
                 while (i++ < for_end);
         }
-        eqtb[8939323L /*eTeX_state_base 11 */ ].cint = 63;
+        eqtb[8940923L /*eTeX_state_base 11 */ ].cint = 63;
     }
 
 #endif                          // INITEX
-    synctexoffset = 8939324L /*int_base 84 */ ;
+    synctexoffset = 8940924L /*int_base 84 */ ;
 }
 
 void print_ln(void)
@@ -829,12 +829,12 @@ void new_patterns(void)
     boolean first_child;
     UTF16_code c;
     if (trie_not_ready) {
-        if (eqtb[8939290L /*int_base 50 */ ].cint <= 0)
+        if (eqtb[8940890L /*int_base 50 */ ].cint <= 0)
             cur_lang = 0;
-        else if (eqtb[8939290L /*int_base 50 */ ].cint > 255 /*biggest_lang */ )
+        else if (eqtb[8940890L /*int_base 50 */ ].cint > 255 /*biggest_lang */ )
             cur_lang = 0;
         else
-            cur_lang = eqtb[8939290L /*int_base 50 */ ].cint;
+            cur_lang = eqtb[8940890L /*int_base 50 */ ].cint;
         scan_left_brace();
         k = 0;
         hyf[0] = 0;
@@ -850,7 +850,7 @@ void new_patterns(void)
                         cur_chr = 0;
                     else {
 
-                        cur_chr = eqtb[3368680L /*lc_code_base */  + cur_chr].hh.v.RH;
+                        cur_chr = eqtb[3370280L /*lc_code_base */  + cur_chr].hh.v.RH;
                         if (cur_chr == 0) {
                             {
                                 if (interaction == 3 /*error_stop_mode */ ) ;
@@ -977,7 +977,7 @@ void new_patterns(void)
             }
         }
  lab30:                        /*done *//*:1015 */ ;
-        if (eqtb[8939307L /*int_base 67 */ ].cint > 0)  //1666:
+        if (eqtb[8940907L /*int_base 67 */ ].cint > 0)  //1666:
         {
             c = cur_lang;
             first_child = false;
@@ -1010,7 +1010,7 @@ void new_patterns(void)
                 for_end = 255;
                 if (c <= for_end)
                     do
-                        if ((eqtb[3368680L /*lc_code_base */  + c].hh.v.RH > 0) || ((c == 255) && first_child)) {
+                        if ((eqtb[3370280L /*lc_code_base */  + c].hh.v.RH > 0) || ((c == 255) && first_child)) {
                             if (p == 0) //1018:
                             {
                                 if (trie_ptr == trie_size)
@@ -1027,7 +1027,7 @@ void new_patterns(void)
                                 trie_o[p] = min_trie_op;
                             } else
                                 trie_c[p] = c;
-                            trie_o[p] = eqtb[3368680L /*lc_code_base */  + c].hh.v.RH;
+                            trie_o[p] = eqtb[3370280L /*lc_code_base */  + c].hh.v.RH;
                             q = p;
                             p = trie_r[q];
                             first_child = false;
@@ -1227,16 +1227,16 @@ void zline_break(boolean d)
     init_r_hyf = (cur_list.pg_field / 65536L) % 64;
     pop_nest();
     no_shrink_error_yet = true;
-    if ((mem[eqtb[2252747L /*glue_base 7 */ ].hh.v.RH].hh.b1 != 0 /*normal */ )
-        && (mem[eqtb[2252747L /*glue_base 7 */ ].hh.v.RH + 3].cint != 0)) {
-        eqtb[2252747L /*glue_base 7 */ ].hh.v.RH = finite_shrink(eqtb[2252747L /*glue_base 7 */ ].hh.v.RH);
+    if ((mem[eqtb[2254347L /*glue_base 7 */ ].hh.v.RH].hh.b1 != 0 /*normal */ )
+        && (mem[eqtb[2254347L /*glue_base 7 */ ].hh.v.RH + 3].cint != 0)) {
+        eqtb[2254347L /*glue_base 7 */ ].hh.v.RH = finite_shrink(eqtb[2254347L /*glue_base 7 */ ].hh.v.RH);
     }
-    if ((mem[eqtb[2252748L /*glue_base 8 */ ].hh.v.RH].hh.b1 != 0 /*normal */ )
-        && (mem[eqtb[2252748L /*glue_base 8 */ ].hh.v.RH + 3].cint != 0)) {
-        eqtb[2252748L /*glue_base 8 */ ].hh.v.RH = finite_shrink(eqtb[2252748L /*glue_base 8 */ ].hh.v.RH);
+    if ((mem[eqtb[2254348L /*glue_base 8 */ ].hh.v.RH].hh.b1 != 0 /*normal */ )
+        && (mem[eqtb[2254348L /*glue_base 8 */ ].hh.v.RH + 3].cint != 0)) {
+        eqtb[2254348L /*glue_base 8 */ ].hh.v.RH = finite_shrink(eqtb[2254348L /*glue_base 8 */ ].hh.v.RH);
     }
-    q = eqtb[2252747L /*glue_base 7 */ ].hh.v.RH;
-    r = eqtb[2252748L /*glue_base 8 */ ].hh.v.RH;
+    q = eqtb[2254347L /*glue_base 7 */ ].hh.v.RH;
+    r = eqtb[2254348L /*glue_base 8 */ ].hh.v.RH;
     background[1] = mem[q + 1].cint + mem[r + 1].cint;
     background[2] = 0;
     background[3] = 0;
@@ -1247,7 +1247,7 @@ void zline_break(boolean d)
     background[6] = mem[q + 3].cint + mem[r + 3].cint;
     do_last_line_fit = false;
     active_node_size = 3 /*active_node_size_normal */ ;
-    if (eqtb[8939305L /*int_base 65 */ ].cint > 0) {
+    if (eqtb[8940905L /*int_base 65 */ ].cint > 0) {
         q = mem[last_line_fill + 1].hh.v.LH;
         if ((mem[q + 2].cint > 0) && (mem[q].hh.b0 > 0 /*normal */ )) {
 
@@ -1266,50 +1266,50 @@ void zline_break(boolean d)
     minimal_demerits[2 /*decent_fit */ ] = 1073741823L;
     minimal_demerits[1 /*loose_fit */ ] = 1073741823L;
     minimal_demerits[0 /*very_loose_fit */ ] = 1073741823L;
-    if (eqtb[2253271L /*par_shape_loc */ ].hh.v.RH == -268435455L) {
+    if (eqtb[2254871L /*par_shape_loc */ ].hh.v.RH == -268435455L) {
 
-        if (eqtb[10053710L /*dimen_base 17 */ ].cint == 0) {
+        if (eqtb[10055310L /*dimen_base 17 */ ].cint == 0) {
             last_special_line = 0;
-            second_width = eqtb[10053696L /*dimen_base 3 */ ].cint;
+            second_width = eqtb[10055296L /*dimen_base 3 */ ].cint;
             second_indent = 0;
         } else {                //897:
 
-            last_special_line = abs(eqtb[8939281L /*int_base 41 */ ].cint);
-            if (eqtb[8939281L /*int_base 41 */ ].cint < 0) {
-                first_width = eqtb[10053696L /*dimen_base 3 */ ].cint - abs(eqtb[10053710L /*dimen_base 17 */ ].cint);
-                if (eqtb[10053710L /*dimen_base 17 */ ].cint >= 0)
-                    first_indent = eqtb[10053710L /*dimen_base 17 */ ].cint;
+            last_special_line = abs(eqtb[8940881L /*int_base 41 */ ].cint);
+            if (eqtb[8940881L /*int_base 41 */ ].cint < 0) {
+                first_width = eqtb[10055296L /*dimen_base 3 */ ].cint - abs(eqtb[10055310L /*dimen_base 17 */ ].cint);
+                if (eqtb[10055310L /*dimen_base 17 */ ].cint >= 0)
+                    first_indent = eqtb[10055310L /*dimen_base 17 */ ].cint;
                 else
                     first_indent = 0;
-                second_width = eqtb[10053696L /*dimen_base 3 */ ].cint;
+                second_width = eqtb[10055296L /*dimen_base 3 */ ].cint;
                 second_indent = 0;
             } else {
 
-                first_width = eqtb[10053696L /*dimen_base 3 */ ].cint;
+                first_width = eqtb[10055296L /*dimen_base 3 */ ].cint;
                 first_indent = 0;
-                second_width = eqtb[10053696L /*dimen_base 3 */ ].cint - abs(eqtb[10053710L /*dimen_base 17 */ ].cint);
-                if (eqtb[10053710L /*dimen_base 17 */ ].cint >= 0)
-                    second_indent = eqtb[10053710L /*dimen_base 17 */ ].cint;
+                second_width = eqtb[10055296L /*dimen_base 3 */ ].cint - abs(eqtb[10055310L /*dimen_base 17 */ ].cint);
+                if (eqtb[10055310L /*dimen_base 17 */ ].cint >= 0)
+                    second_indent = eqtb[10055310L /*dimen_base 17 */ ].cint;
                 else
                     second_indent = 0;
             }
         }
     } else {
 
-        last_special_line = mem[eqtb[2253271L /*par_shape_loc */ ].hh.v.RH].hh.v.LH - 1;
-        second_width = mem[eqtb[2253271L /*par_shape_loc */ ].hh.v.RH + 2 * (last_special_line + 1)].cint;
-        second_indent = mem[eqtb[2253271L /*par_shape_loc */ ].hh.v.RH + 2 * last_special_line + 1].cint;
+        last_special_line = mem[eqtb[2254871L /*par_shape_loc */ ].hh.v.RH].hh.v.LH - 1;
+        second_width = mem[eqtb[2254871L /*par_shape_loc */ ].hh.v.RH + 2 * (last_special_line + 1)].cint;
+        second_indent = mem[eqtb[2254871L /*par_shape_loc */ ].hh.v.RH + 2 * last_special_line + 1].cint;
     }
-    if (eqtb[8939259L /*int_base 19 */ ].cint == 0)
+    if (eqtb[8940859L /*int_base 19 */ ].cint == 0)
         easy_line = last_special_line;
     else
         easy_line = 1073741823L /*:896 */ ;
-    threshold = eqtb[8939240L /*int_base 0 */ ].cint;
+    threshold = eqtb[8940840L /*int_base 0 */ ].cint;
     if (threshold >= 0) {
         ;
 
 #ifdef STAT
-        if (eqtb[8939272L /*int_base 32 */ ].cint > 0) {
+        if (eqtb[8940872L /*int_base 32 */ ].cint > 0) {
             begin_diagnostic();
             print_nl(66360L /*"@firstpass" */ );
         }
@@ -1319,13 +1319,13 @@ void zline_break(boolean d)
         final_pass = false;
     } else {
 
-        threshold = eqtb[8939241L /*int_base 1 */ ].cint;
+        threshold = eqtb[8940841L /*int_base 1 */ ].cint;
         second_pass = true;
-        final_pass = (eqtb[10053713L /*dimen_base 20 */ ].cint <= 0);
+        final_pass = (eqtb[10055313L /*dimen_base 20 */ ].cint <= 0);
         ;
 
 #ifdef STAT
-        if (eqtb[8939272L /*int_base 32 */ ].cint > 0)
+        if (eqtb[8940872L /*int_base 32 */ ].cint > 0)
             begin_diagnostic();
 
 #endif                          // STAT
@@ -1473,11 +1473,11 @@ void zline_break(boolean d)
                                             if (l <= for_end)
                                                 do {
                                                     c = get_native_usv(s, l);
-                                                    if (eqtb[3368680L /*lc_code_base */  + c].hh.v.RH != 0) {
+                                                    if (eqtb[3370280L /*lc_code_base */  + c].hh.v.RH != 0) {
                                                         hf = mem[s + 4].qqqq.b1;
                                                         prev_s = s;
-                                                        if ((eqtb[3368680L /*lc_code_base */  + c].hh.v.RH == c)
-                                                            || (eqtb[8939278L /*int_base 38 */ ].cint > 0))
+                                                        if ((eqtb[3370280L /*lc_code_base */  + c].hh.v.RH == c)
+                                                            || (eqtb[8940878L /*int_base 38 */ ].cint > 0))
                                                             goto lab32;
                                                         else
                                                             goto lab31;
@@ -1501,14 +1501,14 @@ void zline_break(boolean d)
                                 } else
                                     goto lab31;
                                 if ((hyph_index == 0) || ((c) > 255))
-                                    hc[0] = eqtb[3368680L /*lc_code_base */  + c].hh.v.RH;
+                                    hc[0] = eqtb[3370280L /*lc_code_base */  + c].hh.v.RH;
                                 else if (trie_trc[hyph_index + c] != c)
                                     hc[0] = 0;
                                 else
                                     hc[0] = trie_tro[hyph_index + c];
                                 if (hc[0] != 0) {
 
-                                    if ((hc[0] == c) || (eqtb[8939278L /*int_base 38 */ ].cint > 0))
+                                    if ((hc[0] == c) || (eqtb[8940878L /*int_base 38 */ ].cint > 0))
                                         goto lab32;
                                     else
                                         goto lab31;
@@ -1565,7 +1565,7 @@ void zline_break(boolean d)
                                         do {
                                             c = get_native_usv(ha, l);
                                             if ((hyph_index == 0) || ((c) > 255))
-                                                hc[0] = eqtb[3368680L /*lc_code_base */  + c].hh.v.RH;
+                                                hc[0] = eqtb[3370280L /*lc_code_base */  + c].hh.v.RH;
                                             else if (trie_trc[hyph_index + c] != c)
                                                 hc[0] = 0;
                                             else
@@ -1584,13 +1584,13 @@ void zline_break(boolean d)
                                                             while (i++ < for_end);
                                                     }
                                                     set_native_metrics(q,
-                                                                       (eqtb[8939315L /*eTeX_state_base 3 */ ].cint >
+                                                                       (eqtb[8940915L /*eTeX_state_base 3 */ ].cint >
                                                                         0));
                                                     mem[q].hh.v.RH = mem[ha].hh.v.RH;
                                                     mem[ha].hh.v.RH = q;
                                                     mem[ha + 4].qqqq.b2 = l;
                                                     set_native_metrics(ha,
-                                                                       (eqtb[8939315L /*eTeX_state_base 3 */ ].cint >
+                                                                       (eqtb[8940915L /*eTeX_state_base 3 */ ].cint >
                                                                         0));
                                                     goto lab33;
                                                 }
@@ -1607,12 +1607,12 @@ void zline_break(boolean d)
                                                         while (i++ < for_end);
                                                 }
                                                 set_native_metrics(q,
-                                                                   (eqtb[8939315L /*eTeX_state_base 3 */ ].cint > 0));
+                                                                   (eqtb[8940915L /*eTeX_state_base 3 */ ].cint > 0));
                                                 mem[q].hh.v.RH = mem[ha].hh.v.RH;
                                                 mem[ha].hh.v.RH = q;
                                                 mem[ha + 4].qqqq.b2 = l;
                                                 set_native_metrics(ha,
-                                                                   (eqtb[8939315L /*eTeX_state_base 3 */ ].cint > 0));
+                                                                   (eqtb[8940915L /*eTeX_state_base 3 */ ].cint > 0));
                                                 ha = mem[ha].hh.v.RH;
                                                 goto lab20;
                                             } else if ((hn == max_hyphenatable_length()))
@@ -1648,7 +1648,7 @@ void zline_break(boolean d)
                                         hyf_bchar = mem[s].hh.b1;
                                         c = hyf_bchar;
                                         if ((hyph_index == 0) || ((c) > 255))
-                                            hc[0] = eqtb[3368680L /*lc_code_base */  + c].hh.v.RH;
+                                            hc[0] = eqtb[3370280L /*lc_code_base */  + c].hh.v.RH;
                                         else if (trie_trc[hyph_index + c] != c)
                                             hc[0] = 0;
                                         else
@@ -1676,7 +1676,7 @@ void zline_break(boolean d)
 
                                             c = mem[q].hh.b1;
                                             if ((hyph_index == 0) || ((c) > 255))
-                                                hc[0] = eqtb[3368680L /*lc_code_base */  + c].hh.v.RH;
+                                                hc[0] = eqtb[3370280L /*lc_code_base */  + c].hh.v.RH;
                                             else if (trie_trc[hyph_index + c] != c)
                                                 hc[0] = 0;
                                             else
@@ -1774,7 +1774,7 @@ void zline_break(boolean d)
                     s = mem[cur_p + 1].hh.v.LH;
                     disc_width = 0;
                     if (s == -268435455L)
-                        try_break(eqtb[8939244L /*int_base 4 */ ].cint, 1 /*hyphenated */ );
+                        try_break(eqtb[8940844L /*int_base 4 */ ].cint, 1 /*hyphenated */ );
                     else {
 
                         do {
@@ -1822,7 +1822,7 @@ void zline_break(boolean d)
                             s = mem[s].hh.v.RH;
                         } while (!(s == -268435455L));
                         active_width[1] = active_width[1] + disc_width;
-                        try_break(eqtb[8939243L /*int_base 3 */ ].cint, 1 /*hyphenated */ );
+                        try_break(eqtb[8940843L /*int_base 3 */ ].cint, 1 /*hyphenated */ );
                         active_width[1] = active_width[1] - disc_width;
                     }
                     r = mem[cur_p].hh.b1;
@@ -1930,7 +1930,7 @@ void zline_break(boolean d)
                     r = mem[r].hh.v.RH;
                 } while (!(r == mem_top - 7));
                 best_line = mem[best_bet + 1].hh.v.LH /*:922 */ ;
-                if (eqtb[8939259L /*int_base 19 */ ].cint == 0)
+                if (eqtb[8940859L /*int_base 19 */ ].cint == 0)
                     goto lab30;
                 {
                     r = mem[mem_top - 7].hh.v.RH;
@@ -1938,9 +1938,9 @@ void zline_break(boolean d)
                     do {
                         if (mem[r].hh.b0 != 2 /*delta_node */ ) {
                             line_diff = mem[r + 1].hh.v.LH - best_line;
-                            if (((line_diff < actual_looseness) && (eqtb[8939259L /*int_base 19 */ ].cint <= line_diff))
+                            if (((line_diff < actual_looseness) && (eqtb[8940859L /*int_base 19 */ ].cint <= line_diff))
                                 || ((line_diff > actual_looseness)
-                                    && (eqtb[8939259L /*int_base 19 */ ].cint >= line_diff))) {
+                                    && (eqtb[8940859L /*int_base 19 */ ].cint >= line_diff))) {
                                 best_bet = r;
                                 actual_looseness = line_diff;
                                 fewest_demerits = mem[r + 2].cint;
@@ -1953,7 +1953,7 @@ void zline_break(boolean d)
                     } while (!(r == mem_top - 7));
                     best_line = mem[best_bet + 1].hh.v.LH;
                 }
-                if ((actual_looseness == eqtb[8939259L /*int_base 19 */ ].cint) || final_pass)
+                if ((actual_looseness == eqtb[8940859L /*int_base 19 */ ].cint) || final_pass)
                     goto lab30;
             }
         }
@@ -1978,23 +1978,23 @@ void zline_break(boolean d)
             ;
 
 #ifdef STAT
-            if (eqtb[8939272L /*int_base 32 */ ].cint > 0)
+            if (eqtb[8940872L /*int_base 32 */ ].cint > 0)
                 print_nl(66361L /*"@secondpass" */ );
 
 #endif                          // STAT
-            threshold = eqtb[8939241L /*int_base 1 */ ].cint;
+            threshold = eqtb[8940841L /*int_base 1 */ ].cint;
             second_pass = true;
-            final_pass = (eqtb[10053713L /*dimen_base 20 */ ].cint <= 0);
+            final_pass = (eqtb[10055313L /*dimen_base 20 */ ].cint <= 0);
         } else {
 
             ;
 
 #ifdef STAT
-            if (eqtb[8939272L /*int_base 32 */ ].cint > 0)
+            if (eqtb[8940872L /*int_base 32 */ ].cint > 0)
                 print_nl(66362L /*"@emergencypass" */ );
 
 #endif                          // STAT
-            background[2] = background[2] + eqtb[10053713L /*dimen_base 20 */ ].cint;
+            background[2] = background[2] + eqtb[10055313L /*dimen_base 20 */ ].cint;
             final_pass = true;
         }
     }
@@ -2002,7 +2002,7 @@ void zline_break(boolean d)
     ;
 
 #ifdef STAT
-    if (eqtb[8939272L /*int_base 32 */ ].cint > 0) {
+    if (eqtb[8940872L /*int_base 32 */ ].cint > 0) {
         end_diagnostic(true);
         normalize_selector();
     }
@@ -2053,12 +2053,12 @@ void new_hyph_exceptions(void)
     str_number s;
     pool_pointer u, v;
     scan_left_brace();
-    if (eqtb[8939290L /*int_base 50 */ ].cint <= 0)
+    if (eqtb[8940890L /*int_base 50 */ ].cint <= 0)
         cur_lang = 0;
-    else if (eqtb[8939290L /*int_base 50 */ ].cint > 255 /*biggest_lang */ )
+    else if (eqtb[8940890L /*int_base 50 */ ].cint > 255 /*biggest_lang */ )
         cur_lang = 0;
     else
-        cur_lang = eqtb[8939290L /*int_base 50 */ ].cint;
+        cur_lang = eqtb[8940890L /*int_base 50 */ ].cint;
     ;
 
 #ifdef INITEX
@@ -2092,7 +2092,7 @@ void new_hyph_exceptions(void)
             } else {
 
                 if ((hyph_index == 0) || ((cur_chr) > 255))
-                    hc[0] = eqtb[3368680L /*lc_code_base */  + cur_chr].hh.v.RH;
+                    hc[0] = eqtb[3370280L /*lc_code_base */  + cur_chr].hh.v.RH;
                 else if (trie_trc[hyph_index + cur_chr] != cur_chr)
                     hc[0] = 0;
                 else
@@ -2427,7 +2427,7 @@ void prefixed_command(void)
             back_error();
             return;
         }
-        if (eqtb[8939276L /*int_base 36 */ ].cint > 2) {
+        if (eqtb[8940876L /*int_base 36 */ ].cint > 2) {
 
             if ((eTeX_mode == 1))
                 show_cur_cmd_chr();
@@ -2464,9 +2464,9 @@ void prefixed_command(void)
         print_char(39 /*"'" */ );
         error();
     }
-    if (eqtb[8939283L /*int_base 43 */ ].cint != 0) {
+    if (eqtb[8940883L /*int_base 43 */ ].cint != 0) {
 
-        if (eqtb[8939283L /*int_base 43 */ ].cint < 0) {
+        if (eqtb[8940883L /*int_base 43 */ ].cint < 0) {
             if ((a >= 4))
                 a = a - 4;
         } else {
@@ -2478,13 +2478,13 @@ void prefixed_command(void)
     switch (cur_cmd) {          /*1271: */
     case 89:
         if ((a >= 4))
-            geq_define(2253799L /*cur_font_loc */ , 122 /*data */ , cur_chr);
+            geq_define(2255399L /*cur_font_loc */ , 122 /*data */ , cur_chr);
         else
-            eq_define(2253799L /*cur_font_loc */ , 122 /*data */ , cur_chr);
+            eq_define(2255399L /*cur_font_loc */ , 122 /*data */ , cur_chr);
         break;
     case 99:
         {
-            if (odd(cur_chr) && !(a >= 4) && (eqtb[8939283L /*int_base 43 */ ].cint >= 0))
+            if (odd(cur_chr) && !(a >= 4) && (eqtb[8940883L /*int_base 43 */ ].cint >= 0))
                 a = a + 4;
             e = (cur_chr >= 2);
             get_r_token();
@@ -2541,15 +2541,15 @@ void prefixed_command(void)
     case 97:
         if (cur_chr == 7 /*char_sub_def_code */ ) {
             scan_char_num();
-            p = 7825128L /*char_sub_code_base */  + cur_val;
+            p = 7826728L /*char_sub_code_base */  + cur_val;
             scan_optional_equals();
             scan_char_num();
             n = cur_val;
             scan_char_num();
-            if ((eqtb[8939297L /*int_base 57 */ ].cint > 0)) {
+            if ((eqtb[8940897L /*int_base 57 */ ].cint > 0)) {
                 begin_diagnostic();
                 print_nl(66640L /*"New character substitution: " */ );
-                print(p - 7825128L);
+                print(p - 7826728L);
                 print(66641L /*" = " */ );
                 print(n);
                 print_char(32 /*" " */ );
@@ -2561,19 +2561,19 @@ void prefixed_command(void)
                 geq_define(p, 122 /*data */ , n);
             else
                 eq_define(p, 122 /*data */ , n);
-            if ((p - 7825128L) < eqtb[8939295L /*int_base 55 */ ].cint) {
+            if ((p - 7826728L) < eqtb[8940895L /*int_base 55 */ ].cint) {
 
                 if ((a >= 4))
-                    geq_word_define(8939295L /*int_base 55 */ , p - 7825128L);
+                    geq_word_define(8940895L /*int_base 55 */ , p - 7826728L);
                 else
-                    eq_word_define(8939295L /*int_base 55 */ , p - 7825128L);
+                    eq_word_define(8940895L /*int_base 55 */ , p - 7826728L);
             }
-            if ((p - 7825128L) > eqtb[8939296L /*int_base 56 */ ].cint) {
+            if ((p - 7826728L) > eqtb[8940896L /*int_base 56 */ ].cint) {
 
                 if ((a >= 4))
-                    geq_word_define(8939296L /*int_base 56 */ , p - 7825128L);
+                    geq_word_define(8940896L /*int_base 56 */ , p - 7826728L);
                 else
-                    eq_word_define(8939296L /*int_base 56 */ , p - 7825128L);
+                    eq_word_define(8940896L /*int_base 56 */ , p - 7826728L);
             }
         } else {
 
@@ -2648,33 +2648,33 @@ void prefixed_command(void)
                         switch (n) {
                         case 2:
                             if ((a >= 4))
-                                geq_define(p, 74 /*assign_int */ , 8939325L /*count_base */  + cur_val);
+                                geq_define(p, 74 /*assign_int */ , 8940925L /*count_base */  + cur_val);
                             else
-                                eq_define(p, 74 /*assign_int */ , 8939325L /*count_base */  + cur_val);
+                                eq_define(p, 74 /*assign_int */ , 8940925L /*count_base */  + cur_val);
                             break;
                         case 3:
                             if ((a >= 4))
-                                geq_define(p, 75 /*assign_dimen */ , 10053716L /*scaled_base */  + cur_val);
+                                geq_define(p, 75 /*assign_dimen */ , 10055316L /*scaled_base */  + cur_val);
                             else
-                                eq_define(p, 75 /*assign_dimen */ , 10053716L /*scaled_base */  + cur_val);
+                                eq_define(p, 75 /*assign_dimen */ , 10055316L /*scaled_base */  + cur_val);
                             break;
                         case 4:
                             if ((a >= 4))
-                                geq_define(p, 76 /*assign_glue */ , 2252759L /*skip_base */  + cur_val);
+                                geq_define(p, 76 /*assign_glue */ , 2254359L /*skip_base */  + cur_val);
                             else
-                                eq_define(p, 76 /*assign_glue */ , 2252759L /*skip_base */  + cur_val);
+                                eq_define(p, 76 /*assign_glue */ , 2254359L /*skip_base */  + cur_val);
                             break;
                         case 5:
                             if ((a >= 4))
-                                geq_define(p, 77 /*assign_mu_glue */ , 2253015L /*mu_skip_base */  + cur_val);
+                                geq_define(p, 77 /*assign_mu_glue */ , 2254615L /*mu_skip_base */  + cur_val);
                             else
-                                eq_define(p, 77 /*assign_mu_glue */ , 2253015L /*mu_skip_base */  + cur_val);
+                                eq_define(p, 77 /*assign_mu_glue */ , 2254615L /*mu_skip_base */  + cur_val);
                             break;
                         case 6:
                             if ((a >= 4))
-                                geq_define(p, 73 /*assign_toks */ , 2253283L /*toks_base */  + cur_val);
+                                geq_define(p, 73 /*assign_toks */ , 2254883L /*toks_base */  + cur_val);
                             else
-                                eq_define(p, 73 /*assign_toks */ , 2253283L /*toks_base */  + cur_val);
+                                eq_define(p, 73 /*assign_toks */ , 2254883L /*toks_base */  + cur_val);
                             break;
                         }
                 }
@@ -2726,10 +2726,10 @@ void prefixed_command(void)
                         cur_chr = cur_ptr;
                         e = true;
                     } else
-                        cur_chr = 2253283L /*toks_base */  + cur_val;
+                        cur_chr = 2254883L /*toks_base */  + cur_val;
                 } else
                     e = true;
-            } else if (cur_chr == 2253282L /*XeTeX_inter_char_loc */ ) {
+            } else if (cur_chr == 2254882L /*XeTeX_inter_char_loc */ ) {
                 scan_char_class_not_ignored();
                 cur_ptr = cur_val;
                 scan_char_class_not_ignored();
@@ -2750,7 +2750,7 @@ void prefixed_command(void)
                         if (cur_chr == mem_bot) {
                             scan_register_num();
                             if (cur_val < 256)
-                                q = eqtb[2253283L /*toks_base */  + cur_val].hh.v.RH;
+                                q = eqtb[2254883L /*toks_base */  + cur_val].hh.v.RH;
                             else {
 
                                 find_sa_element(5 /*tok_val */ , cur_val, false);
@@ -2761,7 +2761,7 @@ void prefixed_command(void)
                             }
                         } else
                             q = mem[cur_chr + 1].hh.v.RH;
-                    } else if (cur_chr == 2253282L /*XeTeX_inter_char_loc */ ) {
+                    } else if (cur_chr == 2254882L /*XeTeX_inter_char_loc */ ) {
                         scan_char_class_not_ignored();
                         cur_ptr = cur_val;
                         scan_char_class_not_ignored();
@@ -2827,7 +2827,7 @@ void prefixed_command(void)
                 }
             } else {
 
-                if ((p == 2253272L /*output_routine_loc */ ) && !e) {
+                if ((p == 2254872L /*output_routine_loc */ ) && !e) {
                     mem[q].hh.v.RH = get_avail();
                     q = mem[q].hh.v.RH;
                     mem[q].hh.v.LH = 4194429L /*right_brace_token 125 */ ;
@@ -2890,18 +2890,18 @@ void prefixed_command(void)
         break;
     case 87:
         {
-            if (cur_chr == 5596904L /*sf_code_base */ ) {
+            if (cur_chr == 5598504L /*sf_code_base */ ) {
                 p = cur_chr;
                 scan_usv_num();
                 p = p + cur_val;
-                n = eqtb[5596904L /*sf_code_base */  + cur_val].hh.v.RH % 65536L;
+                n = eqtb[5598504L /*sf_code_base */  + cur_val].hh.v.RH % 65536L;
                 scan_optional_equals();
                 scan_char_class();
                 if ((a >= 4))
                     geq_define(p, 122 /*data */ , cur_val * 65536L + n);
                 else
                     eq_define(p, 122 /*data */ , cur_val * 65536L + n);
-            } else if (cur_chr == 6711016L /*math_code_base */ ) {
+            } else if (cur_chr == 6712616L /*math_code_base */ ) {
                 p = cur_chr;
                 scan_usv_num();
                 p = p + cur_val;
@@ -2911,7 +2911,7 @@ void prefixed_command(void)
                     geq_define(p, 122 /*data */ , cur_val);
                 else
                     eq_define(p, 122 /*data */ , cur_val);
-            } else if (cur_chr == 6711017L /*math_code_base 1 */ ) {
+            } else if (cur_chr == 6712617L /*math_code_base 1 */ ) {
                 p = cur_chr - 1;
                 scan_usv_num();
                 p = p + cur_val;
@@ -2926,7 +2926,7 @@ void prefixed_command(void)
                     geq_define(p, 122 /*data */ , n);
                 else
                     eq_define(p, 122 /*data */ , n);
-            } else if (cur_chr == 8939581L /*del_code_base */ ) {
+            } else if (cur_chr == 8941181L /*del_code_base */ ) {
                 p = cur_chr;
                 scan_usv_num();
                 p = p + cur_val;
@@ -2956,13 +2956,13 @@ void prefixed_command(void)
         break;
     case 86:
         {
-            if (cur_chr == 2254568L /*cat_code_base */ )
+            if (cur_chr == 2256168L /*cat_code_base */ )
                 n = 15 /*max_char_code */ ;
-            else if (cur_chr == 6711016L /*math_code_base */ )
+            else if (cur_chr == 6712616L /*math_code_base */ )
                 n = 32768L;
-            else if (cur_chr == 5596904L /*sf_code_base */ )
+            else if (cur_chr == 5598504L /*sf_code_base */ )
                 n = 32767;
-            else if (cur_chr == 8939581L /*del_code_base */ )
+            else if (cur_chr == 8941181L /*del_code_base */ )
                 n = 16777215L;
             else
                 n = 1114111L /*biggest_usv *//*:1287 */ ;
@@ -2971,7 +2971,7 @@ void prefixed_command(void)
             p = p + cur_val;
             scan_optional_equals();
             scan_int();
-            if (((cur_val < 0) && (p < 8939581L /*del_code_base */ )) || (cur_val > n)) {
+            if (((cur_val < 0) && (p < 8941181L /*del_code_base */ )) || (cur_val > n)) {
                 {
                     if (interaction == 3 /*error_stop_mode */ ) ;
                     if (file_line_error_style_p)
@@ -2981,7 +2981,7 @@ void prefixed_command(void)
                     print(66122L /*"Invalid code (" */ );
                 }
                 print_int(cur_val);
-                if (p < 8939581L /*del_code_base */ )
+                if (p < 8941181L /*del_code_base */ )
                     print(66653L /*"), should be in the range 0.." */ );
                 else
                     print(66654L /*"), should be at most " */ );
@@ -2993,8 +2993,8 @@ void prefixed_command(void)
                 error();
                 cur_val = 0;
             }
-            if (p < 6711016L /*math_code_base */ ) {
-                if (p >= 5596904L /*sf_code_base */ ) {
+            if (p < 6712616L /*math_code_base */ ) {
+                if (p >= 5598504L /*sf_code_base */ ) {
                     n = eqtb[p].hh.v.RH / 65536L;
                     if ((a >= 4))
                         geq_define(p, 122 /*data */ , n * 65536L + cur_val);
@@ -3004,7 +3004,7 @@ void prefixed_command(void)
                     geq_define(p, 122 /*data */ , cur_val);
                 else
                     eq_define(p, 122 /*data */ , cur_val);
-            } else if (p < 8939581L /*del_code_base */ ) {
+            } else if (p < 8941181L /*del_code_base */ ) {
                 if (cur_val == 32768L)
                     cur_val = 2097151L /*active_math_char */ ;
                 else
@@ -3092,7 +3092,7 @@ void prefixed_command(void)
             n = cur_val;
             if (n <= 0)
                 p = -268435455L;
-            else if (q > 2253271L /*par_shape_loc */ ) {
+            else if (q > 2254871L /*par_shape_loc */ ) {
                 n = (cur_val / 2) + 1;
                 p = get_node(2 * n + 1);
                 mem[p].hh.v.LH = n;
@@ -3257,8 +3257,8 @@ void open_or_close_in(void)
         pack_file_name(cur_name, cur_area, cur_ext);
         tex_input_type = 0;
         if (kpse_in_name_ok(stringcast(name_of_file + 1))
-            && u_open_in(read_file[n], kpse_tex_format, eqtb[8939318L /*eTeX_state_base 6 */ ].cint,
-                         eqtb[8939319L /*eTeX_state_base 7 */ ].cint)) {
+            && u_open_in(read_file[n], kpse_tex_format, eqtb[8940918L /*eTeX_state_base 6 */ ].cint,
+                         eqtb[8940919L /*eTeX_state_base 7 */ ].cint)) {
             make_utf16_name();
             name_in_progress = true;
             begin_name();
@@ -3315,11 +3315,11 @@ void store_fmt_file(void)
     print(66729L /*" (preloaded format=" */ );
     print(job_name);
     print_char(32 /*" " */ );
-    print_int(eqtb[8939263L /*int_base 23 */ ].cint);
+    print_int(eqtb[8940863L /*int_base 23 */ ].cint);
     print_char(46 /*"." */ );
-    print_int(eqtb[8939262L /*int_base 22 */ ].cint);
+    print_int(eqtb[8940862L /*int_base 22 */ ].cint);
     print_char(46 /*"." */ );
-    print_int(eqtb[8939261L /*int_base 21 */ ].cint);
+    print_int(eqtb[8940861L /*int_base 21 */ ].cint);
     print_char(41 /*")" */ );
     if (interaction == 0 /*batch_mode */ )
         selector = 18 /*log_only */ ;
@@ -3358,7 +3358,7 @@ void store_fmt_file(void)
     dump_int(x);
     dump_things(format_engine[0], x);
     libc_free(format_engine);
-    dump_int(71942406L);
+    dump_int(461177208L);
     dump_int(1073741823L);
     dump_int(hash_high);
     dump_int(eTeX_mode);
@@ -3366,7 +3366,7 @@ void store_fmt_file(void)
         pseudo_close();
     dump_int(mem_bot);
     dump_int(mem_top);
-    dump_int(10053971L /*eqtb_size */ );
+    dump_int(10055571L /*eqtb_size */ );
     dump_int(8501 /*hash_prime */ );
     dump_int(607 /*hyph_prime */ );
     dump_int(1296847960L);
@@ -3430,18 +3430,18 @@ void store_fmt_file(void)
     k = 1 /*active_base */ ;
     do {
         j = k;
-        while (j < 8939239L /*int_base -1 */ ) {
+        while (j < 8940839L /*int_base -1 */ ) {
 
             if ((eqtb[j].hh.v.RH == eqtb[j + 1].hh.v.RH) && (eqtb[j].hh.b0 == eqtb[j + 1].hh.b0)
                 && (eqtb[j].hh.b1 == eqtb[j + 1].hh.b1))
                 goto lab41;
             incr(j);
         }
-        l = 8939240L /*int_base */ ;
+        l = 8940840L /*int_base */ ;
         goto lab31;
  lab41:                        /*found1 */ incr(j);
         l = j;
-        while (j < 8939239L /*int_base -1 */ ) {
+        while (j < 8940839L /*int_base -1 */ ) {
 
             if ((eqtb[j].hh.v.RH != eqtb[j + 1].hh.v.RH) || (eqtb[j].hh.b0 != eqtb[j + 1].hh.b0)
                 || (eqtb[j].hh.b1 != eqtb[j + 1].hh.b1))
@@ -3452,20 +3452,20 @@ void store_fmt_file(void)
         dump_things(eqtb[k], l - k);
         k = j + 1;
         dump_int(k - l);
-    } while (!(k == 8939240L /*int_base *//*:1369 */ ));
+    } while (!(k == 8940840L /*int_base *//*:1369 */ ));
     do {
         j = k;
-        while (j < 10053971L /*eqtb_size */ ) {
+        while (j < 10055571L /*eqtb_size */ ) {
 
             if (eqtb[j].cint == eqtb[j + 1].cint)
                 goto lab42;
             incr(j);
         }
-        l = 10053972L /*eqtb_size 1 */ ;
+        l = 10055572L /*eqtb_size 1 */ ;
         goto lab32;
  lab42:                        /*found2 */ incr(j);
         l = j;
-        while (j < 10053971L /*eqtb_size */ ) {
+        while (j < 10055571L /*eqtb_size */ ) {
 
             if (eqtb[j].cint != eqtb[j + 1].cint)
                 goto lab32;
@@ -3475,15 +3475,15 @@ void store_fmt_file(void)
         dump_things(eqtb[k], l - k);
         k = j + 1;
         dump_int(k - l);
-    } while (!(k > 10053971L /*eqtb_size */ ));
+    } while (!(k > 10055571L /*eqtb_size */ ));
     if (hash_high > 0)
-        dump_things(eqtb[10053972L /*eqtb_size 1 */ ], hash_high);
+        dump_things(eqtb[10055572L /*eqtb_size 1 */ ], hash_high);
     dump_int(par_loc);
     dump_int(write_loc);
     {
         register integer for_end;
         p = 0;
-        for_end = 500 /*prim_size */ ;
+        for_end = 2100 /*prim_size */ ;
         if (p <= for_end)
             do
                 dump_hh(prim[p]);
@@ -3504,9 +3504,9 @@ void store_fmt_file(void)
                 }
             while (p++ < for_end) ;
     }
-    dump_things(hash[hash_used + 1], 2252738L /*undefined_control_sequence -1 */  - hash_used);
+    dump_things(hash[hash_used + 1], 2254338L /*undefined_control_sequence -1 */  - hash_used);
     if (hash_high > 0)
-        dump_things(hash[10053972L /*eqtb_size 1 */ ], hash_high);
+        dump_things(hash[10055572L /*eqtb_size 1 */ ], hash_high);
     dump_int(cs_count);
     print_ln();
     print_int(cs_count);
@@ -3545,7 +3545,7 @@ void store_fmt_file(void)
             if (k <= for_end)
                 do {
                     print_nl(66716L /*"\font" */ );
-                    print_esc(hash[2243738L /*font_id_base */  + k].v.RH);
+                    print_esc(hash[2245338L /*font_id_base */  + k].v.RH);
                     print_char(61 /*"=" */ );
                     if (((font_area[k] == 65535L /*aat_font_flag */ ) || (font_area[k] == 65534L /*otgr_font_flag */ ))
                         || (font_mapping[k] != 0)) {
@@ -3648,7 +3648,7 @@ void store_fmt_file(void)
     dump_int(interaction);
     dump_int(format_ident);
     dump_int(69069L);
-    eqtb[8939271L /*int_base 31 */ ].cint = 0 /*:1380 */ ;
+    eqtb[8940871L /*int_base 31 */ ].cint = 0 /*:1380 */ ;
     w_close(fmt_file);
 }
 
@@ -3712,9 +3712,10 @@ boolean load_fmt_file(void)
         fprintf(stderr, "%s%s", "fmtdebug:", "string pool checksum");
         fprintf(stderr, "%s%ld\n", " = ", (long)x);
     }
-    if (x != 71942406L) {
+    if (x != 461177208L) {
         ;
-        fprintf(stdout, "%s%s%s\n", "---! ", stringcast(name_of_file + 1), " made by different executable version");
+        fprintf(stdout, "%s%s%s\n", "---! ", stringcast(name_of_file + 1),
+                " made by different executable version, strings are different");
         goto lab6666;
     }
     undump_int(x);
@@ -3725,9 +3726,9 @@ boolean load_fmt_file(void)
         goto lab6666;
     if (hash_extra < hash_high)
         hash_extra = hash_high;
-    eqtb_top = 10053971L /*eqtb_size */  + hash_extra;
+    eqtb_top = 10055571L /*eqtb_size */  + hash_extra;
     if (hash_extra == 0)
-        hash_top = 2252739L /*undefined_control_sequence */ ;
+        hash_top = 2254339L /*undefined_control_sequence */ ;
     else
         hash_top = eqtb_top;
     yhash = xmalloc_array(two_halves, 1 + hash_top - hash_offset);
@@ -3745,16 +3746,16 @@ boolean load_fmt_file(void)
     }
     zeqtb = xmalloc_array(memory_word, eqtb_top + 1);
     eqtb = zeqtb;
-    eqtb[2252739L /*undefined_control_sequence */ ].hh.b0 = 103 /*undefined_cs */ ;
-    eqtb[2252739L /*undefined_control_sequence */ ].hh.v.RH = -268435455L;
-    eqtb[2252739L /*undefined_control_sequence */ ].hh.b1 = 0 /*level_zero */ ;
+    eqtb[2254339L /*undefined_control_sequence */ ].hh.b0 = 103 /*undefined_cs */ ;
+    eqtb[2254339L /*undefined_control_sequence */ ].hh.v.RH = -268435455L;
+    eqtb[2254339L /*undefined_control_sequence */ ].hh.b1 = 0 /*level_zero */ ;
     {
         register integer for_end;
-        x = 10053972L /*eqtb_size 1 */ ;
+        x = 10055572L /*eqtb_size 1 */ ;
         for_end = eqtb_top;
         if (x <= for_end)
             do
-                eqtb[x] = eqtb[2252739L /*undefined_control_sequence */ ];
+                eqtb[x] = eqtb[2254339L /*undefined_control_sequence */ ];
             while (x++ < for_end);
     }
     {
@@ -3795,7 +3796,7 @@ boolean load_fmt_file(void)
     zmem = yzmem - mem_min;
     mem = zmem;
     undump_int(x);
-    if (x != 10053971L /*eqtb_size */ )
+    if (x != 10055571L /*eqtb_size */ )
         goto lab6666;
     undump_int(x);
     if (x != 8501 /*hash_prime */ )
@@ -3920,12 +3921,12 @@ boolean load_fmt_file(void)
     k = 1 /*active_base */ ;
     do {
         undump_int(x);
-        if ((x < 1) || (k + x > 10053972L /*eqtb_size 1 */ ))
+        if ((x < 1) || (k + x > 10055572L /*eqtb_size 1 */ ))
             goto lab6666;
         undump_things(eqtb[k], x);
         k = k + x;
         undump_int(x);
-        if ((x < 0) || (k + x > 10053972L /*eqtb_size 1 */ ))
+        if ((x < 0) || (k + x > 10055572L /*eqtb_size 1 */ ))
             goto lab6666;
         {
             register integer for_end;
@@ -3937,9 +3938,9 @@ boolean load_fmt_file(void)
                 while (j++ < for_end);
         }
         k = k + x;
-    } while (!(k > 10053971L /*eqtb_size */ ));
+    } while (!(k > 10055571L /*eqtb_size */ ));
     if (hash_high > 0)
-        undump_things(eqtb[10053972L /*eqtb_size 1 */ ], hash_high);
+        undump_things(eqtb[10055572L /*eqtb_size 1 */ ], hash_high);
     {
         undump_int(x);
         if ((x < 2228226L /*hash_base */ ) || (x > hash_top))
@@ -3958,7 +3959,7 @@ boolean load_fmt_file(void)
     {
         register integer for_end;
         p = 0;
-        for_end = 500 /*prim_size */ ;
+        for_end = 2100 /*prim_size */ ;
         if (p <= for_end)
             do
                 undump_hh(prim[p]);
@@ -3982,14 +3983,14 @@ boolean load_fmt_file(void)
         }
         undump_hh(hash[p]);
     } while (!(p == hash_used));
-    undump_things(hash[hash_used + 1], 2252738L /*undefined_control_sequence -1 */  - hash_used);
+    undump_things(hash[hash_used + 1], 2254338L /*undefined_control_sequence -1 */  - hash_used);
     if (debug_format_file) {
-        print_csnames(2228226L /*hash_base */ , 2252738L /*undefined_control_sequence -1 */ );
+        print_csnames(2228226L /*hash_base */ , 2254338L /*undefined_control_sequence -1 */ );
     }
     if (hash_high > 0) {
-        undump_things(hash[10053972L /*eqtb_size 1 */ ], hash_high);
+        undump_things(hash[10055572L /*eqtb_size 1 */ ], hash_high);
         if (debug_format_file) {
-            print_csnames(10053972L /*eqtb_size 1 */ , hash_high - (10053972L /*eqtb_size 1 */ ));
+            print_csnames(10055572L /*eqtb_size 1 */ , hash_high - (10055572L /*eqtb_size 1 */ ));
         }
     }
     undump_int(cs_count);
@@ -4297,7 +4298,7 @@ void final_cleanup(void)
     final_cleanup_regmem small_number c;
     c = cur_chr;
     if (c != 1)
-        eqtb[8939289L /*int_base 49 */ ].cint = -1;
+        eqtb[8940889L /*int_base 49 */ ].cint = -1;
     if (job_name == 0)
         open_log_file();
     while (input_ptr > 0)
@@ -4394,122 +4395,122 @@ void init_prim(void)
 {
     init_prim_regmem no_new_control_sequence = false;
     first = 0;
-    primitive(65675L /*"lineskip" */ , 76 /*assign_glue */ , 2252740L /*glue_base 0 */ );
-    primitive(65676L /*"baselineskip" */ , 76 /*assign_glue */ , 2252741L /*glue_base 1 */ );
-    primitive(65677L /*"parskip" */ , 76 /*assign_glue */ , 2252742L /*glue_base 2 */ );
-    primitive(65678L /*"abovedisplayskip" */ , 76 /*assign_glue */ , 2252743L /*glue_base 3 */ );
-    primitive(65679L /*"belowdisplayskip" */ , 76 /*assign_glue */ , 2252744L /*glue_base 4 */ );
-    primitive(65680L /*"abovedisplayshortskip" */ , 76 /*assign_glue */ , 2252745L /*glue_base 5 */ );
-    primitive(65681L /*"belowdisplayshortskip" */ , 76 /*assign_glue */ , 2252746L /*glue_base 6 */ );
-    primitive(65682L /*"leftskip" */ , 76 /*assign_glue */ , 2252747L /*glue_base 7 */ );
-    primitive(65683L /*"rightskip" */ , 76 /*assign_glue */ , 2252748L /*glue_base 8 */ );
-    primitive(65684L /*"topskip" */ , 76 /*assign_glue */ , 2252749L /*glue_base 9 */ );
-    primitive(65685L /*"splittopskip" */ , 76 /*assign_glue */ , 2252750L /*glue_base 10 */ );
-    primitive(65686L /*"tabskip" */ , 76 /*assign_glue */ , 2252751L /*glue_base 11 */ );
-    primitive(65687L /*"spaceskip" */ , 76 /*assign_glue */ , 2252752L /*glue_base 12 */ );
-    primitive(65688L /*"xspaceskip" */ , 76 /*assign_glue */ , 2252753L /*glue_base 13 */ );
-    primitive(65689L /*"parfillskip" */ , 76 /*assign_glue */ , 2252754L /*glue_base 14 */ );
-    primitive(65690L /*"XeTeXlinebreakskip" */ , 76 /*assign_glue */ , 2252755L /*glue_base 15 */ );
-    primitive(65691L /*"thinmuskip" */ , 77 /*assign_mu_glue */ , 2252756L /*glue_base 16 */ );
-    primitive(65692L /*"medmuskip" */ , 77 /*assign_mu_glue */ , 2252757L /*glue_base 17 */ );
-    primitive(65693L /*"thickmuskip" */ , 77 /*assign_mu_glue */ , 2252758L /*glue_base 18 */ );
-    primitive(65698L /*"output" */ , 73 /*assign_toks */ , 2253272L /*output_routine_loc */ );
-    primitive(65699L /*"everypar" */ , 73 /*assign_toks */ , 2253273L /*every_par_loc */ );
-    primitive(65700L /*"everymath" */ , 73 /*assign_toks */ , 2253274L /*every_math_loc */ );
-    primitive(65701L /*"everydisplay" */ , 73 /*assign_toks */ , 2253275L /*every_display_loc */ );
-    primitive(65702L /*"everyhbox" */ , 73 /*assign_toks */ , 2253276L /*every_hbox_loc */ );
-    primitive(65703L /*"everyvbox" */ , 73 /*assign_toks */ , 2253277L /*every_vbox_loc */ );
-    primitive(65704L /*"everyjob" */ , 73 /*assign_toks */ , 2253278L /*every_job_loc */ );
-    primitive(65705L /*"everycr" */ , 73 /*assign_toks */ , 2253279L /*every_cr_loc */ );
-    primitive(65706L /*"errhelp" */ , 73 /*assign_toks */ , 2253280L /*err_help_loc */ );
-    primitive(65720L /*"pretolerance" */ , 74 /*assign_int */ , 8939240L /*int_base 0 */ );
-    primitive(65721L /*"tolerance" */ , 74 /*assign_int */ , 8939241L /*int_base 1 */ );
-    primitive(65722L /*"linepenalty" */ , 74 /*assign_int */ , 8939242L /*int_base 2 */ );
-    primitive(65723L /*"hyphenpenalty" */ , 74 /*assign_int */ , 8939243L /*int_base 3 */ );
-    primitive(65724L /*"exhyphenpenalty" */ , 74 /*assign_int */ , 8939244L /*int_base 4 */ );
-    primitive(65725L /*"clubpenalty" */ , 74 /*assign_int */ , 8939245L /*int_base 5 */ );
-    primitive(65726L /*"widowpenalty" */ , 74 /*assign_int */ , 8939246L /*int_base 6 */ );
-    primitive(65727L /*"displaywidowpenalty" */ , 74 /*assign_int */ , 8939247L /*int_base 7 */ );
-    primitive(65728L /*"brokenpenalty" */ , 74 /*assign_int */ , 8939248L /*int_base 8 */ );
-    primitive(65729L /*"binoppenalty" */ , 74 /*assign_int */ , 8939249L /*int_base 9 */ );
-    primitive(65730L /*"relpenalty" */ , 74 /*assign_int */ , 8939250L /*int_base 10 */ );
-    primitive(65731L /*"predisplaypenalty" */ , 74 /*assign_int */ , 8939251L /*int_base 11 */ );
-    primitive(65732L /*"postdisplaypenalty" */ , 74 /*assign_int */ , 8939252L /*int_base 12 */ );
-    primitive(65733L /*"interlinepenalty" */ , 74 /*assign_int */ , 8939253L /*int_base 13 */ );
-    primitive(65734L /*"doublehyphendemerits" */ , 74 /*assign_int */ , 8939254L /*int_base 14 */ );
-    primitive(65735L /*"finalhyphendemerits" */ , 74 /*assign_int */ , 8939255L /*int_base 15 */ );
-    primitive(65736L /*"adjdemerits" */ , 74 /*assign_int */ , 8939256L /*int_base 16 */ );
-    primitive(65737L /*"mag" */ , 74 /*assign_int */ , 8939257L /*int_base 17 */ );
-    primitive(65738L /*"delimiterfactor" */ , 74 /*assign_int */ , 8939258L /*int_base 18 */ );
-    primitive(65739L /*"looseness" */ , 74 /*assign_int */ , 8939259L /*int_base 19 */ );
-    primitive(65740L /*"time" */ , 74 /*assign_int */ , 8939260L /*int_base 20 */ );
-    primitive(65741L /*"day" */ , 74 /*assign_int */ , 8939261L /*int_base 21 */ );
-    primitive(65742L /*"month" */ , 74 /*assign_int */ , 8939262L /*int_base 22 */ );
-    primitive(65743L /*"year" */ , 74 /*assign_int */ , 8939263L /*int_base 23 */ );
-    primitive(65744L /*"showboxbreadth" */ , 74 /*assign_int */ , 8939264L /*int_base 24 */ );
-    primitive(65745L /*"showboxdepth" */ , 74 /*assign_int */ , 8939265L /*int_base 25 */ );
-    primitive(65746L /*"hbadness" */ , 74 /*assign_int */ , 8939266L /*int_base 26 */ );
-    primitive(65747L /*"vbadness" */ , 74 /*assign_int */ , 8939267L /*int_base 27 */ );
-    primitive(65748L /*"pausing" */ , 74 /*assign_int */ , 8939268L /*int_base 28 */ );
-    primitive(65749L /*"tracingonline" */ , 74 /*assign_int */ , 8939269L /*int_base 29 */ );
-    primitive(65750L /*"tracingmacros" */ , 74 /*assign_int */ , 8939270L /*int_base 30 */ );
-    primitive(65751L /*"tracingstats" */ , 74 /*assign_int */ , 8939271L /*int_base 31 */ );
-    primitive(65752L /*"tracingparagraphs" */ , 74 /*assign_int */ , 8939272L /*int_base 32 */ );
-    primitive(65753L /*"tracingpages" */ , 74 /*assign_int */ , 8939273L /*int_base 33 */ );
-    primitive(65754L /*"tracingoutput" */ , 74 /*assign_int */ , 8939274L /*int_base 34 */ );
-    primitive(65755L /*"tracinglostchars" */ , 74 /*assign_int */ , 8939275L /*int_base 35 */ );
-    primitive(65756L /*"tracingcommands" */ , 74 /*assign_int */ , 8939276L /*int_base 36 */ );
-    primitive(65757L /*"tracingrestores" */ , 74 /*assign_int */ , 8939277L /*int_base 37 */ );
-    primitive(65758L /*"uchyph" */ , 74 /*assign_int */ , 8939278L /*int_base 38 */ );
-    primitive(65759L /*"outputpenalty" */ , 74 /*assign_int */ , 8939279L /*int_base 39 */ );
-    primitive(65760L /*"maxdeadcycles" */ , 74 /*assign_int */ , 8939280L /*int_base 40 */ );
-    primitive(65761L /*"hangafter" */ , 74 /*assign_int */ , 8939281L /*int_base 41 */ );
-    primitive(65762L /*"floatingpenalty" */ , 74 /*assign_int */ , 8939282L /*int_base 42 */ );
-    primitive(65763L /*"globaldefs" */ , 74 /*assign_int */ , 8939283L /*int_base 43 */ );
-    primitive(65764L /*"fam" */ , 74 /*assign_int */ , 8939284L /*int_base 44 */ );
-    primitive(65765L /*"escapechar" */ , 74 /*assign_int */ , 8939285L /*int_base 45 */ );
-    primitive(65766L /*"defaulthyphenchar" */ , 74 /*assign_int */ , 8939286L /*int_base 46 */ );
-    primitive(65767L /*"defaultskewchar" */ , 74 /*assign_int */ , 8939287L /*int_base 47 */ );
-    primitive(65768L /*"endlinechar" */ , 74 /*assign_int */ , 8939288L /*int_base 48 */ );
-    primitive(65769L /*"newlinechar" */ , 74 /*assign_int */ , 8939289L /*int_base 49 */ );
-    primitive(65770L /*"language" */ , 74 /*assign_int */ , 8939290L /*int_base 50 */ );
-    primitive(65771L /*"lefthyphenmin" */ , 74 /*assign_int */ , 8939291L /*int_base 51 */ );
-    primitive(65772L /*"righthyphenmin" */ , 74 /*assign_int */ , 8939292L /*int_base 52 */ );
-    primitive(65773L /*"holdinginserts" */ , 74 /*assign_int */ , 8939293L /*int_base 53 */ );
-    primitive(65774L /*"errorcontextlines" */ , 74 /*assign_int */ , 8939294L /*int_base 54 */ );
+    primitive(65675L /*"lineskip" */ , 76 /*assign_glue */ , 2254340L /*glue_base 0 */ );
+    primitive(65676L /*"baselineskip" */ , 76 /*assign_glue */ , 2254341L /*glue_base 1 */ );
+    primitive(65677L /*"parskip" */ , 76 /*assign_glue */ , 2254342L /*glue_base 2 */ );
+    primitive(65678L /*"abovedisplayskip" */ , 76 /*assign_glue */ , 2254343L /*glue_base 3 */ );
+    primitive(65679L /*"belowdisplayskip" */ , 76 /*assign_glue */ , 2254344L /*glue_base 4 */ );
+    primitive(65680L /*"abovedisplayshortskip" */ , 76 /*assign_glue */ , 2254345L /*glue_base 5 */ );
+    primitive(65681L /*"belowdisplayshortskip" */ , 76 /*assign_glue */ , 2254346L /*glue_base 6 */ );
+    primitive(65682L /*"leftskip" */ , 76 /*assign_glue */ , 2254347L /*glue_base 7 */ );
+    primitive(65683L /*"rightskip" */ , 76 /*assign_glue */ , 2254348L /*glue_base 8 */ );
+    primitive(65684L /*"topskip" */ , 76 /*assign_glue */ , 2254349L /*glue_base 9 */ );
+    primitive(65685L /*"splittopskip" */ , 76 /*assign_glue */ , 2254350L /*glue_base 10 */ );
+    primitive(65686L /*"tabskip" */ , 76 /*assign_glue */ , 2254351L /*glue_base 11 */ );
+    primitive(65687L /*"spaceskip" */ , 76 /*assign_glue */ , 2254352L /*glue_base 12 */ );
+    primitive(65688L /*"xspaceskip" */ , 76 /*assign_glue */ , 2254353L /*glue_base 13 */ );
+    primitive(65689L /*"parfillskip" */ , 76 /*assign_glue */ , 2254354L /*glue_base 14 */ );
+    primitive(65690L /*"XeTeXlinebreakskip" */ , 76 /*assign_glue */ , 2254355L /*glue_base 15 */ );
+    primitive(65691L /*"thinmuskip" */ , 77 /*assign_mu_glue */ , 2254356L /*glue_base 16 */ );
+    primitive(65692L /*"medmuskip" */ , 77 /*assign_mu_glue */ , 2254357L /*glue_base 17 */ );
+    primitive(65693L /*"thickmuskip" */ , 77 /*assign_mu_glue */ , 2254358L /*glue_base 18 */ );
+    primitive(65698L /*"output" */ , 73 /*assign_toks */ , 2254872L /*output_routine_loc */ );
+    primitive(65699L /*"everypar" */ , 73 /*assign_toks */ , 2254873L /*every_par_loc */ );
+    primitive(65700L /*"everymath" */ , 73 /*assign_toks */ , 2254874L /*every_math_loc */ );
+    primitive(65701L /*"everydisplay" */ , 73 /*assign_toks */ , 2254875L /*every_display_loc */ );
+    primitive(65702L /*"everyhbox" */ , 73 /*assign_toks */ , 2254876L /*every_hbox_loc */ );
+    primitive(65703L /*"everyvbox" */ , 73 /*assign_toks */ , 2254877L /*every_vbox_loc */ );
+    primitive(65704L /*"everyjob" */ , 73 /*assign_toks */ , 2254878L /*every_job_loc */ );
+    primitive(65705L /*"everycr" */ , 73 /*assign_toks */ , 2254879L /*every_cr_loc */ );
+    primitive(65706L /*"errhelp" */ , 73 /*assign_toks */ , 2254880L /*err_help_loc */ );
+    primitive(65720L /*"pretolerance" */ , 74 /*assign_int */ , 8940840L /*int_base 0 */ );
+    primitive(65721L /*"tolerance" */ , 74 /*assign_int */ , 8940841L /*int_base 1 */ );
+    primitive(65722L /*"linepenalty" */ , 74 /*assign_int */ , 8940842L /*int_base 2 */ );
+    primitive(65723L /*"hyphenpenalty" */ , 74 /*assign_int */ , 8940843L /*int_base 3 */ );
+    primitive(65724L /*"exhyphenpenalty" */ , 74 /*assign_int */ , 8940844L /*int_base 4 */ );
+    primitive(65725L /*"clubpenalty" */ , 74 /*assign_int */ , 8940845L /*int_base 5 */ );
+    primitive(65726L /*"widowpenalty" */ , 74 /*assign_int */ , 8940846L /*int_base 6 */ );
+    primitive(65727L /*"displaywidowpenalty" */ , 74 /*assign_int */ , 8940847L /*int_base 7 */ );
+    primitive(65728L /*"brokenpenalty" */ , 74 /*assign_int */ , 8940848L /*int_base 8 */ );
+    primitive(65729L /*"binoppenalty" */ , 74 /*assign_int */ , 8940849L /*int_base 9 */ );
+    primitive(65730L /*"relpenalty" */ , 74 /*assign_int */ , 8940850L /*int_base 10 */ );
+    primitive(65731L /*"predisplaypenalty" */ , 74 /*assign_int */ , 8940851L /*int_base 11 */ );
+    primitive(65732L /*"postdisplaypenalty" */ , 74 /*assign_int */ , 8940852L /*int_base 12 */ );
+    primitive(65733L /*"interlinepenalty" */ , 74 /*assign_int */ , 8940853L /*int_base 13 */ );
+    primitive(65734L /*"doublehyphendemerits" */ , 74 /*assign_int */ , 8940854L /*int_base 14 */ );
+    primitive(65735L /*"finalhyphendemerits" */ , 74 /*assign_int */ , 8940855L /*int_base 15 */ );
+    primitive(65736L /*"adjdemerits" */ , 74 /*assign_int */ , 8940856L /*int_base 16 */ );
+    primitive(65737L /*"mag" */ , 74 /*assign_int */ , 8940857L /*int_base 17 */ );
+    primitive(65738L /*"delimiterfactor" */ , 74 /*assign_int */ , 8940858L /*int_base 18 */ );
+    primitive(65739L /*"looseness" */ , 74 /*assign_int */ , 8940859L /*int_base 19 */ );
+    primitive(65740L /*"time" */ , 74 /*assign_int */ , 8940860L /*int_base 20 */ );
+    primitive(65741L /*"day" */ , 74 /*assign_int */ , 8940861L /*int_base 21 */ );
+    primitive(65742L /*"month" */ , 74 /*assign_int */ , 8940862L /*int_base 22 */ );
+    primitive(65743L /*"year" */ , 74 /*assign_int */ , 8940863L /*int_base 23 */ );
+    primitive(65744L /*"showboxbreadth" */ , 74 /*assign_int */ , 8940864L /*int_base 24 */ );
+    primitive(65745L /*"showboxdepth" */ , 74 /*assign_int */ , 8940865L /*int_base 25 */ );
+    primitive(65746L /*"hbadness" */ , 74 /*assign_int */ , 8940866L /*int_base 26 */ );
+    primitive(65747L /*"vbadness" */ , 74 /*assign_int */ , 8940867L /*int_base 27 */ );
+    primitive(65748L /*"pausing" */ , 74 /*assign_int */ , 8940868L /*int_base 28 */ );
+    primitive(65749L /*"tracingonline" */ , 74 /*assign_int */ , 8940869L /*int_base 29 */ );
+    primitive(65750L /*"tracingmacros" */ , 74 /*assign_int */ , 8940870L /*int_base 30 */ );
+    primitive(65751L /*"tracingstats" */ , 74 /*assign_int */ , 8940871L /*int_base 31 */ );
+    primitive(65752L /*"tracingparagraphs" */ , 74 /*assign_int */ , 8940872L /*int_base 32 */ );
+    primitive(65753L /*"tracingpages" */ , 74 /*assign_int */ , 8940873L /*int_base 33 */ );
+    primitive(65754L /*"tracingoutput" */ , 74 /*assign_int */ , 8940874L /*int_base 34 */ );
+    primitive(65755L /*"tracinglostchars" */ , 74 /*assign_int */ , 8940875L /*int_base 35 */ );
+    primitive(65756L /*"tracingcommands" */ , 74 /*assign_int */ , 8940876L /*int_base 36 */ );
+    primitive(65757L /*"tracingrestores" */ , 74 /*assign_int */ , 8940877L /*int_base 37 */ );
+    primitive(65758L /*"uchyph" */ , 74 /*assign_int */ , 8940878L /*int_base 38 */ );
+    primitive(65759L /*"outputpenalty" */ , 74 /*assign_int */ , 8940879L /*int_base 39 */ );
+    primitive(65760L /*"maxdeadcycles" */ , 74 /*assign_int */ , 8940880L /*int_base 40 */ );
+    primitive(65761L /*"hangafter" */ , 74 /*assign_int */ , 8940881L /*int_base 41 */ );
+    primitive(65762L /*"floatingpenalty" */ , 74 /*assign_int */ , 8940882L /*int_base 42 */ );
+    primitive(65763L /*"globaldefs" */ , 74 /*assign_int */ , 8940883L /*int_base 43 */ );
+    primitive(65764L /*"fam" */ , 74 /*assign_int */ , 8940884L /*int_base 44 */ );
+    primitive(65765L /*"escapechar" */ , 74 /*assign_int */ , 8940885L /*int_base 45 */ );
+    primitive(65766L /*"defaulthyphenchar" */ , 74 /*assign_int */ , 8940886L /*int_base 46 */ );
+    primitive(65767L /*"defaultskewchar" */ , 74 /*assign_int */ , 8940887L /*int_base 47 */ );
+    primitive(65768L /*"endlinechar" */ , 74 /*assign_int */ , 8940888L /*int_base 48 */ );
+    primitive(65769L /*"newlinechar" */ , 74 /*assign_int */ , 8940889L /*int_base 49 */ );
+    primitive(65770L /*"language" */ , 74 /*assign_int */ , 8940890L /*int_base 50 */ );
+    primitive(65771L /*"lefthyphenmin" */ , 74 /*assign_int */ , 8940891L /*int_base 51 */ );
+    primitive(65772L /*"righthyphenmin" */ , 74 /*assign_int */ , 8940892L /*int_base 52 */ );
+    primitive(65773L /*"holdinginserts" */ , 74 /*assign_int */ , 8940893L /*int_base 53 */ );
+    primitive(65774L /*"errorcontextlines" */ , 74 /*assign_int */ , 8940894L /*int_base 54 */ );
     if (mltex_p) {
         mltex_enabled_p = true;
         if (false)
-            primitive(65775L /*"charsubdefmin" */ , 74 /*assign_int */ , 8939295L /*int_base 55 */ );
-        primitive(65776L /*"charsubdefmax" */ , 74 /*assign_int */ , 8939296L /*int_base 56 */ );
-        primitive(65777L /*"tracingcharsubdef" */ , 74 /*assign_int */ , 8939297L /*int_base 57 */ );
+            primitive(65775L /*"charsubdefmin" */ , 74 /*assign_int */ , 8940895L /*int_base 55 */ );
+        primitive(65776L /*"charsubdefmax" */ , 74 /*assign_int */ , 8940896L /*int_base 56 */ );
+        primitive(65777L /*"tracingcharsubdef" */ , 74 /*assign_int */ , 8940897L /*int_base 57 */ );
     }
-    primitive(65778L /*"tracingstacklevels" */ , 74 /*assign_int */ , 8939298L /*int_base 58 */ );
-    primitive(65779L /*"XeTeXlinebreakpenalty" */ , 74 /*assign_int */ , 8939310L /*int_base 70 */ );
-    primitive(65780L /*"XeTeXprotrudechars" */ , 74 /*assign_int */ , 8939311L /*int_base 71 */ );
-    primitive(65784L /*"parindent" */ , 75 /*assign_dimen */ , 10053693L /*dimen_base 0 */ );
-    primitive(65785L /*"mathsurround" */ , 75 /*assign_dimen */ , 10053694L /*dimen_base 1 */ );
-    primitive(65786L /*"lineskiplimit" */ , 75 /*assign_dimen */ , 10053695L /*dimen_base 2 */ );
-    primitive(65787L /*"hsize" */ , 75 /*assign_dimen */ , 10053696L /*dimen_base 3 */ );
-    primitive(65788L /*"vsize" */ , 75 /*assign_dimen */ , 10053697L /*dimen_base 4 */ );
-    primitive(65789L /*"maxdepth" */ , 75 /*assign_dimen */ , 10053698L /*dimen_base 5 */ );
-    primitive(65790L /*"splitmaxdepth" */ , 75 /*assign_dimen */ , 10053699L /*dimen_base 6 */ );
-    primitive(65791L /*"boxmaxdepth" */ , 75 /*assign_dimen */ , 10053700L /*dimen_base 7 */ );
-    primitive(65792L /*"hfuzz" */ , 75 /*assign_dimen */ , 10053701L /*dimen_base 8 */ );
-    primitive(65793L /*"vfuzz" */ , 75 /*assign_dimen */ , 10053702L /*dimen_base 9 */ );
-    primitive(65794L /*"delimitershortfall" */ , 75 /*assign_dimen */ , 10053703L /*dimen_base 10 */ );
-    primitive(65795L /*"nulldelimiterspace" */ , 75 /*assign_dimen */ , 10053704L /*dimen_base 11 */ );
-    primitive(65796L /*"scriptspace" */ , 75 /*assign_dimen */ , 10053705L /*dimen_base 12 */ );
-    primitive(65797L /*"predisplaysize" */ , 75 /*assign_dimen */ , 10053706L /*dimen_base 13 */ );
-    primitive(65798L /*"displaywidth" */ , 75 /*assign_dimen */ , 10053707L /*dimen_base 14 */ );
-    primitive(65799L /*"displayindent" */ , 75 /*assign_dimen */ , 10053708L /*dimen_base 15 */ );
-    primitive(65800L /*"overfullrule" */ , 75 /*assign_dimen */ , 10053709L /*dimen_base 16 */ );
-    primitive(65801L /*"hangindent" */ , 75 /*assign_dimen */ , 10053710L /*dimen_base 17 */ );
-    primitive(65802L /*"hoffset" */ , 75 /*assign_dimen */ , 10053711L /*dimen_base 18 */ );
-    primitive(65803L /*"voffset" */ , 75 /*assign_dimen */ , 10053712L /*dimen_base 19 */ );
-    primitive(65804L /*"emergencystretch" */ , 75 /*assign_dimen */ , 10053713L /*dimen_base 20 */ );
-    primitive(65805L /*"pdfpagewidth" */ , 75 /*assign_dimen */ , 10053714L /*dimen_base 21 */ );
-    primitive(65806L /*"pdfpageheight" */ , 75 /*assign_dimen */ , 10053715L /*dimen_base 22 */ );
+    primitive(65778L /*"tracingstacklevels" */ , 74 /*assign_int */ , 8940898L /*int_base 58 */ );
+    primitive(65779L /*"XeTeXlinebreakpenalty" */ , 74 /*assign_int */ , 8940910L /*int_base 70 */ );
+    primitive(65780L /*"XeTeXprotrudechars" */ , 74 /*assign_int */ , 8940911L /*int_base 71 */ );
+    primitive(65784L /*"parindent" */ , 75 /*assign_dimen */ , 10055293L /*dimen_base 0 */ );
+    primitive(65785L /*"mathsurround" */ , 75 /*assign_dimen */ , 10055294L /*dimen_base 1 */ );
+    primitive(65786L /*"lineskiplimit" */ , 75 /*assign_dimen */ , 10055295L /*dimen_base 2 */ );
+    primitive(65787L /*"hsize" */ , 75 /*assign_dimen */ , 10055296L /*dimen_base 3 */ );
+    primitive(65788L /*"vsize" */ , 75 /*assign_dimen */ , 10055297L /*dimen_base 4 */ );
+    primitive(65789L /*"maxdepth" */ , 75 /*assign_dimen */ , 10055298L /*dimen_base 5 */ );
+    primitive(65790L /*"splitmaxdepth" */ , 75 /*assign_dimen */ , 10055299L /*dimen_base 6 */ );
+    primitive(65791L /*"boxmaxdepth" */ , 75 /*assign_dimen */ , 10055300L /*dimen_base 7 */ );
+    primitive(65792L /*"hfuzz" */ , 75 /*assign_dimen */ , 10055301L /*dimen_base 8 */ );
+    primitive(65793L /*"vfuzz" */ , 75 /*assign_dimen */ , 10055302L /*dimen_base 9 */ );
+    primitive(65794L /*"delimitershortfall" */ , 75 /*assign_dimen */ , 10055303L /*dimen_base 10 */ );
+    primitive(65795L /*"nulldelimiterspace" */ , 75 /*assign_dimen */ , 10055304L /*dimen_base 11 */ );
+    primitive(65796L /*"scriptspace" */ , 75 /*assign_dimen */ , 10055305L /*dimen_base 12 */ );
+    primitive(65797L /*"predisplaysize" */ , 75 /*assign_dimen */ , 10055306L /*dimen_base 13 */ );
+    primitive(65798L /*"displaywidth" */ , 75 /*assign_dimen */ , 10055307L /*dimen_base 14 */ );
+    primitive(65799L /*"displayindent" */ , 75 /*assign_dimen */ , 10055308L /*dimen_base 15 */ );
+    primitive(65800L /*"overfullrule" */ , 75 /*assign_dimen */ , 10055309L /*dimen_base 16 */ );
+    primitive(65801L /*"hangindent" */ , 75 /*assign_dimen */ , 10055310L /*dimen_base 17 */ );
+    primitive(65802L /*"hoffset" */ , 75 /*assign_dimen */ , 10055311L /*dimen_base 18 */ );
+    primitive(65803L /*"voffset" */ , 75 /*assign_dimen */ , 10055312L /*dimen_base 19 */ );
+    primitive(65804L /*"emergencystretch" */ , 75 /*assign_dimen */ , 10055313L /*dimen_base 20 */ );
+    primitive(65805L /*"pdfpagewidth" */ , 75 /*assign_dimen */ , 10055314L /*dimen_base 21 */ );
+    primitive(65806L /*"pdfpageheight" */ , 75 /*assign_dimen */ , 10055315L /*dimen_base 22 */ );
     primitive(32 /*" " */ , 64 /*ex_space */ , 0);
     primitive(47 /*"/" */ , 44 /*ital_corr */ , 0);
     primitive(65818L /*"accent" */ , 45 /*accent */ , 0);
@@ -4551,7 +4552,7 @@ void init_prim(void)
     primitive(65811L /*"primitive" */ , 105 /*no_expand */ , 1);
     primitive(65623L /*"nonscript" */ , 55 /*non_script */ , 0);
     primitive(65848L /*"omit" */ , 63 /*omit */ , 0);
-    primitive(65849L /*"parshape" */ , 85 /*set_shape */ , 2253271L /*par_shape_loc */ );
+    primitive(65849L /*"parshape" */ , 85 /*set_shape */ , 2254871L /*par_shape_loc */ );
     primitive(65850L /*"penalty" */ , 42 /*break_penalty */ , 0);
     primitive(65851L /*"prevgraf" */ , 81 /*set_prev_graf */ , 0);
     primitive(65852L /*"radical" */ , 66 /*radical */ , 0);
@@ -4642,8 +4643,8 @@ void init_prim(void)
     primitive(66161L /*"or" */ , 108 /*fi_or_else */ , 4 /*or_code */ );
     primitive(66162L /*"else" */ , 108 /*fi_or_else */ , 3 /*else_code */ );
     primitive(66189L /*"nullfont" */ , 89 /*set_font */ , 0 /*font_base */ );
-    hash[2243738L /*frozen_null_font */ ].v.RH = 66189L /*"nullfont" */ ;
-    eqtb[2243738L /*frozen_null_font */ ] = eqtb[cur_val];
+    hash[2245338L /*frozen_null_font */ ].v.RH = 66189L /*"nullfont" */ ;
+    eqtb[2245338L /*frozen_null_font */ ] = eqtb[cur_val];
     primitive(66319L /*"span" */ , 4 /*tab_mark */ , 1114113L /*span_code */ );
     primitive(66320L /*"cr" */ , 5 /*car_ret */ , 1114114L /*cr_code */ );
     hash[2243227L /*frozen_cr */ ].v.RH = 66320L /*"cr" */ ;
@@ -4757,24 +4758,24 @@ void init_prim(void)
     if (mltex_p) {
         primitive(66639L /*"charsubdef" */ , 97 /*shorthand_def */ , 7 /*char_sub_def_code */ );
     }
-    primitive(65715L /*"catcode" */ , 86 /*def_code */ , 2254568L /*cat_code_base */ );
-    primitive(65719L /*"mathcode" */ , 86 /*def_code */ , 6711016L /*math_code_base */ );
-    primitive(66644L /*"XeTeXmathcodenum" */ , 87 /*XeTeX_def_code */ , 6711016L /*math_code_base */ );
-    primitive(66645L /*"Umathcodenum" */ , 87 /*XeTeX_def_code */ , 6711016L /*math_code_base */ );
-    primitive(66646L /*"XeTeXmathcode" */ , 87 /*XeTeX_def_code */ , 6711017L /*math_code_base 1 */ );
-    primitive(66647L /*"Umathcode" */ , 87 /*XeTeX_def_code */ , 6711017L /*math_code_base 1 */ );
-    primitive(65716L /*"lccode" */ , 86 /*def_code */ , 3368680L /*lc_code_base */ );
-    primitive(65717L /*"uccode" */ , 86 /*def_code */ , 4482792L /*uc_code_base */ );
-    primitive(65718L /*"sfcode" */ , 86 /*def_code */ , 5596904L /*sf_code_base */ );
-    primitive(66648L /*"XeTeXcharclass" */ , 87 /*XeTeX_def_code */ , 5596904L /*sf_code_base */ );
-    primitive(65783L /*"delcode" */ , 86 /*def_code */ , 8939581L /*del_code_base */ );
-    primitive(66649L /*"XeTeXdelcodenum" */ , 87 /*XeTeX_def_code */ , 8939581L /*del_code_base */ );
-    primitive(66650L /*"Udelcodenum" */ , 87 /*XeTeX_def_code */ , 8939581L /*del_code_base */ );
-    primitive(66651L /*"XeTeXdelcode" */ , 87 /*XeTeX_def_code */ , 8939582L /*del_code_base 1 */ );
-    primitive(66652L /*"Udelcode" */ , 87 /*XeTeX_def_code */ , 8939582L /*del_code_base 1 */ );
-    primitive(65712L /*"textfont" */ , 88 /*def_family */ , 2253800L /*math_font_base */ );
-    primitive(65713L /*"scriptfont" */ , 88 /*def_family */ , 2254056L /*math_font_base 256 */ );
-    primitive(65714L /*"scriptscriptfont" */ , 88 /*def_family */ , 2254312L /*math_font_base 512 */ );
+    primitive(65715L /*"catcode" */ , 86 /*def_code */ , 2256168L /*cat_code_base */ );
+    primitive(65719L /*"mathcode" */ , 86 /*def_code */ , 6712616L /*math_code_base */ );
+    primitive(66644L /*"XeTeXmathcodenum" */ , 87 /*XeTeX_def_code */ , 6712616L /*math_code_base */ );
+    primitive(66645L /*"Umathcodenum" */ , 87 /*XeTeX_def_code */ , 6712616L /*math_code_base */ );
+    primitive(66646L /*"XeTeXmathcode" */ , 87 /*XeTeX_def_code */ , 6712617L /*math_code_base 1 */ );
+    primitive(66647L /*"Umathcode" */ , 87 /*XeTeX_def_code */ , 6712617L /*math_code_base 1 */ );
+    primitive(65716L /*"lccode" */ , 86 /*def_code */ , 3370280L /*lc_code_base */ );
+    primitive(65717L /*"uccode" */ , 86 /*def_code */ , 4484392L /*uc_code_base */ );
+    primitive(65718L /*"sfcode" */ , 86 /*def_code */ , 5598504L /*sf_code_base */ );
+    primitive(66648L /*"XeTeXcharclass" */ , 87 /*XeTeX_def_code */ , 5598504L /*sf_code_base */ );
+    primitive(65783L /*"delcode" */ , 86 /*def_code */ , 8941181L /*del_code_base */ );
+    primitive(66649L /*"XeTeXdelcodenum" */ , 87 /*XeTeX_def_code */ , 8941181L /*del_code_base */ );
+    primitive(66650L /*"Udelcodenum" */ , 87 /*XeTeX_def_code */ , 8941181L /*del_code_base */ );
+    primitive(66651L /*"XeTeXdelcode" */ , 87 /*XeTeX_def_code */ , 8941182L /*del_code_base 1 */ );
+    primitive(66652L /*"Udelcode" */ , 87 /*XeTeX_def_code */ , 8941182L /*del_code_base 1 */ );
+    primitive(65712L /*"textfont" */ , 88 /*def_family */ , 2255400L /*math_font_base */ );
+    primitive(65713L /*"scriptfont" */ , 88 /*def_family */ , 2255656L /*math_font_base 256 */ );
+    primitive(65714L /*"scriptscriptfont" */ , 88 /*def_family */ , 2255912L /*math_font_base 512 */ );
     primitive(66370L /*"hyphenation" */ , 101 /*hyph_data */ , 0);
     primitive(66382L /*"patterns" */ , 101 /*hyph_data */ , 1);
     primitive(66667L /*"hyphenchar" */ , 79 /*assign_font_int */ , 0);
@@ -4789,8 +4790,8 @@ void init_prim(void)
     primitive(66681L /*"closein" */ , 60 /*in_stream */ , 0);
     primitive(66682L /*"message" */ , 58 /*message */ , 0);
     primitive(66683L /*"errmessage" */ , 58 /*message */ , 1);
-    primitive(66689L /*"lowercase" */ , 57 /*case_shift */ , 3368680L /*lc_code_base */ );
-    primitive(66690L /*"uppercase" */ , 57 /*case_shift */ , 4482792L /*uc_code_base */ );
+    primitive(66689L /*"lowercase" */ , 57 /*case_shift */ , 3370280L /*lc_code_base */ );
+    primitive(66690L /*"uppercase" */ , 57 /*case_shift */ , 4484392L /*uc_code_base */ );
     primitive(66691L /*"show" */ , 19 /*xray */ , 0 /*show_code */ );
     primitive(66692L /*"showbox" */ , 19 /*xray */ , 1 /*show_box_code */ );
     primitive(66693L /*"showthe" */ , 19 /*xray */ , 2 /*show_the_code */ );
@@ -4806,7 +4807,7 @@ void init_prim(void)
     primitive(66746L /*"setlanguage" */ , 59 /*extension */ , 5 /*set_language_code */ );
     primitive(66747L /*"resettimer" */ , 59 /*extension */ , 31 /*pdftex_first_extension_code 25 */ );
     primitive(66748L /*"setrandomseed" */ , 59 /*extension */ , 33 /*pdftex_first_extension_code 27 */ );
-    primitive(66970L /*"synctex" */ , 74 /*assign_int */ , 8939324L /*int_base 84 */ );
+    primitive(66970L /*"synctex" */ , 74 /*assign_int */ , 8940924L /*int_base 84 */ );
     no_new_control_sequence = true;
 }
 
@@ -5147,9 +5148,9 @@ void main_body(void)
     if (ini_version) {
         yzmem = xmalloc_array(memory_word, mem_top - mem_bot + 1);
         zmem = yzmem - mem_bot;
-        eqtb_top = 10053971L /*eqtb_size */  + hash_extra;
+        eqtb_top = 10055571L /*eqtb_size */  + hash_extra;
         if (hash_extra == 0)
-            hash_top = 2252739L /*undefined_control_sequence */ ;
+            hash_top = 2254339L /*undefined_control_sequence */ ;
         else
             hash_top = eqtb_top;
         yhash = xmalloc_array(two_halves, 1 + hash_top - hash_offset);
@@ -5218,7 +5219,7 @@ void main_body(void)
         bad = 18;
     if (65535L /*max_quarterword -0 */  < 65535L)
         bad = 19;
-    if (43608402L /*cs_token_flag 10053971 */  + hash_extra > 1073741823L)
+    if (43610002L /*cs_token_flag 10055571 */  + hash_extra > 1073741823L)
         bad = 21;
     if ((hash_offset < 0) || (hash_offset > 2228226L /*hash_base */ ))
         bad = 42;
@@ -5250,9 +5251,9 @@ void main_body(void)
     term_offset = 0;
     file_offset = 0;
     if (src_specials_p || file_line_error_style_p || parse_first_line_p)
-        fprintf(stdout, "%s%s%s", "This is XeTeX, Version 3.141592653", "-2.6", "-0.999993");
+        fprintf(stdout, "%s%s%s", "This is XeTeX, Version 3.141592653", "-2.6", "-0.999994");
     else
-        fprintf(stdout, "%s%s%s", "This is XeTeX, Version 3.141592653", "-2.6", "-0.999993");
+        fprintf(stdout, "%s%s%s", "This is XeTeX, Version 3.141592653", "-2.6", "-0.999994");
     Fputs(stdout, version_string);
     if (format_ident == 0)
         fprintf(stdout, "%s%s%c\n", " (preloaded format=", dump_name, ')');
@@ -5328,7 +5329,7 @@ void main_body(void)
             primitive(66751L /*"XeTeXglyph" */ , 59 /*extension */ , 43 /*glyph_code */ );
             primitive(66752L /*"XeTeXlinebreaklocale" */ , 59 /*extension */ ,
                       46 /*XeTeX_linebreak_locale_extension_code */ );
-            primitive(66753L /*"XeTeXinterchartoks" */ , 73 /*assign_toks */ , 2253282L /*XeTeX_inter_char_loc */ );
+            primitive(66753L /*"XeTeXinterchartoks" */ , 73 /*assign_toks */ , 2254882L /*XeTeX_inter_char_loc */ );
             primitive(66754L /*"pdfsavepos" */ , 59 /*extension */ , 21 /*pdftex_first_extension_code 15 */ );
             primitive(66810L /*"lastnodetype" */ , 71 /*last_item */ , 3 /*last_node_type_code */ );
             primitive(66811L /*"eTeXversion" */ , 71 /*last_item */ , 19 /*eTeX_version_code */ );
@@ -5372,16 +5373,16 @@ void main_body(void)
             primitive(66843L /*"XeTeXfirstfontchar" */ , 71 /*last_item */ , 52 /*XeTeX_first_char_code */ );
             primitive(66844L /*"XeTeXlastfontchar" */ , 71 /*last_item */ , 53 /*XeTeX_last_char_code */ );
             primitive(66845L /*"XeTeXpdfpagecount" */ , 71 /*last_item */ , 54 /*XeTeX_pdf_page_count_code */ );
-            primitive(66855L /*"everyeof" */ , 73 /*assign_toks */ , 2253281L /*every_eof_loc */ );
-            primitive(66856L /*"tracingassigns" */ , 74 /*assign_int */ , 8939299L /*int_base 59 */ );
-            primitive(66857L /*"tracinggroups" */ , 74 /*assign_int */ , 8939300L /*int_base 60 */ );
-            primitive(66858L /*"tracingifs" */ , 74 /*assign_int */ , 8939301L /*int_base 61 */ );
-            primitive(66859L /*"tracingscantokens" */ , 74 /*assign_int */ , 8939302L /*int_base 62 */ );
-            primitive(66860L /*"tracingnesting" */ , 74 /*assign_int */ , 8939303L /*int_base 63 */ );
-            primitive(66861L /*"predisplaydirection" */ , 74 /*assign_int */ , 8939304L /*int_base 64 */ );
-            primitive(66862L /*"lastlinefit" */ , 74 /*assign_int */ , 8939305L /*int_base 65 */ );
-            primitive(66863L /*"savingvdiscards" */ , 74 /*assign_int */ , 8939306L /*int_base 66 */ );
-            primitive(66864L /*"savinghyphcodes" */ , 74 /*assign_int */ , 8939307L /*int_base 67 */ );
+            primitive(66855L /*"everyeof" */ , 73 /*assign_toks */ , 2254881L /*every_eof_loc */ );
+            primitive(66856L /*"tracingassigns" */ , 74 /*assign_int */ , 8940899L /*int_base 59 */ );
+            primitive(66857L /*"tracinggroups" */ , 74 /*assign_int */ , 8940900L /*int_base 60 */ );
+            primitive(66858L /*"tracingifs" */ , 74 /*assign_int */ , 8940901L /*int_base 61 */ );
+            primitive(66859L /*"tracingscantokens" */ , 74 /*assign_int */ , 8940902L /*int_base 62 */ );
+            primitive(66860L /*"tracingnesting" */ , 74 /*assign_int */ , 8940903L /*int_base 63 */ );
+            primitive(66861L /*"predisplaydirection" */ , 74 /*assign_int */ , 8940904L /*int_base 64 */ );
+            primitive(66862L /*"lastlinefit" */ , 74 /*assign_int */ , 8940905L /*int_base 65 */ );
+            primitive(66863L /*"savingvdiscards" */ , 74 /*assign_int */ , 8940906L /*int_base 66 */ );
+            primitive(66864L /*"savinghyphcodes" */ , 74 /*assign_int */ , 8940907L /*int_base 67 */ );
             primitive(66878L /*"currentgrouplevel" */ , 71 /*last_item */ , 20 /*current_group_level_code */ );
             primitive(66879L /*"currentgrouptype" */ , 71 /*last_item */ , 21 /*current_group_type_code */ );
             primitive(66880L /*"currentiflevel" */ , 71 /*last_item */ , 22 /*current_if_level_code */ );
@@ -5401,17 +5402,17 @@ void main_body(void)
             primitive(66895L /*"showifs" */ , 19 /*xray */ , 6 /*show_ifs */ );
             primitive(66899L /*"interactionmode" */ , 83 /*set_page_int */ , 2);
             primitive(66281L /*"middle" */ , 49 /*left_right */ , 1);
-            primitive(66903L /*"suppressfontnotfounderror" */ , 74 /*assign_int */ , 8939308L /*int_base 68 */ );
-            primitive(66904L /*"TeXXeTstate" */ , 74 /*assign_int */ , 8939312L /*eTeX_state_base 0 */ );
-            primitive(66905L /*"XeTeXupwardsmode" */ , 74 /*assign_int */ , 8939314L /*eTeX_state_base 2 */ );
-            primitive(66906L /*"XeTeXuseglyphmetrics" */ , 74 /*assign_int */ , 8939315L /*eTeX_state_base 3 */ );
-            primitive(66907L /*"XeTeXinterchartokenstate" */ , 74 /*assign_int */ , 8939316L /*eTeX_state_base 4 */ );
-            primitive(66908L /*"XeTeXdashbreakstate" */ , 74 /*assign_int */ , 8939313L /*eTeX_state_base 1 */ );
-            primitive(66909L /*"XeTeXinputnormalization" */ , 74 /*assign_int */ , 8939317L /*eTeX_state_base 5 */ );
-            primitive(66910L /*"XeTeXtracingfonts" */ , 74 /*assign_int */ , 8939320L /*eTeX_state_base 8 */ );
-            primitive(66911L /*"XeTeXinterwordspaceshaping" */ , 74 /*assign_int */ , 8939321L /*eTeX_state_base 9 */ );
-            primitive(66912L /*"XeTeXgenerateactualtext" */ , 74 /*assign_int */ , 8939322L /*eTeX_state_base 10 */ );
-            primitive(66913L /*"XeTeXhyphenatablelength" */ , 74 /*assign_int */ , 8939323L /*eTeX_state_base 11 */ );
+            primitive(66903L /*"suppressfontnotfounderror" */ , 74 /*assign_int */ , 8940908L /*int_base 68 */ );
+            primitive(66904L /*"TeXXeTstate" */ , 74 /*assign_int */ , 8940912L /*eTeX_state_base 0 */ );
+            primitive(66905L /*"XeTeXupwardsmode" */ , 74 /*assign_int */ , 8940914L /*eTeX_state_base 2 */ );
+            primitive(66906L /*"XeTeXuseglyphmetrics" */ , 74 /*assign_int */ , 8940915L /*eTeX_state_base 3 */ );
+            primitive(66907L /*"XeTeXinterchartokenstate" */ , 74 /*assign_int */ , 8940916L /*eTeX_state_base 4 */ );
+            primitive(66908L /*"XeTeXdashbreakstate" */ , 74 /*assign_int */ , 8940913L /*eTeX_state_base 1 */ );
+            primitive(66909L /*"XeTeXinputnormalization" */ , 74 /*assign_int */ , 8940917L /*eTeX_state_base 5 */ );
+            primitive(66910L /*"XeTeXtracingfonts" */ , 74 /*assign_int */ , 8940920L /*eTeX_state_base 8 */ );
+            primitive(66911L /*"XeTeXinterwordspaceshaping" */ , 74 /*assign_int */ , 8940921L /*eTeX_state_base 9 */ );
+            primitive(66912L /*"XeTeXgenerateactualtext" */ , 74 /*assign_int */ , 8940922L /*eTeX_state_base 10 */ );
+            primitive(66913L /*"XeTeXhyphenatablelength" */ , 74 /*assign_int */ , 8940923L /*eTeX_state_base 11 */ );
             primitive(66755L /*"XeTeXinputencoding" */ , 59 /*extension */ ,
                       44 /*XeTeX_input_encoding_extension_code */ );
             primitive(66756L /*"XeTeXdefaultencoding" */ , 59 /*extension */ ,
@@ -5446,11 +5447,11 @@ void main_body(void)
             primitive(66956L /*"splitbotmarks" */ , 112 /*top_bot_mark */ , 9 /*split_bot_mark_code 5 */ );
             primitive(66961L /*"pagediscards" */ , 24 /*un_vbox */ , 2 /*last_box_code */ );
             primitive(66962L /*"splitdiscards" */ , 24 /*un_vbox */ , 3 /*vsplit_code */ );
-            primitive(66963L /*"interlinepenalties" */ , 85 /*set_shape */ , 2253539L /*inter_line_penalties_loc */ );
-            primitive(66964L /*"clubpenalties" */ , 85 /*set_shape */ , 2253540L /*club_penalties_loc */ );
-            primitive(66965L /*"widowpenalties" */ , 85 /*set_shape */ , 2253541L /*widow_penalties_loc */ );
+            primitive(66963L /*"interlinepenalties" */ , 85 /*set_shape */ , 2255139L /*inter_line_penalties_loc */ );
+            primitive(66964L /*"clubpenalties" */ , 85 /*set_shape */ , 2255140L /*club_penalties_loc */ );
+            primitive(66965L /*"widowpenalties" */ , 85 /*set_shape */ , 2255141L /*widow_penalties_loc */ );
             primitive(66966L /*"displaywidowpenalties" */ , 85 /*set_shape */ ,
-                      2253542L /*display_widow_penalties_loc */ );
+                      2255142L /*display_widow_penalties_loc */ );
             if (buffer[cur_input.loc_field] == 42 /*"*" */ )
                 incr(cur_input.loc_field);
             eTeX_mode = 1;
@@ -5477,10 +5478,10 @@ void main_body(void)
         }
         if ((eTeX_mode == 1))
             fprintf(stdout, "%s\n", "entering extended mode");
-        if ((eqtb[8939288L /*int_base 48 */ ].cint < 0) || (eqtb[8939288L /*int_base 48 */ ].cint > 255))
+        if ((eqtb[8940888L /*int_base 48 */ ].cint < 0) || (eqtb[8940888L /*int_base 48 */ ].cint > 255))
             decr(cur_input.limit_field);
         else
-            buffer[cur_input.limit_field] = eqtb[8939288L /*int_base 48 */ ].cint;
+            buffer[cur_input.limit_field] = eqtb[8940888L /*int_base 48 */ ].cint;
         if (mltex_enabled_p) {
             fprintf(stdout, "%s\n", "MLTeX v2.2 enabled");
         }
@@ -5585,7 +5586,7 @@ void main_body(void)
         else
             selector = 17 /*term_only *//*:79 */ ;
         if ((cur_input.loc_field < cur_input.limit_field)
-            && (eqtb[2254568L /*cat_code_base */  + buffer[cur_input.loc_field]].hh.v.RH != 0 /*escape */ ))
+            && (eqtb[2256168L /*cat_code_base */  + buffer[cur_input.loc_field]].hh.v.RH != 0 /*escape */ ))
             start_input();
     }
     history = 0 /*spotless */ ;

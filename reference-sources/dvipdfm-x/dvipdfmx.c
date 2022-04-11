@@ -197,6 +197,7 @@ show_usage (void)
   printf ("  -f filename\tLoad additional font map filename[.map]\n");
   printf ("  -g dimension\tAnnotation \"grow\" amount [0.0in]\n");
   printf ("  -h | --help \tShow this help message and exit\n");
+  printf ("  -i cfgfile\tRead additional configuration file\t\n");
   printf ("  -l \t\tLandscape mode\n");
   printf ("  -m number\tSet additional magnification [1.0]\n");
   printf ("  --mvorigin\tTranslate the origin for MP inclusion\n");
@@ -245,7 +246,7 @@ show_usage (void)
   printf ("Papersize is specified by paper format (e.g., \"a4\")\n");
   printf ("\tor by w<unit>,h<unit> (e.g., \"20cm,30cm\").\n");
   printf ("\n");
-  printf ("Email bug reports to dvipdfmx@tug.org.\n");
+  printf ("Package home page: https://ctan.org/pkg/dvipdfmx\n");
 }
 
 static void
@@ -1108,11 +1109,6 @@ main (int argc, char *argv[])
    */
   has_paper_option = 0;
 
-#ifndef MIKTEX
-  kpse_init_prog("", font_dpi, NULL, NULL);
-  kpse_set_program_enabled(kpse_pk_format, true, kpse_src_texmf_cnf);
-#endif
-  pdf_font_set_dpi(font_dpi);
   if (!dvi_filename) {
     if (verbose)
       MESG("No dvi filename specified, reading standard input.\n");
@@ -1153,6 +1149,13 @@ main (int argc, char *argv[])
       get_enc_password(oplain, uplain);
     }
   }
+
+  /* moved to here because -r option was not effective */
+#ifndef MIKTEX
+  kpse_init_prog("", font_dpi, NULL, NULL);
+  kpse_set_program_enabled(kpse_pk_format, true, kpse_src_texmf_cnf);
+#endif
+  pdf_font_set_dpi(font_dpi);
 
   /* moved to here because image caching was not effective */
   dpx_delete_old_cache(image_cache_life);

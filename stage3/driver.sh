@@ -65,7 +65,7 @@ function run_build() {
 
 function build_book() {
     cp $topdir/state/outputs/stage3/xetexdir/xewebmac.tex $topdir/state/outputs/stage3/build/
-    tectonic -f plain $topdir/state/outputs/stage3/build/xetex-book.tex
+    tectonic -f plain $topdir/state/outputs/stage3/build/tectonic-book.tex
 }
 
 function update_exports() {

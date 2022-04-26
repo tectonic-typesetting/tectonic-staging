@@ -490,7 +490,7 @@ def inner(src, build, w, use_custom_otangle, build_book_tex, underscores):
             command='WEBINPUTS=. ./merge-changes $in >$out.new && mv -f $out.new $out' % config,
             description='MERGE $out')
 
-        merged_web = build / 'xetex-book.web'
+        merged_web = build / 'tectonic-book.web'
 
         w.build(str(merged_web), 'merge-changes',
             inputs = [str(x) for x in [
@@ -500,7 +500,7 @@ def inner(src, build, w, use_custom_otangle, build_book_tex, underscores):
             implicit = [mymergeprog],
         )
 
-        book_tex = build / 'xetex-book.tex'
+        book_tex = build / 'tectonic-book.tex'
 
         w.build(str(book_tex), 'weave',
             inputs = [str(merged_web)],
